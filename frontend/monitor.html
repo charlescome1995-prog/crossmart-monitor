@@ -38,13 +38,13 @@ input.cfg:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.2)}
 .asin-row:last-child{border-bottom:none}
 .asin-row:hover{background:#fafbfc}
 
-/* Left image: fixed 120px */
-.asin-img{display:flex;align-items:center;justify-content:center;width:120px;flex-shrink:0}
-.asin-img img{width:90px;height:90px;object-fit:contain;border:1px solid #e6e8ea;border-radius:8px;background:#fff;padding:3px}
-.asin-img .plh{width:90px;height:90px;display:flex;align-items:center;justify-content:center;background:#f8fafc;border:1px solid #e6e8ea;border-radius:8px;color:#ccc;font-size:26px}
+/* Left image: fixed width, image height drives row */
+.asin-img{display:flex;align-items:center;justify-content:center;width:130px;flex-shrink:0}
+.asin-img img{width:110px;height:110px;object-fit:contain;border:1px solid #e6e8ea;border-radius:8px;background:#fff;padding:3px;display:block}
+.asin-img .plh{width:110px;height:110px;display:flex;align-items:center;justify-content:center;background:#f8fafc;border:1px solid #e6e8ea;border-radius:8px;color:#ccc;font-size:26px}
 
 /* Middle content: fills remaining space */
-.asin-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:6px 8px;min-height:100px;gap:3px}
+.asin-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:6px 8px;min-height:110px;gap:3px}
 
 .asin-title{display:flex;align-items:center;gap:8px;margin-bottom:1px}
 .asin-title .name{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:380px}
@@ -74,8 +74,8 @@ input.cfg:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.2)}
 .chart-lg{height:36px;position:relative;width:100%;margin-top:2px}
 
 @media(max-width:800px){
-  .asin-img{width:90px}
-  .asin-img img,.asin-img .plh{width:65px;height:65px}
+  .asin-img{width:100px}
+  .asin-img img,.asin-img .plh{width:85px;height:85px}
   .asin-title .name{max-width:160px;font-size:13px}
   .asin-stat{width:100px;padding-right:6px}
 }
@@ -263,9 +263,11 @@ function buildRow(item){
     if(v>0)prices.push({v:v,t:(snap.timestamp||'').slice(11,16),ts:snap.timestamp||''});
   });
 
-  var imgHTML=cur.main_image
-    ?'<img src="'+cur.main_image+'" onerror="this.style.display=\'none\'">'
-    :'<div class="plh">📷</div>';
+  // HD product image — upgrade to high resolution
+  var imgURL=cur.main_image||'';
+  if(imgURL.indexOf('_SX466_')>0)imgURL=imgURL.replace('_SX466_','_SX679_');
+  else if(imgURL.indexOf('_SL')>0)imgURL=imgURL.replace('_SL1500_','_SL2000_');
+  var imgHTML=imgURL ? ('<img src="'+imgURL+'" onerror="this.style.display=\'none\'">') : '<div class="plh">📷</div>';
 
   // Status: only BASIC in right column (stable/changed + timestamps)
   var stHTML;
