@@ -176,6 +176,9 @@ function updateCfgSummary() {
  <div class="metric-box"><div class="num" id="changedCount" style="color:#c45500">-</div><div class="lb">有变化</div></div>
  <div class="metric-box"><div class="num" id="todayChecks" style="color:#007185">-</div><div class="lb">今日检查</div></div>
  </div>
+ <div style="display:flex;gap:10px;justify-content:flex-end;margin-bottom:8px">
+ <button class="btn btn-secondary" onclick="downloadExcel()" style="font-size:12px">📥 导出Excel报告</button>
+ </div>
 </div>
 
 <div id="asinCards" class="wrap-card"></div>
@@ -401,6 +404,47 @@ async function triggerScrape() {
  }
  btn.disabled = false;
  btn.textContent = '🔍 立即抓取当前目标';
+}
+
+// ─── 导出Excel报告 ───
+function downloadExcel() {
+  try {
+  // 从页面已加载的数据生成
+  const cards = document.querySelectorAll('.asin-row');
+  if (!cards.length) {
+    showToast('⚠️ 没有监控数据可导出', true);
+    return;
+  }
+  let csv = 'ASIN,产品名,品牌,售价,评分,评论数,BSR排名,小类,卖家,状态,最后检查\n';
+  cards.forEach(card => {
+    const asinEl = card.querySelector('a[href*="amazon.com/dp/"]');
+    const asin = asinEl ? asinEl.textContent.trim() : '';
+    const titleEl = card.querySelector('.title');
+    const title = titleEl ? titleEl.textContent.trim().replace(/",/g, ' ') : '';
+    const spans = card.querySelectorAll('.params .v');
+    const brand = spans[0]?.textContent.trim() || '';
+    const price = spans[1]?.textContent.trim().replace(/[^0-9.]/g, '') || '';
+    const rating = spans[2]?.textContent.trim().replace(/[^0-9.]/g, '') || '';
+    const review = spans[2]?.textContent.trim().match(/·\s*([\d,]+)/)?.[1]?.replace(/,/g,'') || '';
+    const seller = spans[3]?.textContent.trim() || '';
+    const bsr = spans[4]?.textContent.trim().replace('原价', '').trim() || '';
+    const subcat = spans[5]?.textContent.trim() || '';
+    const status = card.querySelector('.stable, .changed');
+    const stat = status ? status.textContent.trim() : '';
+    const tsEl = card.querySelector('.ts');
+    const ts = tsEl ? tsEl.textContent.trim() : '';
+    const row = [asin, title, brand, price, rating, review, bsr, subcat, seller, stat, ts].map(v => '"'+v.replace(/"/g,'""')+'"').join(',');
+    csv += row + '\n';
+  });
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'crossmart_monitor_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  showToast('✅ 报告已下载');
+  } catch(e) {
+  showToast('⚠️ 导出失败: ' + e.message, true);
+  }
 }
 
 function switchConfigTab(tab) {
