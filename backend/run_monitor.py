@@ -12,6 +12,7 @@ sys.stderr = open(sys.stderr.fileno(), 'w', encoding='utf-8', buffering=1)
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Edge已经手动启动在9225端口（默认profile，有收藏夹）
+# 在import任何browser模块之前设置环境变量
 os.environ["CDP_PORT"] = "9225"
 
 # 先确认连接

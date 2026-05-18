@@ -18,8 +18,10 @@ os.makedirs(SCREENSHOT_DIR, exist_ok=True)
 # ─── Edge配置 ───
 # 就用闫旭的系统默认Edge，不新建任何profile
 EDGE_PROFILE_DIR = os.path.expandvars(r"%LOCALAPPDATA%\Microsoft\Edge\User Data")
-# 优先从环境变量读取CDP端口（便于外层控制），否则默认9224
+# 优先从环境变量读取CDP端口（便于外层控制），否则默认9225
 EDGE_PORT = int(os.environ.get("CDP_PORT", "9225"))
+# 如果环境变量CDP_PORT被设置了值，说明用户指定了端口，不自动检测OpenClaw
+_USER_SET_PORT = os.environ.get("CDP_PORT", "") != ""
 
 # OpenClaw管理的Edge CDP端口
 OPENCLAW_CDP_PORT = 18800
@@ -127,14 +129,17 @@ class CDPBrowser:
         print(f"  ✅ CDP已连接 — {len(self.tabs)}个标签页")
 
     def _detect_port(self):
-        """检测哪个CDP端口可用：优先OpenClaw，其次默认端口"""
+        """检测哪个CDP端口可用：环境变量指定则用指定值，否则检测OpenClaw"""
+        if _USER_SET_PORT:
+            print(f"  [CDP] 使用指定端口: {EDGE_PORT}")
+            return EDGE_PORT
         ports_to_try = [OPENCLAW_CDP_PORT, EDGE_PORT]
         for p in ports_to_try:
             try:
                 req = urllib.request.urlopen(f"http://127.0.0.1:{p}/json", timeout=3)
                 tabs = json.loads(req.read())
                 if tabs:
-                    print(f"  📡 使用CDP端口: {p}")
+                    print(f"  [CDP] 使用端口: {p}")
                     return p
             except:
                 pass
@@ -155,14 +160,28 @@ class CDPBrowser:
             if filtered:
                 self.tab = filtered[0]
             else:
-                # 未找到，打开新标签页
-                target = self.cmd("Target.createTarget", {"url": "about:blank"})
-                target_id = target.get("targetId")
-                time.sleep(1)
+                # 如果还没连接websocket，先连一个已有标签页作为桥梁
+                if not self.ws and tabs:
+                    first_tab = tabs[0]
+                    first_ws_url = first_tab.get("webSocketDebuggerUrl")
+                    if first_ws_url:
+                        try:
+                            self.ws = websocket.create_connection(first_ws_url, timeout=15)
+                        except:
+                            pass
+                # 创建新标签页
+                if self.ws:
+                    target = self.cmd("Target.createTarget", {"url": "about:blank"})
+                    target_id = target.get("targetId")
+                    time.sleep(0.5)
                 self._refresh_tabs()
-                # 找新开的标签页
-                filtered_new = [t for t in self._raw_tabs if t.get("id") == target_id]
-                self.tab = filtered_new[0] if filtered_new else self._raw_tabs[0]
+                # 找到新创建的标签页或用第一个
+                if self.ws:
+                    filtered_new = [t for t in self._raw_tabs if t.get("id") == target_id]
+                    self.tab = filtered_new[0] if filtered_new else self._raw_tabs[0]
+                else:
+                    # 连websocket都建立不了，直接用第一个标签页
+                    self.tab = self._raw_tabs[0] if self._raw_tabs else None
         else:
             self.tab = tabs[tab_index] if tabs else None
 
@@ -182,7 +201,7 @@ class CDPBrowser:
         self.ws = websocket.create_connection(ws_url, timeout=15)
         title = self.tab.get("title","")[:40]
         url = self.tab.get("url","")[:60]
-        print(f"  📌 Tab: {title} | {url}")
+        print(f"  [Tab] {title} | {url}")
         return self
 
     def _recv_until_id(self, target_id, timeout=15):

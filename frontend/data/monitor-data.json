@@ -12,15 +12,16 @@
       "bsr_sub_rank": "#1",
       "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
       "seller": "Medicube & Aprilskin",
-      "main_image": "https://m.media-amazon.com/images/I/41QbIzhK+TL._SY300_SX300_QL70_FMwebp_.jpg",
-      "last_check": "2026-05-18T20:53:15.612062",
+      "main_image": "https://m.media-amazon.com/images/I/71Mcspt-6AL._SX466_.jpg",
+      "last_check": "2026-05-18T21:20:02.895484",
       "snapshots": [
         "2026-05-18T20:35",
         "2026-05-18T20:37",
         "2026-05-18T20:41",
-        "2026-05-18T20:53"
+        "2026-05-18T20:53",
+        "2026-05-18T21:20"
       ],
-      "snapshot_count": 4,
+      "snapshot_count": 5,
       "has_changes": true,
       "change_count": 2,
       "change_desc": "价格 ↑ $109.91 (581.5%) | 价格 ↓ $109.91 (85.3%)",
@@ -54,5 +55,5 @@
       ]
     }
   ],
-  "updated": "2026-05-18T21:04:17.207765"
+  "updated": "2026-05-18T21:20:02.949209"
 }

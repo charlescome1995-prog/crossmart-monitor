@@ -213,25 +213,50 @@ function switchTab(t){
   document.getElementById('panelK').style.display=t==='k'?'block':'none';
 }
 
+/* API地址：本地API服务器 */
+var API_URL='http://127.0.0.1:8765';
+
 async function triggerScrape(){
   var btn=document.querySelector('[onclick="triggerScrape()"]');if(!btn)return;
-  var asinList=asins.filter(function(a){return a.asin&&a.asin.trim()}).map(function(a){return a.asin.trim()});
-  if(!asinList.length){st('请先添加ASIN',1);return}
+  // 先保存配置到localStorage
+  svCfg();
+  // 获取localStorage中最新的ASIN列表
+  try{
+    var cfg=JSON.parse(localStorage.getItem(KEY)||'{}');
+    var savedAsins=cfg.asins||asins;
+  }catch(e){var savedAsins=asins}
+  var asinList=savedAsins.filter(function(a){return a.asin&&a.asin.trim()}).map(function(a){return a.asin.trim()});
+  // 如果还没有有效ASIN，用默认
+  if(!asinList.length){asinList=['B09V7Z4TJG']}
+
   btn.disabled=true;btn.textContent='采集中...';
   var me=document.getElementById('scrapeMsg');
-  me.innerHTML='采集 '+asinList.length+' 个ASIN...<br>请查看终端输出';
+  me.textContent='正在采集 '+asinList.length+' 个ASIN...';
   try{
-    // 调用后端Python脚本
-    var r=await fetch('/api/scrape',{method:'POST'});var j=await r.json();
-    if(j.status==='ok'){st('采集完成');me.textContent='完成';setTimeout(function(){location.reload()},1500)}
-    else{st('失败: '+(j.error||''),1);me.textContent='失败'}
+    var r=await fetch(API_URL+'/api/scrape',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({asins:asinList})});
+    var j=await r.json();
+    if(j.status==='ok'){
+      st('开始采集 '+asinList.length+' 个ASIN');
+      me.textContent='采集中，请稍候...';
+      // 轮询状态直到完成
+      var wait=function(){setTimeout(async function(){
+        try{
+          var sr=await fetch(API_URL+'/api/status');var sj=await sr.json();
+          if(sj.scrape_running){me.textContent='采集中 ('+sj.last_result?.count||0+'/已完成)...';wait()}
+          else{
+            me.textContent='采集完成';
+            st('采集完成，刷新数据中...');
+            setTimeout(function(){load();me.textContent='完成'},1000);
+          }
+        }catch(e){me.textContent='状态查询失败';btn.disabled=false;btn.textContent='立即抓取'}
+      },2000)};
+      wait();
+    }else{st('失败: '+(j.message||''),1);me.textContent='失败';btn.disabled=false;btn.textContent='立即抓取'}
   }catch(e){
-    // API不可用，提示手动运行
-    var asinsArg=asinList.join(' ');
-    st('请运行采集脚本',1);
-    me.innerHTML='请在终端运行:<br><code style="font-size:11px">cd backend<br>python run_monitor.py '+asinsArg+'<br>python sync_to_frontend.py</code>';
+    st('API服务未启动',1);
+    me.innerHTML='请在终端运行:<br><code>python backend/api_server.py</code><br>然后重试';
+    btn.disabled=false;btn.textContent='立即抓取'
   }
-  btn.disabled=false;btn.textContent='立即抓取'
 }
 /* Compute detailed changes between snapshots */
 function computeChanges(snapshots){
