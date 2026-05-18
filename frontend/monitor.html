@@ -263,10 +263,8 @@ function buildRow(item){
     if(v>0)prices.push({v:v,t:(snap.timestamp||'').slice(11,16),ts:snap.timestamp||''});
   });
 
-  // HD product image — upgrade to high resolution
+  // HD product image from Amazon CDN (already _SX679_ high resolution)
   var imgURL=cur.main_image||'';
-  if(imgURL.indexOf('_SX466_')>0)imgURL=imgURL.replace('_SX466_','_SX679_');
-  else if(imgURL.indexOf('_SL')>0)imgURL=imgURL.replace('_SL1500_','_SL2000_');
   var imgHTML=imgURL ? ('<img src="'+imgURL+'" onerror="this.style.display=\'none\'">') : '<div class="plh">📷</div>';
 
   // Status: only BASIC in right column (stable/changed + timestamps)
