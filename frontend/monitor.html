@@ -226,15 +226,48 @@ async function triggerScrape(){
   }
   btn.disabled=false;btn.textContent='立即抓取'
 }
+/* Compute detailed changes between snapshots */
+function computeChanges(snapshots){
+  if(!snapshots||snapshots.length<2)return[];
+  var result=[];
+  for(var i=1;i<snapshots.length;i++){
+    var prev=snapshots[i-1].data||{},cur=snapshots[i].data||{};
+    var t=snapshots[i].timestamp,items=[];
+    if(prev.price!==cur.price)items.push('价格: '+g(prev.price)+' → '+g(cur.price));
+    if(prev.rating!==cur.rating)items.push('评分: '+pn(prev.rating)+' → '+pn(cur.rating));
+    if(prev.review_count!==cur.review_count)items.push('评论: '+(prev.review_count||0)+' → '+(cur.review_count||0));
+    if(prev.bsr!==cur.bsr)items.push('BSR: '+(prev.bsr||'').split(' in ')[0]+' → '+(cur.bsr||'').split(' in ')[0]);
+    if(prev.title!==cur.title)items.push('标题有变化');
+    if(items.length)result.push({time:t,changes:items});
+  }
+  return result;
+}
+
 function exportCsv(){
   var rows=document.querySelectorAll('.asin-row');
   if(!rows.length){st('无数据可导出',1);return}
-  var csv='\uFEFFASIN,产品名,品牌,售价,评分,BSR大类,BSR小类,卖家,状态\n';
+  // First pass: get all data from rendered rows and the underlying JSON
+  var csv='\uFEFFASIN,产品名,品牌,售价,评分,BSR大类,BSR小类,卖家,状态,变化内容,变化时间\n';
   rows.forEach(function(r){
     var a=(r.querySelector('.badge')||{}).textContent||'';
     var n=(r.querySelector('.asin-title .name')||{}).textContent||'';
     var vs=r.querySelectorAll('.mt .mv');
-    csv+=[a,n,g(vs[0]&&vs[0].textContent),g(vs[1]&&vs[1].textContent),g(vs[2]&&vs[2].textContent),g(vs[3]&&vs[3].textContent),g(vs[4]&&vs[4].textContent),g(vs[5]&&vs[5].textContent),g((r.querySelector('.bg-s,.bg-c')||{}).textContent)].map(function(v){return'"'+(v||'').replace(/"/g,'""')+'"'}).join(',')+'\n'
+    var status=(r.querySelector('.bg-s,.bg-c')||{}).textContent||'稳定';
+    // Try to find changes data from window._data
+    var changes=[];
+    if(window._data&&window._data.asins){
+      var item=window._data.asins.find(function(x){return x.asin===a});
+      if(item&&item.changes&&item.changes.length)changes=item.changes;
+    }
+    // Also compute per-snapshot changes
+    var item2=window._data&&window._data.asins&&window._data.asins.find(function(x){return x.asin===a});
+    var perChanges=item2?computeChanges(item2.snapshots||[]):[];
+    var changeText=changes.length?changes.join('; '):'';
+    var changeTime='';
+    if(perChanges.length){
+      changeTime=perChanges.map(function(p){return fdt(p.time)+': '+p.changes.join(', ')}).join(' | ');
+    }
+    csv+=[a,n,g(vs[0]&&vs[0].textContent),g(vs[1]&&vs[1].textContent),g(vs[2]&&vs[2].textContent),g(vs[3]&&vs[3].textContent),g(vs[4]&&vs[4].textContent),g(vs[5]&&vs[5].textContent),status,changeText,changeTime].map(function(v){return'"'+(v||'').replace(/"/g,'""')+'"'}).join(',')+'\n'
   });
   var b=new Blob([csv],{type:'text/csv;charset=utf-8'});
   var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='crossmart_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
@@ -254,6 +287,8 @@ async function load(){
 }
 function render(d){
   var items=d.asins||[],ov=d.overview||{};
+  // Store raw data for export
+  window._data=d;
   document.getElementById('m1').textContent=ov.total||items.length||'—';
   document.getElementById('m2').textContent=ov.stable||0;
   document.getElementById('m3').textContent=ov.changed||0;
