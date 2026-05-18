@@ -9,8 +9,11 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui,-apple-system,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
 body{background:#eaeded;color:#0f1111;font-size:14px;line-height:1.5}
+/* EN font = Times New Roman / CN font = Inter */
+.en{font-family:Georgia,'Times New Roman','Times',serif}
+*{font-family:'Times New Roman','Taipei Sans TC',Inter,system-ui,sans-serif}
 a{color:#007185;text-decoration:none}a:hover{color:#c45500}
 .topbar{background:#131921;color:#fff;display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 24px;position:sticky;top:0;z-index:100}
 .topbar .brand{font-weight:700;font-size:16px}.topbar .brand span{color:#e94560}
@@ -33,51 +36,53 @@ input.cfg:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.2)}
 .toast{position:fixed;bottom:30px;right:30px;background:#067d62;color:#fff;padding:12px 24px;border-radius:8px;font-size:13px;font-weight:600;z-index:999;display:none;box-shadow:0 4px 12px rgba(0,0,0,.15)}
 .toast.err{background:#B12704}
 
-/* ========== ASIN ROW ========== */
-.asin-row{display:flex;flex-direction:row;align-items:stretch;border-bottom:1px solid #eaeded;min-height:100px;transition:.15s}
+/* ========== ASIN ROW: FIXED TABLE LAYOUT ========== */
+.asin-row{display:flex;flex-direction:row;align-items:stretch;border-bottom:1px solid #eaeded;min-height:120px;transition:.15s}
 .asin-row:last-child{border-bottom:none}
 .asin-row:hover{background:#fafbfc}
 
-/* Left image: fixed width, image height drives row */
-.asin-img{display:flex;align-items:center;justify-content:center;width:130px;flex-shrink:0}
+/* Left image: fixed width */
+.asin-img{display:flex;align-items:center;justify-content:center;width:140px;flex-shrink:0}
 .asin-img img{width:110px;height:110px;object-fit:contain;border:1px solid #e6e8ea;border-radius:8px;background:#fff;padding:3px;display:block}
-.asin-img .plh{width:110px;height:110px;display:flex;align-items:center;justify-content:center;background:#f8fafc;border:1px solid #e6e8ea;border-radius:8px;color:#ccc;font-size:26px}
+.asin-img .plh{width:110px;height:110px;display:flex;align-items:center;justify-content:center;background:#f8fafc;border:1px solid #e6e8ea;border-radius:8px;color:#ccc;font-size:28px}
 
-/* Middle content: fills remaining space */
-.asin-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:6px 8px;min-height:110px;gap:3px}
+/* Middle: table-constrained content */
+.asin-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 10px 8px 0;min-height:120px;gap:2px;overflow:hidden}
 
-.asin-title{display:flex;align-items:center;gap:8px;margin-bottom:1px}
-.asin-title .name{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:380px}
-.asin-title .badge{font-size:10px;color:#555;background:#f0f2f2;padding:2px 7px;border-radius:3px;font-family:monospace;white-space:nowrap;flex-shrink:0}
+.asin-title{display:flex;align-items:baseline;gap:8px;max-width:100%}
+.asin-title .name{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:480px}
+.asin-title .badge{font-size:10px;color:#555;background:#f0f2f2;padding:1px 7px;border-radius:3px;font-family:monospace;white-space:nowrap;flex-shrink:0}
 
-/* Metric rows: two-column grid with labels */
-.mgrid{display:grid;grid-template-columns:auto 80px auto 80px auto 1fr;gap:1px 6px;align-items:center;font-size:12px}
-.mgrid .ml{color:#687078;font-weight:500;white-space:nowrap;text-align:left}
-.mgrid .mv{font-weight:600;white-space:nowrap;text-align:left}
-.mgrid .mv.pc{color:#B12704}
-.mgrid .mv.rt{color:#d99536}
+/* Metric table: grid layout, fixed label widths */
+.mt{display:grid;grid-template-columns:auto minmax(60px,auto) auto minmax(60px,auto) 1fr;gap:0 6px;align-items:center;font-size:12px;line-height:1.7}
+.mt .ml{color:#687078;font-weight:500;white-space:nowrap;text-align:left;min-width:32px}
+.mt .mv{font-weight:600;white-space:nowrap;text-align:left;overflow:hidden;text-overflow:ellipsis;max-width:120px}
+.mt .mv.pc{color:#B12704}.mt .mv.rt{color:#d99536}
 
-/* Trend line inline */
-.trend-line{height:22px;position:relative;width:100%;margin-top:1px}
+/* Trend mini */
+.trend-m{height:20px;position:relative;width:100%;margin-top:1px}
 
-/* Right status */
-.asin-stat{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;gap:2px;padding:8px 10px 8px 0;flex-shrink:0;width:130px;text-align:right}
+/* Right status: clean timestamp list */
+.asin-stat{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;gap:2px;padding:8px 12px 8px 0;flex-shrink:0;width:140px;text-align:right;overflow:hidden}
 .bg-s{display:inline-block;background:#e8f5ed;color:#067d62;border:1px solid #ceead6;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600}
 .bg-c{display:inline-block;background:#fff8e6;color:#9e7800;border:1px solid #fceeb5;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600}
-.chg-item{font-size:11px;color:#c45500;line-height:1.5}
-.chg-item.up{color:#067d62}.chg-item.dn{color:#B12704}
-.ts-line{font-size:10px;color:#aaa;line-height:1.5}
-.ts-dot{display:inline-block;width:3px;height:3px;background:#bbb;border-radius:50%;margin:0 3px;vertical-align:middle}
+.chg-i{font-size:11px;color:#c45500;line-height:1.5;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chg-i.up{color:#067d62}.chg-i.dn{color:#B12704}
+.ts-l{font-size:10px;color:#aaa;line-height:1.5;max-width:100%}
+.ts-d{display:inline-block;width:3px;height:3px;background:#bbb;border-radius:50%;margin:0 3px;vertical-align:middle}
 
-/* Detail expanded panel - only when changed */
-.detail-exp{border-top:1px solid #f0e6d0;padding:8px 10px 12px;display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:#687078}
-.chart-lg{height:36px;position:relative;width:100%;margin-top:2px}
+/* Detail panel: only when changed */
+.detail-e{border-top:1px solid #f0e6d0;padding:8px 14px 10px;display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#687078}
+.detail-e .ch{font-size:11px;color:#c45500;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.detail-e .ch.up{color:#067d62}.detail-e .ch.dn{color:#B12704}
+.chart-d{height:34px;position:relative;width:100%;margin-top:2px}
 
-@media(max-width:800px){
+@media(max-width:900px){
   .asin-img{width:100px}
-  .asin-img img,.asin-img .plh{width:85px;height:85px}
-  .asin-title .name{max-width:160px;font-size:13px}
-  .asin-stat{width:100px;padding-right:6px}
+  .asin-img img,.asin-img .plh{width:80px;height:80px}
+  .asin-title .name{max-width:200px;font-size:13px}
+  .asin-stat{width:115px;padding-right:6px}
+  .mt .mv{max-width:80px}
 }
 </style>
 </head>
@@ -100,26 +105,19 @@ input.cfg:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.2)}
       <button id="tabA" style="padding:7px 18px;background:#131921;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer" onclick="switchTab('a')">ASIN设置</button>
       <button id="tabK" style="padding:7px 18px;background:#e6e8ea;color:#0f1111;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer" onclick="switchTab('k')">关键词设置</button>
     </div>
-    <div id="panelA">
-      <div id="editAsins"></div>
+    <div id="panelA"><div id="editAsins"></div>
       <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
-        <button class="btn btn-s" onclick="addAsinCfg()">+ 添加ASIN</button>
-        <button class="btn btn-p" onclick="saveAsins()">💾 保存</button>
-        <span id="msgA" style="font-size:11px;color:#687078"></span>
+        <button class="btn btn-s" onclick="addAsinCfg()">+ 添加ASIN</button><button class="btn btn-p" onclick="saveAsins()">💾 保存</button><span id="msgA" style="font-size:11px;color:#687078"></span>
       </div>
     </div>
-    <div id="panelK" style="display:none">
-      <div id="editKws"></div>
+    <div id="panelK" style="display:none"><div id="editKws"></div>
       <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
-        <button class="btn btn-s" onclick="addKwCfg()">+ 添加关键词</button>
-        <button class="btn btn-p" onclick="saveKws()">💾 保存</button>
-        <span id="msgK" style="font-size:11px;color:#687078"></span>
+        <button class="btn btn-s" onclick="addKwCfg()">+ 添加关键词</button><button class="btn btn-p" onclick="saveKws()">💾 保存</button><span id="msgK" style="font-size:11px;color:#687078"></span>
       </div>
     </div>
     <hr style="border:none;border-top:1px solid #eee;margin:10px 0">
     <div style="display:flex;gap:8px;align-items:center">
-      <button class="btn btn-p" onclick="triggerScrape()">🔍 立即抓取</button>
-      <span id="scrapeMsg" style="font-size:11px;color:#687078"></span>
+      <button class="btn btn-p" onclick="triggerScrape()">🔍 立即抓取</button><span id="scrapeMsg" style="font-size:11px;color:#687078"></span>
     </div>
   </div>
 </div>
@@ -151,9 +149,27 @@ function pn(v){if(!v)return'—';var m=(''+v).match(/([\d.]+)/);return m?m[1]:'�
 function g(s){return s||'—'}
 function fdt(ts){if(!ts)return'';var d=new Date(ts);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
 
+/* Format BSR: try to parse sub-category from the top-level bsr string */
+function parseBSRfull(bsrStr, subRank, subCat){
+  var r1='—',r2='—';
+  if(bsrStr){
+    var m=bsrStr.match(/^#([\d,]+)/);
+    if(m)r1='#'+m[1];
+  }
+  if(subRank)r2='#'+subRank.toLocaleString();
+  return {top:r1, sub:r2};
+}
+
+/* Format changes into abbreviated display */
+function fmtChg(c, maxLen){
+  // Truncate long change descriptions
+  if(c.length>maxLen)return c.substring(0,maxLen-2)+'..';
+  return c;
+}
+
 function snapLines(ss){
-  if(!ss||!ss.length)return'<div class="ts-line">暂无记录</div>';
-  return '<div class="ts-line">'+ss.map(function(s){return'<span style="display:inline-block;width:3px;height:3px;background:#bbb;border-radius:50%;margin:0 3px;vertical-align:middle"></span> '+fdt(s.timestamp)}).join('<br>')+'</div>';
+  if(!ss||!ss.length)return'<div class="ts-l">暂无记录</div>';
+  return '<div class="ts-l">'+ss.map(function(s){return'<span class="ts-d"></span> '+fdt(s.timestamp)}).join('<br>')+'</div>';
 }
 
 function loadCfg(){
@@ -213,12 +229,12 @@ async function triggerScrape(){
 function exportCsv(){
   var rows=document.querySelectorAll('.asin-row');
   if(!rows.length){st('无数据可导出',1);return}
-  var csv='\uFEFFASIN,产品名,品牌,售价,评分,BSR,卖家,状态\n';
+  var csv='\uFEFFASIN,产品名,品牌,售价,评分,BSR大类,BSR小类,卖家,状态\n';
   rows.forEach(function(r){
     var a=(r.querySelector('.badge')||{}).textContent||'';
     var n=(r.querySelector('.asin-title .name')||{}).textContent||'';
-    var vs=r.querySelectorAll('.mgrid .mv');
-    csv+=[a,n,g(vs[0]&&vs[0].textContent),g(vs[1]&&vs[1].textContent),g(vs[2]&&vs[2].textContent),g(vs[3]&&vs[3].textContent),g(vs[4]&&vs[4].textContent),g((r.querySelector('.bg-s,.bg-c')||{}).textContent)].map(function(v){return'"'+(v||'').replace(/"/g,'""')+'"'}).join(',')+'\n'
+    var vs=r.querySelectorAll('.mt .mv');
+    csv+=[a,n,g(vs[0]&&vs[0].textContent),g(vs[1]&&vs[1].textContent),g(vs[2]&&vs[2].textContent),g(vs[3]&&vs[3].textContent),g(vs[4]&&vs[4].textContent),g(vs[5]&&vs[5].textContent),g((r.querySelector('.bg-s,.bg-c')||{}).textContent)].map(function(v){return'"'+(v||'').replace(/"/g,'""')+'"'}).join(',')+'\n'
   });
   var b=new Blob([csv],{type:'text/csv;charset=utf-8'});
   var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='crossmart_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
@@ -263,11 +279,11 @@ function buildRow(item){
     if(v>0)prices.push({v:v,t:(snap.timestamp||'').slice(11,16),ts:snap.timestamp||''});
   });
 
-  // HD product image from Amazon CDN (already _SX679_ high resolution)
+  // HD product image
   var imgURL=cur.main_image||'';
   var imgHTML=imgURL ? ('<img src="'+imgURL+'" onerror="this.style.display=\'none\'">') : '<div class="plh">📷</div>';
 
-  // Status: only BASIC in right column (stable/changed + timestamps)
+  // Status: basic (stable/changed) + timestamps
   var stHTML;
   if(changed){
     var seen={};
@@ -275,7 +291,7 @@ function buildRow(item){
       var k=c.split(':')[0];if(seen[k])return null;seen[k]=true;
       var nums=c.match(/[\d.,]+/g),cls='';
       if(nums&&nums.length>=2){var a1=parseFloat(nums[0].replace(/,/g,'')),a2=parseFloat(nums[1].replace(/,/g,''));cls=a1<a2?'up':(a1>a2?'dn':'')}
-      return'<div class="chg-item '+cls+'">'+c+'</div>';
+      return '<div class="chg-i '+cls+'">'+fmtChg(c,30)+'</div>';
     }).filter(Boolean);
     stHTML='<div class="bg-c">变化 '+sm.length+'项</div>'+sm.join('');
   }else{
@@ -283,52 +299,49 @@ function buildRow(item){
   }
   stHTML+=snapLines(ss);
 
-  // Metrics grid: label : value in columns
+  // BSR: parse top + sub
+  var bsrInfo=parseBSRfull(cur.bsr, cur.bsr_sub_rank, cur.bsr_sub_category);
   var rt=pn(cur.rating),rc=cur.review_count?cur.review_count.toLocaleString():'—';
-  var bsr=cur.bsr_sub_rank?'#'+cur.bsr_sub_rank.toLocaleString():'—';
-  var seller=g(cur.sold_by).substring(0,20);
+  var seller=g(cur.sold_by).substring(0,18);
   var pv=cur.price||'—';
   var pk=cur.discount?' <span style="color:#067d62;font-size:11px;font-weight:600">'+cur.discount+'</span>':'';
 
+  // Metrics grid: brand|售价|评分|评论|BSR大类|BSR小类|卖家
+  // Layout: 7 labels + 7 values in a 3-column grid
   var mg=
-    '<div class="ml">品牌</div><div class="mv">'+brand+'</div><div class="ml">评分</div><div class="mv rt">'+rt+'</div><div></div>'+
-    '<div class="ml">售价</div><div class="mv pc">'+pv+'</div><div class="ml">评论</div><div class="mv">'+rc+'</div><div>'+pk+'</div>'+
-    '<div class="ml">BSR</div><div class="mv">'+bsr+'</div><div class="ml">卖家</div><div class="mv">'+seller+'</div><div></div>';
+    '<span class="ml">品牌</span><span class="mv">'+brand+'</span><span class="ml">售价</span><span class="mv pc">'+pv+'</span>'+pk+
+    '<span class="ml">评分</span><span class="mv rt">'+rt+'</span><span class="ml">评论</span><span class="mv">'+rc+'</span><span></span>'+
+    '<span class="ml">大类</span><span class="mv">'+bsrInfo.top+'</span><span class="ml">小类</span><span class="mv">'+bsrInfo.sub+'</span><span class="ml">卖家</span><span class="mv">'+seller+'</span>';
 
   div.innerHTML=
     '<div class="asin-img">'+imgHTML+'</div>'+
     '<div class="asin-body">'+
-      '<div class="asin-title"><span class="name"><a href="https://www.amazon.com/dp/'+item.asin+'" target="_blank">'+g(cur.title).substring(0,90)+'</a></span><span class="badge">'+item.asin+'</span></div>'+
-      '<div class="mgrid">'+mg+'</div>'+
-      // Trend line in the middle — only when changed
-      (changed&&prices.length>1?'<div class="trend-line"><canvas id="ch_'+cln(item.asin)+'"></canvas></div>':'')+
+      '<div class="asin-title"><span class="name"><a href="https://www.amazon.com/dp/'+item.asin+'" target="_blank">'+g(cur.title).substring(0,120)+'</a></span><span class="badge">'+item.asin+'</span></div>'+
+      '<div class="mt">'+mg+'</div>'+
+      (changed&&prices.length>1?'<div class="trend-m"><canvas id="ch_'+cln(item.asin)+'"></canvas></div>':'')+
     '</div>'+
     '<div class="asin-stat">'+stHTML+'</div>';
 
-  // Detail expanded: show change details + chart — ONLY when changed
+  // Detail panel: only when changed
   if(changed){
-    var dp=document.createElement('div');dp.style.cssText='width:100%;border-top:1px solid #f0e6d0;padding:8px 14px 10px';
-    var html='<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:#687078">';
-    if(chgs.length)html+=chgs.map(function(c){return'<span>• '+c+'</span>'}).join('');
-    if(prices.length>1)html+='<div style="height:36px;position:relative;width:100%;margin-top:2px"><canvas id="chd_'+cln(item.asin)+'"></canvas></div>';
-    dp.innerHTML=html+'</div>';
+    var dp=document.createElement('div');dp.style.cssText='width:100%;border-top:1px solid #f0e6d0;padding:8px 14px 10px;font-size:12px;color:#687078';
+    if(chgs.length)dp.innerHTML=chgs.map(function(c){return'<span class="ch">• '+fmtChg(c,55)+'</span>'}).join('')+'<br>';
+    if(prices.length>1)dp.innerHTML+='<div style="height:34px;position:relative;width:100%;margin-top:2px"><canvas id="chd_'+cln(item.asin)+'"></canvas></div>';
     div.appendChild(dp);
   }
 
-  // Render charts
+  // Charts
   if(changed&&prices.length>1){
-    // Middle mini trend
     var id='ch_'+cln(item.asin);
     setTimeout(function(){
       var ctx=document.getElementById(id);if(!ctx)return;
-      ctx.style.height='22px';ctx.parentElement.style.height='22px';
+      ctx.style.height='20px';ctx.parentElement.style.height='20px';
       charts[id]=new Chart(ctx,{type:'line',data:{labels:prices.map(function(p){return p.t}),datasets:[{data:prices.map(function(p){return p.v}),borderColor:'#B12704',backgroundColor:'rgba(177,39,4,0.05)',fill:true,tension:0.3,pointRadius:0,borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:true}},scales:{x:{display:true,ticks:{color:'#999',font:{size:7}},grid:{display:false}},y:{display:true,ticks:{color:'#999',font:{size:7},callback:function(v){return'$'+v}},grid:{color:'#e6e8ea'}}}}});
     },100);
-    // Detail chart
     var id2='chd_'+cln(item.asin);
     setTimeout(function(){
       var ctx2=document.getElementById(id2);if(!ctx2)return;
-      ctx2.style.height='36px';ctx2.parentElement.style.height='36px';
+      ctx2.style.height='34px';ctx2.parentElement.style.height='34px';
       charts[id2]=new Chart(ctx2,{type:'line',data:{labels:prices.map(function(p){return p.t}),datasets:[{data:prices.map(function(p){return p.v}),borderColor:'#B12704',backgroundColor:'rgba(177,39,4,0.08)',fill:true,tension:0.3,pointRadius:2.5,borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:true}},scales:{x:{ticks:{color:'#687078',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#687078',font:{size:9},callback:function(v){return'$'+v}},grid:{color:'#e6e8ea'}}}}});
     },100);
   }
