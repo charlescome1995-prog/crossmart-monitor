@@ -89,84 +89,56 @@
  </div>
 </div>
 
-<!-- 监控目标概览（折叠面板） -->
-<div id="cfgFoldPanel" class="config-card" style="cursor:pointer">
- <div style="display:flex;justify-content:space-between;align-items:center" onclick="toggleCfgPanel()">
- <h3>🎯 监控目标 <span id="cfgSummary" style="font-size:12px;font-weight:400;color:#666;margin-left:8px"></span></h3>
- <span id="cfgToggleIcon" style="font-size:18px;color:#999;padding:0 8px">▼</span>
+<!-- 监控配置面板：默认展开 -->
+<div class="config-card">
+ <div style="display:flex;justify-content:space-between;align-items:center">
+ <h3>⚙️ 监控配置</h3>
  </div>
- <div id="cfgPanelBody" style="padding:0 20px;max-height:0;overflow:hidden;transition:max-height 0.3s ease, padding 0.3s ease">
-  <!-- ASIN/关键词Tab切换 -->
-  <div class="tab-sel" style="margin-top:10px">
-  <button id="tabAsins" class="active" onclick="switchConfigTab('asins')">📦 ASIN设置（最多5个）</button>
-  <button id="tabKeywords" onclick="switchConfigTab('keywords')">🔑 关键词设置（最多5个）</button>
-  </div>
+ <div style="padding:14px 20px">
+ <div class="tab-sel">
+ <button id="tabAsins" class="active" onclick="switchConfigTab('asins')">📦 ASIN设置（最多5个）</button>
+ <button id="tabKeywords" onclick="switchConfigTab('keywords')">🔑 关键词设置（最多5个）</button>
+ </div>
 
-  <!-- ASIN编辑区 -->
-  <div id="cfgAsins">
-  <div id="asinEditList"></div>
-  <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
-  <button class="btn btn-secondary" onclick="addAsinRow()">+ 添加ASIN</button>
-  <button class="btn btn-primary" onclick="saveAsins()">💾 保存ASIN配置</button>
-  <span id="asinSaveMsg" style="font-size:11px;color:#687078;margin-left:6px"></span>
-  </div>
-  <div style="margin-top:8px;font-size:11px;color:#687078;background:#f8fafc;padding:8px 12px;border-radius:4px;border:1px solid #e6e8ea">
-  ASIN将自动设置关键词为"batana oil"，如需不同关键词在"备注"中写明或用keyword_list.json
-  </div>
-  </div>
+ <!-- ASIN编辑区 -->
+ <div id="cfgAsins">
+ <div id="asinEditList"></div>
+ <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
+ <button class="btn btn-secondary" onclick="addAsinRow()">+ 添加ASIN</button>
+ <button class="btn btn-primary" onclick="saveAsins()">💾 保存ASIN配置</button>
+ <span id="asinSaveMsg" style="font-size:11px;color:#687078;margin-left:6px"></span>
+ </div>
+ <div style="margin-top:8px;font-size:11px;color:#687078;background:#f8fafc;padding:8px 12px;border-radius:4px;border:1px solid #e6e8ea">
+ ASIN将自动设置关键词为"batana oil"，如需不同关键词在"备注"中写明或用keyword_list.json
+ </div>
+ </div>
 
-  <!-- 关键词编辑区 -->
-  <div id="cfgKeywords" style="display:none">
-  <div id="kwEditList"></div>
-  <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
-  <button class="btn btn-secondary" onclick="addKwRow()">+ 添加关键词</button>
-  <button class="btn btn-primary" onclick="saveKeywords()">💾 保存关键词配置</button>
-  <span id="kwSaveMsg" style="font-size:11px;color:#687078;margin-left:6px"></span>
-  </div>
-  <div style="margin-top:8px;font-size:11px;color:#687078;background:#f8fafc;padding:8px 12px;border-radius:4px;border:1px solid #e6e8ea">
-  关键词用于卖家精灵/Amazon搜索排名监控。最多5个。
-  </div>
-  </div>
+ <!-- 关键词编辑区 -->
+ <div id="cfgKeywords" style="display:none">
+ <div id="kwEditList"></div>
+ <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
+ <button class="btn btn-secondary" onclick="addKwRow()">+ 添加关键词</button>
+ <button class="btn btn-primary" onclick="saveKeywords()">💾 保存关键词配置</button>
+ <span id="kwSaveMsg" style="font-size:11px;color:#687078;margin-left:6px"></span>
+ </div>
+ <div style="margin-top:8px;font-size:11px;color:#687078;background:#f8fafc;padding:8px 12px;border-radius:4px;border:1px solid #e6e8ea">
+ 关键词用于卖家精灵/Amazon搜索排名监控。最多5个。
+ </div>
+ </div>
 
-  <hr style="border:none;border-top:1px solid #eee;margin:12px 0">
+ <hr style="border:none;border-top:1px solid #eee;margin:12px 0">
 
-  <!-- 抓取操作栏 -->
-  <div style="display:flex;gap:12px;align-items:center;padding:4px 0 14px 0">
-  <button class="btn btn-primary" onclick="triggerScrape()">🔍 立即抓取当前目标</button>
-  <span id="scrapeMsg" style="font-size:11px;color:#687078"></span>
-  </div>
+ <!-- 抓取操作栏 -->
+ <div style="display:flex;gap:12px;align-items:center;padding:4px 0 14px 0">
+ <button class="btn btn-primary" onclick="triggerScrape()">🔍 立即抓取当前目标</button>
+ <span id="scrapeMsg" style="font-size:11px;color:#687078"></span>
+ </div>
  </div>
 </div>
 
 <script>
-// 折叠面板状态
-let cfgPanelOpen = false;
-function toggleCfgPanel() {
-  cfgPanelOpen = !cfgPanelOpen;
-  const body = document.getElementById('cfgPanelBody');
-  const icon = document.getElementById('cfgToggleIcon');
-  if (cfgPanelOpen) {
-  body.style.maxHeight = body.scrollHeight + 'px';
-  body.style.padding = '14px 20px';
-  icon.textContent = '▲';
-  } else {
-  body.style.maxHeight = '0';
-  body.style.padding = '0 20px';
-  icon.textContent = '▼';
-  }
-}
-
 function updateCfgSummary() {
-  const validAsins = configAsins.filter(a => a.asin && a.asin.trim());
-  const validKws = configKeywords.filter(k => k.keyword && k.keyword.trim());
-  const summaryEl = document.getElementById('cfgSummary');
-  if (validAsins.length || validKws.length) {
-  const asinList = validAsins.map(a => a.nickname || a.asin.substring(0,8)+'…').join(', ');
-  const kwList = validKws.map(k => k.keyword).join(', ');
-  summaryEl.innerHTML = `📦 ${validAsins.length}个ASIN · 🔑 ${kwList || '—'}`;
-  } else {
-  summaryEl.textContent = '';
-  }
+  // 不再需要
 }
 
 <div style="padding:12px 24px">
@@ -261,7 +233,6 @@ function loadConfig() {
  }
  renderAsinConfig();
  renderKwConfig();
- updateCfgSummary();
 }
 
 function renderAsinConfig() {
@@ -342,7 +313,6 @@ async function saveAsins() {
  const valid = configAsins.filter(a => a.asin && a.asin.trim());
  if (!valid.length) { showToast('至少需要一个有效的ASIN', true); return; }
  saveConfigToLocal();
- updateCfgSummary();
  showToast('✅ ASIN配置已保存 (' + valid.length + ' 个)');
  document.getElementById('asinSaveMsg').textContent = '✅ 已保存 ' + valid.length + ' 个ASIN';
 }
@@ -351,7 +321,6 @@ async function saveKeywords() {
  const valid = configKeywords.filter(k => k.keyword && k.keyword.trim());
  if (!valid.length) { showToast('至少需要一个有效关键词', true); return; }
  saveConfigToLocal();
- updateCfgSummary();
  showToast('✅ 关键词配置已保存 (' + valid.length + ' 个)');
  document.getElementById('kwSaveMsg').textContent = '✅ 已保存 ' + valid.length + ' 个关键词';
 }
