@@ -215,14 +215,21 @@ function switchTab(t){
 
 async function triggerScrape(){
   var btn=document.querySelector('[onclick="triggerScrape()"]');if(!btn)return;
+  var asinList=asins.filter(function(a){return a.asin&&a.asin.trim()}).map(function(a){return a.asin.trim()});
+  if(!asinList.length){st('请先添加ASIN',1);return}
   btn.disabled=true;btn.textContent='采集中...';
-  var me=document.getElementById('scrapeMsg');me.textContent='正在采集...';
+  var me=document.getElementById('scrapeMsg');
+  me.innerHTML='采集 '+asinList.length+' 个ASIN...<br>请查看终端输出';
   try{
+    // 调用后端Python脚本
     var r=await fetch('/api/scrape',{method:'POST'});var j=await r.json();
     if(j.status==='ok'){st('采集完成');me.textContent='完成';setTimeout(function(){location.reload()},1500)}
     else{st('失败: '+(j.error||''),1);me.textContent='失败'}
   }catch(e){
-    st('请运行采集脚本',1);me.innerHTML='运行: python backend/browser/scrape.py'
+    // API不可用，提示手动运行
+    var asinsArg=asinList.join(' ');
+    st('请运行采集脚本',1);
+    me.innerHTML='请在终端运行:<br><code style="font-size:11px">cd backend<br>python run_monitor.py '+asinsArg+'<br>python sync_to_frontend.py</code>';
   }
   btn.disabled=false;btn.textContent='立即抓取'
 }
@@ -303,77 +310,83 @@ function render(d){
 
 function buildRow(item){
   var div=document.createElement('div');div.className='asin-row';
-  var changed=item.has_changes,ss=item.snapshots||[],cur={};
-  if(ss.length)cur=ss[ss.length-1].data||{};
-  var chgs=item.changes||[];
-  var brand=(cur.brand||'').replace('Visit the ','').replace(' Store','')||'—';
-  var prices=[];
-  (ss||[]).forEach(function(snap){
-    var p=snap.data?snap.data.price||'':'';
-    var v=parseFloat((''+p).replace('$',''));
-    if(v>0)prices.push({v:v,t:(snap.timestamp||'').slice(11,16),ts:snap.timestamp||''});
-  });
+  var changed=item.has_changes, chgCount=item.change_count||0;
+  var price=item.price||'---', brand=item.brand||'---', rt=item.rating||'---';
+  var rc=item.review_count||'---', seller=item.seller||'---';
+  var bsr=item.bsr||'', bsrSub=item.bsr_sub_rank||'', bsrCat=item.bsr_sub_category||'';
 
-  // HD product image
-  var imgURL=cur.main_image||'';
-  var imgHTML=imgURL ? ('<img src="'+imgURL+'" onerror="this.style.display=\'none\'">') : '<div class="plh">📷</div>';
-
-  // Status: basic (stable/changed) + timestamps
-  var stHTML;
-  if(changed){
-    var seen={};
-    var sm=chgs.map(function(c){
-      var k=c.split(':')[0];if(seen[k])return null;seen[k]=true;
-      var nums=c.match(/[\d.,]+/g),cls='';
-      if(nums&&nums.length>=2){var a1=parseFloat(nums[0].replace(/,/g,'')),a2=parseFloat(nums[1].replace(/,/g,''));cls=a1<a2?'up':(a1>a2?'dn':'')}
-      return '<div class="chg-i '+cls+'">'+fmtChg(c,30)+'</div>';
-    }).filter(Boolean);
-    stHTML='<div class="bg-c">变化 '+sm.length+'项</div>'+sm.join('');
-  }else{
-    stHTML='<div class="bg-s">✅ 稳定</div>';
+  // BSR display
+  var bsrTop=bsr||'---';
+  var bsrSubDisp=bsrSub&&bsrCat ? bsrSub+' '+bsrCat : (bsrSub||'---');
+  var pvHtml=price;
+  if(item.list_price&&item.price&&item.list_price!==item.price){
+    pvHtml+=' <span style="color:#999;text-decoration:line-through">'+item.list_price+'</span>';
   }
-  stHTML+=snapLines(ss);
 
-  // BSR: parse top + sub
-  var bsrInfo=parseBSRfull(cur.bsr, cur.bsr_sub_rank, cur.bsr_sub_category);
-  var rt=pn(cur.rating),rc=cur.review_count?cur.review_count.toLocaleString():'—';
-  var seller=g(cur.sold_by).substring(0,18);
-  var pv=cur.price||'—';
-  var pk=cur.discount?' <span style="color:#067d62;font-size:11px;font-weight:600">'+cur.discount+'</span>':'';
+  // Image
+  var imgURL=item.main_image||'';
+  var imgHTML=imgURL ? ('<img src="'+imgURL+'" onerror="this.style.display=\'none\'">') : '<div class="plh">\ud83d\udcf7</div>';
 
-  // Metrics grid: brand|售价|评分|评论|BSR大类|BSR小类|卖家
-  // Layout: 7 labels + 7 values in a 3-column grid
+  // Status column with change timeline
+  var stHTML='';
+  if(changed){
+    stHTML='<div class="bg-c">\u26a0\ufe0f \u53d8\u5316 '+chgCount+'\u6b21</div>';
+    var clist=item.changes||[];
+    var maxShow=3;
+    var slice=clist.slice(-maxShow);
+    slice.forEach(function(chg, idx){
+      var actualIdx=clist.length - (slice.length-idx);
+      stHTML+='<div style="margin:4px 0;background:#fff7ed;border-radius:4px;padding:3px 5px;font-size:10px;line-height:1.4;border:1px solid #fed7aa">';
+      stHTML+='<div style="color:#9a3412;font-weight:600;font-size:9px">\u7b2c'+actualIdx+'\u6b21 '+fmtTime(chg.timestamp)+'</div>';
+      chg.items.forEach(function(c){
+        var cl=c.direction==='up'?'up':'dn';
+        stHTML+='<span class="chg-i '+cl+'">';
+        if(c.field==='price') stHTML+='\ud83d\udcb0 \u4ef7\u683c '+c.from+'\u2192'+c.to;
+        else if(c.field==='rating') stHTML+='\u2b50 \u8bc4\u5206 '+c.from+'\u2192'+c.to;
+        else if(c.field==='review_count') stHTML+='\ud83d\udcdd \u8bc4\u8bba '+c.from+'\u2192'+c.to;
+        else if(c.field==='bsr') stHTML+='\ud83d\udcca BSR '+c.from+'\u2192'+c.to;
+        stHTML+='</span><br>';
+      });
+      stHTML+='</div>';
+    });
+    if(clist.length>maxShow){
+      stHTML+='<div style="font-size:9px;color:#999;margin-top:2px">\u8fd8\u6709 '+(clist.length-maxShow)+' \u6b21\u66f4\u65e9\u53d8\u5316</div>';
+    }
+  }else{
+    stHTML='<div class="bg-s">\u2705 \u7a33\u5b9a</div>';
+  }
+  if(item.last_check){
+    stHTML+='<div style="font-size:9px;color:#999;margin-top:4px">\ud83d\udd52 '+fmtTime(item.last_check).replace(' ','')+'</div>';
+  }
+  var times=(item.snapshots||[]).map(function(t){return fmtTime(t)}).join('<br>');
+  if(times) stHTML+='<div style="font-size:9px;color:#ccc;margin-top:2px">'+times+'</div>';
+
+  // Metrics grid
   var mg=
-    '<span class="ml">品牌</span><span class="mv">'+brand+'</span><span class="ml">售价</span><span class="mv pc">'+pv+'</span>'+pk+
-    '<span class="ml">评分</span><span class="mv rt">'+rt+'</span><span class="ml">评论</span><span class="mv">'+rc+'</span><span></span>'+
-    '<span class="ml">大类</span><span class="mv">'+bsrInfo.top+'</span><span class="ml">小类</span><span class="mv">'+bsrInfo.sub+'</span><span class="ml">卖家</span><span class="mv">'+seller+'</span>';
+    '<span class="ml">\u54c1\u724c</span><span class="mv">'+brand+'</span>'+
+    '<span class="ml">\u552e\u4ef7</span><span class="mv pc">'+pvHtml+'</span>'+
+    '<span class="ml">\u8bc4\u5206</span><span class="mv rt">'+rt+'</span>'+
+    '<span class="ml">\u8bc4\u8bba</span><span class="mv">'+rc+'</span><span></span>'+
+    '<span class="ml">\u5927\u7c7b</span><span class="mv">'+bsrTop+'</span>'+
+    '<span class="ml">\u5c0f\u7c7b</span><span class="mv">'+bsrSubDisp+'</span>'+
+    '<span class="ml">\u5356\u5bb6</span><span class="mv">'+seller+'</span>';
 
   div.innerHTML=
     '<div class="asin-img">'+imgHTML+'</div>'+
     '<div class="asin-body">'+
-      '<div class="asin-title"><span class="name"><a href="https://www.amazon.com/dp/'+item.asin+'" target="_blank">'+g(cur.title).substring(0,120)+'</a></span><span class="badge">'+item.asin+'</span></div>'+
+      '<div class="asin-title"><span class="name"><a href="https://www.amazon.com/dp/'+item.asin+'" target="_blank">'+g(item.title).substring(0,120)+'</a></span><span class="badge">'+item.asin+'</span></div>'+
       '<div class="mt">'+mg+'</div>'+
     '</div>'+
     '<div class="asin-stat">'+stHTML+'</div>';
 
-  // Detail: when changed, add changes + chart below the row (same row structure)
-  if(changed){
-    var dp=document.createElement('div');dp.style.cssText='width:100%;border-top:1px solid #f0e6d0;padding:8px 14px 10px;font-size:12px;color:#687078';
-    dp.innerHTML=chgs.map(function(c){return'<span class="ch">• '+fmtChg(c,90)+'</span>'}).join('')+'<br>';
-    if(prices.length>1)dp.innerHTML+='<div style="height:36px;position:relative;width:100%;margin-top:3px"><canvas id="chd_'+cln(item.asin)+'"></canvas></div>';
-    div.appendChild(dp);
-  }
-
-  // Detail chart
-  if(changed&&prices.length>1){
-    var id2='chd_'+cln(item.asin);
-    setTimeout(function(){
-      var ctx2=document.getElementById(id2);if(!ctx2)return;
-      ctx2.style.height='36px';ctx2.parentElement.style.height='36px';
-      charts[id2]=new Chart(ctx2,{type:'line',data:{labels:prices.map(function(p){return p.t}),datasets:[{data:prices.map(function(p){return p.v}),borderColor:'#B12704',backgroundColor:'rgba(177,39,4,0.08)',fill:true,tension:0.3,pointRadius:2.5,borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:true}},scales:{x:{ticks:{color:'#687078',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#687078',font:{size:9},callback:function(v){return'$'+v}},grid:{color:'#e6e8ea'}}}}});
-    },100);
-  }
   return div;
+}
+
+function fmtTime(ts){
+  if(!ts) return '';
+  var d=new Date(ts);
+  if(isNaN(d.getTime())) return ts.substring(5,16);
+  return ('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
 }
 
 load();
