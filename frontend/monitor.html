@@ -196,30 +196,10 @@ let charts = {};
 let configAsins = [];
 let configKeywords = [];
 
-// ─── 密码保护（开发模式跳过）───
+// ─── 密码保护（暂时关闭）───
 (function() {
- if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-   console.log('开发模式：跳过密码验证');
-   return;
- }
- const pw = localStorage.getItem('crossmart_pw');
- if (pw !== 'authenticated') {
- const input = prompt('请输入密码:');
- if (input === 'admin') {
- localStorage.setItem('crossmart_pw', 'authenticated');
- localStorage.setItem('crossmart_pw_expires', Date.now() + 30*24*60*60*1000);
- } else {
- alert('密码错误');
- document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;color:#687078">🔒 需要密码才能访问</div>';
- throw new Error('auth failed');
- }
- }
- const exp = parseInt(localStorage.getItem('crossmart_pw_expires')||'0');
- if (Date.now() > exp) {
- localStorage.removeItem('crossmart_pw');
- localStorage.removeItem('crossmart_pw_expires');
- location.reload();
- }
+ // 密码验证已关闭，方便测试
+ console.log('密码验证已关闭');
 })();
 
 // ─── 辅助函数 ───
@@ -467,11 +447,17 @@ function esc(s) { return (s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;').re
 // ─── 监控数据加载 ───
 async function load() {
  try {
- const r = await fetch(API);
+ const r = await fetch(API + '?_=' + Date.now());
+ if (!r.ok) throw new Error('HTTP ' + r.status);
  const d = await r.json();
  render(d);
  } catch(e) {
- document.getElementById('asinCards').innerHTML = `<div style="padding:40px;text-align:center;color:#687078;font-size:13px">📡 暂无监控数据</div>`;
+ console.error('Data load failed:', e);
+ document.getElementById('asinCards').innerHTML = `<div style="padding:40px;text-align:center;color:#687078;font-size:13px">📡 暂无监控数据（加载失败: ${e.message}）</div>`;
+ document.getElementById('totalAsins').textContent = '—';
+ document.getElementById('stableCount').textContent = '—';
+ document.getElementById('changedCount').textContent = '—';
+ document.getElementById('todayChecks').textContent = '—';
  }
 }
 
