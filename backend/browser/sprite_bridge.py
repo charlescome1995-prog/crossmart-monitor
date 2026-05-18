@@ -141,6 +141,52 @@ class SpriteBrowser:
             data["ads"] = self.lookup_ads(asin)
         return data
 
+    def find_related_asins(self, asin, max_results=4):
+        """
+        从卖家精灵查竞品页面提取关联ASIN列表。
+        返回最多 max_results 个关联ASIN的列表。
+        """
+        print("\n  [精灵] 查找关联ASIN: %s" % asin)
+        
+        # 先查竞品
+        result = self.lookup_competitor(asin)
+        page_text = result.get("text", "") if isinstance(result, dict) else ""
+        
+        # 从页面文本提取所有B0开头的ASIN
+        found = re.findall(r'B[A-Z0-9]{9,10}', page_text)
+        
+        # 去重，排除主ASIN自己
+        related = []
+        for a in found:
+            a_clean = a.strip()
+            if a_clean != asin and a_clean not in related:
+                # 验证是不是B0开头+10位（标准亚马逊ASIN格式）
+                if len(a_clean) == 10 and a_clean.startswith('B0'):
+                    related.append(a_clean)
+        
+        # 如果从竞品页面没找到足够多，尝试从关键词反查页面
+        if len(related) < max_results:
+            print("  [精灵] 竞品页面ASIN不够，尝试关键词反查页面...")
+            try:
+                kw_result = self.lookup_keywords(asin)
+                kw_text = kw_result.get("text", "") if isinstance(kw_result, dict) else ""
+                more = re.findall(r'B[A-Z0-9]{9,10}', kw_text)
+                for a in more:
+                    a_clean = a.strip()
+                    if a_clean != asin and a_clean not in related and len(a_clean) == 10 and a_clean.startswith('B0'):
+                        related.append(a_clean)
+            except:
+                pass
+        
+        # 如果提取不到（页面还没加载完等），返回空列表，不报错
+        if not related:
+            print("  [精灵] 未找到关联ASIN（页面可能未加载完成）")
+            return []
+        
+        result = related[:max_results]
+        print("  [精灵] 找到 %d 个关联ASIN: %s" % (len(result), result))
+        return result
+
     def search_keyword(self, keyword):
         print(f"\n  🔍 卖家精灵关键词: {keyword}")
         self.goto("keyword_research")

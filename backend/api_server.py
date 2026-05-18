@@ -3,22 +3,155 @@
 """
 api_server.py - CrossMart Monitor 本地API服务
 启动后: http://127.0.0.1:8765
-前端点击"立即抓取"时，请求 /api/scrape 触发后台抓取
+
+工作流程：
+1. 接收前端传来的主ASIN列表
+2. 对每个主ASIN，从卖家精灵查找最多4个关联ASIN
+3. 组合成 主ASIN + 关联ASIN = 5个一组
+4. 逐个抓取亚马逊数据（asin_monitor）
+5. 同步到前端
 """
 import sys, os, json, subprocess, threading, time
 sys.stdout.reconfigure(encoding='utf-8')
-os.environ["CDP_PORT"] = "9225"  # 强制使用用户的默认Edge
+os.environ["CDP_PORT"] = "9225"
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 PROJECT = os.path.dirname(os.path.abspath(__file__))
-# 允许跨域
 CORS_HEADERS = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
     "Access-Control-Allow-Headers": "*",
 }
 
-SCRAPE_STATUS = {"running": False, "last_result": None}
+SCRAPE_STATUS = {"running": False, "last_result": None, "progress": ""}
+
+def ensure_edge():
+    """确保Edge在9225端口运行"""
+    import urllib.request
+    try:
+        r = urllib.request.urlopen("http://127.0.0.1:9225/json", timeout=3)
+        tabs = json.loads(r.read())
+        print("[Edge] 已连接 (%d个标签页)" % len(tabs))
+        return True
+    except:
+        pass
+    # 自动启动Edge
+    exe = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+    if not os.path.exists(exe):
+        exe = r"C:\Program Files\Microsoft\Edge\Application\msedge.exe"
+    print("[Edge] 启动中...")
+    subprocess.Popen([
+        exe,
+        "--remote-debugging-port=9225",
+        "--remote-allow-origins=*",
+        "--no-first-run",
+        "--no-default-browser-check",
+        "--new-window",
+        "about:blank",
+    ])
+    deadline = time.time() + 20
+    while time.time() < deadline:
+        try:
+            r = urllib.request.urlopen("http://127.0.0.1:9225/json", timeout=3)
+            json.loads(r.read())
+            print("[Edge] 启动成功")
+            return True
+        except:
+            time.sleep(2)
+    print("[Edge] 启动失败")
+    return False
+
+def find_related_asins(main_asin, max_count=4):
+    """
+    用卖家精灵查找一个ASIN的关联ASIN。
+    返回最多 max_count 个关联ASIN。
+    """
+    print("[关联] 查找 %s 的关联ASIN..." % main_asin)
+    try:
+        from browser.cdp_bridge import CDPBrowser
+        from browser.sprite_bridge import SpriteBrowser
+        
+        browser = CDPBrowser()
+        browser.connect_tab(tab_url_filter="about:blank")
+        if not browser.tab:
+            browser.cmd("Target.createTarget", {"url": "about:blank"})
+            time.sleep(0.5)
+            browser.connect_tab(tab_url_filter="about:blank")
+        
+        sprite = SpriteBrowser(browser)
+        related = sprite.find_related_asins(main_asin, max_results=max_count)
+        browser.close()
+        return related
+    except Exception as e:
+        print("[关联] 查找失败: %s" % e)
+        return []
+
+def run_full_scrape(main_asins):
+    """完整抓取流程"""
+    global SCRAPE_STATUS
+    all_asins = []      # 最终要抓的所有ASIN
+    related_map = {}    # 主ASIN -> 关联ASIN列表
+    
+    # Step 1: 对每个主ASIN查找关联
+    for idx, main_asin in enumerate(main_asins):
+        main_asin = main_asin.strip()
+        if not main_asin:
+            continue
+        print("\n[步骤 %d/%d] 处理主ASIN: %s" % (idx+1, len(main_asins), main_asin))
+        SCRAPE_STATUS["progress"] = "处理主ASIN %s... 正在查找竞品" % main_asin
+        
+        related = find_related_asins(main_asin)
+        if related:
+            related_map[main_asin] = related
+            # 主ASIN + 最多4个关联
+            group = [main_asin] + related[:4]
+            all_asins.extend(group)
+            print("[步骤] 组合: %s + %d个关联 = %d个" % (main_asin, len(related), len(group)))
+        else:
+            # 没找到关联，只抓主ASIN本身
+            all_asins.append(main_asin)
+            print("[步骤] %s 无关联ASIN，只抓主ASIN" % main_asin)
+    
+    if not all_asins:
+        # fallback
+        all_asins = ["B09V7Z4TJG"]
+    
+    # Step 2: 逐个抓取
+    print("\n[抓取] 共 %d 个ASIN: %s" % (len(all_asins), all_asins))
+    results = []
+    
+    for idx, asin in enumerate(all_asins):
+        print("\n[抓取 %d/%d] %s..." % (idx+1, len(all_asins), asin))
+        SCRAPE_STATUS["progress"] = "抓取 %d/%d: %s" % (idx+1, len(all_asins), asin)
+        
+        try:
+            from browser.asin_monitor import check_asin
+            # 抓取时只查亚马逊前台，不查卖家精灵（关联ASIN已在前面查过）
+            result = check_asin(asin, use_sprite=False)
+            results.append(result)
+        except Exception as e:
+            import traceback
+            print("[抓取] %s 失败: %s" % (asin, e))
+            traceback.print_exc()
+    
+    # Step 3: 同步到前端
+    print("\n[同步] 同步到前端...")
+    SCRAPE_STATUS["progress"] = "同步数据到前端..."
+    try:
+        subprocess.run([
+            sys.executable,
+            os.path.join(PROJECT, "sync_to_frontend.py")
+        ], cwd=PROJECT, capture_output=True, text=True, timeout=60)
+    except Exception as e:
+        print("[同步] 失败: %s" % e)
+    
+    SCRAPE_STATUS["last_result"] = {
+        "status": "ok",
+        "count": len(results),
+        "asins": [r.get("asin", "?") for r in results],
+        "related_map": {k: v for k, v in related_map.items()}
+    }
+    print("\n[完成] 采集 %d 个ASIN" % len(results))
 
 class ScrapeHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
@@ -44,6 +177,7 @@ class ScrapeHandler(BaseHTTPRequestHandler):
         if self.path == "/api/status":
             self._send_json({
                 "scrape_running": SCRAPE_STATUS["running"],
+                "progress": SCRAPE_STATUS["progress"],
                 "last_result": SCRAPE_STATUS["last_result"]
             })
         else:
@@ -62,125 +196,61 @@ class ScrapeHandler(BaseHTTPRequestHandler):
             self._send_json({"status": "busy", "message": "正在采集中，请稍候"})
             return
         
-        # 读取前端配置的ASIN列表（从localStorage传过来）
+        # 读取前端配置的ASIN列表
         content_len = int(self.headers.get("Content-Length", 0))
         body = b""
         if content_len > 0:
             body = self.rfile.read(content_len)
         
-        asins = []
+        main_asins = []
         if body:
             try:
                 data = json.loads(body)
-                asins = data.get("asins", [])
+                main_asins = data.get("asins", [])
             except:
                 pass
         
-        if not asins:
-            # 没有传ASIN，用默认
-            asins = ["B09V7Z4TJG"]
+        if not main_asins:
+            main_asins = ["B09V7Z4TJG"]
         
-        self._send_json({"status": "ok", "message": "开始采集 %d 个ASIN" % len(asins)})
+        self._send_json({"status": "ok", "message": "开始处理 %d 个主ASIN" % len(main_asins)})
         
-        # 后台执行
         SCRAPE_STATUS["running"] = True
         SCRAPE_STATUS["last_result"] = None
+        SCRAPE_STATUS["progress"] = "准备中..."
         
-        def run_scrape():
+        def run():
             global SCRAPE_STATUS
             try:
-                print("[Scrape] 开始采集 %d 个ASIN: %s" % (len(asins), asins[:3]))
-                
-                # 确保当前目录正确
                 os.chdir(PROJECT)
                 sys.path.insert(0, PROJECT)
-                print("[Scrape] CWD: %s" % os.getcwd())
                 
-                # 先确认Edge在9225端口
-                import urllib.request
-                try:
-                    r = urllib.request.urlopen("http://127.0.0.1:9225/json", timeout=3)
-                    tabs = json.loads(r.read())
-                    print("[Scrape] Edge已连接 (%d个标签页)" % len(tabs))
-                except:
-                    print("[Scrape] Edge不在9225端口，请先启动Edge...")
-                    # 尝试自动启动
-                    exe = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-                    subprocess.Popen([
-                        exe,
-                        "--remote-debugging-port=9225",
-                        "--remote-allow-origins=*",
-                        "--no-first-run",
-                        "--no-default-browser-check",
-                        "--new-window",
-                        "about:blank",
-                    ])
-                    deadline = time.time() + 20
-                    while time.time() < deadline:
-                        try:
-                            r = urllib.request.urlopen("http://127.0.0.1:9225/json", timeout=3)
-                            json.loads(r.read())
-                            print("[Scrape] Edge手动启动成功")
-                            break
-                        except:
-                            time.sleep(2)
-                    else:
-                        print("[Scrape] Edge启动失败")
-                        SCRAPE_STATUS["running"] = False
-                        SCRAPE_STATUS["last_result"] = {"status": "error", "error": "Edge启动失败"}
-                        return
+                if not ensure_edge():
+                    SCRAPE_STATUS["running"] = False
+                    SCRAPE_STATUS["last_result"] = {"status": "error", "error": "Edge启动失败"}
+                    return
                 
-                # 逐个抓取
-                results = []
-                for asin in asins:
-                    asin = asin.strip()
-                    if not asin:
-                        continue
-                    print("[Scrape] 抓取 %s..." % asin)
-                    try:
-                        # 导入asin_monitor
-                        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-                        from browser.asin_monitor import check_asin
-                        result = check_asin(asin)
-                        results.append(result)
-                    except Exception as e:
-                        print("[Scrape] %s 失败: %s" % (asin, e))
-                
-                # 同步到前端
-                print("[Scrape] 同步到前端...")
-                try:
-                    subprocess.run([
-                        sys.executable,
-                        os.path.join(PROJECT, "sync_to_frontend.py")
-                    ], cwd=PROJECT, capture_output=True, text=True, timeout=60)
-                except Exception as e:
-                    print("[Scrape] 同步失败: %s" % e)
-                
-                SCRAPE_STATUS["last_result"] = {
-                    "status": "ok",
-                    "count": len(results),
-                    "asins": [r.get("asin", "?") for r in results],
-                }
-                print("[Scrape] 采集完成: %d个ASIN" % len(results))
+                run_full_scrape(main_asins)
             except Exception as e:
-                print("[Scrape] 采集异常: %s" % e)
+                import traceback
+                print("[异常] %s" % e)
+                traceback.print_exc()
                 SCRAPE_STATUS["last_result"] = {"status": "error", "error": str(e)}
             finally:
                 SCRAPE_STATUS["running"] = False
+                SCRAPE_STATUS["progress"] = ""
         
-        t = threading.Thread(target=run_scrape, daemon=True)
+        t = threading.Thread(target=run, daemon=True)
         t.start()
 
 def main():
     port = 8765
     server = HTTPServer(("127.0.0.1", port), ScrapeHandler)
-    print("=" * 50)
+    print("=" * 60)
     print("CrossMart Monitor API Server")
     print("  URL: http://127.0.0.1:%d" % port)
-    print("  POST /api/scrape  - 触发抓取")
-    print("  GET  /api/status  - 查询状态")
-    print("=" * 50)
-    print("(需要Edge在9225端口运行)")
+    print("  流程: 主ASIN -> 卖家精灵找关联 -> 批量抓取 -> 同步前端")
+    print("=" * 60)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

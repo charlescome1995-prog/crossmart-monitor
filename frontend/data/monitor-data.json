@@ -13,15 +13,16 @@
       "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
       "seller": "Medicube & Aprilskin",
       "main_image": "https://m.media-amazon.com/images/I/71Mcspt-6AL._SX466_.jpg",
-      "last_check": "2026-05-18T21:20:02.895484",
+      "last_check": "2026-05-18T21:22:11.505435",
       "snapshots": [
         "2026-05-18T20:35",
         "2026-05-18T20:37",
         "2026-05-18T20:41",
         "2026-05-18T20:53",
-        "2026-05-18T21:20"
+        "2026-05-18T21:20",
+        "2026-05-18T21:22"
       ],
-      "snapshot_count": 5,
+      "snapshot_count": 6,
       "has_changes": true,
       "change_count": 2,
       "change_desc": "价格 ↑ $109.91 (581.5%) | 价格 ↓ $109.91 (85.3%)",
@@ -53,7 +54,99 @@
           ]
         }
       ]
+    },
+    {
+      "asin": "B0CGB215HR",
+      "title": "goPure Tighten & Lift Neck & Chest Moisturizer Cream for Visibly Firming, Tightening and Lifting the",
+      "brand": "goPure",
+      "price": "$31.49",
+      "list_price": "$18.52",
+      "rating": "4.1",
+      "review_count": "10648",
+      "bsr": "#307 in Beauty & Personal Care (See Top 100 in B",
+      "bsr_sub_rank": "#307",
+      "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
+      "seller": "goPure",
+      "main_image": "https://m.media-amazon.com/images/I/613gXRGC9XL._SX466_.jpg",
+      "last_check": "2026-05-18T21:26:03.421763",
+      "snapshots": [
+        "2026-05-18T21:26"
+      ],
+      "snapshot_count": 1,
+      "has_changes": false,
+      "change_count": 0,
+      "change_desc": "",
+      "changes": []
+    },
+    {
+      "asin": "B0DSLGHPPW",
+      "title": "UJhay Retinol Neck Cream, Hyaluronic Acid and Caffeine Enriched Neck Firming Cream to Minimize Fine ",
+      "brand": "Brand: UJhay",
+      "price": "$8.99",
+      "list_price": "$5.29",
+      "rating": "4.5",
+      "review_count": "289",
+      "bsr": "#11,994 in Beauty & Personal Care (See Top 100 in B",
+      "bsr_sub_rank": "#11,994",
+      "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
+      "seller": "Guinuo E-commerce",
+      "main_image": "https://m.media-amazon.com/images/I/714u3IHLVmL._SX466_.jpg",
+      "last_check": "2026-05-18T21:30:26.890368",
+      "snapshots": [
+        "2026-05-18T21:30"
+      ],
+      "snapshot_count": 1,
+      "has_changes": false,
+      "change_count": 0,
+      "change_desc": "",
+      "changes": []
+    },
+    {
+      "asin": "B0F2J966QL",
+      "title": "Eight Saints Firm Intentions Anti Aging Neck Cream For Firming Skin and Reducing Wrinkles, with Prot",
+      "brand": "Eight Saints",
+      "price": "$34.00",
+      "list_price": "$17.00",
+      "rating": "4.6",
+      "review_count": "1748",
+      "bsr": "#3,690 in Beauty & Personal Care (See Top 100 in B",
+      "bsr_sub_rank": "#3,690",
+      "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
+      "seller": "Eight Saints Skincare LLC",
+      "main_image": "https://m.media-amazon.com/images/I/61XDTWFTneL._SX466_.jpg",
+      "last_check": "2026-05-18T21:24:23.577437",
+      "snapshots": [
+        "2026-05-18T21:24"
+      ],
+      "snapshot_count": 1,
+      "has_changes": false,
+      "change_count": 0,
+      "change_desc": "",
+      "changes": []
+    },
+    {
+      "asin": "B0GKFD9ZQW",
+      "title": "ANUA Collagen Retinol Refining Gua Sha Cream, Neck Cream For Lifting & Firming, Jawline to Décolleté",
+      "brand": "ANUA",
+      "price": "$30.00",
+      "list_price": "$11.07",
+      "rating": "4.5",
+      "review_count": "102",
+      "bsr": "#2,145 in Beauty & Personal Care (See Top 100 in B",
+      "bsr_sub_rank": "#2,145",
+      "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
+      "seller": "Anua",
+      "main_image": "https://m.media-amazon.com/images/I/51XYn-lowjL._SX466_.jpg",
+      "last_check": "2026-05-18T21:28:14.714481",
+      "snapshots": [
+        "2026-05-18T21:28"
+      ],
+      "snapshot_count": 1,
+      "has_changes": false,
+      "change_count": 0,
+      "change_desc": "",
+      "changes": []
     }
   ],
-  "updated": "2026-05-18T21:20:02.949209"
+  "updated": "2026-05-18T21:30:27.000168"
 }
