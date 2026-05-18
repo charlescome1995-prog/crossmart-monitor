@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,504 +9,321 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Inter,'Amazon Ember',sans-serif;background:#eaeded;color:#0f1111;font-size:14px}
-.topbar{background:#131921;color:white;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.topbar a{color:white;text-decoration:none}
-.topbar a:hover{color:#ddd}
-a{color:#007185;text-decoration:none}
-a:hover{color:#c45500;text-decoration:underline}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui,-apple-system,sans-serif}
+body{background:#eaeded;color:#0f1111;font-size:14px;line-height:1.5}
+a{color:#007185;text-decoration:none}a:hover{color:#c45500}
 
-.config-card{background:white;border:2px solid #ffd814;border-radius:8px;overflow:hidden;margin:0 24px 20px 24px}
-.config-card h3{background:#ffd814;padding:10px 20px;font-size:14px;font-weight:700;color:#0f1111;font-family:Inter,sans-serif}
+.topbar{background:#131921;color:#fff;display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 24px;position:sticky;top:0;z-index:100}
+.topbar .brand{font-weight:700;font-size:16px;letter-spacing:.03em}
+.topbar .brand span{color:#e94560}
+.topbar nav{display:flex;gap:14px;font-size:13px}
+.topbar nav a{color:rgba(255,255,255,.75);padding:4px 0;border-bottom:2px solid transparent;transition:.15s}
+.topbar nav a:hover,.topbar nav a.active{color:#fff;border-bottom-color:#e94560}
+.config-card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin:16px 24px;overflow:hidden}
+.config-card .hdr{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid #eee;font-weight:600;font-size:14px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 24px;margin-bottom:14px}
+.met{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.04);padding:14px 8px;text-align:center}
+.met .n{font-size:24px;font-weight:700;line-height:1.2}.met .n.r1{color:#B12704}.met .n.g1{color:#067d62}.met .n.a1{color:#9e7800}.met .n.b1{color:#007185}
+.met .l{font-size:10px;color:#687078;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.card-list{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin:0 24px 20px;overflow:hidden}
 
-.metric-box{text-align:center;padding:14px 8px;background:white;border:1px solid #d5d9d9;border-radius:8px}
-.metric-box .num{font-size:26px;font-weight:700;font-family:Inter,sans-serif}
-.metric-box .lb{font-size:11px;color:#687078;margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+/* ASIN ROW: flex row, left image column sets the height */
+.asin-row{display:flex;flex-direction:row;border-bottom:1px solid #eaeded;transition:.15s}
+.asin-row:last-child{border-bottom:none}
+.asin-row:hover{background:#fafbfc}
 
-.wrap-card{background:white;border:1px solid #d5d9d9;border-radius:8px;overflow:hidden;margin:0 24px 20px 24px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.asin-img-col{display:flex;align-items:center;justify-content:center;width:124px;flex-shrink:0;padding:10px}
+.asin-img-col img{width:100px;height:100px;object-fit:contain;border:1px solid #e6e8ea;border-radius:8px;background:#fff;padding:4px;display:block}
+.asin-img-col .plh{width:100px;height:100px;display:flex;align-items:center;justify-content:center;background:#f8fafc;border:1px solid #e6e8ea;border-radius:8px;color:#ccc;font-size:30px}
 
-.asin-card{display:grid;grid-template-columns:100px 1fr auto;gap:16px;padding:16px 24px;border-bottom:1px solid #e6e8ea;background:white;transition:background .15s;align-items:start}
-.asin-card:hover{background:#fafafa}
-.asin-card:last-child{border-bottom:none}
+.asin-mid{flex:1;display:flex;flex-direction:column;justify-content:center;padding:10px 10px 10px 0;gap:5px}
+.asin-title{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.asin-title .name{font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:480px;font-family:Georgia,'Times New Roman',serif}
+.asin-title .badge{font-size:10px;color:#555;background:#f0f2f2;padding:2px 7px;border-radius:3px;font-family:monospace;white-space:nowrap}
+.asin-tags{display:flex;flex-wrap:wrap;gap:4px}
+.asin-tags .tg{display:inline-flex;align-items:center;gap:3px;font-size:12px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:6px;padding:3px 9px;white-space:nowrap}
+.asin-tags .tg .lb{color:#687078;font-size:10px;font-weight:500}
+.asin-tags .tg .vl{font-weight:600}
+.asin-tags .tg.pc .vl{color:#B12704}
+.asin-tags .tg.rt .vl{color:#d99536}
+.asin-right{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;gap:3px;padding:10px 14px 10px 0;flex-shrink:0;min-width:110px;text-align:right}
+.bg-s{background:#e8f5ed;color:#067d62;border:1px solid #ceead6;padding:3px 12px;border-radius:12px;font-size:11px;font-weight:600}
+.bg-c{background:#fff8e6;color:#9e7800;border:1px solid #fceeb5;padding:3px 12px;border-radius:12px;font-size:11px;font-weight:600}
+.chg{font-size:11px;color:#c45500;line-height:1.6}.chg.up{color:#067d62}.chg.dn{color:#B12704}
+.ts{font-size:10px;color:#aaa}
 
-.imgs img{width:90px;height:90px;object-fit:contain;border:1px solid #e6e8ea;border-radius:8px;background:white;padding:4px}
-.imgs .placeholder{width:90px;height:90px;display:flex;align-items:center;justify-content:center;background:#f8fafc;border:1px solid #e6e8ea;border-radius:8px;color:#bbb;font-size:28px}
+.det-pad{border-top:1px solid #f0e6d0;padding:8px 14px 10px;display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:#687078}
 
-.title-row{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
-.title-row .name{font-weight:600;font-size:15px;color:#0f1111;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:520px;line-height:1.4}
-.title-row .asin-id{font-size:11px;color:#555;background:#f0f2f2;padding:2px 8px;border-radius:4px;font-family:monospace;white-space:nowrap}
+input.cfg{width:100%;padding:6px 10px;border:1px solid #d5d9d9;border-radius:4px;font-size:13px;font-family:monospace;outline:none}
+input.cfg:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:.15s;white-space:nowrap}
+.btn-p{background:#ffd814;color:#0f1111}.btn-p:hover{background:#f7ca00}
+.btn-s{background:#e6e8ea;color:#0f1111}.btn-s:hover{background:#d5d9d9}
+.btn-d{background:#B12704;color:#fff}.btn-d:hover{background:#8f1f03}
+.toast{position:fixed;bottom:30px;right:30px;background:#067d62;color:#fff;padding:12px 24px;border-radius:8px;font-size:13px;font-weight:600;z-index:999;display:none;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.toast.err{background:#B12704}
 
-.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:500;background:#f8fafc;border:1px solid #e6e8ea;color:#0f1111;white-space:nowrap}
-.tag .label{color:#687078;font-size:10px;text-transform:uppercase;letter-spacing:.3px}
-.tag .val{font-weight:600}
-.tag.price .val{color:#B12704}
-.tag.rating .val{color:#d99536}
-
-.meta-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-
-.status-col{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;width:120px;text-align:right}
-.badge-stable{padding:4px 14px;border-radius:12px;font-size:12px;font-weight:600;background:#e8f5ed;color:#067d62;border:1px solid #ceead6}
-.badge-changed{padding:4px 14px;border-radius:12px;font-size:12px;font-weight:600;background:#fff8e6;color:#9e7800;border:1px solid #fceeb5}
-.chg-item{font-size:11px;color:#c45500;line-height:1.6}
-.chg-item.up{color:#067d62}
-.ts{font-size:10px;color:#999;margin-top:4px}
-
-.chart-mini{height:28px;position:relative;margin-top:2px}
-.detail-panel{grid-column:1/-1;border-top:1px solid #f0e6d0;margin-top:6px;padding-top:8px}
-
-.cfg-input{width:100%;padding:6px 10px;border:1px solid #d5d9d9;border-radius:4px;font-size:13px;font-family:monospace}
-.cfg-input:focus{outline:none;border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.2)}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .15s;white-space:nowrap}
-.btn-primary{background:#ffd814;color:#0f1111}
-.btn-primary:hover{background:#f7ca00}
-.btn-secondary{background:#e6e8ea;color:#0f1111}
-.btn-secondary:hover{background:#d5d9d9}
-.btn-danger{background:#B12704;color:white}
-.btn-danger:hover{background:#8f1f03}
-.btn-small{padding:4px 10px;font-size:11px}
-.toast{position:fixed;bottom:30px;right:30px;background:#067d62;color:white;padding:12px 24px;border-radius:8px;font-size:13px;font-weight:600;z-index:999;display:none;box-shadow:0 4px 12px rgba(0,0,0,.15)}
-.toast.error{background:#B12704}
+@media(max-width:800px){
+  .asin-img-col{width:90px}
+  .asin-img-col img,.asin-img-col .plh{width:70px;height:70px}
+  .asin-title .name{max-width:200px;font-size:13px}
+  .asin-right{min-width:80px;padding-right:10px}
+}
 </style>
 </head>
 <body>
 
 <div class="topbar">
- <div style="display:flex;align-items:center;gap:12px">
- <span style="font-size:20px">📊</span>
- <span style="font-weight:700;font-size:17px">CrossMart</span>
- <span style="color:#999;font-size:12px;margin-left:4px">ASIN监控</span>
- </div>
- <div style="display:flex;gap:12px;font-size:12px">
- <a href="../index.html">Home</a>
- <a href="monitor.html" style="color:#e94560;font-weight:600">监控</a>
- <a href="products.html">选品</a>
- </div>
+  <div class="brand">Cross<span>Mart</span> <span style="font-size:12px;color:rgba(255,255,255,.5);font-weight:400;margin-left:6px">ASIN监控</span></div>
+  <nav>
+    <a href="../index.html">首页</a>
+    <a href="monitor.html" class="active">监控</a>
+    <a href="products.html">选品</a>
+  </nav>
 </div>
 
-<!-- 配置面板 -->
 <div class="config-card">
- <div style="display:flex;justify-content:space-between;align-items:center">
- <h3>&#9881;&#65039; 监控配置</h3>
- </div>
- <div style="padding:14px 20px">
- <div style="display:flex;gap:10px;margin-bottom:12px">
- <button id="tabAsins" style="padding:8px 20px;border:1px solid #d5d9d9;background:#131921;color:white;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer" onclick="switchConfigTab('asins')">&#128230; ASIN设置</button>
- <button id="tabKeywords" style="padding:8px 20px;border:1px solid #d5d9d9;background:white;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer" onclick="switchConfigTab('keywords')">&#128273; 关键词设置</button>
- </div>
-
- <div id="cfgAsins">
- <div id="asinEditList"></div>
- <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
- <button class="btn btn-secondary" onclick="addAsinRow()">+ 添加ASIN</button>
- <button class="btn btn-primary" onclick="saveAsins()">&#128190; 保存ASIN配置</button>
- <span id="asinSaveMsg" style="font-size:11px;color:#687078;margin-left:6px"></span>
- </div>
- </div>
-
- <div id="cfgKeywords" style="display:none">
- <div id="kwEditList"></div>
- <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
- <button class="btn btn-secondary" onclick="addKwRow()">+ 添加关键词</button>
- <button class="btn btn-primary" onclick="saveKeywords()">&#128190; 保存关键词配置</button>
- <span id="kwSaveMsg" style="font-size:11px;color:#687078;margin-left:6px"></span>
- </div>
- </div>
-
- <hr style="border:none;border-top:1px solid #eee;margin:12px 0">
-
- <div style="display:flex;gap:12px;align-items:center">
- <button class="btn btn-primary" onclick="triggerScrape()">&#128269; 立即抓取当前目标</button>
- <span id="scrapeMsg" style="font-size:11px;color:#687078"></span>
- </div>
- </div>
+  <div class="hdr">
+    <span>⚙️ 监控配置</span>
+    <span id="lastUpdate" style="font-size:11px;color:#999;font-weight:400"></span>
+  </div>
+  <div style="padding:12px 20px">
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <button id="tabA" style="padding:7px 18px;background:#131921;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer" onclick="switchTab('a')">ASIN设置</button>
+      <button id="tabK" style="padding:7px 18px;background:#e6e8ea;color:#0f1111;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer" onclick="switchTab('k')">关键词设置</button>
+    </div>
+    <div id="panelA">
+      <div id="editAsins"></div>
+      <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+        <button class="btn btn-s" onclick="addAsinCfg()">+ 添加ASIN</button>
+        <button class="btn btn-p" onclick="saveAsins()">💾 保存</button>
+        <span id="msgA" style="font-size:11px;color:#687078"></span>
+      </div>
+    </div>
+    <div id="panelK" style="display:none">
+      <div id="editKws"></div>
+      <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+        <button class="btn btn-s" onclick="addKwCfg()">+ 添加关键词</button>
+        <button class="btn btn-p" onclick="saveKws()">💾 保存</button>
+        <span id="msgK" style="font-size:11px;color:#687078"></span>
+      </div>
+    </div>
+    <hr style="border:none;border-top:1px solid #eee;margin:10px 0">
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn btn-p" onclick="triggerScrape()">🔍 立即抓取</button>
+      <span id="scrapeMsg" style="font-size:11px;color:#687078"></span>
+    </div>
+  </div>
 </div>
 
-<!-- 概览 -->
-<div style="padding:0 24px 12px 24px">
- <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px">
- <div class="metric-box"><div class="num" id="totalAsins" style="color:#B12704">-</div><div class="lb">监控ASIN</div></div>
- <div class="metric-box"><div class="num" id="stableCount" style="color:#067d62">-</div><div class="lb">稳定</div></div>
- <div class="metric-box"><div class="num" id="changedCount" style="color:#c45500">-</div><div class="lb">有变化</div></div>
- <div class="metric-box"><div class="num" id="todayChecks" style="color:#007185">-</div><div class="lb">今日检查</div></div>
- </div>
- <div style="display:flex;gap:10px;justify-content:flex-end">
- <button class="btn btn-secondary btn-small" onclick="downloadExcel()">&#128229; 导出Excel报告</button>
- </div>
+<div class="metrics">
+  <div class="met"><div class="n r1" id="m1">-</div><div class="l">监控ASIN</div></div>
+  <div class="met"><div class="n g1" id="m2">-</div><div class="l">稳定</div></div>
+  <div class="met"><div class="n a1" id="m3">-</div><div class="l">有变化</div></div>
+  <div class="met"><div class="n b1" id="m4">-</div><div class="l">今日检查</div></div>
 </div>
 
-<!-- ASIN列表 -->
-<div class="wrap-card">
- <div id="asinCards"></div>
+<div style="padding:0 24px 14px;display:flex;justify-content:flex-end;gap:8px">
+  <button class="btn btn-s" onclick="exportCsv()" style="font-size:11px">📥 导出CSV</button>
 </div>
+
+<div class="card-list" id="asinList"></div>
 
 <div id="toast" class="toast"></div>
-
-<div style="text-align:center;padding:12px;font-size:11px;color:#999;border-top:1px solid #d5d9d9;margin-top:20px">
- CrossMart Monitor <span id="lastUpdate" style="margin-left:8px"></span>
-</div>
+<div style="text-align:center;padding:16px;font-size:11px;color:#aaa;border-top:1px solid #eee;margin-top:20px">CrossMart Monitor</div>
 
 <script>
-const API = 'data/monitor-data.json';
-const CONFIG_KEY = 'crossmart_monitor_config';
-let charts = {};
-let configAsins = [];
-let configKeywords = [];
+var API='data/monitor-data.json', KEY='crossmart_monitor_config';
+var charts={}, asins=[], kws=[];
+var DEFAULT={asins:[{asin:'B09V7Z4TJG',keywords:'batana oil',nickname:'Batana Oil'},{asin:'B0F2J966QL',keywords:'neck cream',nickname:'Eight Saints'},{asin:'B0CGB215HR',keywords:'neck cream',nickname:'goPure'},{asin:'B0GKFD9ZQW',keywords:'neck cream',nickname:'ANUA'},{asin:'B0DSLGHPPW',keywords:'neck cream',nickname:'UJhay'}],keywords:[{keyword:'batana oil',note:'主关键词'},{keyword:'neck cream',note:'颈霜'},{keyword:'anti aging cream',note:'抗衰'}]};
 
-const DEFAULT_TARGETS = {
-  asins: [
-    {asin:'B09V7Z4TJG', keywords:'batana oil', nickname:'Batana Oil（主目标）', group:'custom'},
-    {asin:'B0F2J966QL', keywords:'neck cream', nickname:'Eight Saints 颈部抗衰', group:'custom'},
-    {asin:'B0CGB215HR', keywords:'neck cream', nickname:'goPure 紧致颈胸霜', group:'custom'},
-    {asin:'B0GKFD9ZQW', keywords:'neck cream', nickname:'ANUA 胶原视黄醇', group:'custom'},
-    {asin:'B0DSLGHPPW', keywords:'neck cream', nickname:'UJhay 平价视黄醇颈霜', group:'custom'},
-  ],
-  keywords: [
-    {keyword:'batana oil', note:'主关键词'},
-    {keyword:'neck cream', note:'颈霜类目'},
-    {keyword:'anti aging cream', note:'抗衰面霜'},
-  ]
-};
+function e(s){return(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;')}
+function cln(s){return s.replace(/[^a-zA-Z0-9]/g,'')}
+function pn(v){if(!v)return'—';var m=(''+v).match(/([\d.]+)/);return m?m[1]:'—'}
+function g(s){return s||'—'}
+function tsr(ss){if(!ss||!ss.length)return'';var t=ss.map(function(s){return s.timestamp}).filter(Boolean).sort();return'<div class="ts">'+t[0].slice(0,16).replace('T',' ')+' ~ '+t[t.length-1].slice(0,16).replace('T',' ')+' · '+ss.length+'次</div>'}
 
-function getTimeRange(ss) {
-  if (!ss || ss.length < 1) return '';
-  const ts = ss.map(s => s.timestamp).filter(Boolean).sort();
-  const first = ts[0].slice(0, 16).replace('T', ' ');
-  const last = ts[ts.length-1].slice(0, 16).replace('T', ' ');
-  return '<div class="ts">' + first + ' ~ ' + last + ' &middot; ' + ss.length + '次检查</div>';
+function loadCfg(){
+  try{
+    var s=localStorage.getItem(KEY);
+    if(s){var p=JSON.parse(s);asins=p.asins&&p.asins.length?p.asins:JSON.parse(JSON.stringify(DEFAULT.asins));kws=p.keywords&&p.keywords.length?p.keywords:JSON.parse(JSON.stringify(DEFAULT.keywords))}
+    else{asins=JSON.parse(JSON.stringify(DEFAULT.asins));kws=JSON.parse(JSON.stringify(DEFAULT.keywords));svCfg()}
+  }catch(e){asins=JSON.parse(JSON.stringify(DEFAULT.asins));kws=JSON.parse(JSON.stringify(DEFAULT.keywords))}
+  ra();rk();
+}
+function ra(){
+  var el=document.getElementById('editAsins');
+  if(!asins.length)asins=[{asin:'',keywords:'batana oil',nickname:''}];
+  el.innerHTML=asins.map(function(a,i){return'<div style="display:grid;grid-template-columns:1fr 100px 70px;gap:6px;padding:5px 0;border-bottom:1px solid #eee;font-size:13px;align-items:center">'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">'+
+    '<input class="cfg" value="'+e(a.asin)+'" placeholder="ASIN" onchange="ua('+i+',\'asin\',this.value)">'+
+    '<input class="cfg" value="'+e(a.nickname||'')+'" placeholder="备注" onchange="ua('+i+',\'nickname\',this.value)">'+
+    '</div><input class="cfg" value="'+e(a.keywords||'batana oil')+'" placeholder="关键词" onchange="ua('+i+',\'keywords\',this.value)">'+
+    '<button class="btn btn-d" style="padding:4px 8px;font-size:11px" onclick="rmA('+i+')">删除</button></div>'}).join('');
+}
+function rk(){
+  var el=document.getElementById('editKws');
+  if(!kws.length)kws=[{keyword:'batana oil',note:''}];
+  el.innerHTML=kws.map(function(k,i){return'<div style="display:grid;grid-template-columns:1fr 1fr 70px;gap:6px;padding:5px 0;border-bottom:1px solid #eee;font-size:13px;align-items:center">'+
+    '<input class="cfg" value="'+e(k.keyword)+'" placeholder="关键词" onchange="uk('+i+',\'keyword\',this.value)">'+
+    '<input class="cfg" value="'+e(k.note||'')+'" placeholder="备注" onchange="uk('+i+',\'note\',this.value)">'+
+    '<button class="btn btn-d" style="padding:4px 8px;font-size:11px" onclick="rmK('+i+')">删除</button></div>'}).join('');
+}
+function ua(i,f,v){if(!asins[i])asins[i]={asin:'',keywords:'batana oil',nickname:''};asins[i][f]=v}
+function uk(i,f,v){if(!kws[i])kws[i]={keyword:'',note:''};kws[i][f]=v}
+function addAsinCfg(){if(asins.length>=10){st('最多10个ASIN',1);return}asins.push({asin:'',keywords:'batana oil',nickname:''});ra()}
+function addKwCfg(){if(kws.length>=10){st('最多10个关键词',1);return}kws.push({keyword:'',note:''});rk()}
+function rmA(i){if(!confirm('删除?'))return;asins.splice(i,1);ra();svCfg()}
+function rmK(i){if(!confirm('删除?'))return;kws.splice(i,1);rk();svCfg()}
+function svCfg(){localStorage.setItem(KEY,JSON.stringify({asins:asins.filter(function(a){return a.asin&&a.asin.trim()}),keywords:kws.filter(function(k){return k.keyword&&k.keyword.trim()}),updatedAt:new Date().toISOString()}))}
+function saveAsins(){var v=asins.filter(function(a){return a.asin&&a.asin.trim()});if(!v.length){st('至少一个有效ASIN',1);return}svCfg();st('已保存 '+v.length+' 个ASIN')}
+function saveKws(){var v=kws.filter(function(k){return k.keyword&&k.keyword.trim()});if(!v.length){st('至少一个有效关键词',1);return}svCfg();st('已保存 '+v.length+' 个关键词')}
+function switchTab(t){
+  var a=document.getElementById('tabA'),k=document.getElementById('tabK');
+  a.style.background=t==='a'?'#131921':'#e6e8ea';a.style.color=t==='a'?'#fff':'#0f1111';
+  k.style.background=t==='k'?'#131921':'#e6e8ea';k.style.color=t==='k'?'#fff':'#0f1111';
+  document.getElementById('panelA').style.display=t==='a'?'block':'none';
+  document.getElementById('panelK').style.display=t==='k'?'block':'none';
 }
 
-function loadConfig() {
-  try {
-    const saved = localStorage.getItem(CONFIG_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      configAsins = parsed.asins && parsed.asins.length ? parsed.asins : JSON.parse(JSON.stringify(DEFAULT_TARGETS.asins));
-      configKeywords = parsed.keywords && parsed.keywords.length ? parsed.keywords : JSON.parse(JSON.stringify(DEFAULT_TARGETS.keywords));
-    } else {
-      configAsins = JSON.parse(JSON.stringify(DEFAULT_TARGETS.asins));
-      configKeywords = JSON.parse(JSON.stringify(DEFAULT_TARGETS.keywords));
-      saveConfigToLocal();
-    }
-  } catch(e) {
-    configAsins = JSON.parse(JSON.stringify(DEFAULT_TARGETS.asins));
-    configKeywords = JSON.parse(JSON.stringify(DEFAULT_TARGETS.keywords));
+async function triggerScrape(){
+  var btn=document.querySelector('[onclick="triggerScrape()"]');if(!btn)return;
+  btn.disabled=true;btn.textContent='采集中...';
+  var me=document.getElementById('scrapeMsg');me.textContent='正在采集...';
+  try{
+    var r=await fetch('/api/scrape',{method:'POST'});var j=await r.json();
+    if(j.status==='ok'){st('采集完成');me.textContent='完成';setTimeout(function(){location.reload()},1500)}
+    else{st('失败: '+(j.error||''),1);me.textContent='失败'}
+  }catch(e){
+    st('请运行采集脚本',1);me.innerHTML='运行采集脚本: python backend/browser/scrape.py'
   }
-  renderAsinConfig();
-  renderKwConfig();
+  btn.disabled=false;btn.textContent='立即抓取'
 }
 
-function renderAsinConfig() {
-  const el = document.getElementById('asinEditList');
-  if (!configAsins.length) {
-    configAsins = [{asin:'', keywords:'batana oil', nickname:'', group:'custom'}];
-  }
-  el.innerHTML = configAsins.map(function(a, i) {
-    return '<div style="display:grid;grid-template-columns:180px 1fr 120px 80px;gap:8px;padding:6px 0;border-bottom:1px solid #e6e8ea;font-size:13px;align-items:center">' +
-      '<input class="cfg-input" value="' + esc(a.asin) + '" placeholder="ASIN" onchange="updateAsin('+i+',\'asin\',this.value)">' +
-      '<input class="cfg-input" value="' + esc(a.nickname||'') + '" placeholder="备注名" onchange="updateAsin('+i+',\'nickname\',this.value)">' +
-      '<input class="cfg-input" value="' + esc(a.keywords||'batana oil') + '" placeholder="关键词" onchange="updateAsin('+i+',\'keywords\',this.value)">' +
-      '<button class="btn btn-danger btn-small" onclick="removeAsin('+i+')">删除</button>' +
-      '</div>';
-  }).join('');
+function exportCsv(){
+  var rows=document.querySelectorAll('.asin-row');
+  if(!rows.length){st('无数据可导出',1);return}
+  var csv='\uFEFFASIN,产品名,品牌,售价,评分,BSR,卖家,状态\n';
+  rows.forEach(function(r){
+    var a=(r.querySelector('.badge')||{}).textContent||'';
+    var n=(r.querySelector('.asin-title .name')||{}).textContent||'';
+    var ts=r.querySelectorAll('.asin-tags .tg .vl');
+    csv+=[a,n,g(ts[0]&&ts[0].textContent),g(ts[1]&&ts[1].textContent),g(ts[2]&&ts[2].textContent),g(ts[3]&&ts[3].textContent),g(ts[4]&&ts[4].textContent),g((r.querySelector('.bg-s,.bg-c')||{}).textContent)].map(function(v){return'"'+(v||'').replace(/"/g,'""')+'"'}).join(',')+'\n'
+  });
+  var b=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='crossmart_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+  st('已下载')
 }
 
-function renderKwConfig() {
-  const el = document.getElementById('kwEditList');
-  if (!configKeywords.length) {
-    configKeywords = [{keyword:'batana oil', note:'主关键词'}];
-  }
-  el.innerHTML = configKeywords.map(function(k, i) {
-    return '<div style="display:grid;grid-template-columns:1fr 1fr 80px;gap:8px;padding:6px 0;border-bottom:1px solid #e6e8ea;font-size:13px;align-items:center">' +
-      '<input class="cfg-input" value="' + esc(k.keyword) + '" placeholder="关键词" onchange="updateKw('+i+',\'keyword\',this.value)">' +
-      '<input class="cfg-input" value="' + esc(k.note||'') + '" placeholder="备注" onchange="updateKw('+i+',\'note\',this.value)">' +
-      '<button class="btn btn-danger btn-small" onclick="removeKw('+i+')">删除</button>' +
-      '</div>';
-  }).join('');
-}
+function st(m,e){var t=document.getElementById('toast');t.textContent=m;t.className='toast'+(e?' err':'');t.style.display='block';setTimeout(function(){t.style.display='none'},3000)}
 
-function updateAsin(i, field, val) {
-  if (!configAsins[i]) configAsins[i] = {asin:'', keywords:'batana oil', nickname:'', group:'custom'};
-  configAsins[i][field] = val;
-}
-function updateKw(i, field, val) {
-  if (!configKeywords[i]) configKeywords[i] = {keyword:'', note:''};
-  configKeywords[i][field] = val;
-}
-function addAsinRow() {
-  if (configAsins.length >= 10) { showToast('最多10个ASIN', true); return; }
-  configAsins.push({asin:'', keywords:'batana oil', nickname:'', group:'custom'});
-  renderAsinConfig();
-}
-function addKwRow() {
-  if (configKeywords.length >= 10) { showToast('最多10个关键词', true); return; }
-  configKeywords.push({keyword:'', note:''});
-  renderKwConfig();
-}
-function removeAsin(i) {
-  if (!confirm('删除ASIN: ' + (configAsins[i].asin||'空行') + ' ?')) return;
-  configAsins.splice(i, 1);
-  renderAsinConfig();
-  saveConfigToLocal();
-}
-function removeKw(i) {
-  if (!confirm('删除关键词: ' + (configKeywords[i].keyword||'空行') + ' ?')) return;
-  configKeywords.splice(i, 1);
-  renderKwConfig();
-  saveConfigToLocal();
-}
-function saveConfigToLocal() {
-  localStorage.setItem(CONFIG_KEY, JSON.stringify({
-    asins: configAsins.filter(function(a){return a.asin && a.asin.trim()}),
-    keywords: configKeywords.filter(function(k){return k.keyword && k.keyword.trim()}),
-    updatedAt: new Date().toISOString()
-  }));
-}
-async function saveAsins() {
-  var valid = configAsins.filter(function(a){return a.asin && a.asin.trim()});
-  if (!valid.length) { showToast('至少需要一个有效的ASIN', true); return; }
-  saveConfigToLocal();
-  showToast('ASIN配置已保存 (' + valid.length + ' 个)');
-}
-async function saveKeywords() {
-  var valid = configKeywords.filter(function(k){return k.keyword && k.keyword.trim()});
-  if (!valid.length) { showToast('至少需要一个有效关键词', true); return; }
-  saveConfigToLocal();
-  showToast('关键词配置已保存 (' + valid.length + ' 个)');
-}
-function switchConfigTab(tab) {
-  document.getElementById('tabAsins').style.background = tab === 'asins' ? '#131921' : 'white';
-  document.getElementById('tabAsins').style.color = tab === 'asins' ? 'white' : '#0f1111';
-  document.getElementById('tabKeywords').style.background = tab === 'keywords' ? '#131921' : 'white';
-  document.getElementById('tabKeywords').style.color = tab === 'keywords' ? 'white' : '#0f1111';
-  document.getElementById('cfgAsins').style.display = tab === 'asins' ? 'block' : 'none';
-  document.getElementById('cfgKeywords').style.display = tab === 'keywords' ? 'block' : 'none';
-}
-function showToast(msg, isError) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast' + (isError ? ' error' : '');
-  t.style.display = 'block';
-  setTimeout(function(){t.style.display='none'}, 3000);
-}
-function esc(s) { return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;') }
-
-function parseRating(r) {
-  if (!r) return '&mdash;';
-  var m = r.match(/([\d.]+)/);
-  return m ? m[1] : '&mdash;';
-}
-function clean(s) { return s.replace(/[^a-zA-Z0-9]/g,'') }
-
-// 触发采集
-async function triggerScrape() {
-  var btn = document.querySelector('[onclick="triggerScrape()"]');
-  if (!btn) return;
-  btn.disabled = true;
-  btn.textContent = '采集中...';
-  var msgEl = document.getElementById('scrapeMsg');
-  msgEl.textContent = '正在采集最新数据...';
-  try {
-    var r = await fetch('/api/scrape', { method: 'POST' });
-    var result = await r.json();
-    if (result.status === 'ok') {
-      showToast('采集完成！');
-      msgEl.textContent = '完成 ' + new Date().toLocaleTimeString();
-      setTimeout(function(){location.reload()}, 1500);
-    } else {
-      showToast('采集失败: ' + (result.error||'未知错误'), true);
-      msgEl.textContent = '失败';
-    }
-  } catch(e) {
-    showToast('请在终端运行: python backend/browser/scrape.py', true);
-    msgEl.innerHTML = '请运行: <code style="background:#f5f5f5;padding:2px 6px;border-radius:3px">python backend/browser/scrape.py</code>';
-  }
-  btn.disabled = false;
-  btn.textContent = '立即抓取当前目标';
-}
-
-// 下载CSV
-function downloadExcel() {
-  try {
-    var cards = document.querySelectorAll('.asin-card');
-    if (!cards.length) { showToast('没有数据可导出', true); return; }
-    var csv = '\uFEFFASIN,产品名,品牌,售价,评分,评论数,BSR,卖家,状态,检查次数\n';
-    cards.forEach(function(card) {
-      var asin = (card.querySelector('.asin-id')||{}).textContent||'';
-      var name = (card.querySelector('.name')||{}).textContent||'';
-      var tags = card.querySelectorAll('.tag .val');
-      var brand = tags[0] ? tags[0].textContent : '';
-      var price = tags[1] ? tags[1].textContent.replace(/[^0-9.]/g,'') : '';
-      var rating = tags[2] ? tags[2].textContent.replace(/[^0-9.]/g,'') : '';
-      var bsr = tags[3] ? tags[3].textContent.replace(/[^0-9,]/g,'') : '';
-      var seller = (card.querySelector('.meta-grid .tag:last-child .val')||{}).textContent||'';
-      var statusEl = card.querySelector('.badge-stable, .badge-changed');
-      var status = statusEl ? statusEl.textContent.trim() : '';
-      var tsEl = card.querySelector('.ts');
-      var ts = tsEl ? tsEl.textContent.trim() : '';
-      csv += [asin,name,brand,price,rating,'',bsr,seller,status,ts].map(function(v){return '"'+(v||'').replace(/"/g,'""')+'"'}).join(',')+'\n';
-    });
-    var blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'crossmart_' + new Date().toISOString().slice(0,10) + '.csv';
-    a.click();
-    showToast('报告已下载');
-  } catch(e) {
-    showToast('导出失败: ' + e.message, true);
+async function load(){
+  try{
+    var r=await fetch(API+'?_='+Date.now());
+    if(!r.ok)throw Error('HTTP '+r.status);
+    render(await r.json())
+  }catch(e){
+    document.getElementById('asinList').innerHTML='<div style="padding:60px 24px;text-align:center;color:#999;font-size:13px">暂无监控数据</div>';
+    ['m1','m2','m3','m4'].forEach(function(id){document.getElementById(id).textContent='—'})
   }
 }
 
-// 数据加载
-async function load() {
-  try {
-    var r = await fetch(API + '?_=' + Date.now());
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    var d = await r.json();
-    render(d);
-  } catch(e) {
-    document.getElementById('asinCards').innerHTML = '<div style="padding:40px;text-align:center;color:#687078;font-size:13px">暂无监控数据</div>';
-    document.getElementById('totalAsins').textContent = '&mdash;';
-    document.getElementById('stableCount').textContent = '&mdash;';
-    document.getElementById('changedCount').textContent = '&mdash;';
-    document.getElementById('todayChecks').textContent = '&mdash;';
-  }
+function render(d){
+  var items=d.asins||[],ov=d.overview||{};
+  document.getElementById('m1').textContent=ov.total||items.length||'—';
+  document.getElementById('m2').textContent=ov.stable||0;
+  document.getElementById('m3').textContent=ov.changed||0;
+  document.getElementById('m4').textContent=ov.today_checks||0;
+  var lu=d.generated||'';
+  document.getElementById('lastUpdate').textContent=lu?'最后更新: '+lu.slice(0,16).replace('T',' '):'';
+  var el=document.getElementById('asinList');el.innerHTML='';
+  Object.values(charts).forEach(function(ch){ch.destroy()});charts={};
+  if(!items.length){el.innerHTML='<div style="padding:60px 24px;text-align:center;color:#999;font-size:13px">暂无监控数据</div>';return}
+  items.forEach(function(item){el.appendChild(buildRow(item))})
 }
 
-function render(d) {
-  var asins = d.asins||[];
-  var ov = d.overview||{};
-  document.getElementById('totalAsins').textContent = ov.total||asins.length;
-  document.getElementById('stableCount').textContent = ov.stable||0;
-  document.getElementById('changedCount').textContent = ov.changed||0;
-  document.getElementById('todayChecks').textContent = ov.today_checks||0;
-  var lu = d.generated||'';
-  document.getElementById('lastUpdate').textContent = lu ? '最后更新: ' + lu.slice(0,16).replace('T',' ') : '';
-  var c = document.getElementById('asinCards');
-  c.innerHTML = '';
-  Object.values(charts).forEach(function(ch){ch.destroy()});
-  charts = {};
-  if (!asins.length) { c.innerHTML='<div style="padding:40px;text-align:center;color:#687078;font-size:13px">暂无监控ASIN</div>'; return; }
-  asins.forEach(function(a){c.appendChild(row(a))});
-}
+function buildRow(item){
+  var div=document.createElement('div');div.className='asin-row';
+  var changed=item.has_changes,ss=item.snapshots||[],cur={};
+  if(ss.length)cur=ss[ss.length-1].data||{};
+  var chgs=item.changes||[];
+  var brand=(cur.brand||'').replace('Visit the ','').replace(' Store','')||'—';
+  var prices=[];
+  (ss||[]).forEach(function(snap){
+    var p=snap.data?snap.data.price||'':'';
+    var v=parseFloat((''+p).replace('$',''));
+    if(v>0)prices.push({v:v,t:(snap.timestamp||'').slice(11,16)});
+  });
 
-function row(a) {
-  var div = document.createElement('div');
-  div.className = 'asin-card';
-  var changed = a.has_changes;
-  var ss = a.snapshots||[];
-  var cur = ss.length ? ss[ss.length-1].data||{} : {};
-  var chgs = a.changes||[];
-  var s = function(v){return v||'&mdash;'};
-  var brand = (cur.brand||'').replace('Visit the ','').replace(' Store','')||'&mdash;';
-  var prices = ss.map(function(x){
-    var p = x.data ? x.data.price||'' : '';
-    return {v:parseFloat(p.replace('$','')), t:(x.timestamp||'').slice(11,16)};
-  }).filter(function(x){return x.v>0});
+  var imgHTML=cur.main_image
+    ?'<img src="'+cur.main_image+'" onerror="this.style.display=\'none\'">'
+    :'<div class="plh">📷</div>';
 
-  var imgHTML = cur.main_image
-    ? '<div class="imgs"><img src="' + cur.main_image + '" onerror="this.style.display=\'none\'"></div>'
-    : '<div class="imgs"><div class="placeholder">&#128247;</div></div>';
-
-  var ratingLink = cur.rating ? 'https://www.amazon.com/product-reviews/' + a.asin : '#';
-  var priceDisplay = cur.price ? cur.price : '&mdash;';
-  var discountTag = cur.discount ? ' <span style="color:#067d62;font-size:11px;font-weight:600">' + cur.discount + '</span>' : '';
-
-  var statusHTML;
-  if (changed) {
-    var seen = {};
-    var summary = chgs.map(function(c){
-      var key = c.split(':')[0];
-      if (seen[key]) return null;
-      seen[key] = true;
-      return {text: c};
+  var stHTML;
+  if(changed){
+    var seen={};
+    var sm=chgs.map(function(c){
+      var k=c.split(':')[0];if(seen[k])return null;seen[k]=true;
+      var nums=c.match(/[\d.,]+/g),cls='';
+      if(nums&&nums.length>=2){var a1=parseFloat(nums[0].replace(/,/g,'')),a2=parseFloat(nums[1].replace(/,/g,''));cls=a1<a2?'up':(a1>a2?'dn':'')}
+      return'<div class="chg '+cls+'">'+c+'</div>';
     }).filter(Boolean);
-    statusHTML = '<div class="badge-changed">变化 ' + summary.length + ' 项</div>' +
-      summary.map(function(s){return '<div class="chg-item">' + s.text + '</div>'}).join('') +
-      '<div class="ts">' + ss.length + '次检查</div>';
-  } else {
-    statusHTML = '<div class="badge-stable">&#9989; 稳定</div>' +
-      '<div class="ts">' + ss.length + '次检查</div>';
+    stHTML='<div class="bg-c">变化 '+sm.length+'项</div>'+sm.join('')+'<div class="ts">'+ss.length+'次检查</div>';
+  }else{
+    stHTML='<div class="bg-s">✅ 稳定</div><div class="ts">'+ss.length+'次检查</div>';
   }
 
-  var timeRange = getTimeRange(ss);
+  var rt=pn(cur.rating),rc=cur.review_count?cur.review_count.toLocaleString():'—';
+  var bsr=cur.bsr_sub_rank?'#'+cur.bsr_sub_rank.toLocaleString():'—';
+  var seller=g(cur.sold_by).substring(0,24);
+  var pTag=cur.price?('<span class="tg pc"><span class="lb">售价</span><span class="vl">'+cur.price+'</span></span>'):'';
+  if(cur.discount)pTag+=' <span style="color:#067d62;font-size:11px;font-weight:600">'+cur.discount+'</span>';
 
-  div.innerHTML = imgHTML +
-    '<div>' +
-      '<div class="title-row">' +
-        '<span class="name"><a href="https://www.amazon.com/dp/' + a.asin + '" target="_blank">' + s(cur.title).substring(0,90) + '</a></span>' +
-        '<span class="asin-id">' + a.asin + '</span>' +
-      '</div>' +
-      '<div class="meta-grid">' +
-        '<span class="tag"><span class="label">品牌</span> <span class="val">' + brand + '</span></span>' +
-        '<span class="tag price"><span class="label">售价</span> <span class="val">' + priceDisplay + '</span>' + discountTag + '</span>' +
-        '<span class="tag rating"><span class="label">评分</span> <span class="val">' + parseRating(cur.rating) + '</span></span>' +
-        '<span class="tag"><span class="label">评论</span> <span class="val">' + (cur.review_count ? cur.review_count.toLocaleString() : '&mdash;') + '</span></span>' +
-        '<span class="tag"><span class="label">BSR</span> <span class="val">' + (cur.bsr_sub_rank ? '#'+cur.bsr_sub_rank.toLocaleString() : '&mdash;') + '</span></span>' +
-        '<span class="tag"><span class="label">卖家</span> <span class="val">' + s(cur.sold_by).substring(0,20) + '</span></span>' +
-      '</div>' +
-    '</div>' +
-    '<div class="status-col">' + statusHTML + '</div>';
+  div.innerHTML=
+    '<div class="asin-img-col">'+imgHTML+'</div>'+
+    '<div class="asin-mid">'+
+      '<div class="asin-title">'+
+        '<span class="name"><a href="https://www.amazon.com/dp/'+item.asin+'" target="_blank">'+g(cur.title).substring(0,120)+'</a></span>'+
+        '<span class="badge">'+item.asin+'</span>'+
+      '</div>'+
+      '<div class="asin-tags">'+
+        '<span class="tg"><span class="lb">品牌</span><span class="vl">'+brand+'</span></span>'+pTag+
+        '<span class="tg rt"><span class="lb">评分</span><span class="vl">'+rt+'</span></span>'+
+        '<span class="tg"><span class="lb">评论</span><span class="vl">'+rc+'</span></span>'+
+        '<span class="tg"><span class="lb">BSR</span><span class="vl">'+bsr+'</span></span>'+
+        '<span class="tg"><span class="lb">卖家</span><span class="vl">'+seller+'</span></span>'+
+      '</div>'+
+    '</div>'+
+    '<div class="asin-right">'+stHTML+'</div>'+
+    tsr(ss);
 
-  if (changed && chgs.length) {
-    var detail = document.createElement('div');
-    detail.className = 'detail-panel';
-    detail.innerHTML = '<div style="display:flex;gap:12px;flex-wrap:wrap;font-size:12px">' +
-      chgs.map(function(c){return '<span style="color:#687078">&#8226; ' + c + '</span>'}).join('') + '</div>';
-    if (prices.length > 1) {
-      detail.innerHTML += '<div class="chart-mini"><canvas id="ch_' + clean(a.asin) + '"></canvas></div>';
+  // Detail panel: changes + price chart
+  if((changed&&chgs.length)||prices.length>1){
+    var dp=document.createElement('div');
+    dp.className='det-pad';
+    if(changed&&chgs.length)dp.innerHTML=chgs.map(function(c){return'<span>• '+c+'</span>'}).join('');
+    if(prices.length>1){
+      var h=changed?40:28;
+      dp.innerHTML+='<div style="height:'+h+'px;position:relative;width:100%;margin-top:2px"><canvas id="ch_'+cln(item.asin)+'"></canvas></div>';
     }
-    div.appendChild(detail);
+    div.appendChild(dp);
   }
 
-  if (prices.length > 1 && !changed) {
-    var mini = document.createElement('div');
-    mini.className = 'detail-panel';
-    mini.innerHTML = '<div class="chart-mini" style="height:24px"><canvas id="ch_' + clean(a.asin) + '"></canvas></div>';
-    div.appendChild(mini);
-  }
-
-  if (prices.length > 1) {
-    var id = 'ch_' + clean(a.asin);
+  // Chart.js
+  if(prices.length>1){
+    var id='ch_'+cln(item.asin);
     setTimeout(function(){
-      var ctx = document.getElementById(id);
-      if (!ctx) return;
-      var h = changed ? 40 : 24;
-      ctx.style.height = h + 'px';
-      ctx.parentElement.style.height = h + 'px';
-      charts[id] = new Chart(ctx, {
-        type:'line',
-        data:{
-          labels: prices.map(function(p){return p.t}),
-          datasets: [{
-            data: prices.map(function(p){return p.v}),
-            borderColor: '#B12704',
-            backgroundColor: 'rgba(177,39,4,0.04)',
-            fill: true,
-            tension: 0.3,
-            pointRadius: changed ? 2 : 0,
-            borderWidth: changed ? 1.5 : 0.8
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {legend:{display:false}, tooltip:{enabled:changed}},
-          scales: {
-            x: {display:changed, ticks:{color:'#999',font:{size:8}}, grid:{display:false}},
-            y: {display:changed, ticks:{color:'#999',font:{size:8},callback:function(v){return '$'+v}}, grid:{color:'#e6e8ea'}}
-          }
-        }
-      });
-    }, 50);
+      var ctx=document.getElementById(id);if(!ctx)return;
+      var h=changed?40:28;ctx.style.height=h+'px';ctx.parentElement.style.height=h+'px';
+      charts[id]=new Chart(ctx,{type:'line',data:{labels:prices.map(function(p){return p.t}),datasets:[{data:prices.map(function(p){return p.v}),borderColor:'#B12704',backgroundColor:'rgba(177,39,4,0.04)',fill:true,tension:0.3,pointRadius:changed?2:0,borderWidth:changed?1.5:0.8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:changed}},scales:{x:{display:changed,ticks:{color:'#999',font:{size:8}},grid:{display:false}},y:{display:changed,ticks:{color:'#999',font:{size:8},callback:function(v){return'$'+v}},grid:{color:'#e6e8ea'}}}}});
+    },50);
   }
   return div;
 }
 
 load();
-loadConfig();
-setInterval(load, 30000);
+loadCfg();
+setInterval(load,30000);
 </script>
-
 </body>
 </html>
