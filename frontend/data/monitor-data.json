@@ -1,0 +1,123 @@
+{
+  "status": "ok",
+  "asins": [
+    {
+      "asin": "B09V7Z4TJG",
+      "keyword": "batana oil",
+      "note": "目标监控ASIN - Batana Oil",
+      "has_changes": true,
+      "changes": [
+        "价格: $24.99 → $22.99 (-7.96%)",
+        "BSR排名: #128,456 → #98,345 (上升)",
+        "评分: 4.2 → 4.3 (上升)",
+        "评论数: 2,345 → 2,891"
+      ],
+      "snapshots": [
+        {"timestamp": "2026-05-10T08:30:00","data": {"title": "Batana Oil for Hair Growth - Organic Cold Pressed Pure Batana Oil from Honduras, 4oz","price": "$24.99","list_price": "$29.99","discount": "-17%","rating": "4.2 out of 5 stars","review_count": 2345,"bsr": "#128,456 in Beauty & Personal Care","bsr_sub_rank": 128456,"bsr_sub_category": "Beauty & Personal Care","main_image": "https://m.media-amazon.com/images/I/61BQ5zL2GHL._AC_SX466_.jpg","brand": "Batana","sold_by": "Batana Inc","sellers": 3,"variations": 2,"in_stock": true,"fba": true}},
+        {"timestamp": "2026-05-12T08:30:00","data": {"title": "Batana Oil for Hair Growth - Organic Cold Pressed Pure Batana Oil from Honduras, 4oz","price": "$23.99","list_price": "$29.99","discount": "-20%","rating": "4.2 out of 5 stars","review_count": 2501,"bsr": "#115,234 in Beauty & Personal Care","bsr_sub_rank": 115234,"bsr_sub_category": "Beauty & Personal Care","main_image": "https://m.media-amazon.com/images/I/61BQ5zL2GHL._AC_SX466_.jpg","brand": "Batana","sold_by": "Batana Inc","sellers": 3,"variations": 2,"in_stock": true,"fba": true}},
+        {"timestamp": "2026-05-14T08:30:00","data": {"title": "Batana Oil for Hair Growth - Organic Cold Pressed Pure Batana Oil from Honduras, 4oz","price": "$22.99","list_price": "$29.99","discount": "-23%","rating": "4.3 out of 5 stars","review_count": 2678,"bsr": "#105,678 in Beauty & Personal Care","bsr_sub_rank": 105678,"bsr_sub_category": "Beauty & Personal Care","main_image": "https://m.media-amazon.com/images/I/61BQ5zL2GHL._AC_SX466_.jpg","brand": "Batana","sold_by": "Batana Inc","sellers": 3,"variations": 2,"in_stock": true,"fba": true}},
+        {"timestamp": "2026-05-16T08:30:00","data": {"title": "Batana Oil for Hair Growth - Organic Cold Pressed Pure Batana Oil from Honduras, 4oz","price": "$22.99","list_price": "$29.99","discount": "-23%","rating": "4.3 out of 5 stars","review_count": 2805,"bsr": "#102,456 in Beauty & Personal Care","bsr_sub_rank": 102456,"bsr_sub_category": "Beauty & Personal Care","main_image": "https://m.media-amazon.com/images/I/61BQ5zL2GHL._AC_SX466_.jpg","brand": "Batana","sold_by": "Batana Inc","sellers": 3,"variations": 2,"in_stock": true,"fba": true}},
+        {"timestamp": "2026-05-18T08:30:00","data": {"title": "Batana Oil for Hair Growth - Organic Cold Pressed Pure Batana Oil from Honduras, 4oz","price": "$22.99","list_price": "$29.99","discount": "-23%","rating": "4.3 out of 5 stars","review_count": 2891,"bsr": "#98,345 in Beauty & Personal Care","bsr_sub_rank": 98345,"bsr_sub_category": "Beauty & Personal Care","main_image": "https://m.media-amazon.com/images/I/61BQ5zL2GHL._AC_SX466_.jpg","brand": "Batana","sold_by": "Batana Inc","sellers": 3,"variations": 2,"in_stock": true,"fba": true}}
+      ]
+    },
+    {
+      "asin": "B0F2J966QL",
+      "keyword": "neck cream",
+      "note": "Eight Saints - 颈部抗衰",
+      "has_changes": false,
+      "changes": [],
+      "snapshots": [
+        {"timestamp": "2026-05-15T09:00:00","data": {"title": "Eight Saints Neck Cream - Anti Aging Neck Firming Cream with Peptides, Vitamin C, for Neck and Décolleté","price": "$24.99","list_price": "$34.99","discount": "-29%","rating": "4.2 out of 5 stars","review_count": 856,"bsr": "#22,456 in Beauty & Personal Care","bsr_sub_rank": 22456,"bsr_sub_category": "Beauty & Personal Care","main_image": "https://m.media-amazon.com/images/I/61H0OuwdBxL._AC_SX466_.jpg","brand": "Eight Saints","sold_by": "Eight Saints","sellers": 1,"variations": 2,"in_stock": true,"fba": true}}
+      ]
+    },
+    {
+      "asin": "B0CGB215HR",
+      "keyword": "neck cream",
+      "note": "goPure - 紧致颈胸霜",
+      "has_changes": false,
+      "changes": [],
+      "snapshots": [
+        {"timestamp": "2026-05-15T09:05:00","data": {"title": "goPure Neck Firming Cream - Tightening & Lifting with Retinol, Peptides, Hyaluronic Acid for Neck and Chest","price": "$29.95","list_price": "$39.95","discount": "-25%","rating": "4.3 out of 5 stars","review_count": 3421,"bsr": "#18,234 in Beauty & Personal Care","bsr_sub_rank": 18234,"bsr_sub_category": "Beauty & Personal Care","main_image": "https://m.media-amazon.com/images/I/71yTLJmDGKL._AC_SX466_.jpg","brand": "goPure","sold_by": "goPure Beauty","sellers": 1,"variations": 3,"in_stock": true,"fba": true}}
+      ]
+    },
+    {
+      "asin": "B0GKFD9ZQW",
+      "keyword": "neck cream",
+      "note": "ANUA - 胶原视黄醇",
+      "has_changes": false,
+      "changes": [],
+      "snapshots": [
+        {"timestamp": "2026-05-15T09:10:00","data": {"title": "ANUA Collagen Retinol Neck Cream - Firming & Wrinkle Repair with Peptide Complex","price": "$22.00","list_price": "$28.00","discount": "-21%","rating": "4.1 out of 5 stars","review_count": 234,"bsr": "#35,678 in Beauty & Personal Care","bsr_sub_rank": 35678,"bsr_sub_category": "Beauty & Personal Care","main_image": "https://m.media-amazon.com/images/I/61jKq0VX9pL._AC_SX466_.jpg","brand": "ANUA","sold_by": "ANUA Official","sellers": 2,"variations": 2,"in_stock": true,"fba": true}}
+      ]
+    },
+    {
+      "asin": "B0BBSP2JNQ",
+      "keyword": "neck cream",
+      "note": "抗衰面霜(也可用颈)",
+      "has_changes": false,
+      "changes": [],
+      "snapshots": [
+        {"timestamp": "2026-05-15T09:15:00","data": {"title": "Anti Aging Face Moisturizer with Retinol, Vitamin C, Hyaluronic Acid - Day & Night Cream for Women","price": "$19.99","list_price": "$24.99","discount": "-20%","rating": "4.3 out of 5 stars","review_count": 5678,"bsr": "#8,456 in Beauty & Personal Care","bsr_sub_rank": 8456,"bsr_sub_category": "Beauty & Personal Care","main_image": "https://m.media-amazon.com/images/I/71vMjZY0YzL._AC_SX466_.jpg","brand": "CeraVe","sold_by": "CeraVe","sellers": 3,"variations": 1,"in_stock": true,"fba": true}}
+      ]
+    },
+    {
+      "asin": "B0DSLGHPPW",
+      "keyword": "neck cream",
+      "note": "UJhay - 平价视黄醇颈霜",
+      "has_changes": false,
+      "changes": [],
+      "snapshots": [
+        {"timestamp": "2026-05-15T09:20:00","data": {"title": "UJhay Retinol Neck Cream - Anti Aging Firming Moisturizer with Collagen, Vitamin E for Neck and Décolleté","price": "$14.99","list_price": "$19.99","discount": "-25%","rating": "4.0 out of 5 stars","review_count": 89,"bsr": "#67,890 in Beauty & Personal Care","bsr_sub_rank": 67890,"bsr_sub_category": "Beauty & Personal Care","main_image": "https://m.media-amazon.com/images/I/61QaBvMLyXL._AC_SX466_.jpg","brand": "UJhay","sold_by": "UJhay Store","sellers": 1,"variations": 1,"in_stock": true,"fba": false}}
+      ]
+    },
+    {
+      "asin": "B01B0WV6GI",
+      "keyword": "neck cream",
+      "note": "RoC Multi Correxion 5合1",
+      "has_changes": false,
+      "changes": [],
+      "snapshots": [
+        {"timestamp": "2026-05-15T09:25:00","data": {"title": "RoC Multi Correxion 5-in-1 Anti-Aging Neck & Chest Cream with SPF 30, 1.7 oz","price": "$28.99","list_price": "$34.99","discount": "-17%","rating": "4.4 out of 5 stars","review_count": 12345,"bsr": "#2,345 in Beauty & Personal Care","bsr_sub_rank": 2345,"bsr_sub_category": "Beauty & Personal Care","main_image": "https://m.media-amazon.com/images/I/81ZvDpLpGdL._AC_SX466_.jpg","brand": "RoC","sold_by": "RoC Skincare","sellers": 4,"variations": 2,"in_stock": true,"fba": true}}
+      ]
+    },
+    {
+      "asin": "B0C52W7NLB",
+      "keyword": "feet soaking tub",
+      "note": "竞品 - Foot Spa",
+      "has_changes": false,
+      "changes": [],
+      "snapshots": [
+        {"timestamp": "2026-05-10T09:15:00","data": {"title": "Collapsible Foot Spa Bath with Heat and Massage Rollers, Bubble, Foot Pedicure Kit","price": "$37.98","list_price": "$49.99","discount": "-24%","rating": "4.4 out of 5 stars","review_count": 4,"bsr": "#12,345 in Health & Household","bsr_sub_rank": 12345,"bsr_sub_category": "Health & Household","main_image": "https://m.media-amazon.com/images/I/71qjN0tGKnL._AC_SX466_.jpg","brand": "SpaRelax","sold_by": "SpaRelax Direct","sellers": 2,"variations": 3,"in_stock": true,"fba": true}},
+        {"timestamp": "2026-05-17T09:15:00","data": {"title": "Collapsible Foot Spa Bath with Heat and Massage Rollers, Bubble, Foot Pedicure Kit","price": "$37.98","list_price": "$49.99","discount": "-24%","rating": "4.4 out of 5 stars","review_count": 4,"bsr": "#12,845 in Health & Household","bsr_sub_rank": 12845,"bsr_sub_category": "Health & Household","main_image": "https://m.media-amazon.com/images/I/71qjN0tGKnL._AC_SX466_.jpg","brand": "SpaRelax","sold_by": "SpaRelax Direct","sellers": 2,"variations": 3,"in_stock": true,"fba": true}}
+      ]
+    },
+    {
+      "asin": "B0F3Z873VL",
+      "keyword": "bush balm",
+      "note": "竞品 - Bush Balm",
+      "has_changes": false,
+      "changes": [],
+      "snapshots": [
+        {"timestamp": "2026-05-15T10:00:00","data": {"title": "Ingrown Hair and Razor Bumps Routine - Moisturize and Soothe After Shave Skincare","price": "$37.49","rating": "4.4 out of 5 stars","review_count": 1,"bsr": "#45,678 in Beauty & Personal Care","bsr_sub_rank": 45678,"bsr_sub_category": "Beauty & Personal Care","main_image": "https://m.media-amazon.com/images/I/71QvZGYrKRL._AC_SX466_.jpg","brand": "BushBalm","sold_by": "BushBalm LLC","sellers": 1,"variations": 2,"in_stock": true,"fba": true}}
+      ]
+    },
+    {
+      "asin": "B0GDSQBRYX",
+      "keyword": "dazzle dry nail polish colors",
+      "note": "竞品 - Nail Polish",
+      "has_changes": false,
+      "changes": [],
+      "snapshots": [
+        {"timestamp": "2026-05-15T10:05:00","data": {"title": "Nail Lacquer (Step 3) - Beauty Sleep - A holographic dark fuchsia. Full coverage","price": "$22.00","rating": "4.4 out of 5 stars","review_count": 6,"bsr": "#78,912 in Beauty & Personal Care","bsr_sub_rank": 78912,"bsr_sub_category": "Beauty & Personal Care","main_image": "https://m.media-amazon.com/images/I/61xQwKpFTFL._AC_SX466_.jpg","brand": "DazzleDry","sold_by": "Dazzle Dry","sellers": 2,"variations": 12,"in_stock": true,"fba": true}}
+      ]
+    }
+  ],
+  "overview": {
+    "total": 9,
+    "stable": 7,
+    "changed": 1,
+    "today_checks": 3
+  },
+  "generated": "2026-05-18_14-10",
+  "config_note": "7个neck cream竞品 + batana oil + 选品数据"
+}
