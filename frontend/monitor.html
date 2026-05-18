@@ -96,8 +96,8 @@
  </div>
  <div style="padding:14px 20px">
  <div class="tab-sel">
- <button id="tabAsins" class="active" onclick="switchConfigTab('asins')">📦 ASIN设置（最多5个）</button>
- <button id="tabKeywords" onclick="switchConfigTab('keywords')">🔑 关键词设置（最多5个）</button>
+ <button id="tabAsins" class="active" onclick="switchConfigTab('asins')">📦 ASIN设置</button>
+ <button id="tabKeywords" onclick="switchConfigTab('keywords')">🔑 关键词设置</button>
  </div>
 
  <!-- ASIN编辑区 -->
@@ -276,13 +276,13 @@ function updateKw(i, field, val) {
 }
 
 function addAsinRow() {
- if (configAsins.length >= 5) { showToast('最多5个ASIN', true); return; }
+ if (configAsins.length >= 10) { showToast('最多10个ASIN', true); return; }
  configAsins.push({asin:'', keywords:'batana oil', nickname:'', group:'custom'});
  renderAsinConfig();
 }
 
 function addKwRow() {
- if (configKeywords.length >= 5) { showToast('最多5个关键词', true); return; }
+ if (configKeywords.length >= 10) { showToast('最多10个关键词', true); return; }
  configKeywords.push({keyword:'', note:''});
  renderKwConfig();
 }
