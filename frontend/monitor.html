@@ -12,10 +12,8 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui,-apple-system,sans-serif}
 body{background:#eaeded;color:#0f1111;font-size:14px;line-height:1.5}
 a{color:#007185;text-decoration:none}a:hover{color:#c45500}
-
 .topbar{background:#131921;color:#fff;display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 24px;position:sticky;top:0;z-index:100}
-.topbar .brand{font-weight:700;font-size:16px;letter-spacing:.03em}
-.topbar .brand span{color:#e94560}
+.topbar .brand{font-weight:700;font-size:16px}.topbar .brand span{color:#e94560}
 .topbar nav{display:flex;gap:14px;font-size:13px}
 .topbar nav a{color:rgba(255,255,255,.75);padding:4px 0;border-bottom:2px solid transparent;transition:.15s}
 .topbar nav a:hover,.topbar nav a.active{color:#fff;border-bottom-color:#e94560}
@@ -26,34 +24,6 @@ a{color:#007185;text-decoration:none}a:hover{color:#c45500}
 .met .n{font-size:24px;font-weight:700;line-height:1.2}.met .n.r1{color:#B12704}.met .n.g1{color:#067d62}.met .n.a1{color:#9e7800}.met .n.b1{color:#007185}
 .met .l{font-size:10px;color:#687078;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
 .card-list{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin:0 24px 20px;overflow:hidden}
-
-/* ASIN ROW: flex row, left image column sets the height */
-.asin-row{display:flex;flex-direction:row;border-bottom:1px solid #eaeded;transition:.15s}
-.asin-row:last-child{border-bottom:none}
-.asin-row:hover{background:#fafbfc}
-
-.asin-img-col{display:flex;align-items:center;justify-content:center;width:124px;flex-shrink:0;padding:10px}
-.asin-img-col img{width:100px;height:100px;object-fit:contain;border:1px solid #e6e8ea;border-radius:8px;background:#fff;padding:4px;display:block}
-.asin-img-col .plh{width:100px;height:100px;display:flex;align-items:center;justify-content:center;background:#f8fafc;border:1px solid #e6e8ea;border-radius:8px;color:#ccc;font-size:30px}
-
-.asin-mid{flex:1;display:flex;flex-direction:column;justify-content:center;padding:10px 10px 10px 0;gap:5px}
-.asin-title{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.asin-title .name{font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:480px;font-family:Georgia,'Times New Roman',serif}
-.asin-title .badge{font-size:10px;color:#555;background:#f0f2f2;padding:2px 7px;border-radius:3px;font-family:monospace;white-space:nowrap}
-.asin-tags{display:flex;flex-wrap:wrap;gap:4px}
-.asin-tags .tg{display:inline-flex;align-items:center;gap:3px;font-size:12px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:6px;padding:3px 9px;white-space:nowrap}
-.asin-tags .tg .lb{color:#687078;font-size:10px;font-weight:500}
-.asin-tags .tg .vl{font-weight:600}
-.asin-tags .tg.pc .vl{color:#B12704}
-.asin-tags .tg.rt .vl{color:#d99536}
-.asin-right{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;gap:3px;padding:10px 14px 10px 0;flex-shrink:0;min-width:110px;text-align:right}
-.bg-s{background:#e8f5ed;color:#067d62;border:1px solid #ceead6;padding:3px 12px;border-radius:12px;font-size:11px;font-weight:600}
-.bg-c{background:#fff8e6;color:#9e7800;border:1px solid #fceeb5;padding:3px 12px;border-radius:12px;font-size:11px;font-weight:600}
-.chg{font-size:11px;color:#c45500;line-height:1.6}.chg.up{color:#067d62}.chg.dn{color:#B12704}
-.ts{font-size:10px;color:#aaa}
-
-.det-pad{border-top:1px solid #f0e6d0;padding:8px 14px 10px;display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:#687078}
-
 input.cfg{width:100%;padding:6px 10px;border:1px solid #d5d9d9;border-radius:4px;font-size:13px;font-family:monospace;outline:none}
 input.cfg:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.2)}
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:.15s;white-space:nowrap}
@@ -63,11 +33,51 @@ input.cfg:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.2)}
 .toast{position:fixed;bottom:30px;right:30px;background:#067d62;color:#fff;padding:12px 24px;border-radius:8px;font-size:13px;font-weight:600;z-index:999;display:none;box-shadow:0 4px 12px rgba(0,0,0,.15)}
 .toast.err{background:#B12704}
 
+/* ========== ASIN ROW ========== */
+.asin-row{display:flex;flex-direction:row;align-items:stretch;border-bottom:1px solid #eaeded;min-height:100px;transition:.15s}
+.asin-row:last-child{border-bottom:none}
+.asin-row:hover{background:#fafbfc}
+
+/* Left image: fixed 120px */
+.asin-img{display:flex;align-items:center;justify-content:center;width:120px;flex-shrink:0}
+.asin-img img{width:90px;height:90px;object-fit:contain;border:1px solid #e6e8ea;border-radius:8px;background:#fff;padding:3px}
+.asin-img .plh{width:90px;height:90px;display:flex;align-items:center;justify-content:center;background:#f8fafc;border:1px solid #e6e8ea;border-radius:8px;color:#ccc;font-size:26px}
+
+/* Middle content: fills remaining space */
+.asin-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:6px 8px;min-height:100px;gap:3px}
+
+.asin-title{display:flex;align-items:center;gap:8px;margin-bottom:1px}
+.asin-title .name{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:380px}
+.asin-title .badge{font-size:10px;color:#555;background:#f0f2f2;padding:2px 7px;border-radius:3px;font-family:monospace;white-space:nowrap;flex-shrink:0}
+
+/* Metric rows: two-column grid with labels */
+.mgrid{display:grid;grid-template-columns:auto 80px auto 80px auto 1fr;gap:1px 6px;align-items:center;font-size:12px}
+.mgrid .ml{color:#687078;font-weight:500;white-space:nowrap;text-align:left}
+.mgrid .mv{font-weight:600;white-space:nowrap;text-align:left}
+.mgrid .mv.pc{color:#B12704}
+.mgrid .mv.rt{color:#d99536}
+
+/* Trend line inline */
+.trend-line{height:22px;position:relative;width:100%;margin-top:1px}
+
+/* Right status */
+.asin-stat{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;gap:2px;padding:8px 10px 8px 0;flex-shrink:0;width:130px;text-align:right}
+.bg-s{display:inline-block;background:#e8f5ed;color:#067d62;border:1px solid #ceead6;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600}
+.bg-c{display:inline-block;background:#fff8e6;color:#9e7800;border:1px solid #fceeb5;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600}
+.chg-item{font-size:11px;color:#c45500;line-height:1.5}
+.chg-item.up{color:#067d62}.chg-item.dn{color:#B12704}
+.ts-line{font-size:10px;color:#aaa;line-height:1.5}
+.ts-dot{display:inline-block;width:3px;height:3px;background:#bbb;border-radius:50%;margin:0 3px;vertical-align:middle}
+
+/* Detail expanded panel - only when changed */
+.detail-exp{border-top:1px solid #f0e6d0;padding:8px 10px 12px;display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:#687078}
+.chart-lg{height:36px;position:relative;width:100%;margin-top:2px}
+
 @media(max-width:800px){
-  .asin-img-col{width:90px}
-  .asin-img-col img,.asin-img-col .plh{width:70px;height:70px}
-  .asin-title .name{max-width:200px;font-size:13px}
-  .asin-right{min-width:80px;padding-right:10px}
+  .asin-img{width:90px}
+  .asin-img img,.asin-img .plh{width:65px;height:65px}
+  .asin-title .name{max-width:160px;font-size:13px}
+  .asin-stat{width:100px;padding-right:6px}
 }
 </style>
 </head>
@@ -76,9 +86,7 @@ input.cfg:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.2)}
 <div class="topbar">
   <div class="brand">Cross<span>Mart</span> <span style="font-size:12px;color:rgba(255,255,255,.5);font-weight:400;margin-left:6px">ASIN监控</span></div>
   <nav>
-    <a href="../index.html">首页</a>
-    <a href="monitor.html" class="active">监控</a>
-    <a href="products.html">选品</a>
+    <a href="../index.html">首页</a><a href="monitor.html" class="active">监控</a><a href="products.html">选品</a>
   </nav>
 </div>
 
@@ -141,7 +149,12 @@ function e(s){return(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;')}
 function cln(s){return s.replace(/[^a-zA-Z0-9]/g,'')}
 function pn(v){if(!v)return'—';var m=(''+v).match(/([\d.]+)/);return m?m[1]:'—'}
 function g(s){return s||'—'}
-function tsr(ss){if(!ss||!ss.length)return'';var t=ss.map(function(s){return s.timestamp}).filter(Boolean).sort();return'<div class="ts">'+t[0].slice(0,16).replace('T',' ')+' ~ '+t[t.length-1].slice(0,16).replace('T',' ')+' · '+ss.length+'次</div>'}
+function fdt(ts){if(!ts)return'';var d=new Date(ts);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+
+function snapLines(ss){
+  if(!ss||!ss.length)return'<div class="ts-line">暂无记录</div>';
+  return '<div class="ts-line">'+ss.map(function(s){return'<span style="display:inline-block;width:3px;height:3px;background:#bbb;border-radius:50%;margin:0 3px;vertical-align:middle"></span> '+fdt(s.timestamp)}).join('<br>')+'</div>';
+}
 
 function loadCfg(){
   try{
@@ -155,10 +168,8 @@ function ra(){
   var el=document.getElementById('editAsins');
   if(!asins.length)asins=[{asin:'',keywords:'batana oil',nickname:''}];
   el.innerHTML=asins.map(function(a,i){return'<div style="display:grid;grid-template-columns:1fr 100px 70px;gap:6px;padding:5px 0;border-bottom:1px solid #eee;font-size:13px;align-items:center">'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">'+
-    '<input class="cfg" value="'+e(a.asin)+'" placeholder="ASIN" onchange="ua('+i+',\'asin\',this.value)">'+
-    '<input class="cfg" value="'+e(a.nickname||'')+'" placeholder="备注" onchange="ua('+i+',\'nickname\',this.value)">'+
-    '</div><input class="cfg" value="'+e(a.keywords||'batana oil')+'" placeholder="关键词" onchange="ua('+i+',\'keywords\',this.value)">'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input class="cfg" value="'+e(a.asin)+'" placeholder="ASIN" onchange="ua('+i+',\'asin\',this.value)"><input class="cfg" value="'+e(a.nickname||'')+'" placeholder="备注" onchange="ua('+i+',\'nickname\',this.value)"></div>'+
+    '<input class="cfg" value="'+e(a.keywords||'batana oil')+'" placeholder="关键词" onchange="ua('+i+',\'keywords\',this.value)">'+
     '<button class="btn btn-d" style="padding:4px 8px;font-size:11px" onclick="rmA('+i+')">删除</button></div>'}).join('');
 }
 function rk(){
@@ -195,11 +206,10 @@ async function triggerScrape(){
     if(j.status==='ok'){st('采集完成');me.textContent='完成';setTimeout(function(){location.reload()},1500)}
     else{st('失败: '+(j.error||''),1);me.textContent='失败'}
   }catch(e){
-    st('请运行采集脚本',1);me.innerHTML='运行采集脚本: python backend/browser/scrape.py'
+    st('请运行采集脚本',1);me.innerHTML='运行: python backend/browser/scrape.py'
   }
   btn.disabled=false;btn.textContent='立即抓取'
 }
-
 function exportCsv(){
   var rows=document.querySelectorAll('.asin-row');
   if(!rows.length){st('无数据可导出',1);return}
@@ -207,14 +217,13 @@ function exportCsv(){
   rows.forEach(function(r){
     var a=(r.querySelector('.badge')||{}).textContent||'';
     var n=(r.querySelector('.asin-title .name')||{}).textContent||'';
-    var ts=r.querySelectorAll('.asin-tags .tg .vl');
-    csv+=[a,n,g(ts[0]&&ts[0].textContent),g(ts[1]&&ts[1].textContent),g(ts[2]&&ts[2].textContent),g(ts[3]&&ts[3].textContent),g(ts[4]&&ts[4].textContent),g((r.querySelector('.bg-s,.bg-c')||{}).textContent)].map(function(v){return'"'+(v||'').replace(/"/g,'""')+'"'}).join(',')+'\n'
+    var vs=r.querySelectorAll('.mgrid .mv');
+    csv+=[a,n,g(vs[0]&&vs[0].textContent),g(vs[1]&&vs[1].textContent),g(vs[2]&&vs[2].textContent),g(vs[3]&&vs[3].textContent),g(vs[4]&&vs[4].textContent),g((r.querySelector('.bg-s,.bg-c')||{}).textContent)].map(function(v){return'"'+(v||'').replace(/"/g,'""')+'"'}).join(',')+'\n'
   });
   var b=new Blob([csv],{type:'text/csv;charset=utf-8'});
   var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='crossmart_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
   st('已下载')
 }
-
 function st(m,e){var t=document.getElementById('toast');t.textContent=m;t.className='toast'+(e?' err':'');t.style.display='block';setTimeout(function(){t.style.display='none'},3000)}
 
 async function load(){
@@ -227,7 +236,6 @@ async function load(){
     ['m1','m2','m3','m4'].forEach(function(id){document.getElementById(id).textContent='—'})
   }
 }
-
 function render(d){
   var items=d.asins||[],ov=d.overview||{};
   document.getElementById('m1').textContent=ov.total||items.length||'—';
@@ -252,13 +260,14 @@ function buildRow(item){
   (ss||[]).forEach(function(snap){
     var p=snap.data?snap.data.price||'':'';
     var v=parseFloat((''+p).replace('$',''));
-    if(v>0)prices.push({v:v,t:(snap.timestamp||'').slice(11,16)});
+    if(v>0)prices.push({v:v,t:(snap.timestamp||'').slice(11,16),ts:snap.timestamp||''});
   });
 
   var imgHTML=cur.main_image
     ?'<img src="'+cur.main_image+'" onerror="this.style.display=\'none\'">'
     :'<div class="plh">📷</div>';
 
+  // Status: only BASIC in right column (stable/changed + timestamps)
   var stHTML;
   if(changed){
     var seen={};
@@ -266,57 +275,62 @@ function buildRow(item){
       var k=c.split(':')[0];if(seen[k])return null;seen[k]=true;
       var nums=c.match(/[\d.,]+/g),cls='';
       if(nums&&nums.length>=2){var a1=parseFloat(nums[0].replace(/,/g,'')),a2=parseFloat(nums[1].replace(/,/g,''));cls=a1<a2?'up':(a1>a2?'dn':'')}
-      return'<div class="chg '+cls+'">'+c+'</div>';
+      return'<div class="chg-item '+cls+'">'+c+'</div>';
     }).filter(Boolean);
-    stHTML='<div class="bg-c">变化 '+sm.length+'项</div>'+sm.join('')+'<div class="ts">'+ss.length+'次检查</div>';
+    stHTML='<div class="bg-c">变化 '+sm.length+'项</div>'+sm.join('');
   }else{
-    stHTML='<div class="bg-s">✅ 稳定</div><div class="ts">'+ss.length+'次检查</div>';
+    stHTML='<div class="bg-s">✅ 稳定</div>';
   }
+  stHTML+=snapLines(ss);
 
+  // Metrics grid: label : value in columns
   var rt=pn(cur.rating),rc=cur.review_count?cur.review_count.toLocaleString():'—';
   var bsr=cur.bsr_sub_rank?'#'+cur.bsr_sub_rank.toLocaleString():'—';
-  var seller=g(cur.sold_by).substring(0,24);
-  var pTag=cur.price?('<span class="tg pc"><span class="lb">售价</span><span class="vl">'+cur.price+'</span></span>'):'';
-  if(cur.discount)pTag+=' <span style="color:#067d62;font-size:11px;font-weight:600">'+cur.discount+'</span>';
+  var seller=g(cur.sold_by).substring(0,20);
+  var pv=cur.price||'—';
+  var pk=cur.discount?' <span style="color:#067d62;font-size:11px;font-weight:600">'+cur.discount+'</span>':'';
+
+  var mg=
+    '<div class="ml">品牌</div><div class="mv">'+brand+'</div><div class="ml">评分</div><div class="mv rt">'+rt+'</div><div></div>'+
+    '<div class="ml">售价</div><div class="mv pc">'+pv+'</div><div class="ml">评论</div><div class="mv">'+rc+'</div><div>'+pk+'</div>'+
+    '<div class="ml">BSR</div><div class="mv">'+bsr+'</div><div class="ml">卖家</div><div class="mv">'+seller+'</div><div></div>';
 
   div.innerHTML=
-    '<div class="asin-img-col">'+imgHTML+'</div>'+
-    '<div class="asin-mid">'+
-      '<div class="asin-title">'+
-        '<span class="name"><a href="https://www.amazon.com/dp/'+item.asin+'" target="_blank">'+g(cur.title).substring(0,120)+'</a></span>'+
-        '<span class="badge">'+item.asin+'</span>'+
-      '</div>'+
-      '<div class="asin-tags">'+
-        '<span class="tg"><span class="lb">品牌</span><span class="vl">'+brand+'</span></span>'+pTag+
-        '<span class="tg rt"><span class="lb">评分</span><span class="vl">'+rt+'</span></span>'+
-        '<span class="tg"><span class="lb">评论</span><span class="vl">'+rc+'</span></span>'+
-        '<span class="tg"><span class="lb">BSR</span><span class="vl">'+bsr+'</span></span>'+
-        '<span class="tg"><span class="lb">卖家</span><span class="vl">'+seller+'</span></span>'+
-      '</div>'+
+    '<div class="asin-img">'+imgHTML+'</div>'+
+    '<div class="asin-body">'+
+      '<div class="asin-title"><span class="name"><a href="https://www.amazon.com/dp/'+item.asin+'" target="_blank">'+g(cur.title).substring(0,90)+'</a></span><span class="badge">'+item.asin+'</span></div>'+
+      '<div class="mgrid">'+mg+'</div>'+
+      // Trend line in the middle — only when changed
+      (changed&&prices.length>1?'<div class="trend-line"><canvas id="ch_'+cln(item.asin)+'"></canvas></div>':'')+
     '</div>'+
-    '<div class="asin-right">'+stHTML+'</div>'+
-    tsr(ss);
+    '<div class="asin-stat">'+stHTML+'</div>';
 
-  // Detail panel: changes + price chart
-  if((changed&&chgs.length)||prices.length>1){
-    var dp=document.createElement('div');
-    dp.className='det-pad';
-    if(changed&&chgs.length)dp.innerHTML=chgs.map(function(c){return'<span>• '+c+'</span>'}).join('');
-    if(prices.length>1){
-      var h=changed?40:28;
-      dp.innerHTML+='<div style="height:'+h+'px;position:relative;width:100%;margin-top:2px"><canvas id="ch_'+cln(item.asin)+'"></canvas></div>';
-    }
+  // Detail expanded: show change details + chart — ONLY when changed
+  if(changed){
+    var dp=document.createElement('div');dp.style.cssText='width:100%;border-top:1px solid #f0e6d0;padding:8px 14px 10px';
+    var html='<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:#687078">';
+    if(chgs.length)html+=chgs.map(function(c){return'<span>• '+c+'</span>'}).join('');
+    if(prices.length>1)html+='<div style="height:36px;position:relative;width:100%;margin-top:2px"><canvas id="chd_'+cln(item.asin)+'"></canvas></div>';
+    dp.innerHTML=html+'</div>';
     div.appendChild(dp);
   }
 
-  // Chart.js
-  if(prices.length>1){
+  // Render charts
+  if(changed&&prices.length>1){
+    // Middle mini trend
     var id='ch_'+cln(item.asin);
     setTimeout(function(){
       var ctx=document.getElementById(id);if(!ctx)return;
-      var h=changed?40:28;ctx.style.height=h+'px';ctx.parentElement.style.height=h+'px';
-      charts[id]=new Chart(ctx,{type:'line',data:{labels:prices.map(function(p){return p.t}),datasets:[{data:prices.map(function(p){return p.v}),borderColor:'#B12704',backgroundColor:'rgba(177,39,4,0.04)',fill:true,tension:0.3,pointRadius:changed?2:0,borderWidth:changed?1.5:0.8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:changed}},scales:{x:{display:changed,ticks:{color:'#999',font:{size:8}},grid:{display:false}},y:{display:changed,ticks:{color:'#999',font:{size:8},callback:function(v){return'$'+v}},grid:{color:'#e6e8ea'}}}}});
-    },50);
+      ctx.style.height='22px';ctx.parentElement.style.height='22px';
+      charts[id]=new Chart(ctx,{type:'line',data:{labels:prices.map(function(p){return p.t}),datasets:[{data:prices.map(function(p){return p.v}),borderColor:'#B12704',backgroundColor:'rgba(177,39,4,0.05)',fill:true,tension:0.3,pointRadius:0,borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:true}},scales:{x:{display:true,ticks:{color:'#999',font:{size:7}},grid:{display:false}},y:{display:true,ticks:{color:'#999',font:{size:7},callback:function(v){return'$'+v}},grid:{color:'#e6e8ea'}}}}});
+    },100);
+    // Detail chart
+    var id2='chd_'+cln(item.asin);
+    setTimeout(function(){
+      var ctx2=document.getElementById(id2);if(!ctx2)return;
+      ctx2.style.height='36px';ctx2.parentElement.style.height='36px';
+      charts[id2]=new Chart(ctx2,{type:'line',data:{labels:prices.map(function(p){return p.t}),datasets:[{data:prices.map(function(p){return p.v}),borderColor:'#B12704',backgroundColor:'rgba(177,39,4,0.08)',fill:true,tension:0.3,pointRadius:2.5,borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:true}},scales:{x:{ticks:{color:'#687078',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#687078',font:{size:9},callback:function(v){return'$'+v}},grid:{color:'#e6e8ea'}}}}});
+    },100);
   }
   return div;
 }
