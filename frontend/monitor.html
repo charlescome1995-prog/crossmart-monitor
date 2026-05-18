@@ -317,8 +317,7 @@ function buildRow(item){
     '<div class="asin-img">'+imgHTML+'</div>'+
     '<div class="asin-body">'+
       '<div class="asin-title"><span class="name"><a href="https://www.amazon.com/dp/'+item.asin+'" target="_blank">'+g(cur.title).substring(0,120)+'</a></span><span class="badge">'+item.asin+'</span></div>'+
-      '<div class="mt">'+mg+'</div>'+
-      (changed&&prices.length>1?'<div class="trend-m"><canvas id="ch_'+cln(item.asin)+'"></canvas></div>':'')+
+      '<div class="mt">'+mg+'</div>'+ // No inline trend — all rows same height
     '</div>'+
     '<div class="asin-stat">'+stHTML+'</div>';
 
@@ -330,14 +329,8 @@ function buildRow(item){
     div.appendChild(dp);
   }
 
-  // Charts
+  // Detail chart only (no inline mini trend)
   if(changed&&prices.length>1){
-    var id='ch_'+cln(item.asin);
-    setTimeout(function(){
-      var ctx=document.getElementById(id);if(!ctx)return;
-      ctx.style.height='20px';ctx.parentElement.style.height='20px';
-      charts[id]=new Chart(ctx,{type:'line',data:{labels:prices.map(function(p){return p.t}),datasets:[{data:prices.map(function(p){return p.v}),borderColor:'#B12704',backgroundColor:'rgba(177,39,4,0.05)',fill:true,tension:0.3,pointRadius:0,borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:true}},scales:{x:{display:true,ticks:{color:'#999',font:{size:7}},grid:{display:false}},y:{display:true,ticks:{color:'#999',font:{size:7},callback:function(v){return'$'+v}},grid:{color:'#e6e8ea'}}}}});
-    },100);
     var id2='chd_'+cln(item.asin);
     setTimeout(function(){
       var ctx2=document.getElementById(id2);if(!ctx2)return;
