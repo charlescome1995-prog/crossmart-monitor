@@ -317,24 +317,24 @@ function buildRow(item){
     '<div class="asin-img">'+imgHTML+'</div>'+
     '<div class="asin-body">'+
       '<div class="asin-title"><span class="name"><a href="https://www.amazon.com/dp/'+item.asin+'" target="_blank">'+g(cur.title).substring(0,120)+'</a></span><span class="badge">'+item.asin+'</span></div>'+
-      '<div class="mt">'+mg+'</div>'+ // No inline trend — all rows same height
+      '<div class="mt">'+mg+'</div>'+
     '</div>'+
     '<div class="asin-stat">'+stHTML+'</div>';
 
-  // Detail panel: only when changed
+  // Detail: when changed, add changes + chart below the row (same row structure)
   if(changed){
     var dp=document.createElement('div');dp.style.cssText='width:100%;border-top:1px solid #f0e6d0;padding:8px 14px 10px;font-size:12px;color:#687078';
-    if(chgs.length)dp.innerHTML=chgs.map(function(c){return'<span class="ch">• '+fmtChg(c,55)+'</span>'}).join('')+'<br>';
-    if(prices.length>1)dp.innerHTML+='<div style="height:34px;position:relative;width:100%;margin-top:2px"><canvas id="chd_'+cln(item.asin)+'"></canvas></div>';
+    dp.innerHTML=chgs.map(function(c){return'<span class="ch">• '+fmtChg(c,90)+'</span>'}).join('')+'<br>';
+    if(prices.length>1)dp.innerHTML+='<div style="height:36px;position:relative;width:100%;margin-top:3px"><canvas id="chd_'+cln(item.asin)+'"></canvas></div>';
     div.appendChild(dp);
   }
 
-  // Detail chart only (no inline mini trend)
+  // Detail chart
   if(changed&&prices.length>1){
     var id2='chd_'+cln(item.asin);
     setTimeout(function(){
       var ctx2=document.getElementById(id2);if(!ctx2)return;
-      ctx2.style.height='34px';ctx2.parentElement.style.height='34px';
+      ctx2.style.height='36px';ctx2.parentElement.style.height='36px';
       charts[id2]=new Chart(ctx2,{type:'line',data:{labels:prices.map(function(p){return p.t}),datasets:[{data:prices.map(function(p){return p.v}),borderColor:'#B12704',backgroundColor:'rgba(177,39,4,0.08)',fill:true,tension:0.3,pointRadius:2.5,borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:true}},scales:{x:{ticks:{color:'#687078',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#687078',font:{size:9},callback:function(v){return'$'+v}},grid:{color:'#e6e8ea'}}}}});
     },100);
   }
