@@ -16,82 +16,69 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .topbar nav a{color:rgba(255,255,255,.75);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent;transition:.15s}
 .topbar nav a:hover,.topbar nav a.active{color:#fff;border-bottom-color:#e94560}
 
-/* ─── Config Panel ─── */
-.config-card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin:10px 20px;overflow:hidden}
-.config-card .hdr{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid #eee;font-weight:600;font-size:13px}
-input.cfg{width:100%;padding:6px 10px;border:1px solid #d5d9d9;border-radius:4px;font-size:13px;font-family:monospace;outline:none}
-input.cfg:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.2)}
-
-/* ─── Filters ─── */
-.filters{background:#fff;padding:10px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:1px solid #d5d9d9;position:sticky;top:48px;z-index:99;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+/* ─── Filter Bar ─── */
+.filters{background:#fff;padding:10px 20px;display:flex;gap:10px;align-items:center;border-bottom:1px solid #d5d9d9;position:sticky;top:48px;z-index:99;box-shadow:0 1px 3px rgba(0,0,0,.04);flex-wrap:wrap}
 .filters select,.filters input{padding:6px 10px;border:1px solid #d5d9d9;border-radius:6px;font-size:13px;background:#fff;outline:none}
-.filters input:focus,.filters select:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.15)}
-.filters input{width:200px}
-.filters label{font-size:13px;color:#555;display:flex;align-items:center;gap:4px;cursor:pointer}
+.filters input{width:160px}
+.filters label{font-size:12px;color:#555;display:flex;align-items:center;gap:4px;cursor:pointer}
+.btn{display:inline-flex;align-items:center;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:.15s;background:#e6e8ea;color:#0f1111}
+.btn:hover{background:#d5d9d9}
+.btn-sm{padding:3px 10px;font-size:11px}
+.btn-p{background:#ffd814;color:#0f1111}.btn-p:hover{background:#f7ca00}
 
-/* ─── Summary Metrics ─── */
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:12px 20px}
-.met{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.04);padding:12px 8px;text-align:center}
-.met .n{font-size:22px;font-weight:700;line-height:1.2}
-.met .n.g1{color:#067d62}.met .n.r1{color:#B12704}.met .n.b1{color:#007185}.met .n.a1{color:#9e7800}
-.met .l{font-size:10px;color:#687078;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+/* ─── Group Grid (5 columns) ─── */
+.board-wrap{padding:12px 8px;overflow-x:auto}
+.board{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;min-width:900px}
+.board.cols-3{grid-template-columns:repeat(3,1fr)}
+.board.cols-4{grid-template-columns:repeat(4,1fr)}
 
-/* ─── ASIN Row (3-col table-style) ─── */
-.row{display:flex;flex-direction:row;align-items:stretch;border-bottom:1px solid #eaeded;min-height:96px;transition:.15s;cursor:pointer}
-.row:last-child{border-bottom:none}
-.row:hover{background:#fafbfc}
-.row.open{background:#f7faff}
+.col-card{background:#fff;border:1px solid #d5d9d9;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;flex-direction:column}
+.col-hdr{padding:10px 12px 8px;border-bottom:2px solid #e94560;background:#fafafa}
+.col-hdr .main-asin{font-size:12px;font-weight:700;color:#007185;margin-bottom:2px}
+.col-hdr .main-title{font-size:11px;color:#555;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:block}
+.col-hdr .meta-row{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap}
+.col-hdr .tag{padding:1px 6px;border-radius:4px;font-size:10px;background:#f0f8ff;color:#067d62;border:1px solid #ceead6}
+.col-hdr .tag.price{background:#fff8e6;color:#9e7800;border-color:#fceeb5}
+.col-hdr .tag.bsr{background:#fef2f2;color:#991b1b;border-color:#fecaca}
+.col-hdr .tag.main-flag{background:#e94560;color:#fff;border-color:#e94560;font-weight:700}
 
-/* Left: Image */
-.col-img{display:flex;align-items:center;justify-content:center;width:120px;flex-shrink:0}
-.col-img img{width:90px;height:90px;object-fit:contain;border:1px solid #e6e8ea;border-radius:8px;background:#fff;padding:3px}
-.col-img .ph{width:90px;height:90px;display:flex;align-items:center;justify-content:center;background:#f8fafc;border:1px solid #e6e8ea;border-radius:8px;color:#ccc;font-size:26px}
+.member-row{padding:6px 8px;border-bottom:1px solid #f0f2f2;display:flex;align-items:center;gap:6px;cursor:pointer;transition:.12s;min-height:54px}
+.member-row:last-child{border-bottom:none}
+.member-row:hover{background:#f7fafc}
+.member-row.main-row{background:#fffbe6;border-left:3px solid #e94560}
+.member-row.changed-row{background:#fef9e6;border-left:3px solid #f0ad4e}
 
-/* Middle: Info + Metrics */
-.col-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:6px 8px;min-height:96px;gap:2px}
-.row-title{display:flex;align-items:center;gap:8px;margin-bottom:1px}
-.row-title .nm{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:380px}
-.row-title .bdg{font-size:10px;color:#555;background:#f0f2f2;padding:2px 7px;border-radius:3px;font-family:monospace;white-space:nowrap;flex-shrink:0}
+.m-img{width:40px;height:40px;flex-shrink:0;border-radius:4px;overflow:hidden;background:#f5f5f5;display:flex;align-items:center;justify-content:center}
+.m-img img{width:40px;height:40px;object-fit:cover}
+.m-img .ph{font-size:18px;color:#ccc}
 
-.mgrid{display:grid;grid-template-columns:auto 80px auto 80px auto 1fr;gap:2px 8px;align-items:center;font-size:12px;margin-top:2px}
-.mgrid .ml{color:#687078;white-space:nowrap;text-align:left}
-.mgrid .mv{font-weight:600;white-space:nowrap;text-align:left}
-.mgrid .mv.pr{color:#067d62}.mgrid .mv.ra{color:#d99536}
+.m-info{flex:1;min-width:0}
+.m-name{font-size:11px;font-weight:600;color:#0f1111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.m-asin{font-size:10px;color:#999;font-family:monospace;margin:1px 0}
+.m-price{font-size:12px;font-weight:700;color:#B12704}
 
-/* Trend inline */
-.trend{height:22px;position:relative;width:100%;margin-top:1px}
-.trend .ch{font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:2px}
-.trend .ch.up{color:#059669}.trend .ch.down{color:#dc2626}.trend .ch.flat{color:#999}
+.m-chg{font-size:10px;font-weight:600;text-align:right;min-width:50px;flex-shrink:0}
+.m-chg.up{color:#059669}.m-chg.down{color:#dc2626}.m-chg.flat{color:#999}
 
-/* Right: Status */
-.col-stat{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;gap:2px;padding:8px 10px 8px 0;flex-shrink:0;width:130px;text-align:right}
-.sb{padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600;display:inline-block}
-.sb.s{background:#e8f5ed;color:#067d62;border:1px solid #ceead6}
-.sb.c{background:#fff8e6;color:#9e7800;border:1px solid #fceeb5}
-.ts{font-size:10px;color:#aaa;line-height:1.5;text-align:right}
+/* Detail slide-down */
+.member-detail{display:none;padding:8px;border-top:1px solid #eee;background:#fafafa}
+.member-detail.open{display:block}
+.detail-chart{padding:4px 0;min-height:160px}
+.detail-chart canvas{width:100%!important;max-height:200px}
+.detail-meta{font-size:11px;color:#888;padding:2px 0}
+.detail-meta span{margin-right:12px}
 
-/* Detail panel */
-.detail{display:none;border-top:1px solid #e6e8ea;padding:8px 10px 12px 120px;font-size:12px;color:#687078;background:#fafafa}
-.row.open .detail{display:block}
-.chart-wrap{padding:12px 10px 8px;min-height:200px}
-.chart-wrap canvas{width:100%!important;max-height:240px}
-
+/* Loading/empty */
 .loading{text-align:center;padding:40px;color:#999;font-size:13px}
 .err{text-align:center;padding:40px;color:#B12704;font-size:13px}
 
-.btn{display:inline-flex;align-items:center;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:.15s;background:#e6e8ea;color:#0f1111}
-.btn:hover{background:#d5d9d9}
-.btn-p{background:#ffd814;color:#0f1111}.btn-p:hover{background:#f7ca00}
-.btn-sm{padding:3px 10px;font-size:11px}
-.btn-s{background:#e6e8ea;color:#0f1111}.btn-s:hover{background:#d5d9d9}
-
-@media(max-width:800px){
-  .col-img{width:90px}
-  .col-img img,.col-img .ph{width:65px;height:65px}
-  .row-title .nm{max-width:160px;font-size:13px}
-  .col-stat{width:100px;padding-right:6px}
-  .mgrid{grid-template-columns:auto 60px auto 60px auto 1fr;gap:1px 4px}
-  .mgrid .mv{font-size:11px}
+/* Responsive */
+@media(max-width:1100px){
+  .board{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:768px){
+  .board{grid-template-columns:repeat(2,1fr)}
+  .topbar{padding:0 12px}
 }
 </style>
 </head>
@@ -106,293 +93,254 @@ input.cfg:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.2)}
   </nav>
 </div>
 
-<div class="config-card" id="cfgCard">
-  <div class="hdr">
-    <span>&#x2699;&#xFE0F; ASIN Settings</span>
-    <span id="lastUpdate" style="font-size:11px;color:#999;font-weight:400"></span>
-  </div>
-  <div style="padding:10px 16px">
-    <div style="display:flex;gap:8px;margin-bottom:8px">
-      <button id="tabA" class="btn btn-p btn-sm" onclick="switchTab('a')">ASINs</button>
-      <button id="tabK" class="btn btn-sm" onclick="switchTab('k')">Keywords</button>
-    </div>
-    <div id="panelA">
-      <div id="editAsins"></div>
-      <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
-        <button class="btn btn-s btn-sm" onclick="addAsinCfg()">+ Add ASIN</button>
-        <button class="btn btn-p btn-sm" onclick="saveAsins()">&#x1F4BE; Save</button>
-        <span id="msgA" style="font-size:11px;color:#687078"></span>
-      </div>
-    </div>
-    <div id="panelK" style="display:none">
-      <div id="editKws"></div>
-      <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
-        <button class="btn btn-s btn-sm" onclick="addKwCfg()">+ Add Keyword</button>
-        <button class="btn btn-p btn-sm" onclick="saveKws()">&#x1F4BE; Save</button>
-        <span id="msgK" style="font-size:11px;color:#687078"></span>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="filters">
-  <input type="text" id="searchIn" placeholder="&#x1F50D; Search / ASIN..." oninput="render()">
+  <input type="text" id="searchIn" placeholder="&#x1F50D; Search..." oninput="render()">
   <select id="sortBy" onchange="render()">
     <option value="bsr">BSR &#x2B06;</option>
     <option value="price_chg">Price Change</option>
     <option value="bsr_chg">BSR Change</option>
-    <option value="rating">Rating &#x2B07;</option>
-    <option value="reviews">Reviews &#x2B07;</option>
     <option value="price">Price &#x2B07;</option>
   </select>
   <label><input type="checkbox" id="onlyChg" onchange="render()"> Changes only</label>
   <button class="btn btn-sm" onclick="refresh()">&#x1F504; Refresh</button>
-  <button class="btn btn-s btn-sm" onclick="exportCsv()">&#x1F4E5; Export CSV</button>
+  <button class="btn btn-sm btn-p" onclick="exportCsv()">&#x1F4E5; Export</button>
 </div>
 
-<div id="metrics" class="metrics"></div>
-<div id="listWrap" style="background:#fff;border:1px solid #d5d9d9;border-radius:10px;overflow:hidden;margin:0 20px 16px;box-shadow:0 1px 4px rgba(0,0,0,.06)">
-  <div class="loading">&#x231B; Loading...</div>
+<div id="summary" style="padding:8px 16px;background:#fff;border-bottom:1px solid #eee;font-size:12px;color:#555;display:none"></div>
+
+<div id="board" class="board-wrap">
+  <div class="loading">&#x231B; Loading ASIN groups...</div>
 </div>
 
 <script>
-// ─── Config ───
+// ─── State ───
+var gData = null;
+var gCharts = {};
 var API = 'data/monitor-data.json';
-var KEY = 'crossmart_monitor_config';
-var DEFAULT = {
-  asins: [
-    {asin:'B09V7Z4TJG',keywords:'batana oil',nickname:'Batana Oil'},
-    {asin:'B0F2J966QL',keywords:'neck cream',nickname:'Eight Saints'},
-    {asin:'B0CGB215HR',keywords:'neck cream',nickname:'goPure'},
-    {asin:'B0GKFD9ZQW',keywords:'neck cream',nickname:'ANUA'},
-    {asin:'B0DSLGHPPW',keywords:'neck cream',nickname:'UJhay'}
-  ],
-  keywords: [
-    {keyword:'batana oil',note:'main kw'},
-    {keyword:'neck cream',note:'neck cream'},
-    {keyword:'anti aging cream',note:'anti-aging'}
-  ]
-};
-var asins = [], kws = [];
-var gData = [], gCharts = {};
 
-function loadCfg(){
-  var s = localStorage.getItem(KEY);
-  if(s){
-    try{
-      var p = JSON.parse(s);
-      asins = p.asins && p.asins.length ? p.asins : JSON.parse(JSON.stringify(DEFAULT.asins));
-      kws = p.keywords && p.keywords.length ? p.keywords : JSON.parse(JSON.stringify(DEFAULT.keywords));
-    }catch(e){
-      asins = JSON.parse(JSON.stringify(DEFAULT.asins));
-      kws = JSON.parse(JSON.stringify(DEFAULT.keywords));
-    }
-  } else {
-    asins = JSON.parse(JSON.stringify(DEFAULT.asins));
-    kws = JSON.parse(JSON.stringify(DEFAULT.keywords));
-  }
-}
-
-function saveCfg(){
-  localStorage.setItem(KEY, JSON.stringify({asins:asins, keywords:kws}));
-}
-
-// ─── Config Panel Tabs ───
-function switchTab(t){
-  if(t==='a'){
-    document.getElementById('tabA').className = 'btn btn-p btn-sm';
-    document.getElementById('tabK').className = 'btn btn-sm';
-    document.getElementById('panelA').style.display = 'block';
-    document.getElementById('panelK').style.display = 'none';
-  } else {
-    document.getElementById('tabA').className = 'btn btn-sm';
-    document.getElementById('tabK').className = 'btn btn-p btn-sm';
-    document.getElementById('panelA').style.display = 'none';
-    document.getElementById('panelK').style.display = 'block';
-  }
-}
-
-function renderCfg(){
-  var ea = document.getElementById('editAsins');
-  var ek = document.getElementById('editKws');
-  ea.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:12px"><tr style="background:#f5f5f5"><th style="padding:4px 6px;text-align:left">ASIN</th><th style="padding:4px 6px;text-align:left">Nickname</th><th style="padding:4px 6px;text-align:left">Keywords</th><th style="width:40px"></th></tr>' +
-    asins.map(function(a,i){return '<tr><td style="padding:2px 4px"><input class="cfg" value="'+a.asin+'" data-idx="'+i+'" data-field="asin" onchange="updateAsin('+i+',this)"></td><td><input class="cfg" value="'+(a.nickname||'')+'" data-idx="'+i+'" onchange="updateAsin('+i+',this)"></td><td><input class="cfg" value="'+(a.keywords||'')+'" data-idx="'+i+'" onchange="updateAsin('+i+',this)"></td><td><span style="cursor:pointer;color:#B12704;font-size:16px" onclick="delAsin('+i+')">&times;</span></td></tr>';}).join('') + '</table>';
-  ek.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:12px"><tr style="background:#f5f5f5"><th style="padding:4px 6px;text-align:left">Keyword</th><th style="padding:4px 6px;text-align:left">Note</th><th style="width:40px"></th></tr>' +
-    kws.map(function(k,i){return '<tr><td style="padding:2px 4px"><input class="cfg" value="'+k.keyword+'" data-idx="'+i+'" onchange="updateKw('+i+',this)"></td><td><input class="cfg" value="'+(k.note||'')+'" data-idx="'+i+'" onchange="updateKw('+i+',this)"></td><td><span style="cursor:pointer;color:#B12704;font-size:16px" onclick="delKw('+i+')">&times;</span></td></tr>';}).join('') + '</table>';
-}
-
-function updateAsin(i,inp){
-  if(inp.dataset && inp.dataset.field==='asin') asins[i].asin = inp.value;
-  else if(!inp.dataset.field && !inp.dataset.idx) asins[i].nickname = inp.value;
-  else asins[i].keywords = inp.value;
-}
-function delAsin(i){asins.splice(i,1);renderCfg();}
-function addAsinCfg(){asins.push({asin:'',keywords:'',nickname:''});renderCfg();}
-function saveAsins(){saveCfg();document.getElementById('msgA').textContent='&#x2705; Saved ('+asins.length+' ASINs)';setTimeout(function(){document.getElementById('msgA').textContent='';},2000);}
-function updateKw(i,inp){kws[i].keyword = inp.value;}
-function delKw(i){kws.splice(i,1);renderCfg();}
-function addKwCfg(){kws.push({keyword:'',note:''});renderCfg();}
-function saveKws(){saveCfg();document.getElementById('msgK').textContent='&#x2705; Saved ('+kws.length+' keywords)';setTimeout(function(){document.getElementById('msgK').textContent='';},2000);}
-
-// ─── Data ───
-function refresh(){
-  gCharts = {};
-  document.getElementById('listWrap').innerHTML = '<div class="loading">&#x231B; Loading...</div>';
-  loadData();
-}
+// ─── Init ───
 async function loadData(){
   try{
     var r = await fetch(API+'?'+Date.now());
     if(!r.ok) throw new Error('HTTP '+r.status);
-    var d = await r.json();
-    gData = d.asins || [];
-    document.getElementById('lastUpdate').textContent = 'Updated: '+(d.updated||'').substring(0,16);
-    metrics();
+    gData = await r.json();
     render();
+    document.getElementById('summary').style.display = 'flex';
+    document.getElementById('summary').innerHTML =
+      '\u{1F4E6} <b>'+(gData.total_asins||0)+'</b> ASINs &middot; '+
+      '<b>'+(gData.groups||[]).length+'</b> groups &middot; '+
+      'Updated: '+(gData.updated||'').substring(0,16);
   }catch(e){
-    document.getElementById('listWrap').innerHTML = '<div class="err">&#x274C; Failed: '+e.message+'</div>';
+    document.getElementById('board').innerHTML = '<div class="err">&#x274C; '+e.message+'</div>';
   }
 }
-function metrics(){
-  var a = gData;
-  var t = a.length;
-  var pc = a.filter(function(x){return x.price_change_pct && Math.abs(x.price_change_pct)>0.01;}).length;
-  var bu = a.filter(function(x){return x.bsr_change && x.bsr_change < 0;}).length;
-  var lu = '-';
-  for(var i=0;i<a.length;i++){
-    var h = a[i].history;
-    if(h && h.length){lu=h[h.length-1].timestamp;if(lu)lu=lu.substring(5,16).replace('T',' ');break;}
-  }
-  document.getElementById('metrics').innerHTML =
-    '<div class="met"><div class="n b1">'+t+'</div><div class="l">&#x1F4E6; ASINs</div></div>'+
-    '<div class="met"><div class="n '+(pc>0?'r1':'a1')+'">'+pc+'</div><div class="l">&#x1F4C8; Price Move</div></div>'+
-    '<div class="met"><div class="n g1">'+bu+'</div><div class="l">&#x1F504; BSR Up</div></div>'+
-    '<div class="met"><div class="n a1">'+lu+'</div><div class="l">&#x1F550; Last Check</div></div>';
+
+function refresh(){
+  gCharts = {};
+  document.getElementById('board').innerHTML = '<div class="loading">&#x231B; Loading...</div>';
+  loadData();
 }
+
+// ─── Helpers ───
 function fmt(n){
   if(n===null||n===undefined||n==='') return '-';
-  return typeof n === 'number' ? n.toLocaleString() : n;
+  return typeof n==='number'?n.toLocaleString():n;
+}
+function fmtPrice(v){
+  if(v===null||v===undefined||v==='') return '-';
+  return '$'+parseFloat(v).toFixed(2);
 }
 
 // ─── Render ───
 function render(){
+  var groups = gData && gData.groups;
+  if(!groups){document.getElementById('board').innerHTML='<div class="err">No data</div>';return;}
+
   var kw = (document.getElementById('searchIn').value||'').toLowerCase().trim();
   var by = document.getElementById('sortBy').value;
   var oc = document.getElementById('onlyChg').checked;
-  var list = gData.slice();
-  if(kw) list = list.filter(function(a){return (a.title||'').toLowerCase().includes(kw)||(a.asin||'').toLowerCase().includes(kw);});
-  if(oc) list = list.filter(function(a){return (a.price_change_pct&&Math.abs(a.price_change_pct)>0.01)||(a.bsr_change&&a.bsr_change!==0);});
-  var sm = {
-    price_chg: function(a,b){return Math.abs(b.price_change_pct||0)-Math.abs(a.price_change_pct||0);},
-    bsr_chg: function(a,b){return (a.bsr_change||0)-(b.bsr_change||0);},
-    bsr: function(a,b){return (a.bsr||999999)-(b.bsr||999999);},
-    rating: function(a,b){return (b.rating||0)-(a.rating||0);},
-    reviews: function(a,b){return (b.review_count||0)-(a.review_count||0);},
-    price: function(a,b){return (b.price||0)-(a.price||0);}
-  };
-  if(sm[by]) list.sort(sm[by]);
 
-  var wrap = document.getElementById('listWrap');
-  if(!list.length){wrap.innerHTML = '<div class="err">No ASINs match</div>'; return;}
+  var board = document.getElementById('board');
+  var activeCols = groups.filter(function(g){
+    if(!kw) return true;
+    return g.members.some(function(m){
+      return ((m.title||'').toLowerCase().includes(kw))||((m.asin||'').toLowerCase().includes(kw))||((m.brand||'').toLowerCase().includes(kw));
+    });
+  });
 
+  var colClass = 'board cols-'+activeCols.length;
   var html = '';
-  for(var i=0;i<list.length;i++){
-    var a = list[i];
-    var hasDiff = a.price_change_pct && Math.abs(a.price_change_pct)>0.01;
-    var chCls = !hasDiff ? 'flat' : a.price_change_pct>0 ? 'up' : 'down';
-    var chArr = !hasDiff ? '\u{1F7E2}' : a.price_change_pct>0 ? '\u{1F7E1}' : '\u{1F534}';
-    var chStr = a.price_change ? '$'+Math.abs(a.price_change).toFixed(2) : '';
-    var chPct = a.price_change_pct ? ' ('+Math.abs(a.price_change_pct).toFixed(1)+'%)' : '';
 
-    var bc = a.bsr_change||0;
-    var bcCls = bc===0?'flat':bc<0?'up':'down';
-    var bcArr = bc===0?'\u{2192}':bc<0?'\u{2191}':'\u{2193}';
-    var bcStr = bc!==0 ? ' #'+fmt(Math.abs(bc)) : '';
-    var bcLb = bc<0 ? ' BSR Up' : bc>0 ? ' BSR Down' : '';
+  for(var gi=0;gi<activeCols.length;gi++){
+    var g = activeCols[gi];
+    var members = g.members.filter(function(m){return m.asin;});
 
-    var dc = a.list_price && a.list_price>0 && a.price < a.list_price ? Math.round((1-a.price/a.list_price)*100) : 0;
+    // Filter by keyword
+    if(kw){
+      members = members.filter(function(m){
+        return ((m.title||'').toLowerCase().includes(kw))||((m.asin||'').toLowerCase().includes(kw))||((m.brand||'').toLowerCase().includes(kw));
+      });
+    }
 
-    html += '<div class="row" onclick="toggleDetail('+i+')">'+
-      '<div class="col-img">'+
-        (a.main_image?'<img src="'+a.main_image+'" alt="" onerror="this.style.display=\'none\'">':'<div class="ph">\u{1F4F7}</div>')+
-      '</div>'+
-      '<div class="col-body">'+
-        '<div class="row-title"><span class="nm">'+((a.title||'').substring(0,80))+'</span><span class="bdg">'+a.asin+'</span></div>'+
-        '<div class="mgrid">'+
-          '<span class="ml">Brand</span><span class="mv">'+(a.brand||'\u2014')+'</span>'+
-          '<span class="ml">Rating</span><span class="mv ra">\u{2B50} '+(a.rating?fmt(a.rating):'\u2014')+'</span>'+
-          '<span class="ml">Price</span><span class="mv pr">'+(a.price?'$'+a.price.toFixed(2):'\u2014')+(dc>0?' <span style="font-size:10px;color:#999;text-decoration:line-through">$'+a.list_price.toFixed(2)+'</span> <span style="font-size:10px;color:#067d62">-'+dc+'%</span>':'')+'</span>'+
-          '<span class="ml">Reviews</span><span class="mv">'+(a.review_count?fmt(a.review_count):'\u2014')+'</span>'+
-          '<span class="ml">BSR</span><span class="mv">'+(a.bsr?'#'+fmt(a.bsr):'\u2014')+'</span>'+
-          '<span class="ml">Seller</span><span class="mv">'+(a.seller?a.seller.substring(0,25):'\u2014')+'</span>'+
-        '</div>'+
-        '<div class="trend"><span class="ch '+chCls+'">'+chArr+' Price '+chStr+chPct+'</span><span class="ch '+bcCls+'" style="margin-left:12px">'+bcArr+bcStr+bcLb+'</span></div>'+
-      '</div>'+
-      '<div class="col-stat">'+
-        '<span class="sb '+(hasDiff||bc!==0?'c':'s')+'">'+(hasDiff||bc!==0?'&#x26A0; Changed':'&#x2705; Stable')+'</span>'+
-        (a.history&&a.history.length?(function(){var t=a.history[a.history.length-1].timestamp;return '<div class="ts">'+(t?t.substring(5,16).replace('T',' '):'')+'</div>';})():'')+
-        (a.history&&a.history.length>1?'<div class="ts">&#x1F4CA; '+a.history.length+' checks</div>':'')+
-      '</div>'+
-    '</div>'+
-    '<div class="detail" id="det-'+i+'"><div class="chart-wrap"><canvas id="cv-'+i+'"></canvas></div></div>';
+    // Sort
+    var sm = {
+      bsr: function(a,b){return (a.bsr||999999)-(b.bsr||999999);},
+      price_chg: function(a,b){return Math.abs(b.price_change_pct||0)-Math.abs(a.price_change_pct||0);},
+      bsr_chg: function(a,b){return (a.bsr_change||0)-(b.bsr_change||0);},
+      price: function(a,b){return (b.price||0)-(a.price||0);}
+    };
+    if(sm[by]) members.sort(sm[by]);
+
+    if(oc){
+      members = members.filter(function(m){return m.has_diff;});
+    }
+
+    if(!members.length) continue;
+
+    var main = members[0];
+    var mainTitle = (main.title||'').substring(0,40)+(main.title&&main.title.length>40?'...':'');
+    var mainPrice = main.price?fmtPrice(main.price):'-';
+    var mainBsr = main.bsr?'#'+fmt(main.bsr):'-';
+    var priceChgPct = main.price_change_pct;
+    var bsrChg = main.bsr_change;
+    var hasDiff = main.has_diff;
+    var changedCls = hasDiff?'c':'s';
+
+    html += '<div class="col-card">';
+    html += '<div class="col-hdr">';
+    html += '<div class="main-asin">'+main.asin+'</div>';
+    html += '<div class="main-title" title="'+main.title+'">'+mainTitle+'</div>';
+    html += '<div class="meta-row">';
+    html += '<span class="tag main-flag">&#x2605; MAIN</span>';
+    html += '<span class="tag price">'+mainPrice+'</span>';
+    html += '<span class="tag bsr">BSR '+mainBsr+'</span>';
+    if(priceChgPct&&Math.abs(priceChgPct)>0.01){
+      var pcls = priceChgPct>0?'up':'down';
+      var parr = priceChgPct>0?'\u{1F7E1}':'\u{1F534}';
+      html += '<span class="tag '+pcls+'" style="background:'+(priceChgPct>0?'#f0fdf4':'#fef2f2')+';color:'+(priceChgPct>0?'#166534':'#991b1b')+'">'+parr+' '+Math.abs(priceChgPct).toFixed(1)+'%</span>';
+    }
+    if(bsrChg&&bsrChg!==0){
+      var bcls = bsrChg<0?'up':'down';
+      var barr = bsrChg<0?'\u{2191}':'\u{2193}';
+      html += '<span class="tag '+bcls+'" style="background:'+(bsrChg<0?'#f0fdf4':'#fef2f2')+';color:'+(bsrChg<0?'#166534':'#991b1b')+'">'+barr+' '+Math.abs(bsrChg)+'</span>';
+    }
+    html += '</div></div>';
+
+    for(var mi=0;mi<members.length;mi++){
+      var m = members[mi];
+      var isMainRow = m.is_main;
+      var rowCls = isMainRow?'main-row':(m.has_diff?'changed-row':'');
+      var imgUrl = m.main_image||'';
+      var pcp = m.price_change_pct||0;
+      var bc = m.bsr_change||0;
+      var chgStr = '';
+      if(m.has_history){
+        if(Math.abs(pcp)>=0.01){
+          var pcls2 = pcp>0?'up':(pcp<0?'down':'flat');
+          var parr2 = pcp>0?'\u{1F7E1}':(pcp<0?'\u{1F534}':'\u{1F7E2}');
+          chgStr += '<span class="m-chg '+pcls2+'">'+parr2+' '+Math.abs(pcp).toFixed(1)+'%</span>';
+        }
+        if(bc!==0){
+          var bcls2 = bc<0?'up':(bc>0?'down':'flat');
+          var barr2 = bc<0?'\u{2191}':(bc>0?'\u{2193}':'\u{2192}');
+          chgStr += '<span class="m-chg '+bcls2+'">'+barr2+' '+Math.abs(bc)+'</span>';
+        }
+      }
+      if(!chgStr) chgStr = '<span class="m-chg flat">&#x2014;</span>';
+
+      var memberId = 'm-'+gi+'-'+mi;
+
+      html += '<div class="member-row '+rowCls+'" onclick="toggleDetail(\''+memberId+'\','+gi+','+mi+')">';
+      html += '<div class="m-img">';
+      if(imgUrl){
+        html += '<img src="'+imgUrl+'" alt="" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><div class="ph" style="display:none">\u{1F4F7}</div>';
+      } else {
+        html += '<div class="ph">\u{1F4F7}</div>';
+      }
+      html += '</div>';
+      html += '<div class="m-info">';
+      html += '<div class="m-name" title="'+m.title+'">'+((m.title||'').substring(0,30))+'</div>';
+      html += '<div class="m-asin">'+m.asin+(isMainRow?' &#x2605;':'')+'</div>';
+      html += '<div class="m-price">'+(m.price?fmtPrice(m.price):'-')+'</div>';
+      html += '</div>';
+      html += chgStr;
+      html += '</div>';
+      html += '<div class="member-detail" id="det-'+memberId+'">';
+      html += '<div class="detail-chart"><canvas id="cv-'+memberId.replace(/-/g,'_')+'"></canvas></div>';
+      html += '<div class="detail-meta">';
+      if(m.brand) html += '<span>&#x1F3FA; '+m.brand+'</span>';
+      if(m.rating) html += '<span>&#x2B50; '+m.rating+'</span>';
+      if(m.review_count) html += '<span>&#x1F4AC; '+fmt(m.review_count)+'</span>';
+      if(m.seller) html += '<span>&#x1F4E8; '+m.seller.substring(0,20)+'</span>';
+      html += '</div></div>';
+    }
+
+    html += '</div>';
   }
-  wrap.innerHTML = html;
 
-  // Draw charts
-  for(var i=0;i<list.length;i++){
-    var a = list[i];
-    if(a.history && a.history.length>=2) drawChart(i);
-    else {
-      var cv = document.getElementById('cv-'+i);
-      if(cv) cv.parentElement.innerHTML = '<div style="text-align:center;color:#999;padding:20px;font-size:12px">One snapshot \u2014 no trend data yet</div>';
+  if(!html){
+    board.innerHTML = '<div class="err" style="padding:40px">No matching ASINs found</div>';
+    return;
+  }
+
+  board.innerHTML = html;
+  board.className = 'board-wrap';
+
+  // Draw charts for visible groups
+  for(var gi=0;gi<activeCols.length;gi++){
+    var g = activeCols[gi];
+    for(var mi=0;mi<g.members.length;mi++){
+      var m = g.members[mi];
+      if(m.history&&m.history.length>=2){
+        drawChart('m-'+gi+'-'+mi, m);
+      }
     }
   }
 }
 
-function toggleDetail(idx){
-  var rows = document.querySelectorAll('.row');
-  var exps = document.querySelectorAll('.detail');
-  var open = rows[idx] && rows[idx].classList.contains('open');
-  rows.forEach(function(r){r.classList.remove('open');});
-  exps.forEach(function(e){e.style.display='none';});
-  if(!open){
-    rows[idx].classList.add('open');
-    exps[idx].style.display = 'block';
-    drawChart(idx);
+function toggleDetail(memberId, gi, mi){
+  var el = document.getElementById('det-'+memberId);
+  if(!el) return;
+  var isOpen = el.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.member-detail').forEach(function(e){e.classList.remove('open');});
+  if(!isOpen){
+    el.classList.add('open');
+    var g = gData.groups[gi];
+    var m = g.members[mi];
+    if(m.history&&m.history.length>=2){
+      drawChart(memberId, m);
+    }
   }
 }
 
-function drawChart(idx){
-  var cv = document.getElementById('cv-'+idx);
+function drawChart(memberId, m){
+  var cid = 'cv-'+memberId.replace(/-/g,'_');
+  var cv = document.getElementById(cid);
   if(!cv) return;
-  var a = gData[idx];
-  if(!a || !a.history || a.history.length<2) return;
-  var cid = 'ch-'+idx;
-  if(gCharts[cid]){gCharts[cid].destroy();delete gCharts[cid];}
-  var h = a.history;
+  var c1 = 'ch_'+memberId;
+  if(gCharts[c1]){gCharts[c1].destroy();delete gCharts[c1];}
+  var h = m.history;
   var labels = h.map(function(x){return x.timestamp&&x.timestamp.length>=16?x.timestamp.substring(5,16):'';});
-  var prices = h.map(function(x){return x.price;});
-  var bsrs = h.map(function(x){return x.bsr;});
-  gCharts[cid] = new Chart(cv.getContext('2d'), {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [
-        {label:'Price ($)', data:prices, borderColor:'#007185', backgroundColor:'rgba(0,113,133,0.08)', fill:true, tension:0.3, pointRadius:3, pointHoverRadius:5, yAxisID:'y'},
-        {label:'BSR Rank', data:bsrs, borderColor:'#dc2626', backgroundColor:'rgba(220,38,38,0.06)', fill:true, tension:0.3, pointRadius:3, pointHoverRadius:5, yAxisID:'y1'}
+  gCharts[c1] = new Chart(cv.getContext('2d'),{
+    type:'line',
+    data:{
+      labels:labels,
+      datasets:[
+        {label:'Price ($)',data:h.map(function(x){return x.price;}),borderColor:'#007185',backgroundColor:'rgba(0,113,133,0.08)',fill:true,tension:0.3,pointRadius:2,yAxisID:'y'},
+        {label:'BSR',data:h.map(function(x){return x.bsr;}),borderColor:'#dc2626',backgroundColor:'rgba(220,38,38,0.06)',fill:true,tension:0.3,pointRadius:2,yAxisID:'y1'}
       ]
     },
     options:{
-      responsive:true, maintainAspectRatio:false,
+      responsive:true,maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
-      plugins:{
-        legend:{position:'top', labels:{usePointStyle:true, padding:16, font:{size:11}}},
-        tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label.includes('Price')?'Price: $'+ctx.parsed.y.toFixed(2):'BSR: #'+Math.round(ctx.parsed.y).toLocaleString();}}}
-      },
+      plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:12,font:{size:10}}},tooltip:{callbacks:{label:function(ctx){
+        return ctx.dataset.label.includes('Price')?'Price: $'+ctx.parsed.y.toFixed(2):'BSR: #'+Math.round(ctx.parsed.y).toLocaleString();
+      }}}},
       scales:{
-        x:{grid:{display:false}, ticks:{maxRotation:45, font:{size:10}}},
-        y:{type:'linear', display:true, position:'left', title:{display:true, text:'Price ($)', font:{size:11}}, grid:{color:'rgba(0,0,0,0.04)'}, ticks:{font:{size:10}}},
-        y1:{type:'linear', display:true, position:'right', reverse:true, title:{display:true, text:'BSR Rank', font:{size:11}}, grid:{drawOnChartArea:false}, ticks:{font:{size:10}}}
+        x:{grid:{display:false},ticks:{maxRotation:45,font:{size:9}}},
+        y:{type:'linear',display:true,position:'left',title:{display:true,text:'Price ($)',font:{size:10}},grid:{color:'rgba(0,0,0,0.04)'}},
+        y1:{type:'linear',display:true,position:'right',reverse:true,title:{display:true,text:'BSR',font:{size:10}},grid:{drawOnChartArea:false}}
       }
     }
   });
@@ -400,40 +348,42 @@ function drawChart(idx){
 
 // ─── CSV Export ───
 function exportCsv(){
-  var csv = '\uFEFFASIN,Title,Brand,Price,List Price,Rating,Reviews,BSR,Seller,Price Change,Price Change %,BSR Change,Has History,Snapshot Count,Last Check\n';
-  for(var i=0;i<gData.length;i++){
-    var a = gData[i];
-    var h = a.history || [];
-    var lastTs = h.length ? (h[h.length-1].timestamp||'').substring(0,16) : '';
-    csv += [
-      a.asin||'',
-      (a.title||'').replace(/"/g,'""'),
-      (a.brand||'').replace(/"/g,'""'),
-      a.price != null ? '$'+a.price.toFixed(2) : '',
-      a.list_price != null ? '$'+a.list_price.toFixed(2) : '',
-      a.rating != null ? a.rating : '',
-      a.review_count != null ? a.review_count : '',
-      a.bsr != null ? '#'+a.bsr : '',
-      (a.seller||'').replace(/"/g,'""'),
-      a.price_change != null ? a.price_change.toFixed(2) : '',
-      a.price_change_pct != null ? a.price_change_pct.toFixed(1)+'%' : '',
-      a.bsr_change != null ? a.bsr_change : '',
-      h.length >= 2 ? 'Yes' : 'No',
-      h.length,
-      lastTs
-    ].map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',') + '\n';
-  }
-  var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-  var link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'crossmart_monitor_'+new Date().toISOString().slice(0,10)+'.csv';
-  link.click();
-  URL.revokeObjectURL(link.href);
+  if(!gData||!gData.groups) return;
+  var csv = '\uFEFFGroup,Is Main,ASIN,Title,Brand,Price,List Price,Rating,Reviews,BSR,Seller,Price Change,Price Change %,BSR Change,Has History,Snapshot Count,Last Check\n';
+  gData.groups.forEach(function(g){
+    g.members.forEach(function(m){
+      if(!m.asin) return;
+      var h = m.history||[];
+      var lastTs = h.length?(h[h.length-1].timestamp||'').substring(0,16):'';
+      csv += [
+        g.main_asin,
+        m.is_main?'Yes':'No',
+        m.asin,
+        (m.title||'').replace(/"/g,'""'),
+        (m.brand||'').replace(/"/g,'""'),
+        m.price!=null?'$'+m.price.toFixed(2):'',
+        m.list_price!=null?'$'+m.list_price.toFixed(2):'',
+        m.rating!=null?m.rating:'',
+        m.review_count!=null?m.review_count:'',
+        m.bsr!=null?'#'+m.bsr:'',
+        (m.seller||'').replace(/"/g,'""'),
+        m.price_change!=null?m.price_change.toFixed(2):'',
+        m.price_change_pct!=null?m.price_change_pct.toFixed(1)+'%':'',
+        m.bsr_change!=null?m.bsr_change:'',
+        h.length>=2?'Yes':'No',
+        h.length,
+        lastTs
+      ].map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',')+'\n';
+    });
+  });
+  var blob = new Blob([csv],{type:'text/csv;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'crossmart_groups_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
 }
 
-// ─── Init ───
-loadCfg();
-renderCfg();
 loadData();
 </script>
 </body>
