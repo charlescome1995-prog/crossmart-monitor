@@ -10,14 +10,21 @@
   </nav>
 </div>
 
-<div class="monitor-bar" id="monitorBar">
-  <span class="mb-label">Monitor Targets:</span>
-  <span class="mb-asin" id="mbAsin"></span>
-  <span class="divider"></span>
-  <span class="mb-kw" id="mbKw"></span>
-  <span style="flex:1"></span>
-  <button class="btn btn-save btn-sm" onclick="saveTargets()">Save</button>
-  <span class="saved-msg" id="savedMsg" style="display:none">Saved</span>
+<div class="tbar">
+  <div class="tblock asin-block">
+    <div class="tlabel">ASIN Groups</div>
+    <div id="targetsInner"></div>
+  </div>
+  <div class="tsep"></div>
+  <div class="tblock kw-block">
+    <div class="tlabel">Keywords</div>
+    <div class="trow" id="kwRow"></div>
+  </div>
+  <div class="tbar-btns">
+    <button class="btn btn-save btn-sm" onclick="saveTargets()">Save</button>
+    <span class="saved-msg" id="savedMsg" style="display:none">Saved</span>
+    <button class="btn btn-sm" onclick="refresh()">Refresh</button>
+  </div>
 </div>
 
 <div class="filters">

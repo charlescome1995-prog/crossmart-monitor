@@ -1,7 +1,17 @@
 /* global MONITOR_EMBED, Chart, XLSX */
 var _data = null;
 var _charts = {};
-var _targets = { asins:['','','','',''], keywords:['','','','',''] };
+/* _targets: { asins: [[5],[5],[5],[5],[5]], keywords: [5] } */
+var _targets = {
+  asins: [
+    ['','','','',''],
+    ['','','','',''],
+    ['','','','',''],
+    ['','','','',''],
+    ['','','','','']
+  ],
+  keywords: ['','','','','']
+};
 var _sortCol = 'bsr';
 var _sortDir = 1;
 
@@ -21,6 +31,10 @@ function loadTargets() {
   try {
     var t = localStorage.getItem('cm_targets');
     if (t) _targets = JSON.parse(t);
+    /* migrate old flat format */
+    if (_targets.asins && !Array.isArray(_targets.asins[0])) {
+      _targets.asins = _targets.asins.map ? [_targets.asins] : _targets.asins;
+    }
   } catch(e) {}
 }
 
@@ -32,38 +46,80 @@ function saveTargets() {
   } catch(e) {}
 }
 
-function renderTargetsBar() {
-  var asinEl = document.getElementById('mbAsin');
-  var kwEl  = document.getElementById('mbKw');
-  if (!asinEl || !kwEl) return;
-  var asinHtml = '', kwHtml = '';
-  _targets.asins.forEach(function(a, i) {
-    asinHtml += '<span class="target-chip' + (a ? '' : ' empty') + '">';
-    asinHtml += '<input type="text" id="ta' + i + '" value="' + _tval(a) + '" placeholder="ASIN" maxlength="10" onchange="onTargetAsin(' + i + ',this.value)">';
-    asinHtml += '</span> ';
-  });
-  _targets.keywords.forEach(function(k, i) {
-    kwHtml += '<span class="target-chip kw' + (k ? '' : ' empty') + '">';
-    kwHtml += '<input type="text" id="tk' + i + '" value="' + _tval(k) + '" placeholder="Keyword" onchange="onTargetKw(' + i + ',this.value)">';
-    kwHtml += '</span> ';
-  });
-  asinEl.innerHTML = asinHtml;
-  kwEl.innerHTML   = kwHtml;
+function _tv(s) {
+  return s == null ? '' : String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
 }
 
-function _tval(s) { return s == null ? '' : String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
-
-function onTargetAsin(idx, val) {
-  _targets.asins[idx] = val.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
-  saveTargets(); renderTargetsBar();
+function onTargetAsin(gi, idx, val) {
+  _targets.asins[gi][idx] = val.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+  saveTargets();
+  renderTargetsBar();
+  render();
 }
 function onTargetKw(idx, val) {
   _targets.keywords[idx] = val.trim();
-  saveTargets(); renderTargetsBar();
+  saveTargets();
+  renderTargetsBar();
+  render();
 }
 
-function getTargetAsins()   { return _targets.asins.filter(function(s){ return s.length > 0; }); }
-function getTargetKws()    { return _targets.keywords.filter(function(s){ return s.length > 0; }); }
+function getTargetAsins() {
+  var flat = [];
+  _targets.asins.forEach(function(row) { flat = flat.concat(row.filter(function(s){ return s.length > 0; })); });
+  return flat;
+}
+function getTargetKws() {
+  return _targets.keywords.filter(function(s){ return s.length > 0; });
+}
+
+function renderTargetsBar() {
+  var el = document.getElementById('targetsInner');
+  if (!el) return;
+
+  /* Build ASIN grid: 5 columns, 5 rows */
+  var asinHtml = '';
+  for (var row = 0; row < 5; row++) {
+    asinHtml += '<div class="trow">';
+    for (var col = 0; col < 5; col++) {
+      asinHtml += '<input type="text" class="tchip asin-chip" '
+        + 'id="ta' + col + '_' + row + '" '
+        + 'value="' + _tv(_targets.asins[col][row]) + '" '
+        + 'placeholder="' + (row === 0 ? 'Main' : '') + '" '
+        + 'maxlength="10" '
+        + 'onchange="onTargetAsin(' + col + ',' + row + ',this.value)">';
+    }
+    asinHtml += '</div>';
+  }
+
+  /* Build Keywords row */
+  var kwHtml = '';
+  for (var k = 0; k < 5; k++) {
+    kwHtml += '<input type="text" class="tchip kw-chip" '
+      + 'id="tk' + k + '" '
+      + 'value="' + _tv(_targets.keywords[k]) + '" '
+      + 'placeholder="Keyword ' + (k+1) + '" '
+      + 'onchange="onTargetKw(' + k + ',this.value)">';
+  }
+
+  el.innerHTML =
+    '<div class="tblock asin-block">' +
+      '<div class="tlabel">ASIN Groups</div>' +
+      asinHtml +
+    '</div>' +
+    '<div class="tsep"></div>' +
+    '<div class="tblock kw-block">' +
+      '<div class="tlabel">Keywords</div>' +
+      '<div class="trow">' + kwHtml + '</div>' +
+    '</div>';
+}
+
+function getAllMembers() {
+  if (!_data || !_data.groups) return [];
+  return _data.groups.reduce(function(acc, g) {
+    g.members.forEach(function(m) { if (m.asin) acc.push(m); });
+    return acc;
+  }, []);
+}
 
 /* ── Utility ── */
 function e(s) {
@@ -121,7 +177,7 @@ function getLastTs(member) {
 function getChangeSet(member) {
   var changes = [];
   var pc = getChange(member);
-  if (pc && (pc.price_pct !== 0)) {
+  if (pc && pc.price_pct !== 0) {
     changes.push({ type: 'price', label: 'Price',
       old: fmtPrice(pc.price_from), new: fmtPrice(pc.price_to),
       pct: pc.price_pct > 0 ? '+' + pc.price_pct + '%' : pc.price_pct + '%' });
@@ -140,85 +196,44 @@ function getChangeSet(member) {
   return changes;
 }
 
-function getAllMembers() {
-  if (!_data || !_data.groups) return [];
-  return _data.groups.reduce(function(acc, g) {
-    g.members.forEach(function(m) { if (m.asin) acc.push(m); });
-    return acc;
-  }, []);
-}
-
-function buildRow(m) {
+function buildMemberCell(m, gi) {
   var changes = getChangeSet(m);
   var hasChg  = changes && changes.length > 0;
   var lastTs  = getLastTs(m);
-  var isMain  = false;
-  if (_data && _data.groups) {
-    for (var gi = 0; gi < _data.groups.length; gi++) {
-      if (_data.groups[gi].main_asin === m.asin) { isMain = true; break; }
-    }
-  }
+  var isMain  = _data && _data.groups && _data.groups[gi] && _data.groups[gi].main_asin === m.asin;
 
   var imgHTML = m.main_image
     ? '<img src="' + e(m.main_image) + '" alt="' + e(m.asin||'') + '">'
     : '<div class="ph"></div>';
 
-  var rowClass = 'asin-row' + (hasChg ? ' changed' : '') + (isMain ? ' main-row' : '');
-
-  var html = '';
-  html += '<div class="asin-row' + (hasChg ? ' changed' : '') + (isMain ? ' main-row' : '') + '">';
-
-  /* ─ Image + basic info ─ */
-  html += '<div class="ac-img">' + imgHTML + '</div>';
-  html += '<div class="ac-info">';
-
-  html += '<div class="ac-title-row">';
-  html += '<span class="ac-title">' + e(m.title || m.asin || '') + '</span>';
-  html += '<span class="ac-asin">' + e(m.asin || '') + '</span>';
-  if (isMain) html += '<span class="main-badge">MAIN</span>';
+  var html = '<div class="mcard' + (hasChg ? ' changed' : '') + '">';
+  html += '<div class="mc-img">' + imgHTML + '</div>';
+  html += '<div class="mc-body">';
+  html += '<div class="mc-title-row">';
+  html += '<span class="mc-title">' + e(m.title || m.asin || '') + '</span>';
   html += '</div>';
-
-  html += '<div class="ac-metrics">';
-  html += '<div class="ac-metric"><div class="ml">Brand</div><div class="mv">' + e(m.brand || '---') + '</div></div>';
-  html += '<div class="ac-metric"><div class="ml">Price</div><div class="mv pc">' + fmtPrice(m.price) + '</div></div>';
-  html += '<div class="ac-metric"><div class="ml">Rating</div><div class="mv rt">' + (m.rating != null ? m.rating : '---') + '</div></div>';
-  html += '<div class="ac-metric"><div class="ml">Reviews</div><div class="mv">' + (m.review_count != null ? m.review_count.toLocaleString() : '---') + '</div></div>';
+  html += '<div class="mc-asin">' + e(m.asin || '') + '</div>';
+  html += '<div class="mc-metrics">';
+  html += '<div class="mc-metric"><div class="mcm-l">Price</div><div class="mcm-v pc">' + fmtPrice(m.price) + '</div></div>';
+  html += '<div class="mc-metric"><div class="mcm-l">Rating</div><div class="mcm-v rt">' + (m.rating != null ? m.rating : '---') + '</div></div>';
+  html += '<div class="mc-metric"><div class="mcm-l">Reviews</div><div class="mcm-v">' + (m.review_count != null ? m.review_count.toLocaleString() : '---') + '</div></div>';
   html += '</div>';
-
-  html += '<div class="ac-bsr">';
+  html += '<div class="mc-bsr">';
   if (m.bsr != null) {
-    html += '<div class="ac-bsr-item"><span class="bl">BSR</span><span class="bv sort-key" data-col="bsr" data-val="' + m.bsr + '">#' + m.bsr.toLocaleString() + '</span></div>';
+    html += '<span class="mc-bsr-item"><span class="mcb-l">BSR</span><span class="mcb-v sort-key" data-col="bsr" data-val="' + m.bsr + '">#' + m.bsr.toLocaleString() + '</span></span>';
   }
-  if (m.bsr_sub_rank != null && m.bsr_sub_rank !== m.bsr) {
-    html += '<div class="ac-bsr-item"><span class="bl">Sub</span><span class="bv">#' + m.bsr_sub_rank.toLocaleString() + '</span></div>';
-  }
-  html += '<div class="ac-metric" style="margin-left:auto"><div class="ml">Seller</div><div class="mv seller">' + e(m.seller || '---') + '</div></div>';
   html += '</div>';
-
-  html += '<div class="ac-status">';
+  html += '<div class="mc-status">';
   if (hasChg) {
-    html += '<span class="as-warn">\u25cf Changes ' + changes.length + '</span>';
+    html += '<span class="as-warn">\u25cf ' + changes.length + ' changes</span>';
   } else {
     html += '<span class="as-stable">\u2713 Stable</span>';
   }
-  if (lastTs) {
-    var d = new Date(lastTs);
-    if (!isNaN(d)) {
-      var ds = ('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
-      var ts = ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
-      html += '<span class="ac-ts"><span>' + ds + ' ' + ts + '</span></span>';
-    }
-  }
   html += '</div>';
-
-  html += '</div>'; /* end ac-info */
-  html += '</div>'; /* end asin-row */
-
-  /* ─ Inline change section (always visible when has changes) ─ */
-  html += '<div class="chg-section' + (hasChg ? ' visible' : '') + '">';
   if (hasChg) {
+    html += '<div class="mc-chgs">';
     changes.forEach(function(c) {
-      html += '<div class="chg-item">';
+      html += '<div class="mc-chg-item">';
       html += '<span class="ci-label">' + e(c.label) + ':</span>';
       html += '<span class="ci-old">' + e(c.old) + '</span>';
       html += '<span class="ci-arrow">\u2192</span>';
@@ -226,12 +241,10 @@ function buildRow(m) {
       if (c.pct) html += '<span class="ci-pct">(' + c.pct + ')</span>';
       html += '</div>';
     });
-    html += '<div class="mini-chart-wrap"><canvas id="cv_' + e(m.asin||'') + '"></canvas></div>';
-  } else {
-    html += '<div class="chg-item"><span class="ci-label">--</span><span class="ci-new">No changes detected</span></div>';
+    html += '<div class="mc-chart"><canvas id="cv_' + e(m.asin||'') + '"></canvas></div>';
+    html += '</div>';
   }
-  html += '</div>';
-
+  html += '</div></div>';
   return html;
 }
 
@@ -242,49 +255,69 @@ function render() {
     return;
   }
 
-  /* Filter */
   var sf = document.getElementById('sf') ? document.getElementById('sf').value.toLowerCase() : '';
   var sc = document.getElementById('sc') ? document.getElementById('sc').checked : false;
-  var targetAsins = getTargetAsins();
+  var groups = _data.groups;
 
-  var members = getAllMembers().filter(function(m) {
-    if (!m.asin) return false;
-    if (sf && !(m.asin.toLowerCase().includes(sf) || (m.title||'').toLowerCase().includes(sf))) return false;
-    if (sc) { var cs = getChangeSet(m); if (!cs || cs.length === 0) return false; }
-    return true;
+  /* Build flat member list for sort */
+  var allRows = [];
+  groups.forEach(function(g, gi) {
+    var row = g.members.filter(function(m) {
+      if (!m.asin) return false;
+      if (sf && !(m.asin.toLowerCase().includes(sf) || (m.title||'').toLowerCase().includes(sf))) return false;
+      if (sc) { var cs = getChangeSet(m); if (!cs || cs.length === 0) return false; }
+      return true;
+    });
+    allRows.push({ gi: gi, members: row });
   });
 
-  /* Sort */
-  members.sort(function(a, b) {
-    var va = 0, vb = 0;
-    if (_sortCol === 'bsr')        { va = a.bsr||999999; vb = b.bsr||999999; }
-    else if (_sortCol === 'price') { va = a.price||0;   vb = b.price||0; }
-    else if (_sortCol === 'price_chg') {
-      var ca = getChange(a), cb = getChange(b);
-      va = ca ? Math.abs(ca.price_pct) : 0; vb = cb ? Math.abs(cb.price_pct) : 0;
-    }
-    else if (_sortCol === 'bsr_chg') {
-      var ba = getBSRChange(a), bb = getBSRChange(b);
-      va = ba ? Math.abs(ba.bsr_diff) : 0; vb = bb ? Math.abs(bb.bsr_diff) : 0;
-    }
-    else if (_sortCol === 'rating')  { va = a.rating||0; vb = b.rating||0; }
-    else if (_sortCol === 'reviews') { va = a.review_count||0; vb = b.review_count||0; }
-    return (va > vb ? 1 : va < vb ? -1 : 0) * _sortDir;
+  /* Sort each group independently */
+  allRows.forEach(function(r) {
+    r.members.sort(function(a, b) {
+      var va = 0, vb = 0;
+      if (_sortCol === 'bsr')        { va = a.bsr||999999; vb = b.bsr||999999; }
+      else if (_sortCol === 'price') { va = a.price||0;   vb = b.price||0; }
+      else if (_sortCol === 'price_chg') {
+        var ca = getChange(a), cb = getChange(b);
+        va = ca ? Math.abs(ca.price_pct) : 0; vb = cb ? Math.abs(cb.price_pct) : 0;
+      }
+      else if (_sortCol === 'bsr_chg') {
+        var ba = getBSRChange(a), bb = getBSRChange(b);
+        va = ba ? Math.abs(ba.bsr_diff) : 0; vb = bb ? Math.abs(bb.bsr_diff) : 0;
+      }
+      else if (_sortCol === 'rating')  { va = a.rating||0; vb = b.rating||0; }
+      else if (_sortCol === 'reviews') { va = a.review_count||0; vb = b.review_count||0; }
+      return (va > vb ? 1 : va < vb ? -1 : 0) * _sortDir;
+    });
   });
 
-  /* Build html */
-  var html = '';
-  if (!html) {
-    members.forEach(function(m) { html += buildRow(m); });
+  /* Build 5-column grid HTML */
+  var html = '<div class="board-grid">';
+  for (var col = 0; col < 5; col++) {
+    var g = groups[col];
+    var rows = allRows[col] ? allRows[col].members : [];
+    html += '<div class="grid-col">';
+    html += '<div class="col-hdr">';
+    html += '<span class="col-hdr-asin">' + (g ? e(g.main_asin || '') : '---') + '</span>';
+    html += '<span class="col-hdr-n">' + rows.length + ' items</span>';
+    html += '</div>';
+    if (g && rows.length > 0) {
+      rows.forEach(function(m) { html += buildMemberCell(m, col); });
+    } else {
+      html += '<div class="empty-col">No data</div>';
+    }
+    html += '</div>';
   }
-  if (!html) html = '<div class="loading">No matching ASINs.</div>';
+  html += '</div>';
   board.innerHTML = html;
 
   /* Draw sparklines */
   setTimeout(function() {
-    members.forEach(function(m) {
-      var changes = getChangeSet(m);
-      if (changes && changes.length > 0) drawMiniSparkline('cv_' + m.asin, m.history || []);
+    allRows.forEach(function(r) {
+      r.members.forEach(function(m) {
+        var changes = getChangeSet(m);
+        if (changes && changes.length > 0) drawMiniSparkline('cv_' + m.asin, m.history || []);
+      });
     });
   }, 60);
 }
@@ -339,7 +372,7 @@ function exportXlsx() {
   XLSX.writeFile(wb, 'crossmart_monitor_' + new Date().toISOString().substring(0,10) + '.xlsx');
 }
 
-/* ── Sort by clicking column headers ── */
+/* ── Column header sort click ── */
 document.addEventListener('click', function(e) {
   var sk = e.target.closest('.sort-key');
   if (!sk) return;
