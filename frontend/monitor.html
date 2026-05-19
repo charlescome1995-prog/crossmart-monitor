@@ -13,7 +13,6 @@
 .topbar nav{display:flex;gap:14px;font-size:13px}
 .topbar nav a{color:rgba(255,255,255,.75);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent;transition:.15s}
 .topbar nav a:hover,.topbar nav a.active{color:#fff;border-bottom-color:#e94560}
-
 /* ─── Filter Bar ─── */
 .filters{background:#fff;padding:8px 16px;display:flex;gap:8px;align-items:center;border-bottom:1px solid #d5d9d9;position:sticky;top:48px;z-index:99;box-shadow:0 1px 3px rgba(0,0,0,.04);flex-wrap:wrap}
 .filters input{padding:5px 10px;border:1px solid #d5d9d9;border-radius:6px;font-size:12px;width:140px}
@@ -23,7 +22,6 @@
 .btn:hover{background:#d5d9d9}
 .btn-p{background:#ffd814;color:#0f1111}.btn-p:hover{background:#f7ca00}
 .btn-sm{padding:3px 8px;font-size:10px}
-
 /* ─── 11-Card Grid ─── */
 .board{padding:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
 .summary-card{background:#fff;border:2px solid #e94560;border-radius:12px;padding:14px 16px;cursor:pointer;transition:.15s;position:relative;overflow:hidden}
@@ -37,7 +35,6 @@
 .summary-card .sc-icon .dot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0}
 .summary-card .sc-icon .dot.up{background:#059669}
 .summary-card .sc-icon .dot.dn{background:#dc2626}
-
 .asin-card{background:#fff;border:1px solid #d5d9d9;border-radius:10px;padding:14px;cursor:pointer;transition:.15s;position:relative}
 .asin-card:hover{border-color:#007185;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
 .asin-card.selected{border-color:#007185;box-shadow:0 0 0 2px #00718533}
@@ -63,7 +60,6 @@
 .asin-card .ac-metric .mv.rt{color:#d99536}
 .asin-card .ac-metric .mv.bsr{color:#067d62}
 .asin-card .ac-badge{position:absolute;top:8px;left:8px;width:18px;height:18px;border-radius:50%;background:#e94560;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
-
 /* ─── Detail View (expanded card) ─── */
 .detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
 .detail-overlay.open{display:flex}
@@ -88,17 +84,11 @@
 .detail-chart-wrap{padding:0 4px;height:120px}
 .detail-chart-wrap canvas{max-height:120px!important}
 .detail-history{margin-top:8px;font-size:10px;color:#aaa;text-align:right}
-
 /* Loading / empty */
 .loading{text-align:center;padding:40px;color:#999;font-size:13px}
 .err-wrap{text-align:center;padding:40px;color:#555;font-size:13px}
 .err-wrap .btn{margin-top:14px;padding:8px 20px;font-size:13px;border-radius:20px}
-
-@media(max-width:768px){
-  .board{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
-  .detail-metrics{grid-template-columns:repeat(3,1fr)}
-}
-
+@media(max-width:768px){.board{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}.detail-metrics{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
@@ -110,22 +100,19 @@
     <a href="selection.html">Selection</a>
   </nav>
 </div>
-
 <div class="filters">
-  <input type="text" id="sf" placeholder="&#x1F50D; Search ASIN or title..." oninput="render()">
+  <input type="text" id="sf" placeholder="Search ASIN or title..." oninput="render()">
   <select id="ss" onchange="render()">
-    <option value="bsr">BSR &#x2B06;</option>
+    <option value="bsr">BSR</option>
     <option value="price_chg">Price Change</option>
     <option value="bsr_chg">BSR Change</option>
-    <option value="price">Price &#x2B07;</option>
+    <option value="price">Price</option>
   </select>
   <label><input type="checkbox" id="sc" onchange="render()"> Changes only</label>
-  <button class="btn btn-sm" onclick="refresh()">&#x1F504; Refresh</button>
-  <button class="btn btn-sm btn-p" onclick="exportXlsx()">&#x1F4E5; Export Excel</button>
+  <button class="btn btn-sm" onclick="refresh()">Refresh</button>
+  <button class="btn btn-sm btn-p" onclick="exportXlsx()">Export Excel</button>
 </div>
-
-<div id="board" class="board"><div class="loading">&#x231B; Loading...</div></div>
-
+<div id="board" class="board"><div class="loading">Loading...</div></div>
 <div id="detail" class="detail-overlay" onclick="if(event.target===this)closeDetail()">
   <div class="detail-panel">
     <div class="detail-hdr">
@@ -133,748 +120,22 @@
         <div class="dh-title" id="dtTitle">ASIN Detail</div>
         <div class="dh-sub" id="dtSub"></div>
       </div>
-      <button class="dh-close" onclick="closeDetail()">&#x2715;</button>
+      <button class="dh-close" onclick="closeDetail()">X</button>
     </div>
     <div id="dtBody" class="detail-body"></div>
   </div>
 </div>
-
 <script>
-window.MONITOR_EMBED = {
-  "updated": "2026-05-19T11:16:17",
-  "groups": [
-    {
-      "main_asin": "B09V7Z4TJG",
-      "members": [
-        {
-          "asin": "B09V7Z4TJG",
-          "title": "medicube Toner Pads Zero Pore Pad 2.0 | Dual-Textured Facial Pad for Exfoliation and Pore Care with 4.5% AHA Lactic Acid, 0.45% BHA Salicylic Acid | Ideal for All, Korean Skin Care, 70 Pads (1 Pack)",
-          "brand": "medicube",
-          "main_image": "https://m.media-amazon.com/images/I/71Mcspt-6AL._SX466_.jpg",
-          "price": 18.9,
-          "list_price": 0.27,
-          "rating": 4.6,
-          "review_count": 24123,
-          "bsr": 1,
-          "bsr_sub_rank": 1,
-          "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-          "seller": "Medicube & Aprilskin",
-          "history": [
-            {
-              "timestamp": "2026-05-18T20:35:44",
-              "price": null,
-              "bsr": null,
-              "rating": null,
-              "review_count": null
-            },
-            {
-              "timestamp": "2026-05-18T20:37:45",
-              "price": 18.9,
-              "bsr": 1,
-              "rating": null,
-              "review_count": null
-            },
-            {
-              "timestamp": "2026-05-18T20:41:48",
-              "price": null,
-              "bsr": null,
-              "rating": null,
-              "review_count": null
-            },
-            {
-              "timestamp": "2026-05-18T20:53:15",
-              "price": 18.9,
-              "bsr": 1,
-              "rating": null,
-              "review_count": null
-            },
-            {
-              "timestamp": "2026-05-18T21:20:02",
-              "price": 18.9,
-              "bsr": 1,
-              "rating": 4.6,
-              "review_count": 24111
-            },
-            {
-              "timestamp": "2026-05-18T21:22:11",
-              "price": 18.9,
-              "bsr": 1,
-              "rating": 4.6,
-              "review_count": 24111
-            },
-            {
-              "timestamp": "2026-05-18T22:07:56",
-              "price": 18.9,
-              "bsr": 1,
-              "rating": 4.6,
-              "review_count": 24123
-            },
-            {
-              "timestamp": "2026-05-18T22:58:36",
-              "price": 18.9,
-              "bsr": 1,
-              "rating": 4.6,
-              "review_count": 24123
-            }
-          ],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": true,
-          "has_history": true,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        }
-      ],
-      "count": 5
-    },
-    {
-      "main_asin": "B0CGB215HR",
-      "members": [
-        {
-          "asin": "B0CGB215HR",
-          "title": "goPure Tighten & Lift Neck & Chest Moisturizer Cream for Visibly Firming, Tightening and Lifting the Look of Wrinkles & Crepey Skin, 1.7oz",
-          "brand": "goPure",
-          "main_image": "https://m.media-amazon.com/images/I/613gXRGC9XL._SX466_.jpg",
-          "price": 31.49,
-          "list_price": 18.52,
-          "rating": 4.1,
-          "review_count": 10657,
-          "bsr": 307,
-          "bsr_sub_rank": 307,
-          "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-          "seller": "goPure",
-          "history": [
-            {
-              "timestamp": "2026-05-18T21:26:03",
-              "price": 31.49,
-              "bsr": 307,
-              "rating": 4.1,
-              "review_count": 10648
-            },
-            {
-              "timestamp": "2026-05-18T22:15:21",
-              "price": 31.49,
-              "bsr": 307,
-              "rating": 4.1,
-              "review_count": 10657
-            },
-            {
-              "timestamp": "2026-05-18T23:06:06",
-              "price": 31.49,
-              "bsr": 307,
-              "rating": 4.1,
-              "review_count": 10657
-            }
-          ],
-          "price_change": 0.0,
-          "bsr_change": 0,
-          "price_change_pct": 0.0,
-          "bsr_change_pct": 0.0,
-          "is_main": true,
-          "has_history": true,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        }
-      ],
-      "count": 5
-    },
-    {
-      "main_asin": "B0DSLGHPPW",
-      "members": [
-        {
-          "asin": "B0DSLGHPPW",
-          "title": "UJhay Retinol Neck Cream, Hyaluronic Acid and Caffeine Enriched Neck Firming Cream to Minimize Fine Lines & Dullness - 3-in-1 Moisturizing Cream for Neck, Chest and Face (50 ml/1.7 oz)",
-          "brand": "Brand: UJhay",
-          "main_image": "https://m.media-amazon.com/images/I/714u3IHLVmL._SX466_.jpg",
-          "price": 8.99,
-          "list_price": 5.29,
-          "rating": 4.5,
-          "review_count": 289,
-          "bsr": 11995,
-          "bsr_sub_rank": 11995,
-          "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-          "seller": "Guinuo E-commerce",
-          "history": [
-            {
-              "timestamp": "2026-05-18T21:30:26",
-              "price": 8.99,
-              "bsr": 11994,
-              "rating": 4.5,
-              "review_count": 289
-            },
-            {
-              "timestamp": "2026-05-18T22:20:31",
-              "price": 8.99,
-              "bsr": 11995,
-              "rating": 4.5,
-              "review_count": 289
-            }
-          ],
-          "price_change": 0.0,
-          "bsr_change": 1,
-          "price_change_pct": 0.0,
-          "bsr_change_pct": 0.0,
-          "is_main": true,
-          "has_history": true,
-          "has_diff": true
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        }
-      ],
-      "count": 5
-    },
-    {
-      "main_asin": "B0F2J966QL",
-      "members": [
-        {
-          "asin": "B0F2J966QL",
-          "title": "Eight Saints Firm Intentions Anti Aging Neck Cream For Firming Skin and Reducing Wrinkles, with Protein Peptides, Hyaluronic Acid, and Niacinamide, 2 Ounces",
-          "brand": "Eight Saints",
-          "main_image": "https://m.media-amazon.com/images/I/61XDTWFTneL._SX466_.jpg",
-          "price": 34.0,
-          "list_price": 17.0,
-          "rating": 4.6,
-          "review_count": 1748,
-          "bsr": 3692,
-          "bsr_sub_rank": 3692,
-          "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-          "seller": "Eight Saints Skincare LLC",
-          "history": [
-            {
-              "timestamp": "2026-05-18T21:24:23",
-              "price": 34.0,
-              "bsr": 3690,
-              "rating": 4.6,
-              "review_count": 1748
-            },
-            {
-              "timestamp": "2026-05-18T22:14:18",
-              "price": 34.0,
-              "bsr": 3690,
-              "rating": 4.6,
-              "review_count": 1748
-            },
-            {
-              "timestamp": "2026-05-18T23:00:10",
-              "price": 34.0,
-              "bsr": 3692,
-              "rating": 4.6,
-              "review_count": 1748
-            }
-          ],
-          "price_change": 0.0,
-          "bsr_change": 2,
-          "price_change_pct": 0.0,
-          "bsr_change_pct": 0.1,
-          "is_main": true,
-          "has_history": true,
-          "has_diff": true
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        }
-      ],
-      "count": 5
-    },
-    {
-      "main_asin": "B0GKFD9ZQW",
-      "members": [
-        {
-          "asin": "B0GKFD9ZQW",
-          "title": "ANUA Collagen Retinol Refining Gua Sha Cream, Neck Cream For Lifting & Firming, Jawline to Décolleté, Daily Moisturizer, Fine Line Care, Neck Massager, Korean Skin Care, 2.7fl.oz",
-          "brand": "ANUA",
-          "main_image": "https://m.media-amazon.com/images/I/51XYn-lowjL._SX466_.jpg",
-          "price": 30.0,
-          "list_price": 11.07,
-          "rating": 4.5,
-          "review_count": 103,
-          "bsr": 2145,
-          "bsr_sub_rank": 2145,
-          "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-          "seller": "Anua",
-          "history": [
-            {
-              "timestamp": "2026-05-18T21:28:14",
-              "price": 30.0,
-              "bsr": 2145,
-              "rating": 4.5,
-              "review_count": 102
-            },
-            {
-              "timestamp": "2026-05-18T22:19:12",
-              "price": 30.0,
-              "bsr": 2145,
-              "rating": 4.5,
-              "review_count": 103
-            }
-          ],
-          "price_change": 0.0,
-          "bsr_change": 0,
-          "price_change_pct": 0.0,
-          "bsr_change_pct": 0.0,
-          "is_main": true,
-          "has_history": true,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        },
-        {
-          "asin": null,
-          "title": "",
-          "brand": "",
-          "main_image": "",
-          "price": null,
-          "list_price": null,
-          "rating": null,
-          "review_count": null,
-          "bsr": null,
-          "bsr_sub_rank": null,
-          "bsr_sub_category": "",
-          "seller": "",
-          "history": [],
-          "price_change": 0,
-          "bsr_change": 0,
-          "price_change_pct": 0,
-          "bsr_change_pct": 0,
-          "is_main": false,
-          "has_history": false,
-          "has_diff": false
-        }
-      ],
-      "count": 5
-    }
-  ],
-  "total_asins": 6
-};
-</script>
-</body>
-</html>
-<script>
-
-/* global MONITOR_EMBED, Chart, XLSX */
 var _data = null;
 var _charts = {};
-
 function initMonitor(data) {
   _data = data;
   render();
 }
-
 function refresh() {
-  initMonitor(window.MONITOR_EMBED || {});
+  window.MONITOR_EMBED = {"updated":"2026-05-19T11:16:17","groups":[{"main_asin":"B09V7Z4TJG","members":[{"asin":"B09V7Z4TJG","title":"medicube Toner Pads Zero Pore Pad 2.0 | Dual-Textured Facial Pad for Exfoliation and Pore Care with 4.5% AHA Lactic Acid, 0.45% BHA Salicylic Acid | Ideal for All, Korean Skin Care, 70 Pads (1 Pack)","brand":"medicube","main_image":"https://m.media-amazon.com/images/I/71Mcspt-6AL._SX466_.jpg","price":18.9,"list_price":0.27,"rating":4.6,"review_count":24123,"bsr":1,"bsr_sub_rank":1,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Medicube & Aprilskin","history":[{"timestamp":"2026-05-18T20:35:44","price":null,"bsr":null,"rating":null,"review_count":null},{"timestamp":"2026-05-18T20:37:45","price":18.9,"bsr":1,"rating":null,"review_count":null},{"timestamp":"2026-05-18T20:41:48","price":null,"bsr":null,"rating":null,"review_count":null},{"timestamp":"2026-05-18T20:53:15","price":18.9,"bsr":1,"rating":null,"review_count":null},{"timestamp":"2026-05-18T21:20:02","price":18.9,"bsr":1,"rating":4.6,"review_count":24111},{"timestamp":"2026-05-18T21:22:11","price":18.9,"bsr":1,"rating":4.6,"review_count":24111},{"timestamp":"2026-05-18T22:07:56","price":18.9,"bsr":1,"rating":4.6,"review_count":24123},{"timestamp":"2026-05-18T22:58:36","price":18.9,"bsr":1,"rating":4.6,"review_count":24123}],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":true,"has_history":true,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0CGB215HR","members":[{"asin":"B0CGB215HR","title":"goPure Tighten & Lift Neck & Chest Moisturizer Cream for Visibly Firming, Tightening and Lifting the Look of Wrinkles & Crepey Skin, 1.7oz","brand":"goPure","main_image":"https://m.media-amazon.com/images/I/613gXRGC9XL._SX466_.jpg","price":31.49,"list_price":18.52,"rating":4.1,"review_count":10657,"bsr":307,"bsr_sub_rank":307,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"goPure","history":[{"timestamp":"2026-05-18T21:26:03","price":31.49,"bsr":307,"rating":4.1,"review_count":10648},{"timestamp":"2026-05-18T22:15:21","price":31.49,"bsr":307,"rating":4.1,"review_count":10657},{"timestamp":"2026-05-18T23:06:06","price":31.49,"bsr":307,"rating":4.1,"review_count":10657}],"price_change":0.0,"bsr_change":0,"price_change_pct":0.0,"bsr_change_pct":0.0,"is_main":true,"has_history":true,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0DSLGHPPW","members":[{"asin":"B0DSLGHPPW","title":"UJhay Retinol Neck Cream, Hyaluronic Acid and Caffeine Enriched Neck Firming Cream to Minimize Fine Lines & Dullness - 3-in-1 Moisturizing Cream for Neck, Chest and Face (50 ml/1.7 oz)","brand":"Brand: UJhay","main_image":"https://m.media-amazon.com/images/I/714u3IHLVmL._SX466_.jpg","price":8.99,"list_price":5.29,"rating":4.5,"review_count":289,"bsr":11995,"bsr_sub_rank":11995,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Guinuo E-commerce","history":[{"timestamp":"2026-05-18T21:30:26","price":8.99,"bsr":11994,"rating":4.5,"review_count":289},{"timestamp":"2026-05-18T22:20:31","price":8.99,"bsr":11995,"rating":4.5,"review_count":289}],"price_change":0.0,"bsr_change":1,"price_change_pct":0.0,"bsr_change_pct":0.0,"is_main":true,"has_history":true,"has_diff":true},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0F2J966QL","members":[{"asin":"B0F2J966QL","title":"Eight Saints Firm Intentions Anti Aging Neck Cream For Firming Skin and Reducing Wrinkles, with Protein Peptides, Hyaluronic Acid, and Niacinamide, 2 Ounces","brand":"Eight Saints","main_image":"https://m.media-amazon.com/images/I/61XDTWFTneL._SX466_.jpg","price":34.0,"list_price":17.0,"rating":4.6,"review_count":1748,"bsr":3692,"bsr_sub_rank":3692,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Eight Saints Skincare LLC","history":[{"timestamp":"2026-05-18T21:24:23","price":34.0,"bsr":3690,"rating":4.6,"review_count":1748},{"timestamp":"2026-05-18T22:14:18","price":34.0,"bsr":3690,"rating":4.6,"review_count":1748},{"timestamp":"2026-05-18T23:00:10","price":34.0,"bsr":3692,"rating":4.6,"review_count":1748}],"price_change":0.0,"bsr_change":2,"price_change_pct":0.0,"bsr_change_pct":0.1,"is_main":true,"has_history":true,"has_diff":true},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0GKFD9ZQW","members":[{"asin":"B0GKFD9ZQW","title":"ANUA Collagen Retinol Refining Gua Sha Cream, Neck Cream For Lifting & Firming, Jawline to D\u00e9collet\u00e9, Daily Moisturizer, Fine Line Care, Neck Massager, Korean Skin Care, 2.7fl.oz","brand":"ANUA","main_image":"https://m.media-amazon.com/images/I/51XYn-lowjL._SX466_.jpg","price":30.0,"list_price":11.07,"rating":4.5,"review_count":103,"bsr":2145,"bsr_sub_rank":2145,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Anua","history":[{"timestamp":"2026-05-18T21:28:14","price":30.0,"bsr":2145,"rating":4.5,"review_count":102},{"timestamp":"2026-05-18T22:19:12","price":30.0,"bsr":2145,"rating":4.5,"review_count":103}],"price_change":0.0,"bsr_change":0,"price_change_pct":0.0,"bsr_change_pct":0.0,"is_main":true,"has_history":true,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5}],"total_asins":6};
+initMonitor(window.MONITOR_EMBED);
 }
-
 function render() {
   var board = document.getElementById('board');
   if (!_data || !_data.groups) {
@@ -891,7 +152,6 @@ function render() {
       allAsins.push(m);
     });
   });
-
   var lastUpd = _data.updated || '';
   var html = '<div class="summary-card" onclick="openSummaryDetail()">' +
     '<div class="sc-badge">SUMMARY</div>' +
@@ -901,9 +161,7 @@ function render() {
     '<div class="sc-icons">' +
     '<div class="sc-icon"><div class="dot up"></div>Up ' + totalUp + '</div>' +
     '<div class="sc-icon"><div class="dot dn"></div>Down ' + totalDn + '</div>' +
-    '</div></div>
-';
-
+    '</div></div>\n';
   groups.forEach(function(g, gi) {
     var main = g.members[0] || {};
     var ch = getChange(main);
@@ -913,11 +171,7 @@ function render() {
     var bsr = main.bsr ? '#' + main.bsr.toLocaleString() : '---';
     var rating = main.rating || '---';
     var reviews = main.review_count ? main.review_count.toLocaleString() : '---';
-    var imgPH = '<div class="ph">&#128722;</div>';
-    var imgHTML = main.main_image
-      ? '<img src="' + main.main_image + '">'
-      : imgPH;
-
+    var imgHTML = main.main_image ? '<img src="' + main.main_image + '">' : '<div class="ph"> IMG</div>';
     html += '<div class="asin-card" data-gi="' + gi + '" onclick="openDetail(' + gi + ')">' +
       '<div class="ac-badge">' + g.members.length + '</div>' +
       '<div class="ac-top">' +
@@ -934,16 +188,13 @@ function render() {
       '</div>' +
       '<div class="ac-metrics">' +
       '<div class="ac-metric"><div class="ml">BSR</div><div class="mv bsr">' + bsr + '</div></div>' +
-      '<div class="ac-metric"><div class="ml">Rating</div><div class="mv rt">&#9733; ' + rating + '</div></div>' +
+      '<div class="ac-metric"><div class="ml">Rating</div><div class="mv rt">' + rating + '</div></div>' +
       '<div class="ac-metric"><div class="ml">Reviews</div><div class="mv">' + reviews + '</div></div>' +
       '<div class="ac-metric"><div class="ml">Seller</div><div class="mv" style="font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + e(main.seller||'---') + '</div></div>' +
-      '</div></div>
-';
+      '</div></div>\n';
   });
-
   board.innerHTML = html;
 }
-
 function openDetail(gi) {
   var g = _data && _data.groups ? _data.groups[gi] : null;
   if (!g) return;
@@ -961,10 +212,9 @@ function openDetail(gi) {
     var reviews = m.review_count ? m.review_count.toLocaleString() : '---';
     var isMain = m.asin === g.main_asin;
     var lastTs = getLastTs(m);
-
     html += '<div class="detail-group' + (isMain ? ' main-g' : '') + '">';
     html += '<div class="dg-name">';
-    html += '<span class="asinh">' + (isMain ? '&#9733; ' : '') + (m.asin||'') + '</span>';
+    html += '<span class="asinh">' + (isMain ? '* ' : '') + (m.asin||'') + '</span>';
     html += '<span class="asintitle">' + e(m.title||'') + '</span>';
     html += '<span class="ac-change ' + chClass + '" style="margin-left:auto">' + chTxt + '</span>';
     html += '</div>';
@@ -972,7 +222,7 @@ function openDetail(gi) {
     html += '<div class="dm"><div class="dml">Price</div><div class="dmv pc">' + price + '</div></div>';
     html += '<div class="dm"><div class="dml">BSR</div><div class="dmv bsr">' + bsr + '</div></div>';
     html += '<div class="dm"><div class="dml">Sub BSR</div><div class="dmv" style="font-size:12px">' + bsrSub + '</div></div>';
-    html += '<div class="dm"><div class="dml">Rating</div><div class="dmv rt">&#9733; ' + rating + '</div></div>';
+    html += '<div class="dm"><div class="dml">Rating</div><div class="dmv rt">' + rating + '</div></div>';
     html += '<div class="dm"><div class="dml">Reviews</div><div class="dmv">' + reviews + '</div></div>';
     html += '</div>';
     if (m.bsr_sub_category) {
@@ -988,7 +238,6 @@ function openDetail(gi) {
     g.members.forEach(function(m) { drawSparkline('c_' + (m.asin||''), m.history||[]); });
   }, 60);
 }
-
 function openSummaryDetail() {
   if (!_data || !_data.groups) return;
   document.getElementById('dtTitle').textContent = 'All Monitored ASINs';
@@ -1005,7 +254,6 @@ function openSummaryDetail() {
     var rating = m.rating || '---';
     var reviews = m.review_count ? m.review_count.toLocaleString() : '---';
     var imgHTML = m.main_image ? '<img src="' + m.main_image + '" style="width:32px;height:32px;border-radius:4px;object-fit:cover;margin-right:8px;flex-shrink:0">' : '';
-
     html += '<div class="detail-group">';
     html += '<div class="dg-name" style="align-items:center">';
     html += imgHTML;
@@ -1016,7 +264,7 @@ function openSummaryDetail() {
     html += '<div class="detail-metrics">';
     html += '<div class="dm"><div class="dml">Price</div><div class="dmv pc">' + price + '</div></div>';
     html += '<div class="dm"><div class="dml">BSR</div><div class="dmv bsr">' + bsr + '</div></div>';
-    html += '<div class="dm"><div class="dml">Rating</div><div class="dmv rt">&#9733; ' + rating + '</div></div>';
+    html += '<div class="dm"><div class="dml">Rating</div><div class="dmv rt">' + rating + '</div></div>';
     html += '<div class="dm"><div class="dml">Reviews</div><div class="dmv">' + reviews + '</div></div>';
     html += '<div class="dm"><div class="dml">Seller</div><div class="dmv" style="font-size:10px">' + e(m.seller||'---') + '</div></div>';
     html += '</div>';
@@ -1029,12 +277,10 @@ function openSummaryDetail() {
     all.forEach(function(m){ drawSparkline('cs_' + (m.asin||''), m.history||[]); });
   }, 60);
 }
-
 function closeDetail() {
   document.getElementById('detail').classList.remove('open');
   Object.keys(_charts).forEach(function(k){ if(_charts[k]){ _charts[k].destroy(); _charts[k]=null; } });
 }
-
 function drawSparkline(cid, history) {
   var canvas = document.getElementById(cid);
   if (!canvas) return;
@@ -1066,7 +312,6 @@ function drawSparkline(cid, history) {
     }
   });
 }
-
 function getChange(member) {
   var h = member.history || [];
   if (h.length < 2) return 0;
@@ -1078,7 +323,6 @@ function getChange(member) {
   if (p1 == null || p2 == null) return 0;
   return Math.round((p1 - p2) * 100) / 100;
 }
-
 function getLastTs(member) {
   var h = member.history || [];
   for (var i = h.length - 1; i >= 0; i--) {
@@ -1086,12 +330,10 @@ function getLastTs(member) {
   }
   return '';
 }
-
 function e(s) {
   if (!s) return '';
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
 function exportXlsx() {
   if (!_data || !_data.groups) return;
   var wb = XLSX.utils.book_new();
@@ -1113,7 +355,8 @@ function exportXlsx() {
   XLSX.utils.book_append_sheet(wb, ws, 'Monitor Data');
   XLSX.writeFile(wb, 'crossmart_monitor_' + new Date().toISOString().substring(0,10) + '.xlsx');
 }
-
-initMonitor(window.MONITOR_EMBED || {});
-
+window.MONITOR_EMBED = {"updated":"2026-05-19T11:16:17","groups":[{"main_asin":"B09V7Z4TJG","members":[{"asin":"B09V7Z4TJG","title":"medicube Toner Pads Zero Pore Pad 2.0 | Dual-Textured Facial Pad for Exfoliation and Pore Care with 4.5% AHA Lactic Acid, 0.45% BHA Salicylic Acid | Ideal for All, Korean Skin Care, 70 Pads (1 Pack)","brand":"medicube","main_image":"https://m.media-amazon.com/images/I/71Mcspt-6AL._SX466_.jpg","price":18.9,"list_price":0.27,"rating":4.6,"review_count":24123,"bsr":1,"bsr_sub_rank":1,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Medicube & Aprilskin","history":[{"timestamp":"2026-05-18T20:35:44","price":null,"bsr":null,"rating":null,"review_count":null},{"timestamp":"2026-05-18T20:37:45","price":18.9,"bsr":1,"rating":null,"review_count":null},{"timestamp":"2026-05-18T20:41:48","price":null,"bsr":null,"rating":null,"review_count":null},{"timestamp":"2026-05-18T20:53:15","price":18.9,"bsr":1,"rating":null,"review_count":null},{"timestamp":"2026-05-18T21:20:02","price":18.9,"bsr":1,"rating":4.6,"review_count":24111},{"timestamp":"2026-05-18T21:22:11","price":18.9,"bsr":1,"rating":4.6,"review_count":24111},{"timestamp":"2026-05-18T22:07:56","price":18.9,"bsr":1,"rating":4.6,"review_count":24123},{"timestamp":"2026-05-18T22:58:36","price":18.9,"bsr":1,"rating":4.6,"review_count":24123}],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":true,"has_history":true,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0CGB215HR","members":[{"asin":"B0CGB215HR","title":"goPure Tighten & Lift Neck & Chest Moisturizer Cream for Visibly Firming, Tightening and Lifting the Look of Wrinkles & Crepey Skin, 1.7oz","brand":"goPure","main_image":"https://m.media-amazon.com/images/I/613gXRGC9XL._SX466_.jpg","price":31.49,"list_price":18.52,"rating":4.1,"review_count":10657,"bsr":307,"bsr_sub_rank":307,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"goPure","history":[{"timestamp":"2026-05-18T21:26:03","price":31.49,"bsr":307,"rating":4.1,"review_count":10648},{"timestamp":"2026-05-18T22:15:21","price":31.49,"bsr":307,"rating":4.1,"review_count":10657},{"timestamp":"2026-05-18T23:06:06","price":31.49,"bsr":307,"rating":4.1,"review_count":10657}],"price_change":0.0,"bsr_change":0,"price_change_pct":0.0,"bsr_change_pct":0.0,"is_main":true,"has_history":true,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0DSLGHPPW","members":[{"asin":"B0DSLGHPPW","title":"UJhay Retinol Neck Cream, Hyaluronic Acid and Caffeine Enriched Neck Firming Cream to Minimize Fine Lines & Dullness - 3-in-1 Moisturizing Cream for Neck, Chest and Face (50 ml/1.7 oz)","brand":"Brand: UJhay","main_image":"https://m.media-amazon.com/images/I/714u3IHLVmL._SX466_.jpg","price":8.99,"list_price":5.29,"rating":4.5,"review_count":289,"bsr":11995,"bsr_sub_rank":11995,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Guinuo E-commerce","history":[{"timestamp":"2026-05-18T21:30:26","price":8.99,"bsr":11994,"rating":4.5,"review_count":289},{"timestamp":"2026-05-18T22:20:31","price":8.99,"bsr":11995,"rating":4.5,"review_count":289}],"price_change":0.0,"bsr_change":1,"price_change_pct":0.0,"bsr_change_pct":0.0,"is_main":true,"has_history":true,"has_diff":true},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0F2J966QL","members":[{"asin":"B0F2J966QL","title":"Eight Saints Firm Intentions Anti Aging Neck Cream For Firming Skin and Reducing Wrinkles, with Protein Peptides, Hyaluronic Acid, and Niacinamide, 2 Ounces","brand":"Eight Saints","main_image":"https://m.media-amazon.com/images/I/61XDTWFTneL._SX466_.jpg","price":34.0,"list_price":17.0,"rating":4.6,"review_count":1748,"bsr":3692,"bsr_sub_rank":3692,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Eight Saints Skincare LLC","history":[{"timestamp":"2026-05-18T21:24:23","price":34.0,"bsr":3690,"rating":4.6,"review_count":1748},{"timestamp":"2026-05-18T22:14:18","price":34.0,"bsr":3690,"rating":4.6,"review_count":1748},{"timestamp":"2026-05-18T23:00:10","price":34.0,"bsr":3692,"rating":4.6,"review_count":1748}],"price_change":0.0,"bsr_change":2,"price_change_pct":0.0,"bsr_change_pct":0.1,"is_main":true,"has_history":true,"has_diff":true},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0GKFD9ZQW","members":[{"asin":"B0GKFD9ZQW","title":"ANUA Collagen Retinol Refining Gua Sha Cream, Neck Cream For Lifting & Firming, Jawline to D\u00e9collet\u00e9, Daily Moisturizer, Fine Line Care, Neck Massager, Korean Skin Care, 2.7fl.oz","brand":"ANUA","main_image":"https://m.media-amazon.com/images/I/51XYn-lowjL._SX466_.jpg","price":30.0,"list_price":11.07,"rating":4.5,"review_count":103,"bsr":2145,"bsr_sub_rank":2145,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Anua","history":[{"timestamp":"2026-05-18T21:28:14","price":30.0,"bsr":2145,"rating":4.5,"review_count":102},{"timestamp":"2026-05-18T22:19:12","price":30.0,"bsr":2145,"rating":4.5,"review_count":103}],"price_change":0.0,"bsr_change":0,"price_change_pct":0.0,"bsr_change_pct":0.0,"is_main":true,"has_history":true,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5}],"total_asins":6};
+initMonitor(window.MONITOR_EMBED);
 </script>
+</body>
+</html>
