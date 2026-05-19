@@ -1,0 +1,44 @@
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="brand">Cross<span style="color:#e94560">Mart</span></span>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="monitor.html" class="active">Monitor</a>
+    <a href="selection.html">Selection</a>
+  </nav>
+</div>
+
+<div class="monitor-bar" id="monitorBar">
+  <span class="mb-label">Monitor Targets:</span>
+  <span class="mb-asin" id="mbAsin"></span>
+  <span class="divider"></span>
+  <span class="mb-kw" id="mbKw"></span>
+  <span style="flex:1"></span>
+  <button class="btn btn-save btn-sm" onclick="saveTargets()">Save</button>
+  <span class="saved-msg" id="savedMsg" style="display:none">Saved</span>
+</div>
+
+<div class="filters">
+  <input type="text" id="sf" placeholder="Search ASIN or title..." oninput="render()">
+  <select id="ss" onchange="render()">
+    <option value="bsr">BSR</option>
+    <option value="price">Price</option>
+    <option value="price_chg">Price Change</option>
+    <option value="bsr_chg">BSR Change</option>
+    <option value="rating">Rating</option>
+    <option value="reviews">Reviews</option>
+  </select>
+  <label><input type="checkbox" id="sc" onchange="render()"> Changes only</label>
+  <button class="btn btn-sm" onclick="refresh()">Refresh</button>
+  <button class="btn btn-sm btn-save" onclick="exportXlsx()">Export Excel</button>
+</div>
+
+<div id="board" class="board"><div class="loading">Loading...</div></div>
+
+<script>
+window.MONITOR_EMBED = __DATA__;
+</script>
+</body>
+</html>
