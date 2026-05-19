@@ -1,0 +1,806 @@
+==================================================
+CrossMart Monitor API Server
+  URL: http://127.0.0.1:8765
+  POST /api/scrape  - 触发抓取
+  GET  /api/status  - 查询状态
+==================================================
+(需要Edge在9225端口运行)
+[API] 127.0.0.1 - "POST /api/scrape HTTP/1.1" 200 -
+[Scrape] 开始采集 1 个ASIN: ['B09V7Z4TJG']
+[Scrape] CWD: C:\Users\OPENPC\.openclaw\workspace-openpc_ad\crossmart-monitor\backend
+[Scrape] Edge已连接 (22个标签页)
+[Scrape] 抓取 B09V7Z4TJG...
+
+======================================================================
+ASIN监控检查
+  ASIN: B09V7Z4TJG
+  时间: 2026-05-18 21:18:42
+======================================================================
+  [CDP] 使用指定端口: 9225
+  ✅ 连接OpenClaw管理的Edge (port=18800, 5个标签页)
+  ✅ CDP已连接 — 22个标签页
+  [Tab] about:blank | about:blank
+
+==================================================
+亚马逊前台浏览
+==================================================
+
+  🌐 逛首页...
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/
+     Amazon.com. Spend less. Smile more.
+
+  🎯 搜索 'fitness equipment' 找 B09V7Z4TJG
+  → https://www.amazon.com/s?k=fitness+equipment
+     Amazon.com : fitness equipment
+  🖱️ 打开 ASIN B09V7Z4TJG
+  → https://www.amazon.com/dp/B09V7Z4TJG
+     Amazon.com : medicube Toner Pads Zero Pore Pad 2.0 | Dual-Te
+  📊 提取商品数据...
+  --------------------------------
+  medicube Toner Pads Zero Pore Pad 2.0 | Dual-Textu
+  Brand: medicube
+  Seller: Medicube & Aprilskin
+  Price: $18.90
+  Rating: 4.6  (24111 reviews)
+  BSR Top: Best Sellers Rank: #1 in Beauty & Personal Care (S
+  BSR Sub: #1 in Beauty & Personal Care (See To
+  --------------------------------
+  亚马逊检查完成
+
+==================================================
+卖家精灵数据查询
+==================================================
+
+============================================================
+📊 卖家精灵 - 查ASIN B09V7Z4TJG
+============================================================
+
+  📊 卖家精灵查竞品: B09V7Z4TJG
+  → https://www.sellersprite.com/v3/competitor-lookup
+     查竞品 - 亚马逊竞品分析工具 | 卖家精灵
+
+  📢 广告洞察: B09V7Z4TJG
+  → https://www.sellersprite.com/v3/ads-insights
+     广告洞察 - 亚马逊广告洞察工具 | 卖家精灵
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  卖家精灵查询完成
+
+==================================================
+变化对比
+==================================================
+  价格/评分/评论 均无变化
+  💾 快照已保存: C:\Users\OPENPC\.openclaw\workspace-openpc_ad\crossmart-monitor\backend\data\processed\asin_B09V7Z4TJG\snapshot_20260518_212002.json
+
+======================================================================
+摘要: B09V7Z4TJG | 无变化
+  ASIN: B09V7Z4TJG
+  商品: medicube Toner Pads Zero Pore Pad 2.0 | Dual-Textured Facial
+  价格: $18.90
+  评分: 4.6
+  评论: 24111
+======================================================================
+[Scrape] 同步到前端...
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[Scrape] 采集完成: 1个ASIN
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "OPTIONS /api/scrape HTTP/1.1" 200 -
+[API] 127.0.0.1 - "POST /api/scrape HTTP/1.1" 200 -
+[Scrape] 开始采集 5 个ASIN: ['B09V7Z4TJG', 'B0F2J966QL', 'B0CGB215HR']
+[Scrape] CWD: C:\Users\OPENPC\.openclaw\workspace-openpc_ad\crossmart-monitor\backend
+[Scrape] Edge已连接 (31个标签页)
+[Scrape] 抓取 B09V7Z4TJG...
+
+======================================================================
+ASIN监控检查
+  ASIN: B09V7Z4TJG
+  时间: 2026-05-18 21:20:43
+======================================================================
+  [CDP] 使用指定端口: 9225
+  ✅ 连接OpenClaw管理的Edge (port=18800, 5个标签页)
+  ✅ CDP已连接 — 31个标签页
+  [Tab] about:blank | about:blank
+
+==================================================
+亚马逊前台浏览
+==================================================
+
+  🌐 逛首页...
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/
+     Amazon.com. Spend less. Smile more.
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+  🎯 搜索 'new arrivals' 找 B09V7Z4TJG
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/s?k=new+arrivals
+     Amazon.com : new arrivals
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  🖱️ 打开 ASIN B09V7Z4TJG
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/dp/B09V7Z4TJG
+     Amazon.com : medicube Toner Pads Zero Pore Pad 2.0 | Dual-Te
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  📊 提取商品数据...
+  --------------------------------
+  medicube Toner Pads Zero Pore Pad 2.0 | Dual-Textu
+  Brand: medicube
+  Seller: Medicube & Aprilskin
+  Price: $18.90
+  Rating: 4.6  (24111 reviews)
+  BSR Top: Best Sellers Rank: #1 in Beauty & Personal Care (S
+  BSR Sub: #1 in Beauty & Personal Care (See To
+  --------------------------------
+  亚马逊检查完成
+
+==================================================
+卖家精灵数据查询
+==================================================
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+============================================================
+📊 卖家精灵 - 查ASIN B09V7Z4TJG
+============================================================
+
+  📊 卖家精灵查竞品: B09V7Z4TJG
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.sellersprite.com/v3/competitor-lookup
+     查竞品 - 亚马逊竞品分析工具 | 卖家精灵
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+  🔑 关键词反查: B09V7Z4TJG
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.sellersprite.com/v3/reversing
+     查流量来源|卖家精灵
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+  📢 广告洞察: B09V7Z4TJG
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.sellersprite.com/v3/ads-insights
+     广告洞察 - 亚马逊广告洞察工具 | 卖家精灵
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  卖家精灵查询完成
+
+==================================================
+变化对比
+==================================================
+  价格/评分/评论 均无变化
+  💾 快照已保存: C:\Users\OPENPC\.openclaw\workspace-openpc_ad\crossmart-monitor\backend\data\processed\asin_B09V7Z4TJG\snapshot_20260518_212211.json
+
+======================================================================
+摘要: B09V7Z4TJG | 无变化
+  ASIN: B09V7Z4TJG
+  商品: medicube Toner Pads Zero Pore Pad 2.0 | Dual-Textured Facial
+  价格: $18.90
+  评分: 4.6
+  评论: 24111
+======================================================================
+[Scrape] 抓取 B0F2J966QL...
+
+======================================================================
+ASIN监控检查
+  ASIN: B0F2J966QL
+  时间: 2026-05-18 21:22:11
+======================================================================
+  [CDP] 使用指定端口: 9225
+  ✅ 连接OpenClaw管理的Edge (port=18800, 5个标签页)
+  ✅ CDP已连接 — 39个标签页
+  [Tab] about:blank | about:blank
+
+==================================================
+亚马逊前台浏览
+==================================================
+
+  🌐 逛首页...
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/
+     Amazon.com. Spend less. Smile more.
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+  🎯 搜索 'travel gear' 找 B0F2J966QL
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/s?k=travel+gear
+     Amazon.com : travel gear
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  🖱️ 打开 ASIN B0F2J966QL
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/dp/B0F2J966QL
+     Amazon.com: Eight Saints Firm Intentions Anti Aging Neck Cre
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  📊 提取商品数据...
+  --------------------------------
+  Eight Saints Firm Intentions Anti Aging Neck Cream
+  Brand: Eight Saints
+  Seller: Eight Saints Skincare LLC
+  Price: $34.00
+  Rating: 4.6  (1748 reviews)
+  BSR Top: Best Sellers Rank: #3,690 in Beauty & Personal Car
+  BSR Sub: #3,690 in Beauty & Personal Care (See To
+  --------------------------------
+
+  💬 看评价...
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/product-reviews/B0F2J966QL/
+     Page Not Found
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  亚马逊检查完成
+
+==================================================
+卖家精灵数据查询
+==================================================
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+============================================================
+📊 卖家精灵 - 查ASIN B0F2J966QL
+============================================================
+
+  📊 卖家精灵查竞品: B0F2J966QL
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.sellersprite.com/v3/competitor-lookup
+     查竞品 - 亚马逊竞品分析工具 | 卖家精灵
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+  🔑 关键词反查: B0F2J966QL
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.sellersprite.com/v3/reversing
+     查流量来源|卖家精灵
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+  📢 广告洞察: B0F2J966QL
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.sellersprite.com/v3/ads-insights
+     广告洞察 - 亚马逊广告洞察工具 | 卖家精灵
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  卖家精灵查询完成
+
+==================================================
+变化对比
+==================================================
+  首次记录
+  💾 快照已保存: C:\Users\OPENPC\.openclaw\workspace-openpc_ad\crossmart-monitor\backend\data\processed\asin_B0F2J966QL\snapshot_20260518_212423.json
+
+======================================================================
+摘要: B0F2J966QL | 无变化
+  ASIN: B0F2J966QL
+  商品: Eight Saints Firm Intentions Anti Aging Neck Cream For Firmi
+  价格: $34.00
+  评分: 4.6
+  评论: 1748
+======================================================================
+[Scrape] 抓取 B0CGB215HR...
+
+======================================================================
+ASIN监控检查
+  ASIN: B0CGB215HR
+  时间: 2026-05-18 21:24:23
+======================================================================
+  [CDP] 使用指定端口: 9225
+  ✅ 连接OpenClaw管理的Edge (port=18800, 5个标签页)
+  ✅ CDP已连接 — 41个标签页
+  [Tab] about:blank | about:blank
+
+==================================================
+亚马逊前台浏览
+==================================================
+
+  🌐 逛首页...
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/
+     Amazon.com. Spend less. Smile more.
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+  🎯 搜索 'electronics' 找 B0CGB215HR
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/s?k=electronics
+     Amazon.com : electronics
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  🖱️ 打开 ASIN B0CGB215HR
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/dp/B0CGB215HR
+     Amazon.com: goPure Tighten & Lift Neck & Chest Moisturizer C
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  📊 提取商品数据...
+  --------------------------------
+  goPure Tighten & Lift Neck & Chest Moisturizer Cre
+  Brand: goPure
+  Seller: goPure
+  Price: $31.49
+  Rating: 4.1  (10648 reviews)
+  BSR Top: Best Sellers Rank: #307 in Beauty & Personal Care 
+  BSR Sub: #307 in Beauty & Personal Care (See To
+  --------------------------------
+
+  💬 看评价...
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/product-reviews/B0CGB215HR/
+     Page Not Found
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  亚马逊检查完成
+
+==================================================
+卖家精灵数据查询
+==================================================
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+============================================================
+📊 卖家精灵 - 查ASIN B0CGB215HR
+============================================================
+
+  📊 卖家精灵查竞品: B0CGB215HR
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.sellersprite.com/v3/competitor-lookup
+     查竞品 - 亚马逊竞品分析工具 | 卖家精灵
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+  🔑 关键词反查: B0CGB215HR
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.sellersprite.com/v3/reversing
+     查流量来源|卖家精灵
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  卖家精灵查询完成
+
+==================================================
+变化对比
+==================================================
+  首次记录
+  💾 快照已保存: C:\Users\OPENPC\.openclaw\workspace-openpc_ad\crossmart-monitor\backend\data\processed\asin_B0CGB215HR\snapshot_20260518_212603.json
+
+======================================================================
+摘要: B0CGB215HR | 无变化
+  ASIN: B0CGB215HR
+  商品: goPure Tighten & Lift Neck & Chest Moisturizer Cream for Vis
+  价格: $31.49
+  评分: 4.1
+  评论: 10648
+======================================================================
+[Scrape] 抓取 B0GKFD9ZQW...
+
+======================================================================
+ASIN监控检查
+  ASIN: B0GKFD9ZQW
+  时间: 2026-05-18 21:26:03
+======================================================================
+  [CDP] 使用指定端口: 9225
+  ✅ 连接OpenClaw管理的Edge (port=18800, 5个标签页)
+  ✅ CDP已连接 — 48个标签页
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  [Tab] about:blank | about:blank
+
+==================================================
+亚马逊前台浏览
+==================================================
+
+  🌐 逛首页...
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/
+     Amazon.com. Spend less. Smile more.
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+  🏷️ 逛类目: best sellers
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/s?k=best+sellers
+     Amazon.com : best sellers
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+  🎯 搜索 'storage bins' 找 B0GKFD9ZQW
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/s?k=storage+bins
+     Amazon.com : storage bins
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  🖱️ 打开 ASIN B0GKFD9ZQW
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/dp/B0GKFD9ZQW
+     Amazon.com: ANUA Collagen Retinol Refining Gua Sha Cream, Ne
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  📊 提取商品数据...
+  --------------------------------
+  ANUA Collagen Retinol Refining Gua Sha Cream, Neck
+  Brand: ANUA
+  Seller: Anua
+  Price: $30.00
+  Rating: 4.5  (102 reviews)
+  BSR Top: Best Sellers Rank: #2,145 in Beauty & Personal Car
+  BSR Sub: #2,145 in Beauty & Personal Care (See To
+  --------------------------------
+
+  💬 看评价...
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/product-reviews/B0GKFD9ZQW/
+     Page Not Found
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  亚马逊检查完成
+
+==================================================
+卖家精灵数据查询
+==================================================
+
+============================================================
+📊 卖家精灵 - 查ASIN B0GKFD9ZQW
+============================================================
+
+  📊 卖家精灵查竞品: B0GKFD9ZQW
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.sellersprite.com/v3/competitor-lookup
+     查竞品 - 亚马逊竞品分析工具 | 卖家精灵
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+  🔑 关键词反查: B0GKFD9ZQW
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.sellersprite.com/v3/reversing
+     查流量来源|卖家精灵
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+  📢 广告洞察: B0GKFD9ZQW
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.sellersprite.com/v3/ads-insights
+     广告洞察 - 亚马逊广告洞察工具 | 卖家精灵
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  卖家精灵查询完成
+
+==================================================
+变化对比
+==================================================
+  首次记录
+  💾 快照已保存: C:\Users\OPENPC\.openclaw\workspace-openpc_ad\crossmart-monitor\backend\data\processed\asin_B0GKFD9ZQW\snapshot_20260518_212814.json
+
+======================================================================
+摘要: B0GKFD9ZQW | 无变化
+  ASIN: B0GKFD9ZQW
+  商品: ANUA Collagen Retinol Refining Gua Sha Cream, Neck Cream For
+  价格: $30.00
+  评分: 4.5
+  评论: 102
+======================================================================
+[Scrape] 抓取 B0DSLGHPPW...
+
+======================================================================
+ASIN监控检查
+  ASIN: B0DSLGHPPW
+  时间: 2026-05-18 21:28:14
+======================================================================
+  [CDP] 使用指定端口: 9225
+  ✅ 连接OpenClaw管理的Edge (port=18800, 5个标签页)
+  ✅ CDP已连接 — 50个标签页
+  [Tab] about:blank | about:blank
+
+==================================================
+亚马逊前台浏览
+==================================================
+
+  🌐 逛首页...
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/
+     Amazon.com. Spend less. Smile more.
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+  🏷️ 逛类目: makeup brush set
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/s?k=makeup+brush+set
+     Amazon.com : makeup brush set
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+  🎯 搜索 'water bottle' 找 B0DSLGHPPW
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/s?k=water+bottle
+     Amazon.com : water bottle
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  🖱️ 打开 ASIN B0DSLGHPPW
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/dp/B0DSLGHPPW
+     Amazon.com: UJhay Retinol Neck Cream, Hyaluronic Acid and Ca
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  📊 提取商品数据...
+  --------------------------------
+  UJhay Retinol Neck Cream, Hyaluronic Acid and Caff
+  Brand: Brand: UJhay
+  Seller: Guinuo E-commerce
+  Price: $8.99
+  Rating: 4.5  (289 reviews)
+  BSR Top: Best Sellers Rank: #11,994 in Beauty & Personal Ca
+  BSR Sub: #11,994 in Beauty & Personal Care (See To
+  --------------------------------
+
+  💬 看评价...
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.amazon.com/product-reviews/B0DSLGHPPW/
+     Page Not Found
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  亚马逊检查完成
+
+==================================================
+卖家精灵数据查询
+==================================================
+
+============================================================
+📊 卖家精灵 - 查ASIN B0DSLGHPPW
+============================================================
+
+  📊 卖家精灵查竞品: B0DSLGHPPW
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.sellersprite.com/v3/competitor-lookup
+     查竞品 - 亚马逊竞品分析工具 | 卖家精灵
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+
+  🔑 关键词反查: B0DSLGHPPW
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  → https://www.sellersprite.com/v3/reversing
+     查流量来源|卖家精灵
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -
+  卖家精灵查询完成
+
+==================================================
+变化对比
+==================================================
+  首次记录
+  💾 快照已保存: C:\Users\OPENPC\.openclaw\workspace-openpc_ad\crossmart-monitor\backend\data\processed\asin_B0DSLGHPPW\snapshot_20260518_213026.json
+
+======================================================================
+摘要: B0DSLGHPPW | 无变化
+  ASIN: B0DSLGHPPW
+  商品: UJhay Retinol Neck Cream, Hyaluronic Acid and Caffeine Enric
+  价格: $8.99
+  评分: 4.5
+  评论: 289
+======================================================================
+[Scrape] 同步到前端...
+[Scrape] 采集完成: 5个ASIN
+[API] 127.0.0.1 - "GET /api/status HTTP/1.1" 200 -

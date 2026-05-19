@@ -1,31 +1,79 @@
 {
   "asins": [
     {
+      "asin": "B093WMWKBP",
+      "title": "Amazon Basics Reclosable Gallon Food Storage Bags with Double Zipper Seal, Stand and Fill Base, BPA ",
+      "brand": "Amazon Basics",
+      "price": "$6.75",
+      "list_price": "$0.06",
+      "rating": "4.6",
+      "review_count": "25689",
+      "bsr": "#47 in Health & Household (See Top 100 in Healt",
+      "bsr_sub_rank": "#47",
+      "bsr_sub_category": "Health & Household (See Top 100 in Health & Househ",
+      "seller": "Amazon.com",
+      "main_image": "https://m.media-amazon.com/images/I/71VepS-uVZL._AC_SX679_PIbundle-120,TopRight,0,0_SH20_.jpg",
+      "last_check": "2026-05-18T23:02:56.847717",
+      "snapshots": [
+        "2026-05-18T23:02"
+      ],
+      "snapshot_count": 1,
+      "has_changes": false,
+      "change_count": 0,
+      "change_desc": "",
+      "changes": []
+    },
+    {
+      "asin": "B09542G9ZN",
+      "title": "Amazon Basics Hypoallergenic Cotton Rounds for Makeup Removal and Skincare, 100 Count, 1 Pack",
+      "brand": "Amazon Basics",
+      "price": "$3.23",
+      "list_price": "$0.03",
+      "rating": "4.7",
+      "review_count": "35887",
+      "bsr": "#12 in Our Brands (See Top 100 in Our Brands)",
+      "bsr_sub_rank": "#12",
+      "bsr_sub_category": "Our Brands (See Top 100 in Our Brands)",
+      "seller": "Amazon.com",
+      "main_image": "https://m.media-amazon.com/images/I/41roS4Ps5RL._AC_SY879_.jpg",
+      "last_check": "2026-05-18T23:04:55.458178",
+      "snapshots": [
+        "2026-05-18T23:04"
+      ],
+      "snapshot_count": 1,
+      "has_changes": false,
+      "change_count": 0,
+      "change_desc": "",
+      "changes": []
+    },
+    {
       "asin": "B09V7Z4TJG",
       "title": "medicube Toner Pads Zero Pore Pad 2.0 | Dual-Textured Facial Pad for Exfoliation and Pore Care with ",
       "brand": "medicube",
       "price": "$18.90",
       "list_price": "$0.27",
       "rating": "4.6",
-      "review_count": "24111",
+      "review_count": "24123",
       "bsr": "#1 in Beauty & Personal Care (See Top 100 in B",
       "bsr_sub_rank": "#1",
       "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
       "seller": "Medicube & Aprilskin",
       "main_image": "https://m.media-amazon.com/images/I/71Mcspt-6AL._SX466_.jpg",
-      "last_check": "2026-05-18T21:22:11.505435",
+      "last_check": "2026-05-18T22:58:36.006082",
       "snapshots": [
         "2026-05-18T20:35",
         "2026-05-18T20:37",
         "2026-05-18T20:41",
         "2026-05-18T20:53",
         "2026-05-18T21:20",
-        "2026-05-18T21:22"
+        "2026-05-18T21:22",
+        "2026-05-18T22:07",
+        "2026-05-18T22:58"
       ],
-      "snapshot_count": 6,
+      "snapshot_count": 8,
       "has_changes": true,
-      "change_count": 2,
-      "change_desc": "价格 ↑ $109.91 (581.5%) | 价格 ↓ $109.91 (85.3%)",
+      "change_count": 3,
+      "change_desc": "价格 ↑ $109.91 (581.5%) | 价格 ↓ $109.91 (85.3%) | 评论 ↑ 12条",
       "changes": [
         {
           "timestamp": "2026-05-18T20:41:48.668111",
@@ -52,8 +100,89 @@
               "pct": "85.3%"
             }
           ]
+        },
+        {
+          "timestamp": "2026-05-18T22:07:56.889402",
+          "items": [
+            {
+              "field": "review_count",
+              "from": "24111",
+              "to": "24123",
+              "direction": "up",
+              "diff": 12
+            }
+          ]
         }
       ]
+    },
+    {
+      "asin": "B0BNNY66V9",
+      "title": "",
+      "brand": "",
+      "price": "",
+      "list_price": "",
+      "rating": "",
+      "review_count": "0",
+      "bsr": "",
+      "bsr_sub_rank": "",
+      "bsr_sub_category": "",
+      "seller": "",
+      "main_image": "",
+      "last_check": "2026-05-18T23:01:33.223313",
+      "snapshots": [
+        "2026-05-18T23:01"
+      ],
+      "snapshot_count": 1,
+      "has_changes": false,
+      "change_count": 0,
+      "change_desc": "",
+      "changes": []
+    },
+    {
+      "asin": "B0BPLYHDPG",
+      "title": "medicube Toner Pads Deep Vita C Facial Toner Pad for Uneven Skin Tone & Texture | Vitamin Water and ",
+      "brand": "medicube",
+      "price": "$18.90",
+      "list_price": "$0.27",
+      "rating": "4.7",
+      "review_count": "3844",
+      "bsr": "#1 in Beauty & Personal Care (See Top 100 in B",
+      "bsr_sub_rank": "#1",
+      "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
+      "seller": "Medicube & Aprilskin",
+      "main_image": "https://m.media-amazon.com/images/I/71QBdNbIPPL._SX466_.jpg",
+      "last_check": "2026-05-18T22:10:25.620964",
+      "snapshots": [
+        "2026-05-18T22:10"
+      ],
+      "snapshot_count": 1,
+      "has_changes": false,
+      "change_count": 0,
+      "change_desc": "",
+      "changes": []
+    },
+    {
+      "asin": "B0BT16CXP9",
+      "title": "Amazon Basics Reclosable Gallon Food Storage Bags with Double Zipper Seal, Stand and Fill Base, BPA ",
+      "brand": "Amazon Basics",
+      "price": "$6.75",
+      "list_price": "$0.06",
+      "rating": "4.6",
+      "review_count": "25689",
+      "bsr": "#47 in Health & Household (See Top 100 in Healt",
+      "bsr_sub_rank": "#47",
+      "bsr_sub_category": "Health & Household (See Top 100 in Health & Househ",
+      "seller": "Amazon.com",
+      "main_image": "https://m.media-amazon.com/images/I/71VepS-uVZL._AC_SX679_PIbundle-120,TopRight,0,0_SH20_.jpg",
+      "last_check": "2026-05-18T23:03:50.555460",
+      "snapshots": [
+        "2026-05-18T23:03"
+      ],
+      "snapshot_count": 1,
+      "has_changes": false,
+      "change_count": 0,
+      "change_desc": "",
+      "changes": []
     },
     {
       "asin": "B0CGB215HR",
@@ -62,15 +191,53 @@
       "price": "$31.49",
       "list_price": "$18.52",
       "rating": "4.1",
-      "review_count": "10648",
+      "review_count": "10657",
       "bsr": "#307 in Beauty & Personal Care (See Top 100 in B",
       "bsr_sub_rank": "#307",
       "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
       "seller": "goPure",
       "main_image": "https://m.media-amazon.com/images/I/613gXRGC9XL._SX466_.jpg",
-      "last_check": "2026-05-18T21:26:03.421763",
+      "last_check": "2026-05-18T23:06:06.373806",
       "snapshots": [
-        "2026-05-18T21:26"
+        "2026-05-18T21:26",
+        "2026-05-18T22:15",
+        "2026-05-18T23:06"
+      ],
+      "snapshot_count": 3,
+      "has_changes": true,
+      "change_count": 1,
+      "change_desc": "评论 ↑ 9条",
+      "changes": [
+        {
+          "timestamp": "2026-05-18T22:15:21.859585",
+          "items": [
+            {
+              "field": "review_count",
+              "from": "10648",
+              "to": "10657",
+              "direction": "up",
+              "diff": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "asin": "B0DJVYFDR2",
+      "title": "goPure Tighten & Lift Neck & Chest Moisturizer Cream for Visibly Firming, Tightening and Lifting the",
+      "brand": "goPure",
+      "price": "$74.99",
+      "list_price": "$22.06",
+      "rating": "4.1",
+      "review_count": "10657",
+      "bsr": "#307 in Beauty & Personal Care (See Top 100 in B",
+      "bsr_sub_rank": "#307",
+      "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
+      "seller": "goPure",
+      "main_image": "https://m.media-amazon.com/images/I/61sYzp031KL._SX466_.jpg",
+      "last_check": "2026-05-18T22:17:46.500781",
+      "snapshots": [
+        "2026-05-18T22:17"
       ],
       "snapshot_count": 1,
       "has_changes": false,
@@ -86,14 +253,51 @@
       "list_price": "$5.29",
       "rating": "4.5",
       "review_count": "289",
-      "bsr": "#11,994 in Beauty & Personal Care (See Top 100 in B",
-      "bsr_sub_rank": "#11,994",
+      "bsr": "#11,995 in Beauty & Personal Care (See Top 100 in B",
+      "bsr_sub_rank": "#11,995",
       "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
       "seller": "Guinuo E-commerce",
       "main_image": "https://m.media-amazon.com/images/I/714u3IHLVmL._SX466_.jpg",
-      "last_check": "2026-05-18T21:30:26.890368",
+      "last_check": "2026-05-18T22:20:31.422780",
       "snapshots": [
-        "2026-05-18T21:30"
+        "2026-05-18T21:30",
+        "2026-05-18T22:20"
+      ],
+      "snapshot_count": 2,
+      "has_changes": true,
+      "change_count": 1,
+      "change_desc": "BSR ↓ #11,994→#11,995",
+      "changes": [
+        {
+          "timestamp": "2026-05-18T22:20:31.422780",
+          "items": [
+            {
+              "field": "bsr",
+              "from": "#11,994",
+              "to": "#11,995",
+              "direction": "down",
+              "diff": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "asin": "B0DX74CWSQ",
+      "title": "medicube Toner Pads Salmon DNA PDRN Pink Collagen Jelly Pad | Korean Gel Toner Pad | Niacinamide, Ma",
+      "brand": "medicube",
+      "price": "$19.90",
+      "list_price": "$0.28",
+      "rating": "4.5",
+      "review_count": "1649",
+      "bsr": "#1 in Beauty & Personal Care (See Top 100 in B",
+      "bsr_sub_rank": "#1",
+      "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
+      "seller": "Medicube & Aprilskin",
+      "main_image": "https://m.media-amazon.com/images/I/61lZFElGdBL._SX466_.jpg",
+      "last_check": "2026-05-18T22:13:17.701749",
+      "snapshots": [
+        "2026-05-18T22:13"
       ],
       "snapshot_count": 1,
       "has_changes": false,
@@ -109,14 +313,75 @@
       "list_price": "$17.00",
       "rating": "4.6",
       "review_count": "1748",
-      "bsr": "#3,690 in Beauty & Personal Care (See Top 100 in B",
-      "bsr_sub_rank": "#3,690",
+      "bsr": "#3,692 in Beauty & Personal Care (See Top 100 in B",
+      "bsr_sub_rank": "#3,692",
       "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
       "seller": "Eight Saints Skincare LLC",
       "main_image": "https://m.media-amazon.com/images/I/61XDTWFTneL._SX466_.jpg",
-      "last_check": "2026-05-18T21:24:23.577437",
+      "last_check": "2026-05-18T23:00:10.323283",
       "snapshots": [
-        "2026-05-18T21:24"
+        "2026-05-18T21:24",
+        "2026-05-18T22:14",
+        "2026-05-18T23:00"
+      ],
+      "snapshot_count": 3,
+      "has_changes": true,
+      "change_count": 1,
+      "change_desc": "BSR ↓ #3,690→#3,692",
+      "changes": [
+        {
+          "timestamp": "2026-05-18T23:00:10.323283",
+          "items": [
+            {
+              "field": "bsr",
+              "from": "#3,690",
+              "to": "#3,692",
+              "direction": "down",
+              "diff": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "asin": "B0FJ21Z6BW",
+      "title": "medicube Toner Pads Kojic Acid Turmeric Clarifying Toner Pad for Troubled Skin & Use After Spot Care",
+      "brand": "medicube",
+      "price": "$14.02",
+      "list_price": "",
+      "rating": "4.6",
+      "review_count": "1627",
+      "bsr": "#1 in Beauty & Personal Care (See Top 100 in B",
+      "bsr_sub_rank": "#1",
+      "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
+      "seller": "",
+      "main_image": "https://m.media-amazon.com/images/I/71PToiLK5AL._SX466_.jpg",
+      "last_check": "2026-05-18T22:11:52.454437",
+      "snapshots": [
+        "2026-05-18T22:11"
+      ],
+      "snapshot_count": 1,
+      "has_changes": false,
+      "change_count": 0,
+      "change_desc": "",
+      "changes": []
+    },
+    {
+      "asin": "B0GCMKDSJB",
+      "title": "medicube Toner Pads Deep Vita C Facial Toner Pad for Uneven Skin Tone & Texture | Vitamin Water and ",
+      "brand": "medicube",
+      "price": "$18.90",
+      "list_price": "$0.27",
+      "rating": "4.7",
+      "review_count": "3844",
+      "bsr": "#1 in Beauty & Personal Care (See Top 100 in B",
+      "bsr_sub_rank": "#1",
+      "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
+      "seller": "Medicube & Aprilskin",
+      "main_image": "https://m.media-amazon.com/images/I/71QBdNbIPPL._SX466_.jpg",
+      "last_check": "2026-05-18T22:08:45.759434",
+      "snapshots": [
+        "2026-05-18T22:08"
       ],
       "snapshot_count": 1,
       "has_changes": false,
@@ -131,15 +396,52 @@
       "price": "$30.00",
       "list_price": "$11.07",
       "rating": "4.5",
-      "review_count": "102",
+      "review_count": "103",
       "bsr": "#2,145 in Beauty & Personal Care (See Top 100 in B",
       "bsr_sub_rank": "#2,145",
       "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
       "seller": "Anua",
       "main_image": "https://m.media-amazon.com/images/I/51XYn-lowjL._SX466_.jpg",
-      "last_check": "2026-05-18T21:28:14.714481",
+      "last_check": "2026-05-18T22:19:12.107742",
       "snapshots": [
-        "2026-05-18T21:28"
+        "2026-05-18T21:28",
+        "2026-05-18T22:19"
+      ],
+      "snapshot_count": 2,
+      "has_changes": true,
+      "change_count": 1,
+      "change_desc": "评论 ↑ 1条",
+      "changes": [
+        {
+          "timestamp": "2026-05-18T22:19:12.107742",
+          "items": [
+            {
+              "field": "review_count",
+              "from": "102",
+              "to": "103",
+              "direction": "up",
+              "diff": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "asin": "B0GZLB7G3K",
+      "title": "goPure Tighten & Lift Neck & Chest Moisturizer Cream for Visibly Firming, Tightening and Lifting the",
+      "brand": "goPure",
+      "price": "$74.99",
+      "list_price": "$22.06",
+      "rating": "4.1",
+      "review_count": "10657",
+      "bsr": "#307 in Beauty & Personal Care (See Top 100 in B",
+      "bsr_sub_rank": "#307",
+      "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Pe",
+      "seller": "goPure",
+      "main_image": "https://m.media-amazon.com/images/I/61sYzp031KL._SX466_.jpg",
+      "last_check": "2026-05-18T22:16:29.458321",
+      "snapshots": [
+        "2026-05-18T22:16"
       ],
       "snapshot_count": 1,
       "has_changes": false,
@@ -148,5 +450,5 @@
       "changes": []
     }
   ],
-  "updated": "2026-05-18T21:30:27.000168"
+  "updated": "2026-05-19T08:15:42.924938"
 }
