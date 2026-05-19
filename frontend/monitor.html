@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,83 +7,115 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#eaeded;color:#0f1111;font-size:14px;min-height:100vh}
+body{font-family:'Times New Roman',Times,serif;background:#eaeded;color:#0f1111;font-size:14px;min-height:100vh}
+a{color:#007185;text-decoration:none}a:hover{color:#c45500}
 
+/* Top Bar */
 .topbar{background:#131921;color:#fff;display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 24px;position:sticky;top:0;z-index:100}
-.topbar .brand{font-weight:700;font-size:16px}
+.topbar .brand{font-weight:700;font-size:16px;letter-spacing:.5px}
+.topbar .brand span{color:#e94560}
 .topbar nav{display:flex;gap:14px;font-size:13px}
 .topbar nav a{color:rgba(255,255,255,.75);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent;transition:.15s}
 .topbar nav a:hover,.topbar nav a.active{color:#fff;border-bottom-color:#e94560}
 
-.filters{background:#fff;padding:10px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:1px solid #d5d9d9;position:sticky;top:48px;z-index:99;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.filters select,.filters input{padding:6px 10px;border:1px solid #d5d9d9;border-radius:6px;font-size:13px;background:#fff;outline:none}
+/* Filter Bar */
+.filters{background:#fff;padding:10px 24px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:1px solid #d5d9d9;position:sticky;top:48px;z-index:99;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.filters select,.filters input{padding:6px 10px;border:1px solid #d5d9d9;border-radius:6px;font-size:12px;font-family:'Times New Roman',Times,serif;background:#fff;outline:none}
 .filters input:focus,.filters select:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.15)}
-.filters input{width:200px}
-.filters label{font-size:13px;color:#555;display:flex;align-items:center;gap:4px;cursor:pointer}
+.filters input{width:160px}
+.filters label{font-size:12px;color:#555;display:flex;align-items:center;gap:4px;cursor:pointer}
+.btn{display:inline-flex;align-items:center;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:.15s;background:#e6e8ea;color:#0f1111;font-family:'Times New Roman',Times,serif}
+.btn:hover{background:#d5d9d9}
+.btn-p{background:#ffd814;color:#0f1111}.btn-p:hover{background:#f7ca00}
+.btn-sm{padding:3px 10px;font-size:11px}
+.btn-s{background:#e6e8ea;color:#0f1111}.btn-s:hover{background:#d5d9d9}
 
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:12px 20px}
-.met{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.04);padding:12px 8px;text-align:center}
+/* Summary Metrics */
+.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:0 24px 12px}
+.met{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.04);padding:14px 8px;text-align:center}
 .met .n{font-size:22px;font-weight:700;line-height:1.2}
-.met .n.g1{color:#067d62}.met .n.r1{color:#B12704}.met .n.b1{color:#007185}.met .n.a1{color:#9e7800}
-.met .l{font-size:10px;color:#687078;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.met .n.r1{color:#B12704}.met .n.g1{color:#067d62}.met .n.b1{color:#007185}.met .n.a1{color:#9e7800}
+.met .l{font-size:10px;color:#687078;text-transform:uppercase;letter-spacing:.8px;margin-top:3px}
 
-.card-list{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin:0 20px 16px;overflow:hidden}
-.card-hdr{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #eee;font-weight:600;font-size:13px}
+/* Card List Container */
+.card-list{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin:0 24px 20px;overflow:hidden}
 
-.prod-row{padding:10px 16px;border-bottom:1px solid #f0f2f2;display:grid;grid-template-columns:36px 64px 1fr auto;gap:12px;cursor:pointer;transition:background .12s;align-items:center}
-.prod-row:hover{background:#f7fafc}
-.prod-row:last-child{border-bottom:none}
-.prod-row.active{background:#effaff;border-left:3px solid #007185}
-.rank-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
-.rank-1{background:linear-gradient(135deg,#ffd700,#f5c518);color:#000;box-shadow:0 2px 6px rgba(255,215,0,.3)}
-.rank-2{background:linear-gradient(135deg,#c0c0c0,#b0b0b0);color:#000;box-shadow:0 2px 6px rgba(192,192,192,.2)}
-.rank-3{background:linear-gradient(135deg,#cd7f32,#b8860b);color:#fff;box-shadow:0 2px 6px rgba(205,127,50,.3)}
-.rank-d{background:#e6e8ea;color:#555}
+/* ASIN Row: 3-column table layout */
+.row{display:flex;flex-direction:row;align-items:stretch;border-bottom:1px solid #eaeded;min-height:100px;transition:.15s;cursor:pointer}
+.row:last-child{border-bottom:none}
+.row:hover{background:#fafbfc}
+.row.open{background:#f7faff}
 
-.info{min-width:0}.info .br{font-size:11px;color:#007185;font-weight:500;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
-.info .ti{font-size:12px;color:#555;line-height:1.3;margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:500px}
-.info .mt{font-size:11px;color:#888;display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+/* Left: Image fixed 120px */
+.col-img{display:flex;align-items:center;justify-content:center;width:120px;flex-shrink:0}
+.col-img img{width:90px;height:90px;object-fit:contain;border:1px solid #e6e8ea;border-radius:8px;background:#fff;padding:3px}
+.col-img .ph{width:90px;height:90px;display:flex;align-items:center;justify-content:center;background:#f8fafc;border:1px solid #e6e8ea;border-radius:8px;color:#ccc;font-size:26px}
 
-.price-col{text-align:right;min-width:80px}
-.price-col .cur{color:#B12704;font-weight:700;font-size:16px}
-.price-col .old{font-size:11px;color:#999;text-decoration:line-through}
-.price-col .dc{font-size:10px;color:#067d62;background:#e8f5e9;padding:1px 5px;border-radius:4px;display:inline-block;margin-top:2px}
-.tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:10px;background:#f0f8ff;color:#067d62;border:1px solid #ceead6;margin:1px}
-.tag.g{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
-.tag.r{background:#fef2f2;color:#991b1b;border-color:#fecaca}
-.tag.y{background:#fffbeb;color:#92400e;border-color:#fde68a}
+/* Middle: Info + Metrics + Change */
+.col-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 10px;min-height:100px;gap:3px}
 
-.chg{font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:2px}
-.chg.up{color:#059669}.chg.down{color:#dc2626}.chg.flat{color:#999}
+.row-title{display:flex;align-items:center;gap:8px;margin-bottom:2px}
+.row-title .nm{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:400px}
+.row-title .bdg{font-size:10px;color:#555;background:#f0f2f2;padding:2px 7px;border-radius:3px;font-family:monospace;white-space:nowrap;flex-shrink:0}
 
-.detail-panel{display:none;background:#fafafa;padding:0;border-bottom:1px solid #e6e8ea}
-.detail-panel.open{display:block}
-.chart-wrap{padding:16px 20px;min-height:260px}
-.chart-wrap canvas{width:100%!important;max-height:280px}
+/* Metrics grid: label | value pairs */
+.mgrid{display:grid;grid-template-columns:auto 90px auto 90px auto 1fr;gap:1px 8px;align-items:center;font-size:12px}
+.mgrid .ml{color:#687078;white-space:nowrap;text-align:left}
+.mgrid .mv{font-weight:600;white-space:nowrap;text-align:left}
+.mgrid .mv.pr{color:#067d62}
+.mgrid .mv.ra{color:#d99536}
+.mgrid .mv.bsr{color:#007185}
+
+/* Change indicator in middle - shown when changed */
+.chg-inline{display:flex;align-items:center;gap:8px;margin-top:2px;padding:3px 8px;background:#fffbea;border:1px solid #fde68a;border-radius:6px;font-size:11px;min-height:24px}
+.chg-inline .chg-badge{display:inline-flex;align-items:center;gap:3px;padding:1px 7px;border-radius:8px;font-weight:600}
+.chg-inline .chg-badge.up{background:#e8f5ed;color:#067d62;border:1px solid #ceead6}
+.chg-inline .chg-badge.down{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+.chg-inline .chg-badge.neutral{background:#f0f2f2;color:#555;border:1px solid #d5d9d9}
+.chg-inline .chg-detail{color:#9e7800;font-size:11px}
+
+/* Right: Status */
+.col-stat{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;gap:3px;padding:8px 12px 8px 0;flex-shrink:0;width:140px;text-align:right}
+.sb{padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600;display:inline-block}
+.sb.s{background:#e8f5ed;color:#067d62;border:1px solid #ceead6}
+.sb.c{background:#fff8e6;color:#9e7800;border:1px solid #fceeb5}
+.ts{font-size:10px;color:#aaa;line-height:1.6;text-align:right}
+
+/* Detail panel */
+.detail{display:none;border-top:1px solid #e6e8ea;padding:0;background:#fafafa}
+.row.open .detail{display:block}
+.chart-wrap{padding:14px 16px 10px;min-height:220px}
+.chart-wrap canvas{width:100%!important;max-height:260px}
 
 .loading{text-align:center;padding:40px;color:#999;font-size:13px}
 .empty{text-align:center;padding:30px;color:#999;font-size:13px}
 .err{text-align:center;padding:30px;color:#B12704;font-size:13px}
 
-.btn{display:inline-flex;align-items:center;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:.15s;background:#e6e8ea;color:#0f1111}
-.btn:hover{background:#d5d9d9}
-.btn-p{background:#ffd814;color:#0f1111}.btn-p:hover{background:#f7ca00}
-.btn-sm{padding:3px 10px;font-size:11px}
+/* Tags */
+.tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:10px;background:#f0f8ff;color:#067d62;border:1px solid #ceead6;margin:1px;white-space:nowrap}
+.tag.main{background:#131921;color:#fff;border-color:#131921}
+.tag.rel{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
+.tag.y{background:#fffbeb;color:#92400e;border-color:#fde68a}
 
-@media(max-width:768px){
-  .topbar{padding:0 12px}
-  .metrics{grid-template-columns:repeat(2,1fr);padding:8px 12px}
-  .prod-row{grid-template-columns:28px 48px 1fr;gap:8px}
-  .prod-row .price-col{display:none}
-  .filters{top:44px;padding:8px 12px}
-  .filters input{width:130px}
+/* Small inline trend in middle when prices changed */
+.mini-trend{height:24px;width:140px;margin-left:8px}
+.mini-trend canvas{width:140px!important;height:24px!important}
+
+@media(max-width:900px){
+  .col-img{width:90px}
+  .col-img img,.col-img .ph{width:65px;height:65px}
+  .row-title .nm{max-width:200px;font-size:13px}
+  .col-stat{width:110px;padding-right:6px}
+  .mgrid{grid-template-columns:auto 70px auto 70px auto 1fr;gap:1px 4px}
+  .filters input{width:120px}
+  .metrics{grid-template-columns:repeat(3,1fr)}
 }
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <span class="brand">📊 Cross<span style="color:#e94560">Mart</span></span>
+  <span class="brand">Cross<span style="color:#e94560">Mart</span></span>
   <nav>
     <a href="../index.html">Home</a>
     <a href="monitor.html" class="active">Monitor</a>
@@ -92,46 +124,77 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 
 <div class="filters">
-  <input type="text" id="searchIn" placeholder="🔍 搜索标题/ASIN..." oninput="render()">
-  <select id="sortBy" onchange="render()">
-    <option value="price_chg">价格变化 ↓</option>
-    <option value="bsr_chg">BSR改善 ↑</option>
-    <option value="bsr">BSR排名 ↑</option>
-    <option value="rating">评分 ↓</option>
-    <option value="reviews">评论数 ↓</option>
-    <option value="price">价格 ↓</option>
+  <input type="text" id="searchIn" placeholder="Search title / ASIN..." oninput="render()">
+  <select id="targetAsin" onchange="render()">
+    <option value="">All Target ASINs</option>
   </select>
-  <label><input type="checkbox" id="onlyChg" onchange="render()"> 仅变化</label>
-  <button class="btn btn-sm" onclick="refresh()">🔄 刷新</button>
+  <select id="keyword" onchange="render()">
+    <option value="">All Keywords</option>
+  </select>
+  <select id="sortBy" onchange="render()">
+    <option value="price_chg">Price Change ↓</option>
+    <option value="bsr_chg">BSR Improvement ↑</option>
+    <option value="bsr">BSR Rank ↑</option>
+    <option value="rating">Rating ↓</option>
+    <option value="reviews">Reviews ↓</option>
+    <option value="price">Price ↓</option>
+  </select>
+  <label><input type="checkbox" id="onlyChg" onchange="render()"> Changed Only</label>
+  <label><input type="checkbox" id="mainOnly" onchange="render()"> Main ASIN Only</label>
+  <button class="btn btn-sm" onclick="refresh()">Refresh</button>
 </div>
 
 <div id="metrics" class="metrics"></div>
 <div id="listContainer" class="card-list">
-  <div class="loading">⏳ 加载中...</div>
+  <div class="loading">Loading...</div>
 </div>
 
 <script>
+const TARGET_ASINS = ['B09V7Z4TJG','B0F2J966QL','B0CGB215HR','B0GKFD9ZQW','B0DSLGHPPW'];
+const KEYWORDS_MAP = {
+  'B09V7Z4TJG': 'batana oil',
+  'B0F2J966QL': 'neck cream',
+  'B0CGB215HR': 'neck cream',
+  'B0GKFD9ZQW': 'neck cream',
+  'B0DSLGHPPW': 'neck cream'
+};
+
 let allAsins = [];
 let charts = {};
 
 function refresh() {
   charts = {};
-  document.getElementById('listContainer').innerHTML = '<div class="loading">⏳ 加载中...</div>';
+  document.getElementById('listContainer').innerHTML = '<div class="loading">Loading...</div>';
   loadData();
 }
 
 async function loadData() {
   try {
-    const r = await fetch('data/monitor-data.json?' + Date.now());
+    const r = await fetch('data/monitor-data.json?_=' + Date.now());
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const data = await r.json();
     allAsins = data.asins || [];
+    populateFilters();
     renderMetrics();
     render();
   } catch(e) {
     document.getElementById('listContainer').innerHTML =
-      '<div class="err">❌ 数据加载失败: ' + e.message + '</div>';
+      '<div class="err">Data load failed: ' + e.message + '</div>';
   }
+}
+
+function populateFilters() {
+  const ta = document.getElementById('targetAsin');
+  const kw = document.getElementById('keyword');
+  ta.innerHTML = '<option value="">All Target ASINs</option>';
+  kw.innerHTML = '<option value="">All Keywords</option>';
+  TARGET_ASINS.forEach(a => {
+    ta.innerHTML += '<option value="' + a + '">' + a + '</option>';
+  });
+  const usedKws = [...new Set(Object.values(KEYWORDS_MAP))];
+  usedKws.forEach(k => {
+    kw.innerHTML += '<option value="' + k + '">' + k + '</option>';
+  });
 }
 
 function renderMetrics() {
@@ -139,12 +202,14 @@ function renderMetrics() {
   const total = a.length;
   const priceChg = a.filter(x => x.price_change_pct && Math.abs(x.price_change_pct) > 0.01).length;
   const bsrBetter = a.filter(x => x.bsr_change && x.bsr_change < 0).length;
-  const updated = a._updated || '—';
+  const mainCount = a.filter(x => TARGET_ASINS.includes(x.asin)).length;
+  const changed = a.filter(x => x.price_change_pct && Math.abs(x.price_change_pct) > 0.01 || x.bsr_change && x.bsr_change !== 0).length;
   document.getElementById('metrics').innerHTML =
-    `<div class="met"><div class="n b1">${total}</div><div class="l">📦 监控ASIN</div></div>
-     <div class="met"><div class="n ${priceChg > 0 ? 'r1' : 'a1'}">${priceChg}</div><div class="l">📈 价格波动</div></div>
-     <div class="met"><div class="n g1">${bsrBetter}</div><div class="l">🔄 BSR改善</div></div>
-     <div class="met"><div class="n a1">${getUpdatedStr()}</div><div class="l">🕐 最后更新</div></div>`;
+    '<div class="met"><div class="n b1">' + total + '</div><div class="l">Total ASINs</div></div>' +
+    '<div class="met"><div class="n">' + mainCount + '</div><div class="l">Main ASINs</div></div>' +
+    '<div class="met"><div class="n ' + (changed > 0 ? 'r1' : 'a1') + '">' + changed + '</div><div class="l">Changed</div></div>' +
+    '<div class="met"><div class="n g1">' + bsrBetter + '</div><div class="l">BSR Improved</div></div>' +
+    '<div class="met"><div class="n a1">' + getUpdatedStr() + '</div><div class="l">Last Update</div></div>';
 }
 
 function getUpdatedStr() {
@@ -154,47 +219,67 @@ function getUpdatedStr() {
       if (t) return t.substring(5,16).replace('T',' ');
     }
   }
-  return '—';
+  return '-';
 }
 
-function formatNum(n) {
+function fmt(n) {
   if (n === null || n === undefined || n === '') return '-';
   if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
   if (n >= 1000) return n.toLocaleString();
   return n;
 }
 
-function changeHTML(label, val, pct, invert = false) {
-  if (!val && val !== 0) return '';
-  const v = parseFloat(val);
-  if (Math.abs(v) < 0.01) return '<span class="chg flat">➡️ 不变</span>';
-  const isUp = invert ? v < 0 : v > 0;
-  const cls = isUp ? 'up' : 'down';
-  const arrow = isUp ? '🔺' : '🔻';
-  const pctStr = pct ? ` (${Math.abs(pct).toFixed(1)}%)` : '';
-  return `<span class="chg ${cls}">${arrow} ${Math.abs(v).toFixed(v % 1 === 0 ? 0 : 2)}${pctStr}</span>`;
+function isMain(asin) { return TARGET_ASINS.includes(asin); }
+
+function getKeyword(asin) { return KEYWORDS_MAP[asin] || '-'; }
+
+function hasChange(a) {
+  return (a.price_change_pct && Math.abs(a.price_change_pct) > 0.01) ||
+         (a.bsr_change && a.bsr_change !== 0);
 }
 
-function bsrArrow(val) {
-  if (!val && val !== 0) return '';
-  const v = parseInt(val);
-  if (v === 0) return '<span class="chg flat">➡️</span>';
-  return v < 0
-    ? `<span class="chg up">🔻 ${Math.abs(v).toLocaleString()} (改善)</span>`
-    : `<span class="chg down">🔺 ${v.toLocaleString()} (恶化)</span>`;
+function getChangeBadge(a) {
+  const pc = a.price_change_pct || 0;
+  const bc = a.bsr_change || 0;
+  const hasChg = Math.abs(pc) > 0.01 || bc !== 0;
+  if (!hasChg) return '<span class="chg-badge neutral">No Change</span>';
+
+  let html = '';
+  if (Math.abs(pc) > 0.01) {
+    const up = pc > 0;
+    html += '<span class="chg-badge ' + (up ? 'up' : 'down') + '">' +
+      (up ? '▲' : '▼') + ' ' + Math.abs(pc).toFixed(1) + '% Price</span>';
+  }
+  if (bc !== 0) {
+    const better = bc < 0;
+    html += '<span class="chg-badge ' + (better ? 'up' : 'down') + '">' +
+      (better ? '▲' : '▼') + ' BSR ' + Math.abs(bc) + '</span>';
+  }
+  return html;
 }
 
-function toggleChart(idx) {
-  const elId = 'detail-' + idx;
-  const el = document.getElementById(elId);
+function getChangeDetail(a) {
+  const parts = [];
+  if (a.price_change && a.price_change !== 0) {
+    const dir = a.price_change > 0 ? '↑' : '↓';
+    parts.push('Price ' + dir + ' $' + Math.abs(a.price_change).toFixed(2));
+  }
+  if (a.bsr_change && a.bsr_change !== 0) {
+    const dir = a.bsr_change > 0 ? '↑' : '↓';
+    parts.push('BSR ' + dir + Math.abs(a.bsr_change));
+  }
+  return parts.join(' · ');
+}
+
+function toggleRow(idx) {
+  const el = document.getElementById('detail-' + idx);
   if (!el) return;
   const isOpen = el.classList.contains('open');
-  // Close all
-  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('open'));
-  document.querySelectorAll('.prod-row').forEach(r => r.classList.remove('active'));
+  document.querySelectorAll('.detail').forEach(p => p.classList.remove('open'));
+  document.querySelectorAll('.row').forEach(r => r.classList.remove('open'));
   if (!isOpen) {
     el.classList.add('open');
-    el.parentElement.classList.add('active');
+    el.parentElement.classList.add('open');
     drawChart(idx, el);
   }
 }
@@ -207,7 +292,7 @@ function drawChart(idx, el) {
   const ctx = canvas.getContext('2d');
   const cid = 'chart-' + idx;
   if (charts[cid]) { charts[cid].destroy(); delete charts[cid]; }
-  
+
   const hist = a.history;
   const labels = hist.map(h => {
     const d = h.timestamp || '';
@@ -215,21 +300,17 @@ function drawChart(idx, el) {
   });
   const prices = hist.map(h => h.price);
   const bsrs = hist.map(h => h.bsr);
-  
-  // Filter nulls
-  const validPrices = prices.filter(p => p !== null && p !== undefined);
-  const validBsrs = bsrs.filter(b => b !== null && b !== undefined);
-  
+
   charts[cid] = new Chart(ctx, {
     type: 'line',
     data: {
       labels: labels,
       datasets: [
         {
-          label: '价格 ($)',
+          label: 'Price ($)',
           data: prices,
-          borderColor: '#007185',
-          backgroundColor: 'rgba(0,113,133,0.08)',
+          borderColor: '#B12704',
+          backgroundColor: 'rgba(177,39,4,0.06)',
           fill: true,
           tension: 0.3,
           pointRadius: 3,
@@ -237,10 +318,10 @@ function drawChart(idx, el) {
           yAxisID: 'y',
         },
         {
-          label: 'BSR 排名',
+          label: 'BSR Rank',
           data: bsrs,
-          borderColor: '#dc2626',
-          backgroundColor: 'rgba(220,38,38,0.06)',
+          borderColor: '#007185',
+          backgroundColor: 'rgba(0,113,133,0.06)',
           fill: true,
           tension: 0.3,
           pointRadius: 3,
@@ -256,14 +337,14 @@ function drawChart(idx, el) {
       plugins: {
         legend: {
           position: 'top',
-          labels: { usePointStyle: true, padding: 16, font: { size: 11 } }
+          labels: { usePointStyle: true, padding: 16, font: { size: 11, family: "'Times New Roman',Times,serif" } }
         },
         tooltip: {
           callbacks: {
             label: function(ctx) {
-              if (ctx.dataset.label.includes('价格'))
-                return ctx.dataset.label + ': $' + ctx.parsed.y.toFixed(2);
-              return ctx.dataset.label + ': #' + Math.round(ctx.parsed.y).toLocaleString();
+              if (ctx.dataset.label.includes('Price'))
+                return 'Price: $' + ctx.parsed.y.toFixed(2);
+              return 'BSR: #' + Math.round(ctx.parsed.y).toLocaleString();
             }
           }
         }
@@ -274,7 +355,7 @@ function drawChart(idx, el) {
           type: 'linear',
           display: true,
           position: 'left',
-          title: { display: true, text: '价格 ($)', font: { size: 11 } },
+          title: { display: true, text: 'Price ($)', font: { size: 11 } },
           grid: { color: 'rgba(0,0,0,0.04)' },
           ticks: { font: { size: 10 } }
         },
@@ -283,7 +364,7 @@ function drawChart(idx, el) {
           display: true,
           position: 'right',
           reverse: true,
-          title: { display: true, text: 'BSR 排名', font: { size: 11 } },
+          title: { display: true, text: 'BSR Rank', font: { size: 11 } },
           grid: { drawOnChartArea: false },
           ticks: { font: { size: 10 } }
         }
@@ -294,89 +375,141 @@ function drawChart(idx, el) {
 
 function render() {
   const search = (document.getElementById('searchIn').value || '').toLowerCase().trim();
+  const targetAsin = document.getElementById('targetAsin').value;
+  const keyword = document.getElementById('keyword').value;
   const sortBy = document.getElementById('sortBy').value;
   const onlyChg = document.getElementById('onlyChg').checked;
-  
+  const mainOnly = document.getElementById('mainOnly').checked;
+
   let list = [...allAsins];
-  
+
   if (search) {
     list = list.filter(a =>
       (a.title || '').toLowerCase().includes(search) ||
-      (a.asin || '').toLowerCase().includes(search)
+      (a.asin || '').toLowerCase().includes(search) ||
+      (a.brand || '').toLowerCase().includes(search)
     );
   }
-  
+
+  if (targetAsin) {
+    // show the target + its related ASINs
+    const related = allAsins.filter(a => {
+      // find which group this ASIN belongs to by keyword
+      const kw = KEYWORDS_MAP[a.asin];
+      return kw && KEYWORDS_MAP[targetAsin] && kw === KEYWORDS_MAP[targetAsin];
+    });
+    // Also include the target itself if it's not in the list
+    const targetAsins2 = [targetAsin];
+    const mainGroup = new Set(TARGET_ASINS);
+    // Show all ASINs that share the same keyword group as targetAsin
+    const targetKw = KEYWORDS_MAP[targetAsin];
+    if (targetKw) {
+      list = list.filter(a => KEYWORDS_MAP[a.asin] === targetKw);
+    } else {
+      list = list.filter(a => a.asin === targetAsin);
+    }
+  }
+
+  if (keyword) {
+    list = list.filter(a => KEYWORDS_MAP[a.asin] === keyword);
+  }
+
   if (onlyChg) {
-    list = list.filter(a =>
-      (a.price_change_pct && Math.abs(a.price_change_pct) > 0.01) ||
-      (a.bsr_change && a.bsr_change !== 0)
-    );
+    list = list.filter(a => hasChange(a));
   }
-  
+
+  if (mainOnly) {
+    list = list.filter(a => isMain(a.asin));
+  }
+
   // Sort
   const sortMap = {
     'price_chg': (a,b) => Math.abs(b.price_change_pct||0) - Math.abs(a.price_change_pct||0),
-    'bsr_chg': (a,b) => (a.bsr_change||0) - (b.bsr_change||0),
+    'bsr_chg': (a,b) => (a.bsr_change||999999) - (b.bsr_change||999999),
     'bsr': (a,b) => (a.bsr||999999) - (b.bsr||999999),
     'rating': (a,b) => (b.rating||0) - (a.rating||0),
     'reviews': (a,b) => (b.review_count||0) - (a.review_count||0),
     'price': (a,b) => (b.price||0) - (a.price||0),
   };
   list.sort(sortMap[sortBy] || sortMap['price_chg']);
-  
+
   const container = document.getElementById('listContainer');
-  
+
   if (list.length === 0) {
-    container.innerHTML = '<div class="empty">没有匹配的ASIN</div>';
+    container.innerHTML = '<div class="empty">No matching ASINs</div>';
     return;
   }
-  
-  let html = `<div class="card-hdr"><span>📡 ASIN 监控 (${list.length})</span><span style="font-size:11px;color:#999">点击查看趋势</span></div>`;
-  
+
+  let html = '';
+
   list.forEach((a, i) => {
-    const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-d';
+    const main = isMain(a.asin);
+    const kw = getKeyword(a.asin);
+    const chg = hasChange(a);
+    const priceStr = a.price ? '$' + a.price.toFixed(2) : '-';
+    const rt = a.rating || '-';
+    const rc = fmt(a.review_count);
+    const bsr = a.bsr ? '#' + fmt(a.bsr) : '-';
+    const brand = (a.brand || '-').replace(/^Visit the /,'').replace(/ Store$/,'');
+    const seller = (a.seller || '-').substring(0,18);
+
+    const imgHTML = a.main_image
+      ? '<img src="' + a.main_image + '" onerror="this.style.display=\'none\'">'
+      : '<div class="ph">📷</div>';
+
+    const statusBadge = chg
+      ? '<span class="sb c">Changed</span>'
+      : '<span class="sb s">Stable</span>';
+
+    const tagType = main ? 'main' : 'rel';
+    const tagLabel = main ? 'MAIN' : 'REL';
+    const changeBadge = getChangeBadge(a);
+    const changeDetail = getChangeDetail(a);
+
+    // Change in middle column
+    const chgHTML = chg
+      ? '<div class="chg-inline">' + changeBadge +
+          (changeDetail ? '<span class="chg-detail">' + changeDetail + '</span>' : '') +
+        '</div>'
+      : '';
+
     const hasHistory = a.history && a.history.length >= 2;
-    const dict = a.list_price && a.list_price > 0 && a.price < a.list_price
-      ? Math.round((1 - a.price / a.list_price) * 100) : 0;
-    const priceStr = a.price ? '$' + a.price.toFixed(2) : '—';
-    const oldStr = (dict > 0 && a.list_price) ? '<div class="old">$' + a.list_price.toFixed(2) + '</div>' : '';
-    const dcTag = dict > 0 ? '<span class="tag g">-' + dict + '%</span>' : '';
-    
-    html += '<div class="prod-row" onclick="toggleChart(' + i + ')">' +
-      '<div class="rank-num ' + rankClass + '">#' + (i+1) + '</div>' +
-      '<div style="width:64px;height:64px;flex-shrink:0;background:#f5f5f5;border-radius:6px;overflow:hidden">' +
-        '<img src="' + (a.main_image || '') + '" style="width:64px;height:64px;object-fit:cover" alt="" onerror="this.style.display=\'none\'">' +
-      '</div>' +
-      '<div class="info">' +
-        '<div class="br">' +
-          (a.brand || '—') +
-          ' <span class="tag">⭐ ' + formatNum(a.rating) + '</span>' +
-          ' <span class="tag">💬 ' + formatNum(a.review_count) + '</span>' +
+
+    html += '<div class="row" onclick="toggleRow(' + i + ')">' +
+      '<div class="col-img">' + imgHTML + '</div>' +
+      '<div class="col-body">' +
+        '<div class="row-title">' +
+          '<span class="nm"><a href="https://www.amazon.com/dp/' + a.asin + '" target="_blank" onclick="event.stopPropagation()">' + (a.title||'-').substring(0,85) + '</a></span>' +
+          '<span class="bdg">' + a.asin + '</span>' +
+          '<span class="tag ' + tagType + '">' + tagLabel + '</span>' +
+          (kw !== '-' ? '<span class="tag y">' + kw + '</span>' : '') +
         '</div>' +
-        '<div class="ti">' + (a.title || '').substring(0, 80) + '</div>' +
-        '<div class="mt">' +
-          '<span class="tag">🔗 ' + a.asin + '</span>' +
-          (a.bsr ? '<span class="tag y">🏷️ #' + formatNum(a.bsr) + '</span>' : '') +
-          (a.history && a.history.length > 1 ? '<span class="tag">📊 ' + a.history.length + '帧</span>' : '') +
-          ' ' + changeHTML('价格', a.price_change, a.price_change_pct) +
-          ' ' + bsrArrow(a.bsr_change) +
+        '<div class="mgrid">' +
+          '<span class="ml">Brand</span><span class="mv">' + brand + '</span>' +
+          '<span class="ml">Rating</span><span class="mv ra">' + rt + '</span>' +
+          '<span></span>' +
+          '<span class="ml">Price</span><span class="mv pr">' + priceStr + '</span>' +
+          '<span class="ml">Reviews</span><span class="mv">' + rc + '</span>' +
+          '<span></span>' +
+          '<span class="ml">BSR</span><span class="mv bsr">' + bsr + '</span>' +
+          '<span class="ml">Seller</span><span class="mv">' + seller + '</span>' +
+          '<span></span>' +
         '</div>' +
+        chgHTML +
       '</div>' +
-      '<div class="price-col">' +
-        '<div class="cur">' + priceStr + '</div>' +
-        oldStr + dcTag +
+      '<div class="col-stat">' +
+        statusBadge +
+        '<div class="ts">' + (a.history ? a.history.length + ' snapshots' : '-') + '</div>' +
       '</div>' +
-      '<div class="detail-panel" id="detail-' + i + '">' +
+      '<div class="detail" id="detail-' + i + '">' +
         '<div class="chart-wrap">' +
-          (hasHistory
-            ? '<canvas id="cv-' + i + '"></canvas>'
-            : '<div style="text-align:center;color:#999;padding:20px;font-size:12px">仅1个快照，暂无历史趋势数据</div>') +
+          (hasHistory ? '<canvas id="cv-' + i + '"></canvas>' : '<div style="text-align:center;color:#999;padding:20px;font-size:12px">Only 1 snapshot — no trend data</div>') +
         '</div>' +
-        (a.seller ? '<div style="padding:4px 20px 12px;font-size:11px;color:#888">卖家: ' + a.seller + '</div>' : '') +
+        (a.bsr_sub_category ? '<div style="padding:4px 16px 12px;font-size:11px;color:#888">Category: ' + a.bsr_sub_category + '</div>' : '') +
       '</div>' +
     '</div>';
   });
-  
+
   container.innerHTML = html;
 }
 
