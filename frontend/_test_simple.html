@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Minimal Test</title></head>
+<body>
+<div id="board">Loading...</div>
+<script>
+window.MONITOR_EMBED = {"groups":[{"main_asin":"TEST","members":[{"asin":"T1","title":"Test ASIN","price":19.99}]}]};
+var _data = null;
+function initMonitor(data) {
+  _data = data;
+  document.getElementById('board').innerHTML = '<b>Success! Groups:' + data.groups.length + '</b>';
+}
+initMonitor(window.MONITOR_EMBED);
+</script>
+</body>
+</html>
