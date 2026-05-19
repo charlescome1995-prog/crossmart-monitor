@@ -857,7 +857,6 @@ window.MONITOR_EMBED = {
   ],
   "total_asins": 6
 };
-initMonitor(window.MONITOR_EMBED);
 </script>
 </body>
 </html>
@@ -914,9 +913,10 @@ function render() {
     var bsr = main.bsr ? '#' + main.bsr.toLocaleString() : '---';
     var rating = main.rating || '---';
     var reviews = main.review_count ? main.review_count.toLocaleString() : '---';
+    var imgPH = '<div class="ph">&#128722;</div>';
     var imgHTML = main.main_image
-      ? '<img src="' + main.main_image + '" onerror="this.parentElement.innerHTML='<div class=ph>&#128722;</div>'">'
-      : '<div class=ph>&#128722;</div>';
+      ? '<img src="' + main.main_image + '">'
+      : imgPH;
 
     html += '<div class="asin-card" data-gi="' + gi + '" onclick="openDetail(' + gi + ')">' +
       '<div class="ac-badge">' + g.members.length + '</div>' +
@@ -1113,5 +1113,7 @@ function exportXlsx() {
   XLSX.utils.book_append_sheet(wb, ws, 'Monitor Data');
   XLSX.writeFile(wb, 'crossmart_monitor_' + new Date().toISOString().substring(0,10) + '.xlsx');
 }
+
+initMonitor(window.MONITOR_EMBED || {});
 
 </script>

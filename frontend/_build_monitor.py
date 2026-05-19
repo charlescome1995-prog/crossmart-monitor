@@ -151,7 +151,6 @@ HTML_PROLOG = """<!DOCTYPE html>
 
 <script>
 window.MONITOR_EMBED = __DATA__;
-initMonitor(window.MONITOR_EMBED);
 </script>
 </body>
 </html>"""
@@ -207,9 +206,10 @@ function render() {
     var bsr = main.bsr ? '#' + main.bsr.toLocaleString() : '---';
     var rating = main.rating || '---';
     var reviews = main.review_count ? main.review_count.toLocaleString() : '---';
+    var imgPH = '<div class="ph">&#128722;</div>';
     var imgHTML = main.main_image
-      ? '<img src="' + main.main_image + '" onerror="this.parentElement.innerHTML=\'<div class=ph>&#128722;</div>\'">'
-      : '<div class=ph>&#128722;</div>';
+      ? '<img src="' + main.main_image + '">'
+      : imgPH;
 
     html += '<div class="asin-card" data-gi="' + gi + '" onclick="openDetail(' + gi + ')">' +
       '<div class="ac-badge">' + g.members.length + '</div>' +
@@ -405,12 +405,17 @@ function exportXlsx() {
   XLSX.utils.book_append_sheet(wb, ws, 'Monitor Data');
   XLSX.writeFile(wb, 'crossmart_monitor_' + new Date().toISOString().substring(0,10) + '.xlsx');
 }
+
+initMonitor(window.MONITOR_EMBED || {});
 """
 
 with open(DATA, 'r', encoding='utf-8') as f:
     raw_data = f.read()
 
-html = HTML_PROLOG % {'CSS': CSS} + '\n<script>\n' + JS.replace('__DATA__', raw_data) + '\n</script>'
+# Escape any </script> sequences in data to prevent premature script closure
+safe_data = raw_data.replace('</script>', '<\\/script>')
+
+html = (HTML_PROLOG % {'CSS': CSS}).replace('__DATA__', safe_data) + '\n<script>\n' + JS + '\n</script>'
 
 with open(OUT, 'w', encoding='utf-8') as f:
     f.write(html)
