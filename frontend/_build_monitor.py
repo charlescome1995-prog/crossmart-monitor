@@ -1,13 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CrossMart Monitor</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<style>
-/* ─── Top Bar ─── */
+#!/usr/bin/env python3
+"""Build the new monitor.html from scratch."""
+import os
+
+BASE = os.path.dirname(os.path.abspath(__file__))
+OUT = os.path.join(BASE, 'monitor.html')
+DATA = os.path.join(BASE, 'data', 'monitor-data.json')
+
+CSS = """/* ─── Top Bar ─── */
 .topbar{background:#131921;color:#fff;display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 24px;position:sticky;top:0;z-index:100}
 .topbar .brand{font-weight:700;font-size:16px}
 .topbar nav{display:flex;gap:14px;font-size:13px}
@@ -98,7 +97,18 @@
   .board{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
   .detail-metrics{grid-template-columns:repeat(3,1fr)}
 }
+"""
 
+HTML_PROLOG = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CrossMart Monitor</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+%(CSS)s
 </style>
 </head>
 <body>
@@ -144,9 +154,9 @@ window.MONITOR_EMBED = __DATA__;
 initMonitor(window.MONITOR_EMBED);
 </script>
 </body>
-</html>
-<script>
+</html>"""
 
+JS = """
 /* global MONITOR_EMBED, Chart, XLSX */
 var _data = null;
 var _charts = {};
@@ -186,8 +196,7 @@ function render() {
     '<div class="sc-icons">' +
     '<div class="sc-icon"><div class="dot up"></div>Up ' + totalUp + '</div>' +
     '<div class="sc-icon"><div class="dot dn"></div>Down ' + totalDn + '</div>' +
-    '</div></div>
-';
+    '</div></div>\n';
 
   groups.forEach(function(g, gi) {
     var main = g.members[0] || {};
@@ -199,7 +208,7 @@ function render() {
     var rating = main.rating || '---';
     var reviews = main.review_count ? main.review_count.toLocaleString() : '---';
     var imgHTML = main.main_image
-      ? '<img src="' + main.main_image + '" onerror="this.parentElement.innerHTML='<div class=ph>&#128722;</div>'">'
+      ? '<img src="' + main.main_image + '" onerror="this.parentElement.innerHTML=\'<div class=ph>&#128722;</div>\'">'
       : '<div class=ph>&#128722;</div>';
 
     html += '<div class="asin-card" data-gi="' + gi + '" onclick="openDetail(' + gi + ')">' +
@@ -221,8 +230,7 @@ function render() {
       '<div class="ac-metric"><div class="ml">Rating</div><div class="mv rt">&#9733; ' + rating + '</div></div>' +
       '<div class="ac-metric"><div class="ml">Reviews</div><div class="mv">' + reviews + '</div></div>' +
       '<div class="ac-metric"><div class="ml">Seller</div><div class="mv" style="font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + e(main.seller||'---') + '</div></div>' +
-      '</div></div>
-';
+      '</div></div>\n';
   });
 
   board.innerHTML = html;
@@ -397,5 +405,14 @@ function exportXlsx() {
   XLSX.utils.book_append_sheet(wb, ws, 'Monitor Data');
   XLSX.writeFile(wb, 'crossmart_monitor_' + new Date().toISOString().substring(0,10) + '.xlsx');
 }
+"""
 
-</script>
+with open(DATA, 'r', encoding='utf-8') as f:
+    raw_data = f.read()
+
+html = HTML_PROLOG % {'CSS': CSS} + '\n<script>\n' + JS.replace('__DATA__', raw_data) + '\n</script>'
+
+with open(OUT, 'w', encoding='utf-8') as f:
+    f.write(html)
+
+print('Written:', OUT)
