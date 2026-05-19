@@ -83,5 +83,9 @@ if %errorlevel% equ 0 (
     )
 )
 
+REM ── Step 5: 钉钉通知 ──
+echo [%date% %time%] Notifying...
+python -X utf8 backend\notify.py
+
 echo [%date% %time%] ========== CrossMart Sync Done ==========
 echo.
