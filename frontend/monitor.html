@@ -54,7 +54,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .gp-hdr .gh-name{font-size:12px;font-weight:700;color:#007185;margin-bottom:1px}
 .gp-hdr .gh-title{font-size:10px;color:#555;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:block;margin-bottom:3px}
 .gp-hdr .gh-meta{display:flex;gap:4px;flex-wrap:wrap}
-.gp-hdr .tag{padding:1px 5px;border-radius:3px;font-size:9px;font-weight:600}
+.gp-hdr .gh-meta .tag{padding:1px 5px;border-radius:3px;font-size:9px;font-weight:600}
 .tag-p{background:#fff8e6;color:#9e7800;border:1px solid #fceeb5}
 .tag-b{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
 .tag-g{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
@@ -63,7 +63,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .gp-hdr.open .expand-hint{color:#e94560}
 
 /* Main ASIN row in group */
-.gp-main{padding:6px 8px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:5px;background:#fffbe6}
+.gp-main{padding:6px 8px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:5px;background:#fffbe6;cursor:pointer;transition:.12s}
+.gp-main:hover{background:#fff8d0}
 .gp-main .gm-img{width:36px;height:36px;flex-shrink:0;border-radius:4px;overflow:hidden;background:#f5f5f5;display:flex;align-items:center;justify-content:center}
 .gp-main .gm-img img{width:36px;height:36px;object-fit:cover}
 .gp-main .gm-img .ph{font-size:16px;color:#ccc}
@@ -74,7 +75,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .gp-main .gm-chg.up{color:#059669}.gp-main .gm-chg.down{color:#dc2626}.gp-main .gm-chg.flat{color:#999}
 
 /* Expand/collapse chevron */
-.gp-chevron{font-size:12px;color:#aaa;transition:.2s;padding:4px;text-align:center;cursor:pointer}
+.gp-chevron{font-size:12px;color:#aaa;transition:.2s;padding:4px;text-align:center;cursor:pointer;user-select:none}
 .gp-chevron:hover{color:#e94560}
 .gp-col.expanded .gp-chevron{transform:rotate(180deg);color:#e94560}
 
@@ -100,7 +101,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 /* Loading / empty */
 .loading{text-align:center;padding:30px;color:#999;font-size:12px}
-.err{text-align:center;padding:30px;color:#B12704;font-size:12px}
+.err-wrap{text-align:center;padding:40px;color:#555;font-size:13px}
+.err-wrap .err-icon{font-size:40px;margin-bottom:10px}
+.err-wrap .err-title{font-size:15px;font-weight:600;color:#333;margin-bottom:6px}
+.err-wrap .err-hint{font-size:11px;color:#888;line-height:1.8;margin-top:8px}
+.err-wrap .err-msg{font-size:10px;color:#aaa;margin-top:6px}
+.err-wrap .btn{margin-top:14px;padding:7px 18px;font-size:13px}
 
 /* Responsive */
 @media(max-width:1200px){
@@ -147,8 +153,9 @@ var gCharts = {};
 var API = 'https://yanxvdong123.github.io/crossmart-monitor/frontend/data/monitor-data.json';
 
 async function loadData(){
+  var board = document.getElementById('board');
   try{
-    var r = await fetch(API+'?'+Date.now());
+    var r = await fetch(API+'?'+Date.now(), {cache:'no-store'});
     if(!r.ok) throw new Error('HTTP '+r.status);
     gData = await r.json();
     render();
@@ -156,7 +163,17 @@ async function loadData(){
     s.style.display = 'flex';
     s.innerHTML = '\u{1F4E6} <b>'+(gData.total_asins||0)+'</b> ASINs &middot; <b>'+(gData.groups||[]).length+'</b> groups &middot; Updated: '+(gData.updated||'').substring(0,16);
   }catch(e){
-    document.getElementById('board').innerHTML = '<div class="err">&#x274C; '+e.message+'</div>';
+    board.innerHTML = '<div class="err-wrap">'+
+      '<div class="err-icon">&#x26A0;</div>'+
+      '<div class="err-title">Failed to load data</div>'+
+      '<div class="err-hint">'+
+        '1. Hard refresh: <b>Ctrl+Shift+R</b> (or Ctrl+F5)<br>'+
+        '2. If still failing, wait 2 min for GitHub Pages deploy<br>'+
+        '3. Or open directly: <a href="'+API+'" target="_blank" style="color:#007185">view JSON data</a>'+
+      '</div>'+
+      '<div class="err-msg">Error: '+e.message+'</div>'+
+      '<button class="btn" onclick="loadData()">Try Again</button>'+
+    '</div>';
   }
 }
 function refresh(){
@@ -170,7 +187,7 @@ function fp(v){if(v===null||v===undefined||v==='') return '-';return '$'+parseFl
 
 function render(){
   var groups = gData && gData.groups;
-  if(!groups){document.getElementById('board').innerHTML='<div class="err">No data</div>';return;}
+  if(!groups){document.getElementById('board').innerHTML='<div class="err-wrap"><div class="err-icon">&#x26A0;</div><div class="err-title">No data</div></div>';return;}
 
   var kw = (document.getElementById('searchIn').value||'').toLowerCase().trim();
   var by = document.getElementById('sortBy').value;
@@ -232,7 +249,6 @@ function render(){
     var pcp = main.price_change_pct||0;
     var bc = main.bsr_change||0;
     var hasDiff = main.has_diff;
-    var changedCls = hasDiff?'c':'s';
 
     // Header
     var hdrHtml = '<div class="gp-hdr" id="gh-'+gi+'" onclick="toggleGroup('+gi+')">'+
@@ -243,19 +259,16 @@ function render(){
         '<span class="tag tag-p">'+(main.price?fp(main.price):'-')+'</span>'+
         (main.bsr?'<span class="tag tag-b">#'+fmt(main.bsr)+'</span>':'');
     if(pcp&&Math.abs(pcp)>=0.01){
-      var pcc = pcp>0?'up':'down';
       hdrHtml += '<span class="tag" style="background:'+(pcp>0?'#f0fdf4':'#fef2f2')+';color:'+(pcp>0?'#166534':'#991b1b')+'">'+fp(Math.abs(pcp))+'%</span>';
     }
     if(bc!==0){
-      var bcc = bc<0?'up':'down';
       hdrHtml += '<span class="tag" style="background:'+(bc<0?'#f0fdf4':'#fef2f2')+';color:'+(bc<0?'#166534':'#991b1b')+'">'+(bc<0?'\u{2191}':'\u{2193}')+' '+Math.abs(bc)+'</span>';
     }
     hdrHtml += '</div><div class="expand-hint">&#x25BC; '+related.length+' related</div></div>';
 
     // Main ASIN row
     var imgUrl = main.main_image||'';
-    var mainRowHtml = '<div class="gp-main">'+
-      '<div class="gm-img">'+
+    var mainRowHtml = '<div class="gm-img">'+
         (imgUrl?'<img src="'+imgUrl+'" alt="" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><div class="ph" style="display:none">&#x1F4F7;</div>':'<div class="ph">&#x1F4F7;</div>')+
       '</div>'+
       '<div class="gm-info">'+
@@ -267,7 +280,6 @@ function render(){
     if(mcp&&Math.abs(mcp)>=0.01){
       mainRowHtml += '<div class="gm-chg '+(mcp>0?'up':'down')+'">'+fp(Math.abs(mcp))+'%</div>';
     }
-    mainRowHtml += '</div>';
 
     // Related ASIN rows
     var relatedHtml = '';
@@ -277,7 +289,6 @@ function render(){
       var rImg = r.main_image||'';
       var rcp = r.price_change_pct||0;
       var rbc = r.bsr_change||0;
-      var rchg = r.has_diff;
       var rChgHtml = '';
       if(r.has_history){
         if(Math.abs(rcp)>=0.01) rChgHtml += '<span class="gs-chg '+(rcp>0?'up':'down')+'">'+fp(Math.abs(rcp))+'%</span>';
@@ -286,7 +297,7 @@ function render(){
       if(!rChgHtml) rChgHtml = '<span class="gs-chg flat">&#x2014;</span>';
 
       var subId = 'sub-'+gi+'-'+ri;
-      relatedHtml += '<div class="gp-sub" id="'+subId+'" onclick="event.stopPropagation();toggleSub(\''+subId+'\','+gi+','+ri+')">';
+      relatedHtml += '<div class="gp-sub" id="'+subId+'" onclick="event.stopPropagation();toggleSub(\''+subId+'\','+gi+','+ri+1)">';
       relatedHtml += '<div class="gs-img">'+(rImg?'<img src="'+rImg+'" alt="" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><div class="ph" style="display:none">&#x1F4F7;</div>':'<div class="ph">&#x1F4F7;</div>')+'</div>';
       relatedHtml += '<div class="gs-info"><div class="gs-name">'+((r.title||'').substring(0,25))+'</div><div class="gs-price">'+(r.price?fp(r.price):'-')+'</div></div>';
       relatedHtml += rChgHtml;
@@ -296,12 +307,11 @@ function render(){
       relatedHtml += '</div>';
     }
 
-    // Expand chevron row
-    var chevronHtml = '<div class="gp-chevron" onclick="toggleGroup('+gi+')" style="cursor:pointer">&#x25BC;</div>';
+    var chevronHtml = '<div class="gp-chevron" onclick="toggleGroup('+gi+')">&#x25BC;</div>';
 
     colsHtml += '<div class="gp-col" id="gc-'+gi+'">'+
       hdrHtml+
-      '<div class="gp-main" style="cursor:pointer" onclick="toggleGroup('+gi+')">'+
+      '<div class="gp-main" onclick="toggleGroup('+gi+')">'+
         mainRowHtml+
       '</div>'+
       chevronHtml+
@@ -310,35 +320,18 @@ function render(){
   }
 
   board.innerHTML = '<div class="board">'+masterHtml+colsHtml+'</div>';
-
-  // Draw charts for open items
-  for(var gi=0;gi<groups.length;gi++){
-    var g = groups[gi];
-    var main = g.members[0];
-    if(main&&main.history&&main.history.length>=2){
-      // main chart drawn on expand if needed
-    }
-  }
 }
 
 function toggleGroup(gi){
   var col = document.getElementById('gc-'+gi);
   var hdr = document.getElementById('gh-'+gi);
-  var isOpen = col && col.classList.contains('expanded');
-  // Close all
+  if(!col) return;
+  var isOpen = col.classList.contains('expanded');
   document.querySelectorAll('.gp-col').forEach(function(c){c.classList.remove('expanded');});
   document.querySelectorAll('.gp-hdr').forEach(function(h){h.classList.remove('open');});
   if(!isOpen){
     col.classList.add('expanded');
     hdr.classList.add('open');
-    // Draw chart for main ASIN
-    var g = gData.groups[gi];
-    if(g && g.members[0]){
-      var main = g.members[0];
-      if(main.history&&main.history.length>=2){
-        // Could add main chart here
-      }
-    }
   }
 }
 
@@ -351,10 +344,9 @@ function toggleSub(subId, gi, ri){
   if(!isOpen){
     el.classList.add('open-sub');
     document.getElementById(subId).classList.add('open-sub');
-    // Draw chart
     var g = gData.groups[gi];
-    if(g&&g.members[ri+1]){
-      var m = g.members[ri+1];
+    if(g&&g.members[ri]){
+      var m = g.members[ri];
       if(m&&m.history&&m.history.length>=2){
         var cid = 'cv-'+subId.replace(/-/g,'_');
         var cv = document.getElementById(cid);
@@ -375,7 +367,7 @@ function toggleSub(subId, gi, ri){
             options:{
               responsive:true,maintainAspectRatio:false,
               interaction:{mode:'index',intersect:false},
-              plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:8,font:{size:9}},tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label.includes('Price')?'Price: $'+ctx.parsed.y.toFixed(2):'BSR: #'+Math.round(ctx.parsed.y);}}}},
+              plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:8,font:{size:9}}},tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label.includes('Price')?'Price: $'+ctx.parsed.y.toFixed(2):'BSR: #'+Math.round(ctx.parsed.y);}}}},
               scales:{
                 x:{grid:{display:false},ticks:{maxRotation:45,font:{size:8}}},
                 y:{type:'linear',display:true,position:'left',title:{display:true,text:'Price ($)',font:{size:9}},grid:{color:'rgba(0,0,0,0.04)'}},
