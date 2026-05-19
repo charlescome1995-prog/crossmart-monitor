@@ -1,7 +1,6 @@
 /* global MONITOR_EMBED, Chart, XLSX */
 var _data = null;
 var _charts = {};
-/* _targets: { asins: [[5],[5],[5],[5],[5]], keywords: [5] } */
 var _targets = {
   asins: [
     ['','','','',''],
@@ -31,10 +30,6 @@ function loadTargets() {
   try {
     var t = localStorage.getItem('cm_targets');
     if (t) _targets = JSON.parse(t);
-    /* migrate old flat format */
-    if (_targets.asins && !Array.isArray(_targets.asins[0])) {
-      _targets.asins = _targets.asins.map ? [_targets.asins] : _targets.asins;
-    }
   } catch(e) {}
 }
 
@@ -52,31 +47,17 @@ function _tv(s) {
 
 function onTargetAsin(gi, idx, val) {
   _targets.asins[gi][idx] = val.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
-  saveTargets();
-  renderTargetsBar();
-  render();
+  saveTargets(); renderTargetsBar(); render();
 }
 function onTargetKw(idx, val) {
   _targets.keywords[idx] = val.trim();
-  saveTargets();
-  renderTargetsBar();
-  render();
-}
-
-function getTargetAsins() {
-  var flat = [];
-  _targets.asins.forEach(function(row) { flat = flat.concat(row.filter(function(s){ return s.length > 0; })); });
-  return flat;
-}
-function getTargetKws() {
-  return _targets.keywords.filter(function(s){ return s.length > 0; });
+  saveTargets(); renderTargetsBar(); render();
 }
 
 function renderTargetsBar() {
   var el = document.getElementById('targetsInner');
   if (!el) return;
 
-  /* Build ASIN grid: 5 columns, 5 rows */
   var asinHtml = '';
   for (var row = 0; row < 5; row++) {
     asinHtml += '<div class="trow">';
@@ -91,7 +72,6 @@ function renderTargetsBar() {
     asinHtml += '</div>';
   }
 
-  /* Build Keywords row */
   var kwHtml = '';
   for (var k = 0; k < 5; k++) {
     kwHtml += '<input type="text" class="tchip kw-chip" '
@@ -111,14 +91,6 @@ function renderTargetsBar() {
       '<div class="tlabel">Keywords</div>' +
       '<div class="trow">' + kwHtml + '</div>' +
     '</div>';
-}
-
-function getAllMembers() {
-  if (!_data || !_data.groups) return [];
-  return _data.groups.reduce(function(acc, g) {
-    g.members.forEach(function(m) { if (m.asin) acc.push(m); });
-    return acc;
-  }, []);
 }
 
 /* ── Utility ── */
@@ -196,7 +168,8 @@ function getChangeSet(member) {
   return changes;
 }
 
-function buildMemberCell(m, gi) {
+/* Build one ASIN row (image + info + inline changes) */
+function buildRow(m, gi) {
   var changes = getChangeSet(m);
   var hasChg  = changes && changes.length > 0;
   var lastTs  = getLastTs(m);
@@ -206,34 +179,59 @@ function buildMemberCell(m, gi) {
     ? '<img src="' + e(m.main_image) + '" alt="' + e(m.asin||'') + '">'
     : '<div class="ph"></div>';
 
-  var html = '<div class="mcard' + (hasChg ? ' changed' : '') + '">';
-  html += '<div class="mc-img">' + imgHTML + '</div>';
-  html += '<div class="mc-body">';
-  html += '<div class="mc-title-row">';
-  html += '<span class="mc-title">' + e(m.title || m.asin || '') + '</span>';
-  html += '</div>';
-  html += '<div class="mc-asin">' + e(m.asin || '') + '</div>';
-  html += '<div class="mc-metrics">';
-  html += '<div class="mc-metric"><div class="mcm-l">Price</div><div class="mcm-v pc">' + fmtPrice(m.price) + '</div></div>';
-  html += '<div class="mc-metric"><div class="mcm-l">Rating</div><div class="mcm-v rt">' + (m.rating != null ? m.rating : '---') + '</div></div>';
-  html += '<div class="mc-metric"><div class="mcm-l">Reviews</div><div class="mcm-v">' + (m.review_count != null ? m.review_count.toLocaleString() : '---') + '</div></div>';
-  html += '</div>';
-  html += '<div class="mc-bsr">';
-  if (m.bsr != null) {
-    html += '<span class="mc-bsr-item"><span class="mcb-l">BSR</span><span class="mcb-v sort-key" data-col="bsr" data-val="' + m.bsr + '">#' + m.bsr.toLocaleString() + '</span></span>';
+  var tsStr = '';
+  if (lastTs) {
+    var d = new Date(lastTs);
+    if (!isNaN(d)) {
+      tsStr = ('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)+' '+
+              ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
+    }
   }
+
+  var html = '';
+  /* Main row */
+  html += '<div class="asin-row' + (hasChg ? ' changed' : '') + (isMain ? ' main-row' : '') + '">';
+  html += '<div class="ac-img">' + imgHTML + '</div>';
+  html += '<div class="ac-info">';
+
+  html += '<div class="ac-title-row">';
+  html += '<span class="ac-title">' + e(m.title || m.asin || '') + '</span>';
+  html += '<span class="ac-asin">' + e(m.asin || '') + '</span>';
+  if (isMain) html += '<span class="main-badge">MAIN</span>';
   html += '</div>';
-  html += '<div class="mc-status">';
+
+  html += '<div class="ac-metrics">';
+  html += '<div class="ac-metric"><div class="ml">Brand</div><div class="mv">' + e(m.brand || '---') + '</div></div>';
+  html += '<div class="ac-metric"><div class="ml">Price</div><div class="mv pc sort-key" data-col="price" data-val="' + (m.price||0) + '">' + fmtPrice(m.price) + '</div></div>';
+  html += '<div class="ac-metric"><div class="ml">Rating</div><div class="mv rt sort-key" data-col="rating" data-val="' + (m.rating||0) + '">' + (m.rating != null ? m.rating : '---') + '</div></div>';
+  html += '<div class="ac-metric"><div class="ml">Reviews</div><div class="mv sort-key" data-col="reviews" data-val="' + (m.review_count||0) + '">' + (m.review_count != null ? m.review_count.toLocaleString() : '---') + '</div></div>';
+  html += '</div>';
+
+  html += '<div class="ac-bsr">';
+  if (m.bsr != null) {
+    html += '<div class="ac-bsr-item"><span class="bl">BSR</span><span class="bv sort-key" data-col="bsr" data-val="' + m.bsr + '">#' + m.bsr.toLocaleString() + '</span></div>';
+  }
+  if (m.bsr_sub_rank != null && m.bsr_sub_rank !== m.bsr) {
+    html += '<div class="ac-bsr-item"><span class="bl">Sub</span><span class="bv">#' + m.bsr_sub_rank.toLocaleString() + '</span></div>';
+  }
+  html += '<div class="ac-metric" style="margin-left:auto"><div class="ml">Seller</div><div class="mv seller">' + e(m.seller || '---') + '</div></div>';
+  html += '</div>';
+
+  html += '<div class="ac-status">';
   if (hasChg) {
     html += '<span class="as-warn">\u25cf ' + changes.length + ' changes</span>';
   } else {
     html += '<span class="as-stable">\u2713 Stable</span>';
   }
+  if (tsStr) html += '<span class="ac-ts"><span>' + tsStr + '</span></span>';
   html += '</div>';
+  html += '</div></div>';
+
+  /* Inline change section (always visible if has changes) */
+  html += '<div class="chg-section' + (hasChg ? ' visible' : '') + '">';
   if (hasChg) {
-    html += '<div class="mc-chgs">';
     changes.forEach(function(c) {
-      html += '<div class="mc-chg-item">';
+      html += '<div class="chg-item">';
       html += '<span class="ci-label">' + e(c.label) + ':</span>';
       html += '<span class="ci-old">' + e(c.old) + '</span>';
       html += '<span class="ci-arrow">\u2192</span>';
@@ -241,10 +239,12 @@ function buildMemberCell(m, gi) {
       if (c.pct) html += '<span class="ci-pct">(' + c.pct + ')</span>';
       html += '</div>';
     });
-    html += '<div class="mc-chart"><canvas id="cv_' + e(m.asin||'') + '"></canvas></div>';
-    html += '</div>';
+    html += '<div class="mini-chart"><canvas id="cv_' + e(m.asin||'') + '"></canvas></div>';
+  } else {
+    html += '<div class="chg-item"><span class="ci-label">--</span><span class="ci-new">No changes</span></div>';
   }
-  html += '</div></div>';
+  html += '</div>';
+
   return html;
 }
 
@@ -259,52 +259,49 @@ function render() {
   var sc = document.getElementById('sc') ? document.getElementById('sc').checked : false;
   var groups = _data.groups;
 
-  /* Build flat member list for sort */
-  var allRows = [];
-  groups.forEach(function(g, gi) {
-    var row = g.members.filter(function(m) {
-      if (!m.asin) return false;
-      if (sf && !(m.asin.toLowerCase().includes(sf) || (m.title||'').toLowerCase().includes(sf))) return false;
-      if (sc) { var cs = getChangeSet(m); if (!cs || cs.length === 0) return false; }
-      return true;
-    });
-    allRows.push({ gi: gi, members: row });
-  });
-
-  /* Sort each group independently */
-  allRows.forEach(function(r) {
-    r.members.sort(function(a, b) {
-      var va = 0, vb = 0;
-      if (_sortCol === 'bsr')        { va = a.bsr||999999; vb = b.bsr||999999; }
-      else if (_sortCol === 'price') { va = a.price||0;   vb = b.price||0; }
-      else if (_sortCol === 'price_chg') {
-        var ca = getChange(a), cb = getChange(b);
-        va = ca ? Math.abs(ca.price_pct) : 0; vb = cb ? Math.abs(cb.price_pct) : 0;
-      }
-      else if (_sortCol === 'bsr_chg') {
-        var ba = getBSRChange(a), bb = getBSRChange(b);
-        va = ba ? Math.abs(ba.bsr_diff) : 0; vb = bb ? Math.abs(bb.bsr_diff) : 0;
-      }
-      else if (_sortCol === 'rating')  { va = a.rating||0; vb = b.rating||0; }
-      else if (_sortCol === 'reviews') { va = a.review_count||0; vb = b.review_count||0; }
-      return (va > vb ? 1 : va < vb ? -1 : 0) * _sortDir;
-    });
-  });
-
-  /* Build 5-column grid HTML */
+  /* Build 5-column grid, each column = one group with stacked rows */
   var html = '<div class="board-grid">';
   for (var col = 0; col < 5; col++) {
     var g = groups[col];
-    var rows = allRows[col] ? allRows[col].members : [];
     html += '<div class="grid-col">';
     html += '<div class="col-hdr">';
     html += '<span class="col-hdr-asin">' + (g ? e(g.main_asin || '') : '---') + '</span>';
-    html += '<span class="col-hdr-n">' + rows.length + ' items</span>';
+    html += '<span class="col-hdr-n">' + (g ? g.members.filter(function(m){ return m.asin; }).length : 0) + ' rows</span>';
     html += '</div>';
-    if (g && rows.length > 0) {
-      rows.forEach(function(m) { html += buildMemberCell(m, col); });
-    } else {
+
+    if (!g) {
       html += '<div class="empty-col">No data</div>';
+    } else {
+      var filtered = g.members.filter(function(m) {
+        if (!m.asin) return false;
+        if (sf && !(m.asin.toLowerCase().includes(sf) || (m.title||'').toLowerCase().includes(sf))) return false;
+        if (sc) { var cs = getChangeSet(m); if (!cs || cs.length === 0) return false; }
+        return true;
+      });
+
+      /* Sort */
+      filtered.sort(function(a, b) {
+        var va = 0, vb = 0;
+        if (_sortCol === 'bsr')        { va = a.bsr||999999; vb = b.bsr||999999; }
+        else if (_sortCol === 'price') { va = a.price||0;   vb = b.price||0; }
+        else if (_sortCol === 'price_chg') {
+          var ca = getChange(a), cb = getChange(b);
+          va = ca ? Math.abs(ca.price_pct) : 0; vb = cb ? Math.abs(cb.price_pct) : 0;
+        }
+        else if (_sortCol === 'bsr_chg') {
+          var ba = getBSRChange(a), bb = getBSRChange(b);
+          va = ba ? Math.abs(ba.bsr_diff) : 0; vb = bb ? Math.abs(bb.bsr_diff) : 0;
+        }
+        else if (_sortCol === 'rating')  { va = a.rating||0; vb = b.rating||0; }
+        else if (_sortCol === 'reviews') { va = a.review_count||0; vb = b.review_count||0; }
+        return (va > vb ? 1 : va < vb ? -1 : 0) * _sortDir;
+      });
+
+      if (filtered.length === 0) {
+        html += '<div class="empty-col">No matching ASINs</div>';
+      } else {
+        filtered.forEach(function(m) { html += buildRow(m, col); });
+      }
     }
     html += '</div>';
   }
@@ -313,10 +310,12 @@ function render() {
 
   /* Draw sparklines */
   setTimeout(function() {
-    allRows.forEach(function(r) {
-      r.members.forEach(function(m) {
-        var changes = getChangeSet(m);
-        if (changes && changes.length > 0) drawMiniSparkline('cv_' + m.asin, m.history || []);
+    groups.forEach(function(g, gi) {
+      g.members.forEach(function(m) {
+        if (m.asin) {
+          var changes = getChangeSet(m);
+          if (changes && changes.length > 0) drawMiniSparkline('cv_' + m.asin, m.history || []);
+        }
       });
     });
   }, 60);
@@ -372,7 +371,7 @@ function exportXlsx() {
   XLSX.writeFile(wb, 'crossmart_monitor_' + new Date().toISOString().substring(0,10) + '.xlsx');
 }
 
-/* ── Column header sort click ── */
+/* ── Sort by clicking metric value ── */
 document.addEventListener('click', function(e) {
   var sk = e.target.closest('.sort-key');
   if (!sk) return;
