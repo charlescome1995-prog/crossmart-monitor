@@ -147,6 +147,7 @@ input.cfg:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.2)}
   </select>
   <label><input type="checkbox" id="onlyChg" onchange="render()"> Changes only</label>
   <button class="btn btn-sm" onclick="refresh()">&#x1F504; Refresh</button>
+  <button class="btn btn-s btn-sm" onclick="exportCsv()">&#x1F4E5; Export CSV</button>
 </div>
 
 <div id="metrics" class="metrics"></div>
@@ -395,6 +396,39 @@ function drawChart(idx){
       }
     }
   });
+}
+
+// ─── CSV Export ───
+function exportCsv(){
+  var csv = '\uFEFFASIN,Title,Brand,Price,List Price,Rating,Reviews,BSR,Seller,Price Change,Price Change %,BSR Change,Has History,Snapshot Count,Last Check\n';
+  for(var i=0;i<gData.length;i++){
+    var a = gData[i];
+    var h = a.history || [];
+    var lastTs = h.length ? (h[h.length-1].timestamp||'').substring(0,16) : '';
+    csv += [
+      a.asin||'',
+      (a.title||'').replace(/"/g,'""'),
+      (a.brand||'').replace(/"/g,'""'),
+      a.price != null ? '$'+a.price.toFixed(2) : '',
+      a.list_price != null ? '$'+a.list_price.toFixed(2) : '',
+      a.rating != null ? a.rating : '',
+      a.review_count != null ? a.review_count : '',
+      a.bsr != null ? '#'+a.bsr : '',
+      (a.seller||'').replace(/"/g,'""'),
+      a.price_change != null ? a.price_change.toFixed(2) : '',
+      a.price_change_pct != null ? a.price_change_pct.toFixed(1)+'%' : '',
+      a.bsr_change != null ? a.bsr_change : '',
+      h.length >= 2 ? 'Yes' : 'No',
+      h.length,
+      lastTs
+    ].map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',') + '\n';
+  }
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  var link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'crossmart_monitor_'+new Date().toISOString().slice(0,10)+'.csv';
+  link.click();
+  URL.revokeObjectURL(link.href);
 }
 
 // ─── Init ───
