@@ -1,362 +1,386 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CrossMart Monitor</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
-/* ─── Top Bar ─── */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#eaeded;color:#0f1111;font-size:14px;min-height:100vh}
+
 .topbar{background:#131921;color:#fff;display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 24px;position:sticky;top:0;z-index:100}
 .topbar .brand{font-weight:700;font-size:16px}
 .topbar nav{display:flex;gap:14px;font-size:13px}
 .topbar nav a{color:rgba(255,255,255,.75);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent;transition:.15s}
 .topbar nav a:hover,.topbar nav a.active{color:#fff;border-bottom-color:#e94560}
-/* ─── Filter Bar ─── */
-.filters{background:#fff;padding:8px 16px;display:flex;gap:8px;align-items:center;border-bottom:1px solid #d5d9d9;position:sticky;top:48px;z-index:99;box-shadow:0 1px 3px rgba(0,0,0,.04);flex-wrap:wrap}
-.filters input{padding:5px 10px;border:1px solid #d5d9d9;border-radius:6px;font-size:12px;width:140px}
-.filters select{padding:5px 10px;border:1px solid #d5d9d9;border-radius:6px;font-size:12px}
-.filters label{font-size:12px;color:#555;display:flex;align-items:center;gap:4px;cursor:pointer}
-.btn{display:inline-flex;align-items:center;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:none;transition:.15s;background:#e6e8ea;color:#0f1111}
+
+.filters{background:#fff;padding:10px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:1px solid #d5d9d9;position:sticky;top:48px;z-index:99;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.filters select,.filters input{padding:6px 10px;border:1px solid #d5d9d9;border-radius:6px;font-size:13px;background:#fff;outline:none}
+.filters input:focus,.filters select:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.15)}
+.filters input{width:200px}
+.filters label{font-size:13px;color:#555;display:flex;align-items:center;gap:4px;cursor:pointer}
+
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:12px 20px}
+.met{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.04);padding:12px 8px;text-align:center}
+.met .n{font-size:22px;font-weight:700;line-height:1.2}
+.met .n.g1{color:#067d62}.met .n.r1{color:#B12704}.met .n.b1{color:#007185}.met .n.a1{color:#9e7800}
+.met .l{font-size:10px;color:#687078;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+.card-list{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin:0 20px 16px;overflow:hidden}
+.card-hdr{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #eee;font-weight:600;font-size:13px}
+
+.prod-row{padding:10px 16px;border-bottom:1px solid #f0f2f2;display:grid;grid-template-columns:36px 64px 1fr auto;gap:12px;cursor:pointer;transition:background .12s;align-items:center}
+.prod-row:hover{background:#f7fafc}
+.prod-row:last-child{border-bottom:none}
+.prod-row.active{background:#effaff;border-left:3px solid #007185}
+.rank-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.rank-1{background:linear-gradient(135deg,#ffd700,#f5c518);color:#000;box-shadow:0 2px 6px rgba(255,215,0,.3)}
+.rank-2{background:linear-gradient(135deg,#c0c0c0,#b0b0b0);color:#000;box-shadow:0 2px 6px rgba(192,192,192,.2)}
+.rank-3{background:linear-gradient(135deg,#cd7f32,#b8860b);color:#fff;box-shadow:0 2px 6px rgba(205,127,50,.3)}
+.rank-d{background:#e6e8ea;color:#555}
+
+.info{min-width:0}.info .br{font-size:11px;color:#007185;font-weight:500;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.info .ti{font-size:12px;color:#555;line-height:1.3;margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:500px}
+.info .mt{font-size:11px;color:#888;display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+
+.price-col{text-align:right;min-width:80px}
+.price-col .cur{color:#B12704;font-weight:700;font-size:16px}
+.price-col .old{font-size:11px;color:#999;text-decoration:line-through}
+.price-col .dc{font-size:10px;color:#067d62;background:#e8f5e9;padding:1px 5px;border-radius:4px;display:inline-block;margin-top:2px}
+.tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:10px;background:#f0f8ff;color:#067d62;border:1px solid #ceead6;margin:1px}
+.tag.g{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
+.tag.r{background:#fef2f2;color:#991b1b;border-color:#fecaca}
+.tag.y{background:#fffbeb;color:#92400e;border-color:#fde68a}
+
+.chg{font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:2px}
+.chg.up{color:#059669}.chg.down{color:#dc2626}.chg.flat{color:#999}
+
+.detail-panel{display:none;background:#fafafa;padding:0;border-bottom:1px solid #e6e8ea}
+.detail-panel.open{display:block}
+.chart-wrap{padding:16px 20px;min-height:260px}
+.chart-wrap canvas{width:100%!important;max-height:280px}
+
+.loading{text-align:center;padding:40px;color:#999;font-size:13px}
+.empty{text-align:center;padding:30px;color:#999;font-size:13px}
+.err{text-align:center;padding:30px;color:#B12704;font-size:13px}
+
+.btn{display:inline-flex;align-items:center;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:.15s;background:#e6e8ea;color:#0f1111}
 .btn:hover{background:#d5d9d9}
 .btn-p{background:#ffd814;color:#0f1111}.btn-p:hover{background:#f7ca00}
-.btn-sm{padding:3px 8px;font-size:10px}
-/* ─── 11-Card Grid ─── */
-.board{padding:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
-.summary-card{background:#fff;border:2px solid #e94560;border-radius:12px;padding:14px 16px;cursor:pointer;transition:.15s;position:relative;overflow:hidden}
-.summary-card:hover{border-color:#c03250;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
-.summary-card .sc-badge{position:absolute;top:10px;right:10px;font-size:9px;font-weight:700;background:#e94560;color:#fff;padding:2px 7px;border-radius:10px}
-.summary-card .sc-title{font-size:11px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
-.summary-card .sc-num{font-size:28px;font-weight:800;color:#131921;line-height:1}
-.summary-card .sc-meta{font-size:11px;color:#888;margin-top:4px}
-.summary-card .sc-icons{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.summary-card .sc-icon{display:flex;align-items:center;gap:3px;font-size:10px;color:#555}
-.summary-card .sc-icon .dot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0}
-.summary-card .sc-icon .dot.up{background:#059669}
-.summary-card .sc-icon .dot.dn{background:#dc2626}
-.asin-card{background:#fff;border:1px solid #d5d9d9;border-radius:10px;padding:14px;cursor:pointer;transition:.15s;position:relative}
-.asin-card:hover{border-color:#007185;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
-.asin-card.selected{border-color:#007185;box-shadow:0 0 0 2px #00718533}
-.asin-card .ac-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
-.asin-card .ac-img{width:48px;height:48px;border-radius:6px;overflow:hidden;flex-shrink:0;background:#f5f5f5;display:flex;align-items:center;justify-content:center}
-.asin-card .ac-img img{width:48px;height:48px;object-fit:cover}
-.asin-card .ac-img .ph{font-size:20px;color:#ccc}
-.asin-card .ac-info{flex:1;min-width:0}
-.asin-card .ac-asin{font-size:10px;font-weight:700;color:#007185;background:#effaff;padding:1px 5px;border-radius:3px;display:inline-block;margin-bottom:3px}
-.asin-card .ac-title{font-size:11px;font-weight:600;color:#0f1111;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.asin-card .ac-brand{font-size:10px;color:#888;margin-top:2px}
-.asin-card .ac-price-row{display:flex;align-items:baseline;gap:6px;margin-top:6px;flex-wrap:wrap}
-.asin-card .ac-price{font-size:16px;font-weight:700;color:#B12704}
-.asin-card .ac-list{font-size:10px;color:#888;text-decoration:line-through}
-.asin-card .ac-change{font-size:10px;font-weight:600;padding:1px 5px;border-radius:3px}
-.asin-card .ac-change.up{color:#059669;background:#f0fdf4}
-.asin-card .ac-change.dn{color:#dc2626;background:#fef2f2}
-.asin-card .ac-change.flat{color:#999;background:#f5f5f5}
-.asin-card .ac-metrics{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:8px}
-.asin-card .ac-metric{padding:5px 7px;background:#f9f9f9;border-radius:5px}
-.asin-card .ac-metric .ml{font-size:9px;color:#888;font-weight:500;text-transform:uppercase}
-.asin-card .ac-metric .mv{font-size:13px;font-weight:700;color:#131921}
-.asin-card .ac-metric .mv.rt{color:#d99536}
-.asin-card .ac-metric .mv.bsr{color:#067d62}
-.asin-card .ac-badge{position:absolute;top:8px;left:8px;width:18px;height:18px;border-radius:50%;background:#e94560;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
-/* ─── Detail View (expanded card) ─── */
-.detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
-.detail-overlay.open{display:flex}
-.detail-panel{background:#fff;border-radius:14px;width:100%;max-width:900px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-.detail-hdr{padding:16px 20px;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:10;border-radius:14px 14px 0 0}
-.detail-hdr .dh-title{font-size:14px;font-weight:700;color:#131921}
-.detail-hdr .dh-sub{font-size:11px;color:#888;margin-top:2px}
-.detail-hdr .dh-close{width:32px;height:32px;border-radius:50%;background:#f5f5f5;border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
-.detail-hdr .dh-close:hover{background:#e0e0e0}
-.detail-body{padding:0}
-.detail-group{padding:14px 20px;border-bottom:1px solid #f0f2f2}
-.detail-group:last-child{border-bottom:none}
-.detail-group.main-g{background:#fffbe6}
-.detail-group .dg-name{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #eee;flex-wrap:wrap}
-.detail-group .dg-name .asinh{font-size:12px;font-weight:700;color:#007185}
-.detail-group .dg-name .asintitle{font-size:10px;color:#888;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:100px}
-.detail-metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px}
-.dm{background:#f9f9f9;border-radius:8px;padding:8px 10px;text-align:center}
-.dm .dml{font-size:9px;color:#888;font-weight:600;text-transform:uppercase;margin-bottom:3px}
-.dm .dmv{font-size:15px;font-weight:800;color:#131921;word-break:break-all}
-.dm .dmv.pc{color:#B12704}.dm .dmv.rt{color:#d99536}.dm .dmv.bsr{color:#067d62}
-.detail-chart-wrap{padding:0 4px;height:120px}
-.detail-chart-wrap canvas{max-height:120px!important}
-.detail-history{margin-top:8px;font-size:10px;color:#aaa;text-align:right}
-/* Loading / empty */
-.loading{text-align:center;padding:40px;color:#999;font-size:13px}
-.err-wrap{text-align:center;padding:40px;color:#555;font-size:13px}
-.err-wrap .btn{margin-top:14px;padding:8px 20px;font-size:13px;border-radius:20px}
-@media(max-width:768px){.board{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}.detail-metrics{grid-template-columns:repeat(3,1fr)}}
+.btn-sm{padding:3px 10px;font-size:11px}
+
+@media(max-width:768px){
+  .topbar{padding:0 12px}
+  .metrics{grid-template-columns:repeat(2,1fr);padding:8px 12px}
+  .prod-row{grid-template-columns:28px 48px 1fr;gap:8px}
+  .prod-row .price-col{display:none}
+  .filters{top:44px;padding:8px 12px}
+  .filters input{width:130px}
+}
 </style>
 </head>
 <body>
+
 <div class="topbar">
-  <span class="brand">Cross<span style="color:#e94560">Mart</span></span>
+  <span class="brand">📊 Cross<span style="color:#e94560">Mart</span></span>
   <nav>
     <a href="../index.html">Home</a>
     <a href="monitor.html" class="active">Monitor</a>
     <a href="selection.html">Selection</a>
   </nav>
 </div>
+
 <div class="filters">
-  <input type="text" id="sf" placeholder="Search ASIN or title..." oninput="render()">
-  <select id="ss" onchange="render()">
-    <option value="bsr">BSR</option>
-    <option value="price_chg">Price Change</option>
-    <option value="bsr_chg">BSR Change</option>
-    <option value="price">Price</option>
+  <input type="text" id="searchIn" placeholder="🔍 搜索标题/ASIN..." oninput="render()">
+  <select id="sortBy" onchange="render()">
+    <option value="price_chg">价格变化 ↓</option>
+    <option value="bsr_chg">BSR改善 ↑</option>
+    <option value="bsr">BSR排名 ↑</option>
+    <option value="rating">评分 ↓</option>
+    <option value="reviews">评论数 ↓</option>
+    <option value="price">价格 ↓</option>
   </select>
-  <label><input type="checkbox" id="sc" onchange="render()"> Changes only</label>
-  <button class="btn btn-sm" onclick="refresh()">Refresh</button>
-  <button class="btn btn-sm btn-p" onclick="exportXlsx()">Export Excel</button>
+  <label><input type="checkbox" id="onlyChg" onchange="render()"> 仅变化</label>
+  <button class="btn btn-sm" onclick="refresh()">🔄 刷新</button>
 </div>
-<div id="board" class="board"><div class="loading">Loading...</div></div>
-<div id="detail" class="detail-overlay" onclick="if(event.target===this)closeDetail()">
-  <div class="detail-panel">
-    <div class="detail-hdr">
-      <div>
-        <div class="dh-title" id="dtTitle">ASIN Detail</div>
-        <div class="dh-sub" id="dtSub"></div>
-      </div>
-      <button class="dh-close" onclick="closeDetail()">X</button>
-    </div>
-    <div id="dtBody" class="detail-body"></div>
-  </div>
+
+<div id="metrics" class="metrics"></div>
+<div id="listContainer" class="card-list">
+  <div class="loading">⏳ 加载中...</div>
 </div>
+
 <script>
-var _data = null;
-var _charts = {};
-function initMonitor(data) {
-  _data = data;
-  render();
-}
+let allAsins = [];
+let charts = {};
+
 function refresh() {
-  window.MONITOR_EMBED = {"updated":"2026-05-19T11:16:17","groups":[{"main_asin":"B09V7Z4TJG","members":[{"asin":"B09V7Z4TJG","title":"medicube Toner Pads Zero Pore Pad 2.0 | Dual-Textured Facial Pad for Exfoliation and Pore Care with 4.5% AHA Lactic Acid, 0.45% BHA Salicylic Acid | Ideal for All, Korean Skin Care, 70 Pads (1 Pack)","brand":"medicube","main_image":"https://m.media-amazon.com/images/I/71Mcspt-6AL._SX466_.jpg","price":18.9,"list_price":0.27,"rating":4.6,"review_count":24123,"bsr":1,"bsr_sub_rank":1,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Medicube & Aprilskin","history":[{"timestamp":"2026-05-18T20:35:44","price":null,"bsr":null,"rating":null,"review_count":null},{"timestamp":"2026-05-18T20:37:45","price":18.9,"bsr":1,"rating":null,"review_count":null},{"timestamp":"2026-05-18T20:41:48","price":null,"bsr":null,"rating":null,"review_count":null},{"timestamp":"2026-05-18T20:53:15","price":18.9,"bsr":1,"rating":null,"review_count":null},{"timestamp":"2026-05-18T21:20:02","price":18.9,"bsr":1,"rating":4.6,"review_count":24111},{"timestamp":"2026-05-18T21:22:11","price":18.9,"bsr":1,"rating":4.6,"review_count":24111},{"timestamp":"2026-05-18T22:07:56","price":18.9,"bsr":1,"rating":4.6,"review_count":24123},{"timestamp":"2026-05-18T22:58:36","price":18.9,"bsr":1,"rating":4.6,"review_count":24123}],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":true,"has_history":true,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0CGB215HR","members":[{"asin":"B0CGB215HR","title":"goPure Tighten & Lift Neck & Chest Moisturizer Cream for Visibly Firming, Tightening and Lifting the Look of Wrinkles & Crepey Skin, 1.7oz","brand":"goPure","main_image":"https://m.media-amazon.com/images/I/613gXRGC9XL._SX466_.jpg","price":31.49,"list_price":18.52,"rating":4.1,"review_count":10657,"bsr":307,"bsr_sub_rank":307,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"goPure","history":[{"timestamp":"2026-05-18T21:26:03","price":31.49,"bsr":307,"rating":4.1,"review_count":10648},{"timestamp":"2026-05-18T22:15:21","price":31.49,"bsr":307,"rating":4.1,"review_count":10657},{"timestamp":"2026-05-18T23:06:06","price":31.49,"bsr":307,"rating":4.1,"review_count":10657}],"price_change":0.0,"bsr_change":0,"price_change_pct":0.0,"bsr_change_pct":0.0,"is_main":true,"has_history":true,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0DSLGHPPW","members":[{"asin":"B0DSLGHPPW","title":"UJhay Retinol Neck Cream, Hyaluronic Acid and Caffeine Enriched Neck Firming Cream to Minimize Fine Lines & Dullness - 3-in-1 Moisturizing Cream for Neck, Chest and Face (50 ml/1.7 oz)","brand":"Brand: UJhay","main_image":"https://m.media-amazon.com/images/I/714u3IHLVmL._SX466_.jpg","price":8.99,"list_price":5.29,"rating":4.5,"review_count":289,"bsr":11995,"bsr_sub_rank":11995,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Guinuo E-commerce","history":[{"timestamp":"2026-05-18T21:30:26","price":8.99,"bsr":11994,"rating":4.5,"review_count":289},{"timestamp":"2026-05-18T22:20:31","price":8.99,"bsr":11995,"rating":4.5,"review_count":289}],"price_change":0.0,"bsr_change":1,"price_change_pct":0.0,"bsr_change_pct":0.0,"is_main":true,"has_history":true,"has_diff":true},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0F2J966QL","members":[{"asin":"B0F2J966QL","title":"Eight Saints Firm Intentions Anti Aging Neck Cream For Firming Skin and Reducing Wrinkles, with Protein Peptides, Hyaluronic Acid, and Niacinamide, 2 Ounces","brand":"Eight Saints","main_image":"https://m.media-amazon.com/images/I/61XDTWFTneL._SX466_.jpg","price":34.0,"list_price":17.0,"rating":4.6,"review_count":1748,"bsr":3692,"bsr_sub_rank":3692,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Eight Saints Skincare LLC","history":[{"timestamp":"2026-05-18T21:24:23","price":34.0,"bsr":3690,"rating":4.6,"review_count":1748},{"timestamp":"2026-05-18T22:14:18","price":34.0,"bsr":3690,"rating":4.6,"review_count":1748},{"timestamp":"2026-05-18T23:00:10","price":34.0,"bsr":3692,"rating":4.6,"review_count":1748}],"price_change":0.0,"bsr_change":2,"price_change_pct":0.0,"bsr_change_pct":0.1,"is_main":true,"has_history":true,"has_diff":true},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0GKFD9ZQW","members":[{"asin":"B0GKFD9ZQW","title":"ANUA Collagen Retinol Refining Gua Sha Cream, Neck Cream For Lifting & Firming, Jawline to D\u00e9collet\u00e9, Daily Moisturizer, Fine Line Care, Neck Massager, Korean Skin Care, 2.7fl.oz","brand":"ANUA","main_image":"https://m.media-amazon.com/images/I/51XYn-lowjL._SX466_.jpg","price":30.0,"list_price":11.07,"rating":4.5,"review_count":103,"bsr":2145,"bsr_sub_rank":2145,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Anua","history":[{"timestamp":"2026-05-18T21:28:14","price":30.0,"bsr":2145,"rating":4.5,"review_count":102},{"timestamp":"2026-05-18T22:19:12","price":30.0,"bsr":2145,"rating":4.5,"review_count":103}],"price_change":0.0,"bsr_change":0,"price_change_pct":0.0,"bsr_change_pct":0.0,"is_main":true,"has_history":true,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5}],"total_asins":6};
-initMonitor(window.MONITOR_EMBED);
+  charts = {};
+  document.getElementById('listContainer').innerHTML = '<div class="loading">⏳ 加载中...</div>';
+  loadData();
 }
-function render() {
-  var board = document.getElementById('board');
-  if (!_data || !_data.groups) {
-    board.innerHTML = '<div class="loading">No data. Run sync_groups.py first.</div>';
-    return;
+
+async function loadData() {
+  try {
+    const r = await fetch('data/monitor-data.json?' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    allAsins = data.asins || [];
+    renderMetrics();
+    render();
+  } catch(e) {
+    document.getElementById('listContainer').innerHTML =
+      '<div class="err">❌ 数据加载失败: ' + e.message + '</div>';
   }
-  var groups = _data.groups || [];
-  var totalUp = 0, totalDn = 0;
-  var allAsins = [];
-  groups.forEach(function(g){
-    g.members.forEach(function(m){
-      var c = getChange(m);
-      if(c>0) totalUp++; else if(c<0) totalDn++;
-      allAsins.push(m);
-    });
-  });
-  var lastUpd = _data.updated || '';
-  var html = '<div class="summary-card" onclick="openSummaryDetail()">' +
-    '<div class="sc-badge">SUMMARY</div>' +
-    '<div class="sc-title">All Monitored ASINs</div>' +
-    '<div class="sc-num">' + allAsins.length + '</div>' +
-    '<div class="sc-meta">Updated: ' + lastUpd + '</div>' +
-    '<div class="sc-icons">' +
-    '<div class="sc-icon"><div class="dot up"></div>Up ' + totalUp + '</div>' +
-    '<div class="sc-icon"><div class="dot dn"></div>Down ' + totalDn + '</div>' +
-    '</div></div>\n';
-  groups.forEach(function(g, gi) {
-    var main = g.members[0] || {};
-    var ch = getChange(main);
-    var chClass = ch > 0 ? 'up' : ch < 0 ? 'dn' : 'flat';
-    var chTxt = ch === 0 ? '0' : (ch > 0 ? '+' + ch : String(ch));
-    var price = main.price ? '$' + main.price.toFixed(2) : '---';
-    var bsr = main.bsr ? '#' + main.bsr.toLocaleString() : '---';
-    var rating = main.rating || '---';
-    var reviews = main.review_count ? main.review_count.toLocaleString() : '---';
-    var imgHTML = main.main_image ? '<img src="' + main.main_image + '">' : '<div class="ph"> IMG</div>';
-    html += '<div class="asin-card" data-gi="' + gi + '" onclick="openDetail(' + gi + ')">' +
-      '<div class="ac-badge">' + g.members.length + '</div>' +
-      '<div class="ac-top">' +
-      '<div class="ac-img">' + imgHTML + '</div>' +
-      '<div class="ac-info">' +
-      '<div class="ac-asin">' + (main.asin||'') + '</div>' +
-      '<div class="ac-title">' + e(main.title||'') + '</div>' +
-      '<div class="ac-brand">' + e(main.brand||'') + '</div>' +
-      '</div></div>' +
-      '<div class="ac-price-row">' +
-      '<span class="ac-price">' + price + '</span>' +
-      (main.list_price ? '<span class="ac-list">$' + main.list_price.toFixed(2) + '</span>' : '') +
-      '<span class="ac-change ' + chClass + '">' + chTxt + '</span>' +
-      '</div>' +
-      '<div class="ac-metrics">' +
-      '<div class="ac-metric"><div class="ml">BSR</div><div class="mv bsr">' + bsr + '</div></div>' +
-      '<div class="ac-metric"><div class="ml">Rating</div><div class="mv rt">' + rating + '</div></div>' +
-      '<div class="ac-metric"><div class="ml">Reviews</div><div class="mv">' + reviews + '</div></div>' +
-      '<div class="ac-metric"><div class="ml">Seller</div><div class="mv" style="font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + e(main.seller||'---') + '</div></div>' +
-      '</div></div>\n';
-  });
-  board.innerHTML = html;
 }
-function openDetail(gi) {
-  var g = _data && _data.groups ? _data.groups[gi] : null;
-  if (!g) return;
-  document.getElementById('dtTitle').textContent = 'Group: ' + (g.main_asin||'');
-  document.getElementById('dtSub').textContent = g.members.length + ' ASINs in group';
-  var html = '';
-  g.members.forEach(function(m) {
-    var ch = getChange(m);
-    var chClass = ch > 0 ? 'up' : ch < 0 ? 'dn' : 'flat';
-    var chTxt = ch === 0 ? 'stable' : (ch > 0 ? '+' + ch : String(ch));
-    var price = m.price ? '$' + m.price.toFixed(2) : '---';
-    var bsr = m.bsr ? '#' + m.bsr.toLocaleString() : '---';
-    var bsrSub = m.bsr_sub_rank ? '#' + m.bsr_sub_rank.toLocaleString() : '';
-    var rating = m.rating || '---';
-    var reviews = m.review_count ? m.review_count.toLocaleString() : '---';
-    var isMain = m.asin === g.main_asin;
-    var lastTs = getLastTs(m);
-    html += '<div class="detail-group' + (isMain ? ' main-g' : '') + '">';
-    html += '<div class="dg-name">';
-    html += '<span class="asinh">' + (isMain ? '* ' : '') + (m.asin||'') + '</span>';
-    html += '<span class="asintitle">' + e(m.title||'') + '</span>';
-    html += '<span class="ac-change ' + chClass + '" style="margin-left:auto">' + chTxt + '</span>';
-    html += '</div>';
-    html += '<div class="detail-metrics">';
-    html += '<div class="dm"><div class="dml">Price</div><div class="dmv pc">' + price + '</div></div>';
-    html += '<div class="dm"><div class="dml">BSR</div><div class="dmv bsr">' + bsr + '</div></div>';
-    html += '<div class="dm"><div class="dml">Sub BSR</div><div class="dmv" style="font-size:12px">' + bsrSub + '</div></div>';
-    html += '<div class="dm"><div class="dml">Rating</div><div class="dmv rt">' + rating + '</div></div>';
-    html += '<div class="dm"><div class="dml">Reviews</div><div class="dmv">' + reviews + '</div></div>';
-    html += '</div>';
-    if (m.bsr_sub_category) {
-      html += '<div style="font-size:9px;color:#888;margin-bottom:8px">' + e(m.bsr_sub_category) + '</div>';
+
+function renderMetrics() {
+  const a = allAsins;
+  const total = a.length;
+  const priceChg = a.filter(x => x.price_change_pct && Math.abs(x.price_change_pct) > 0.01).length;
+  const bsrBetter = a.filter(x => x.bsr_change && x.bsr_change < 0).length;
+  const updated = a._updated || '—';
+  document.getElementById('metrics').innerHTML =
+    `<div class="met"><div class="n b1">${total}</div><div class="l">📦 监控ASIN</div></div>
+     <div class="met"><div class="n ${priceChg > 0 ? 'r1' : 'a1'}">${priceChg}</div><div class="l">📈 价格波动</div></div>
+     <div class="met"><div class="n g1">${bsrBetter}</div><div class="l">🔄 BSR改善</div></div>
+     <div class="met"><div class="n a1">${getUpdatedStr()}</div><div class="l">🕐 最后更新</div></div>`;
+}
+
+function getUpdatedStr() {
+  for (const a of allAsins) {
+    if (a.history && a.history.length) {
+      const t = a.history[a.history.length-1].timestamp;
+      if (t) return t.substring(5,16).replace('T',' ');
     }
-    html += '<div class="detail-chart-wrap"><canvas id="c_' + (m.asin||'') + '"></canvas></div>';
-    if (lastTs) html += '<div class="detail-history">Last updated: ' + lastTs + '</div>';
-    html += '</div>';
-  });
-  document.getElementById('dtBody').innerHTML = html;
-  document.getElementById('detail').classList.add('open');
-  setTimeout(function() {
-    g.members.forEach(function(m) { drawSparkline('c_' + (m.asin||''), m.history||[]); });
-  }, 60);
+  }
+  return '—';
 }
-function openSummaryDetail() {
-  if (!_data || !_data.groups) return;
-  document.getElementById('dtTitle').textContent = 'All Monitored ASINs';
-  var all = [];
-  _data.groups.forEach(function(g){ g.members.forEach(function(m){ all.push(m); }); });
-  document.getElementById('dtSub').textContent = all.length + ' ASINs across ' + _data.groups.length + ' groups';
-  var html = '';
-  all.forEach(function(m) {
-    var ch = getChange(m);
-    var chClass = ch > 0 ? 'up' : ch < 0 ? 'dn' : 'flat';
-    var chTxt = ch === 0 ? 'stable' : (ch > 0 ? '+' + ch : String(ch));
-    var price = m.price ? '$' + m.price.toFixed(2) : '---';
-    var bsr = m.bsr ? '#' + m.bsr.toLocaleString() : '---';
-    var rating = m.rating || '---';
-    var reviews = m.review_count ? m.review_count.toLocaleString() : '---';
-    var imgHTML = m.main_image ? '<img src="' + m.main_image + '" style="width:32px;height:32px;border-radius:4px;object-fit:cover;margin-right:8px;flex-shrink:0">' : '';
-    html += '<div class="detail-group">';
-    html += '<div class="dg-name" style="align-items:center">';
-    html += imgHTML;
-    html += '<span class="asinh">' + (m.asin||'') + '</span>';
-    html += '<span class="asintitle">' + e(m.title||'') + '</span>';
-    html += '<span class="ac-change ' + chClass + '" style="margin-left:auto">' + chTxt + '</span>';
-    html += '</div>';
-    html += '<div class="detail-metrics">';
-    html += '<div class="dm"><div class="dml">Price</div><div class="dmv pc">' + price + '</div></div>';
-    html += '<div class="dm"><div class="dml">BSR</div><div class="dmv bsr">' + bsr + '</div></div>';
-    html += '<div class="dm"><div class="dml">Rating</div><div class="dmv rt">' + rating + '</div></div>';
-    html += '<div class="dm"><div class="dml">Reviews</div><div class="dmv">' + reviews + '</div></div>';
-    html += '<div class="dm"><div class="dml">Seller</div><div class="dmv" style="font-size:10px">' + e(m.seller||'---') + '</div></div>';
-    html += '</div>';
-    html += '<div class="detail-chart-wrap"><canvas id="cs_' + (m.asin||'') + '"></canvas></div>';
-    html += '</div>';
-  });
-  document.getElementById('dtBody').innerHTML = html;
-  document.getElementById('detail').classList.add('open');
-  setTimeout(function() {
-    all.forEach(function(m){ drawSparkline('cs_' + (m.asin||''), m.history||[]); });
-  }, 60);
+
+function formatNum(n) {
+  if (n === null || n === undefined || n === '') return '-';
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return n.toLocaleString();
+  return n;
 }
-function closeDetail() {
-  document.getElementById('detail').classList.remove('open');
-  Object.keys(_charts).forEach(function(k){ if(_charts[k]){ _charts[k].destroy(); _charts[k]=null; } });
+
+function changeHTML(label, val, pct, invert = false) {
+  if (!val && val !== 0) return '';
+  const v = parseFloat(val);
+  if (Math.abs(v) < 0.01) return '<span class="chg flat">➡️ 不变</span>';
+  const isUp = invert ? v < 0 : v > 0;
+  const cls = isUp ? 'up' : 'down';
+  const arrow = isUp ? '🔺' : '🔻';
+  const pctStr = pct ? ` (${Math.abs(pct).toFixed(1)}%)` : '';
+  return `<span class="chg ${cls}">${arrow} ${Math.abs(v).toFixed(v % 1 === 0 ? 0 : 2)}${pctStr}</span>`;
 }
-function drawSparkline(cid, history) {
-  var canvas = document.getElementById(cid);
+
+function bsrArrow(val) {
+  if (!val && val !== 0) return '';
+  const v = parseInt(val);
+  if (v === 0) return '<span class="chg flat">➡️</span>';
+  return v < 0
+    ? `<span class="chg up">🔻 ${Math.abs(v).toLocaleString()} (改善)</span>`
+    : `<span class="chg down">🔺 ${v.toLocaleString()} (恶化)</span>`;
+}
+
+function toggleChart(idx) {
+  const elId = 'detail-' + idx;
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const isOpen = el.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('open'));
+  document.querySelectorAll('.prod-row').forEach(r => r.classList.remove('active'));
+  if (!isOpen) {
+    el.classList.add('open');
+    el.parentElement.classList.add('active');
+    drawChart(idx, el);
+  }
+}
+
+function drawChart(idx, el) {
+  const a = allAsins[idx];
+  if (!a || !a.history || a.history.length < 2) return;
+  const canvas = el.querySelector('canvas');
   if (!canvas) return;
-  if (_charts[cid]) { _charts[cid].destroy(); _charts[cid] = null; }
-  var prices = [], bsrData = [];
-  history.forEach(function(h) {
-    if (h.price != null) prices.push(h.price);
-    if (h.bsr != null) bsrData.push(h.bsr);
+  const ctx = canvas.getContext('2d');
+  const cid = 'chart-' + idx;
+  if (charts[cid]) { charts[cid].destroy(); delete charts[cid]; }
+  
+  const hist = a.history;
+  const labels = hist.map(h => {
+    const d = h.timestamp || '';
+    return d.length >= 16 ? d.substring(5,16) : d;
   });
-  if (!prices.length && !bsrData.length) return;
-  var datasets = [];
-  if (prices.length > 1) {
-    datasets.push({ label:'Price', data:prices, borderColor:'#B12704', backgroundColor:'rgba(177,39,4,.04)', borderWidth:1.5, fill:true, tension:0.3, pointRadius:0, yAxisID:'y' });
-  }
-  if (bsrData.length > 1) {
-    datasets.push({ label:'BSR', data:bsrData, borderColor:'#067d62', backgroundColor:'transparent', borderWidth:1.5, fill:false, tension:0.3, pointRadius:0, yAxisID:'y1' });
-  }
-  _charts[cid] = new Chart(canvas, {
-    type:'line',
-    data:{ labels:history.map(function(){return '';}), datasets:datasets },
-    options:{
-      responsive:true, maintainAspectRatio:false, animation:false,
-      plugins:{ legend:{display:false}, tooltip:{enabled:false} },
-      scales:{
-        x:{display:false},
-        y:{position:'left', grid:{color:'rgba(0,0,0,.05)'}, ticks:{font:{size:9}, maxTicksLimit:3}},
-        y1:{position:'right', grid:{display:false}, ticks:{font:{size:9}, maxTicksLimit:3}}
+  const prices = hist.map(h => h.price);
+  const bsrs = hist.map(h => h.bsr);
+  
+  // Filter nulls
+  const validPrices = prices.filter(p => p !== null && p !== undefined);
+  const validBsrs = bsrs.filter(b => b !== null && b !== undefined);
+  
+  charts[cid] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: '价格 ($)',
+          data: prices,
+          borderColor: '#007185',
+          backgroundColor: 'rgba(0,113,133,0.08)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          yAxisID: 'y',
+        },
+        {
+          label: 'BSR 排名',
+          data: bsrs,
+          borderColor: '#dc2626',
+          backgroundColor: 'rgba(220,38,38,0.06)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          yAxisID: 'y1',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { usePointStyle: true, padding: 16, font: { size: 11 } }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              if (ctx.dataset.label.includes('价格'))
+                return ctx.dataset.label + ': $' + ctx.parsed.y.toFixed(2);
+              return ctx.dataset.label + ': #' + Math.round(ctx.parsed.y).toLocaleString();
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxRotation: 45, font: { size: 10 } } },
+        y: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          title: { display: true, text: '价格 ($)', font: { size: 11 } },
+          grid: { color: 'rgba(0,0,0,0.04)' },
+          ticks: { font: { size: 10 } }
+        },
+        y1: {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          reverse: true,
+          title: { display: true, text: 'BSR 排名', font: { size: 11 } },
+          grid: { drawOnChartArea: false },
+          ticks: { font: { size: 10 } }
+        }
       }
     }
   });
 }
-function getChange(member) {
-  var h = member.history || [];
-  if (h.length < 2) return 0;
-  var p1 = null, p2 = null;
-  for (var i = h.length - 1; i >= 0; i--) {
-    if (h[i].price != null && p1 === null) p1 = h[i].price;
-    else if (h[i].price != null && p2 === null) { p2 = h[i].price; break; }
+
+function render() {
+  const search = (document.getElementById('searchIn').value || '').toLowerCase().trim();
+  const sortBy = document.getElementById('sortBy').value;
+  const onlyChg = document.getElementById('onlyChg').checked;
+  
+  let list = [...allAsins];
+  
+  if (search) {
+    list = list.filter(a =>
+      (a.title || '').toLowerCase().includes(search) ||
+      (a.asin || '').toLowerCase().includes(search)
+    );
   }
-  if (p1 == null || p2 == null) return 0;
-  return Math.round((p1 - p2) * 100) / 100;
-}
-function getLastTs(member) {
-  var h = member.history || [];
-  for (var i = h.length - 1; i >= 0; i--) {
-    if (h[i].price != null || h[i].bsr != null) return h[i].timestamp || '';
+  
+  if (onlyChg) {
+    list = list.filter(a =>
+      (a.price_change_pct && Math.abs(a.price_change_pct) > 0.01) ||
+      (a.bsr_change && a.bsr_change !== 0)
+    );
   }
-  return '';
-}
-function e(s) {
-  if (!s) return '';
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function exportXlsx() {
-  if (!_data || !_data.groups) return;
-  var wb = XLSX.utils.book_new();
-  var rows = [['ASIN','Title','Brand','Price','List Price','Rating','Reviews','BSR','BSR Sub Rank','Category','Seller','Price Change','Last Updated']];
-  _data.groups.forEach(function(g) {
-    g.members.forEach(function(m) {
-      var ch = getChange(m);
-      rows.push([
-        m.asin||'', (m.title||'').substring(0,80), m.brand||'',
-        m.price||'', m.list_price||'', m.rating||'',
-        m.review_count||'', m.bsr||'', m.bsr_sub_rank||'',
-        (m.bsr_sub_category||'').substring(0,60), m.seller||'',
-        ch, getLastTs(m)
-      ]);
-    });
+  
+  // Sort
+  const sortMap = {
+    'price_chg': (a,b) => Math.abs(b.price_change_pct||0) - Math.abs(a.price_change_pct||0),
+    'bsr_chg': (a,b) => (a.bsr_change||0) - (b.bsr_change||0),
+    'bsr': (a,b) => (a.bsr||999999) - (b.bsr||999999),
+    'rating': (a,b) => (b.rating||0) - (a.rating||0),
+    'reviews': (a,b) => (b.review_count||0) - (a.review_count||0),
+    'price': (a,b) => (b.price||0) - (a.price||0),
+  };
+  list.sort(sortMap[sortBy] || sortMap['price_chg']);
+  
+  const container = document.getElementById('listContainer');
+  
+  if (list.length === 0) {
+    container.innerHTML = '<div class="empty">没有匹配的ASIN</div>';
+    return;
+  }
+  
+  let html = `<div class="card-hdr"><span>📡 ASIN 监控 (${list.length})</span><span style="font-size:11px;color:#999">点击查看趋势</span></div>`;
+  
+  list.forEach((a, i) => {
+    const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-d';
+    const hasHistory = a.history && a.history.length >= 2;
+    const dict = a.list_price && a.list_price > 0 && a.price < a.list_price
+      ? Math.round((1 - a.price / a.list_price) * 100) : 0;
+    const priceStr = a.price ? '$' + a.price.toFixed(2) : '—';
+    const oldStr = (dict > 0 && a.list_price) ? '<div class="old">$' + a.list_price.toFixed(2) + '</div>' : '';
+    const dcTag = dict > 0 ? '<span class="tag g">-' + dict + '%</span>' : '';
+    
+    html += '<div class="prod-row" onclick="toggleChart(' + i + ')">' +
+      '<div class="rank-num ' + rankClass + '">#' + (i+1) + '</div>' +
+      '<div style="width:64px;height:64px;flex-shrink:0;background:#f5f5f5;border-radius:6px;overflow:hidden">' +
+        '<img src="' + (a.main_image || '') + '" style="width:64px;height:64px;object-fit:cover" alt="" onerror="this.style.display=\'none\'">' +
+      '</div>' +
+      '<div class="info">' +
+        '<div class="br">' +
+          (a.brand || '—') +
+          ' <span class="tag">⭐ ' + formatNum(a.rating) + '</span>' +
+          ' <span class="tag">💬 ' + formatNum(a.review_count) + '</span>' +
+        '</div>' +
+        '<div class="ti">' + (a.title || '').substring(0, 80) + '</div>' +
+        '<div class="mt">' +
+          '<span class="tag">🔗 ' + a.asin + '</span>' +
+          (a.bsr ? '<span class="tag y">🏷️ #' + formatNum(a.bsr) + '</span>' : '') +
+          (a.history && a.history.length > 1 ? '<span class="tag">📊 ' + a.history.length + '帧</span>' : '') +
+          ' ' + changeHTML('价格', a.price_change, a.price_change_pct) +
+          ' ' + bsrArrow(a.bsr_change) +
+        '</div>' +
+      '</div>' +
+      '<div class="price-col">' +
+        '<div class="cur">' + priceStr + '</div>' +
+        oldStr + dcTag +
+      '</div>' +
+      '<div class="detail-panel" id="detail-' + i + '">' +
+        '<div class="chart-wrap">' +
+          (hasHistory
+            ? '<canvas id="cv-' + i + '"></canvas>'
+            : '<div style="text-align:center;color:#999;padding:20px;font-size:12px">仅1个快照，暂无历史趋势数据</div>') +
+        '</div>' +
+        (a.seller ? '<div style="padding:4px 20px 12px;font-size:11px;color:#888">卖家: ' + a.seller + '</div>' : '') +
+      '</div>' +
+    '</div>';
   });
-  var ws = XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols'] = [{wch:14},{wch:50},{wch:20},{wch:8},{wch:10},{wch:8},{wch:10},{wch:10},{wch:12},{wch:25},{wch:20},{wch:8},{wch:20}];
-  XLSX.utils.book_append_sheet(wb, ws, 'Monitor Data');
-  XLSX.writeFile(wb, 'crossmart_monitor_' + new Date().toISOString().substring(0,10) + '.xlsx');
+  
+  container.innerHTML = html;
 }
-window.MONITOR_EMBED = {"updated":"2026-05-19T11:16:17","groups":[{"main_asin":"B09V7Z4TJG","members":[{"asin":"B09V7Z4TJG","title":"medicube Toner Pads Zero Pore Pad 2.0 | Dual-Textured Facial Pad for Exfoliation and Pore Care with 4.5% AHA Lactic Acid, 0.45% BHA Salicylic Acid | Ideal for All, Korean Skin Care, 70 Pads (1 Pack)","brand":"medicube","main_image":"https://m.media-amazon.com/images/I/71Mcspt-6AL._SX466_.jpg","price":18.9,"list_price":0.27,"rating":4.6,"review_count":24123,"bsr":1,"bsr_sub_rank":1,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Medicube & Aprilskin","history":[{"timestamp":"2026-05-18T20:35:44","price":null,"bsr":null,"rating":null,"review_count":null},{"timestamp":"2026-05-18T20:37:45","price":18.9,"bsr":1,"rating":null,"review_count":null},{"timestamp":"2026-05-18T20:41:48","price":null,"bsr":null,"rating":null,"review_count":null},{"timestamp":"2026-05-18T20:53:15","price":18.9,"bsr":1,"rating":null,"review_count":null},{"timestamp":"2026-05-18T21:20:02","price":18.9,"bsr":1,"rating":4.6,"review_count":24111},{"timestamp":"2026-05-18T21:22:11","price":18.9,"bsr":1,"rating":4.6,"review_count":24111},{"timestamp":"2026-05-18T22:07:56","price":18.9,"bsr":1,"rating":4.6,"review_count":24123},{"timestamp":"2026-05-18T22:58:36","price":18.9,"bsr":1,"rating":4.6,"review_count":24123}],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":true,"has_history":true,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0CGB215HR","members":[{"asin":"B0CGB215HR","title":"goPure Tighten & Lift Neck & Chest Moisturizer Cream for Visibly Firming, Tightening and Lifting the Look of Wrinkles & Crepey Skin, 1.7oz","brand":"goPure","main_image":"https://m.media-amazon.com/images/I/613gXRGC9XL._SX466_.jpg","price":31.49,"list_price":18.52,"rating":4.1,"review_count":10657,"bsr":307,"bsr_sub_rank":307,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"goPure","history":[{"timestamp":"2026-05-18T21:26:03","price":31.49,"bsr":307,"rating":4.1,"review_count":10648},{"timestamp":"2026-05-18T22:15:21","price":31.49,"bsr":307,"rating":4.1,"review_count":10657},{"timestamp":"2026-05-18T23:06:06","price":31.49,"bsr":307,"rating":4.1,"review_count":10657}],"price_change":0.0,"bsr_change":0,"price_change_pct":0.0,"bsr_change_pct":0.0,"is_main":true,"has_history":true,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0DSLGHPPW","members":[{"asin":"B0DSLGHPPW","title":"UJhay Retinol Neck Cream, Hyaluronic Acid and Caffeine Enriched Neck Firming Cream to Minimize Fine Lines & Dullness - 3-in-1 Moisturizing Cream for Neck, Chest and Face (50 ml/1.7 oz)","brand":"Brand: UJhay","main_image":"https://m.media-amazon.com/images/I/714u3IHLVmL._SX466_.jpg","price":8.99,"list_price":5.29,"rating":4.5,"review_count":289,"bsr":11995,"bsr_sub_rank":11995,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Guinuo E-commerce","history":[{"timestamp":"2026-05-18T21:30:26","price":8.99,"bsr":11994,"rating":4.5,"review_count":289},{"timestamp":"2026-05-18T22:20:31","price":8.99,"bsr":11995,"rating":4.5,"review_count":289}],"price_change":0.0,"bsr_change":1,"price_change_pct":0.0,"bsr_change_pct":0.0,"is_main":true,"has_history":true,"has_diff":true},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0F2J966QL","members":[{"asin":"B0F2J966QL","title":"Eight Saints Firm Intentions Anti Aging Neck Cream For Firming Skin and Reducing Wrinkles, with Protein Peptides, Hyaluronic Acid, and Niacinamide, 2 Ounces","brand":"Eight Saints","main_image":"https://m.media-amazon.com/images/I/61XDTWFTneL._SX466_.jpg","price":34.0,"list_price":17.0,"rating":4.6,"review_count":1748,"bsr":3692,"bsr_sub_rank":3692,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Eight Saints Skincare LLC","history":[{"timestamp":"2026-05-18T21:24:23","price":34.0,"bsr":3690,"rating":4.6,"review_count":1748},{"timestamp":"2026-05-18T22:14:18","price":34.0,"bsr":3690,"rating":4.6,"review_count":1748},{"timestamp":"2026-05-18T23:00:10","price":34.0,"bsr":3692,"rating":4.6,"review_count":1748}],"price_change":0.0,"bsr_change":2,"price_change_pct":0.0,"bsr_change_pct":0.1,"is_main":true,"has_history":true,"has_diff":true},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5},{"main_asin":"B0GKFD9ZQW","members":[{"asin":"B0GKFD9ZQW","title":"ANUA Collagen Retinol Refining Gua Sha Cream, Neck Cream For Lifting & Firming, Jawline to D\u00e9collet\u00e9, Daily Moisturizer, Fine Line Care, Neck Massager, Korean Skin Care, 2.7fl.oz","brand":"ANUA","main_image":"https://m.media-amazon.com/images/I/51XYn-lowjL._SX466_.jpg","price":30.0,"list_price":11.07,"rating":4.5,"review_count":103,"bsr":2145,"bsr_sub_rank":2145,"bsr_sub_category":"Beauty & Personal Care (See Top 100 in Beauty & Personal Care)","seller":"Anua","history":[{"timestamp":"2026-05-18T21:28:14","price":30.0,"bsr":2145,"rating":4.5,"review_count":102},{"timestamp":"2026-05-18T22:19:12","price":30.0,"bsr":2145,"rating":4.5,"review_count":103}],"price_change":0.0,"bsr_change":0,"price_change_pct":0.0,"bsr_change_pct":0.0,"is_main":true,"has_history":true,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false},{"asin":null,"title":"","brand":"","main_image":"","price":null,"list_price":null,"rating":null,"review_count":null,"bsr":null,"bsr_sub_rank":null,"bsr_sub_category":"","seller":"","history":[],"price_change":0,"bsr_change":0,"price_change_pct":0,"bsr_change_pct":0,"is_main":false,"has_history":false,"has_diff":false}],"count":5}],"total_asins":6};
-initMonitor(window.MONITOR_EMBED);
+
+loadData();
 </script>
 </body>
 </html>
