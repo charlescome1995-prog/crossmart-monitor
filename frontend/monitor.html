@@ -3,420 +3,384 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
 <title>CrossMart Monitor</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#eaeded;color:#0f1111;font-size:14px;line-height:1.5}
-/* EN font = Times New Roman / CN font = Inter */
-.en{font-family:Georgia,'Times New Roman','Times',serif}
-*{font-family:'Times New Roman','Taipei Sans TC',Inter,system-ui,sans-serif}
-a{color:#007185;text-decoration:none}a:hover{color:#c45500}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#eaeded;color:#0f1111;font-size:14px;min-height:100vh}
+
 .topbar{background:#131921;color:#fff;display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 24px;position:sticky;top:0;z-index:100}
-.topbar .brand{font-weight:700;font-size:16px}.topbar .brand span{color:#e94560}
+.topbar .brand{font-weight:700;font-size:16px}
 .topbar nav{display:flex;gap:14px;font-size:13px}
-.topbar nav a{color:rgba(255,255,255,.75);padding:4px 0;border-bottom:2px solid transparent;transition:.15s}
+.topbar nav a{color:rgba(255,255,255,.75);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent;transition:.15s}
 .topbar nav a:hover,.topbar nav a.active{color:#fff;border-bottom-color:#e94560}
-.config-card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin:16px 24px;overflow:hidden}
-.config-card .hdr{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid #eee;font-weight:600;font-size:14px}
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 24px;margin-bottom:14px}
-.met{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.04);padding:14px 8px;text-align:center}
-.met .n{font-size:24px;font-weight:700;line-height:1.2}.met .n.r1{color:#B12704}.met .n.g1{color:#067d62}.met .n.a1{color:#9e7800}.met .n.b1{color:#007185}
+
+.filters{background:#fff;padding:10px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:1px solid #d5d9d9;position:sticky;top:48px;z-index:99;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.filters select,.filters input{padding:6px 10px;border:1px solid #d5d9d9;border-radius:6px;font-size:13px;background:#fff;outline:none}
+.filters input:focus,.filters select:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.15)}
+.filters input{width:200px}
+.filters label{font-size:13px;color:#555;display:flex;align-items:center;gap:4px;cursor:pointer}
+
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:12px 20px}
+.met{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.04);padding:12px 8px;text-align:center}
+.met .n{font-size:22px;font-weight:700;line-height:1.2}
+.met .n.g1{color:#067d62}.met .n.r1{color:#B12704}.met .n.b1{color:#007185}.met .n.a1{color:#9e7800}
 .met .l{font-size:10px;color:#687078;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
-.card-list{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin:0 24px 20px;overflow:hidden}
-input.cfg{width:100%;padding:6px 10px;border:1px solid #d5d9d9;border-radius:4px;font-size:13px;font-family:monospace;outline:none}
-input.cfg:focus{border-color:#007185;box-shadow:0 0 0 2px rgba(0,113,133,.2)}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:.15s;white-space:nowrap}
+
+.card-list{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin:0 20px 16px;overflow:hidden}
+.card-hdr{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #eee;font-weight:600;font-size:13px}
+
+.prod-row{padding:10px 16px;border-bottom:1px solid #f0f2f2;display:grid;grid-template-columns:36px 64px 1fr auto;gap:12px;cursor:pointer;transition:background .12s;align-items:center}
+.prod-row:hover{background:#f7fafc}
+.prod-row:last-child{border-bottom:none}
+.prod-row.active{background:#effaff;border-left:3px solid #007185}
+.rank-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.rank-1{background:linear-gradient(135deg,#ffd700,#f5c518);color:#000;box-shadow:0 2px 6px rgba(255,215,0,.3)}
+.rank-2{background:linear-gradient(135deg,#c0c0c0,#b0b0b0);color:#000;box-shadow:0 2px 6px rgba(192,192,192,.2)}
+.rank-3{background:linear-gradient(135deg,#cd7f32,#b8860b);color:#fff;box-shadow:0 2px 6px rgba(205,127,50,.3)}
+.rank-d{background:#e6e8ea;color:#555}
+
+.info{min-width:0}.info .br{font-size:11px;color:#007185;font-weight:500;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.info .ti{font-size:12px;color:#555;line-height:1.3;margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:500px}
+.info .mt{font-size:11px;color:#888;display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+
+.price-col{text-align:right;min-width:80px}
+.price-col .cur{color:#B12704;font-weight:700;font-size:16px}
+.price-col .old{font-size:11px;color:#999;text-decoration:line-through}
+.price-col .dc{font-size:10px;color:#067d62;background:#e8f5e9;padding:1px 5px;border-radius:4px;display:inline-block;margin-top:2px}
+.tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:10px;background:#f0f8ff;color:#067d62;border:1px solid #ceead6;margin:1px}
+.tag.g{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
+.tag.r{background:#fef2f2;color:#991b1b;border-color:#fecaca}
+.tag.y{background:#fffbeb;color:#92400e;border-color:#fde68a}
+
+.chg{font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:2px}
+.chg.up{color:#059669}.chg.down{color:#dc2626}.chg.flat{color:#999}
+
+.detail-panel{display:none;background:#fafafa;padding:0;border-bottom:1px solid #e6e8ea}
+.detail-panel.open{display:block}
+.chart-wrap{padding:16px 20px;min-height:260px}
+.chart-wrap canvas{width:100%!important;max-height:280px}
+
+.loading{text-align:center;padding:40px;color:#999;font-size:13px}
+.empty{text-align:center;padding:30px;color:#999;font-size:13px}
+.err{text-align:center;padding:30px;color:#B12704;font-size:13px}
+
+.btn{display:inline-flex;align-items:center;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:.15s;background:#e6e8ea;color:#0f1111}
+.btn:hover{background:#d5d9d9}
 .btn-p{background:#ffd814;color:#0f1111}.btn-p:hover{background:#f7ca00}
-.btn-s{background:#e6e8ea;color:#0f1111}.btn-s:hover{background:#d5d9d9}
-.btn-d{background:#B12704;color:#fff}.btn-d:hover{background:#8f1f03}
-.toast{position:fixed;bottom:30px;right:30px;background:#067d62;color:#fff;padding:12px 24px;border-radius:8px;font-size:13px;font-weight:600;z-index:999;display:none;box-shadow:0 4px 12px rgba(0,0,0,.15)}
-.toast.err{background:#B12704}
+.btn-sm{padding:3px 10px;font-size:11px}
 
-/* ========== ASIN ROW: FIXED TABLE LAYOUT ========== */
-.asin-row{display:flex;flex-direction:row;align-items:stretch;border-bottom:1px solid #eaeded;min-height:120px;transition:.15s}
-.asin-row:last-child{border-bottom:none}
-.asin-row:hover{background:#fafbfc}
-
-/* Left image: fixed width */
-.asin-img{display:flex;align-items:center;justify-content:center;width:140px;flex-shrink:0}
-.asin-img img{width:110px;height:110px;object-fit:contain;border:1px solid #e6e8ea;border-radius:8px;background:#fff;padding:3px;display:block}
-.asin-img .plh{width:110px;height:110px;display:flex;align-items:center;justify-content:center;background:#f8fafc;border:1px solid #e6e8ea;border-radius:8px;color:#ccc;font-size:28px}
-
-/* Middle: table-constrained content */
-.asin-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 10px 8px 0;min-height:120px;gap:2px;overflow:hidden}
-
-.asin-title{display:flex;align-items:baseline;gap:8px;max-width:100%}
-.asin-title .name{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:480px}
-.asin-title .badge{font-size:10px;color:#555;background:#f0f2f2;padding:1px 7px;border-radius:3px;font-family:monospace;white-space:nowrap;flex-shrink:0}
-
-/* Metric table: grid layout, fixed label widths */
-.mt{display:grid;grid-template-columns:auto minmax(60px,auto) auto minmax(60px,auto) 1fr;gap:0 6px;align-items:center;font-size:12px;line-height:1.7}
-.mt .ml{color:#687078;font-weight:500;white-space:nowrap;text-align:left;min-width:32px}
-.mt .mv{font-weight:600;white-space:nowrap;text-align:left;overflow:hidden;text-overflow:ellipsis;max-width:120px}
-.mt .mv.pc{color:#B12704}.mt .mv.rt{color:#d99536}
-
-/* Trend mini */
-.trend-m{height:20px;position:relative;width:100%;margin-top:1px}
-
-/* Right status: clean timestamp list */
-.asin-stat{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;gap:2px;padding:8px 12px 8px 0;flex-shrink:0;width:140px;text-align:right;overflow:hidden}
-.bg-s{display:inline-block;background:#e8f5ed;color:#067d62;border:1px solid #ceead6;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600}
-.bg-c{display:inline-block;background:#fff8e6;color:#9e7800;border:1px solid #fceeb5;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600}
-.chg-i{font-size:11px;color:#c45500;line-height:1.5;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.chg-i.up{color:#067d62}.chg-i.dn{color:#B12704}
-.ts-l{font-size:10px;color:#aaa;line-height:1.5;max-width:100%}
-.ts-d{display:inline-block;width:3px;height:3px;background:#bbb;border-radius:50%;margin:0 3px;vertical-align:middle}
-
-/* Detail panel: only when changed */
-.detail-e{border-top:1px solid #f0e6d0;padding:8px 14px 10px;display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#687078}
-.detail-e .ch{font-size:11px;color:#c45500;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.detail-e .ch.up{color:#067d62}.detail-e .ch.dn{color:#B12704}
-.chart-d{height:34px;position:relative;width:100%;margin-top:2px}
-
-@media(max-width:900px){
-  .asin-img{width:100px}
-  .asin-img img,.asin-img .plh{width:80px;height:80px}
-  .asin-title .name{max-width:200px;font-size:13px}
-  .asin-stat{width:115px;padding-right:6px}
-  .mt .mv{max-width:80px}
+@media(max-width:768px){
+  .topbar{padding:0 12px}
+  .metrics{grid-template-columns:repeat(2,1fr);padding:8px 12px}
+  .prod-row{grid-template-columns:28px 48px 1fr;gap:8px}
+  .prod-row .price-col{display:none}
+  .filters{top:44px;padding:8px 12px}
+  .filters input{width:130px}
 }
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div class="brand">Cross<span>Mart</span> <span style="font-size:12px;color:rgba(255,255,255,.5);font-weight:400;margin-left:6px">ASIN监控</span></div>
+  <span class="brand">📊 Cross<span style="color:#e94560">Mart</span></span>
   <nav>
-    <a href="../index.html">首页</a><a href="monitor.html" class="active">监控</a><a href="selection.html">选品</a>
+    <a href="../index.html">Home</a>
+    <a href="monitor.html" class="active">Monitor</a>
+    <a href="selection.html">Selection</a>
   </nav>
 </div>
 
-<div class="config-card">
-  <div class="hdr">
-    <span>⚙️ 监控配置</span>
-    <span id="lastUpdate" style="font-size:11px;color:#999;font-weight:400"></span>
-  </div>
-  <div style="padding:12px 20px">
-    <div style="display:flex;gap:8px;margin-bottom:10px">
-      <button id="tabA" style="padding:7px 18px;background:#131921;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer" onclick="switchTab('a')">ASIN设置</button>
-      <button id="tabK" style="padding:7px 18px;background:#e6e8ea;color:#0f1111;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer" onclick="switchTab('k')">关键词设置</button>
-    </div>
-    <div id="panelA"><div id="editAsins"></div>
-      <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
-        <button class="btn btn-s" onclick="addAsinCfg()">+ 添加ASIN</button><button class="btn btn-p" onclick="saveAsins()">💾 保存</button><span id="msgA" style="font-size:11px;color:#687078"></span>
-      </div>
-    </div>
-    <div id="panelK" style="display:none"><div id="editKws"></div>
-      <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
-        <button class="btn btn-s" onclick="addKwCfg()">+ 添加关键词</button><button class="btn btn-p" onclick="saveKws()">💾 保存</button><span id="msgK" style="font-size:11px;color:#687078"></span>
-      </div>
-    </div>
-    <hr style="border:none;border-top:1px solid #eee;margin:10px 0">
-    <div style="display:flex;gap:8px;align-items:center">
-      <button class="btn btn-p" onclick="triggerScrape()">🔍 立即抓取</button><span id="scrapeMsg" style="font-size:11px;color:#687078"></span>
-    </div>
-  </div>
+<div class="filters">
+  <input type="text" id="searchIn" placeholder="🔍 搜索标题/ASIN..." oninput="render()">
+  <select id="sortBy" onchange="render()">
+    <option value="price_chg">价格变化 ↓</option>
+    <option value="bsr_chg">BSR改善 ↑</option>
+    <option value="bsr">BSR排名 ↑</option>
+    <option value="rating">评分 ↓</option>
+    <option value="reviews">评论数 ↓</option>
+    <option value="price">价格 ↓</option>
+  </select>
+  <label><input type="checkbox" id="onlyChg" onchange="render()"> 仅变化</label>
+  <button class="btn btn-sm" onclick="refresh()">🔄 刷新</button>
 </div>
 
-<div class="metrics">
-  <div class="met"><div class="n r1" id="m1">-</div><div class="l">监控ASIN</div></div>
-  <div class="met"><div class="n g1" id="m2">-</div><div class="l">稳定</div></div>
-  <div class="met"><div class="n a1" id="m3">-</div><div class="l">有变化</div></div>
-  <div class="met"><div class="n b1" id="m4">-</div><div class="l">今日检查</div></div>
+<div id="metrics" class="metrics"></div>
+<div id="listContainer" class="card-list">
+  <div class="loading">⏳ 加载中...</div>
 </div>
-
-<div style="padding:0 24px 14px;display:flex;justify-content:flex-end;gap:8px">
-  <button class="btn btn-s" onclick="exportCsv()" style="font-size:11px">📥 导出CSV</button>
-</div>
-
-<div class="card-list" id="asinList"></div>
-
-<div id="toast" class="toast"></div>
-<div style="text-align:center;padding:16px;font-size:11px;color:#aaa;border-top:1px solid #eee;margin-top:20px">CrossMart Monitor</div>
 
 <script>
-var API='data/monitor-data.json', KEY='crossmart_monitor_config';
-var charts={}, asins=[], kws=[];
-var DEFAULT={asins:[{asin:'B09V7Z4TJG',keywords:'batana oil',nickname:'Batana Oil'},{asin:'B0F2J966QL',keywords:'neck cream',nickname:'Eight Saints'},{asin:'B0CGB215HR',keywords:'neck cream',nickname:'goPure'},{asin:'B0GKFD9ZQW',keywords:'neck cream',nickname:'ANUA'},{asin:'B0DSLGHPPW',keywords:'neck cream',nickname:'UJhay'}],keywords:[{keyword:'batana oil',note:'主关键词'},{keyword:'neck cream',note:'颈霜'},{keyword:'anti aging cream',note:'抗衰'}]};
+let allAsins = [];
+let charts = {};
 
-function e(s){return(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;')}
-function cln(s){return s.replace(/[^a-zA-Z0-9]/g,'')}
-function pn(v){if(!v)return'—';var m=(''+v).match(/([\d.]+)/);return m?m[1]:'—'}
-function g(s){return s||'—'}
-function fdt(ts){if(!ts)return'';var d=new Date(ts);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
-
-/* Format BSR: try to parse sub-category from the top-level bsr string */
-function parseBSRfull(bsrStr, subRank, subCat){
-  var r1='—',r2='—';
-  if(bsrStr){
-    var m=bsrStr.match(/^#([\d,]+)/);
-    if(m)r1='#'+m[1];
-  }
-  if(subRank)r2='#'+subRank.toLocaleString();
-  return {top:r1, sub:r2};
+function refresh() {
+  charts = {};
+  document.getElementById('listContainer').innerHTML = '<div class="loading">⏳ 加载中...</div>';
+  loadData();
 }
 
-/* Format changes into abbreviated display */
-function fmtChg(c, maxLen){
-  // Truncate long change descriptions
-  if(c.length>maxLen)return c.substring(0,maxLen-2)+'..';
-  return c;
-}
-
-function snapLines(ss){
-  if(!ss||!ss.length)return'<div class="ts-l">暂无记录</div>';
-  return '<div class="ts-l">'+ss.map(function(s){return'<span class="ts-d"></span> '+fdt(s.timestamp)}).join('<br>')+'</div>';
-}
-
-function loadCfg(){
-  try{
-    var s=localStorage.getItem(KEY);
-    if(s){var p=JSON.parse(s);asins=p.asins&&p.asins.length?p.asins:JSON.parse(JSON.stringify(DEFAULT.asins));kws=p.keywords&&p.keywords.length?p.keywords:JSON.parse(JSON.stringify(DEFAULT.keywords))}
-    else{asins=JSON.parse(JSON.stringify(DEFAULT.asins));kws=JSON.parse(JSON.stringify(DEFAULT.keywords));svCfg()}
-  }catch(e){asins=JSON.parse(JSON.stringify(DEFAULT.asins));kws=JSON.parse(JSON.stringify(DEFAULT.keywords))}
-  ra();rk();
-}
-function ra(){
-  var el=document.getElementById('editAsins');
-  if(!asins.length)asins=[{asin:'',keywords:'batana oil',nickname:''}];
-  el.innerHTML=asins.map(function(a,i){return'<div style="display:grid;grid-template-columns:1fr 100px 70px;gap:6px;padding:5px 0;border-bottom:1px solid #eee;font-size:13px;align-items:center">'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input class="cfg" value="'+e(a.asin)+'" placeholder="ASIN" onchange="ua('+i+',\'asin\',this.value)"><input class="cfg" value="'+e(a.nickname||'')+'" placeholder="备注" onchange="ua('+i+',\'nickname\',this.value)"></div>'+
-    '<input class="cfg" value="'+e(a.keywords||'batana oil')+'" placeholder="关键词" onchange="ua('+i+',\'keywords\',this.value)">'+
-    '<button class="btn btn-d" style="padding:4px 8px;font-size:11px" onclick="rmA('+i+')">删除</button></div>'}).join('');
-}
-function rk(){
-  var el=document.getElementById('editKws');
-  if(!kws.length)kws=[{keyword:'batana oil',note:''}];
-  el.innerHTML=kws.map(function(k,i){return'<div style="display:grid;grid-template-columns:1fr 1fr 70px;gap:6px;padding:5px 0;border-bottom:1px solid #eee;font-size:13px;align-items:center">'+
-    '<input class="cfg" value="'+e(k.keyword)+'" placeholder="关键词" onchange="uk('+i+',\'keyword\',this.value)">'+
-    '<input class="cfg" value="'+e(k.note||'')+'" placeholder="备注" onchange="uk('+i+',\'note\',this.value)">'+
-    '<button class="btn btn-d" style="padding:4px 8px;font-size:11px" onclick="rmK('+i+')">删除</button></div>'}).join('');
-}
-function ua(i,f,v){if(!asins[i])asins[i]={asin:'',keywords:'batana oil',nickname:''};asins[i][f]=v}
-function uk(i,f,v){if(!kws[i])kws[i]={keyword:'',note:''};kws[i][f]=v}
-function addAsinCfg(){if(asins.length>=10){st('最多10个ASIN',1);return}asins.push({asin:'',keywords:'batana oil',nickname:''});ra()}
-function addKwCfg(){if(kws.length>=10){st('最多10个关键词',1);return}kws.push({keyword:'',note:''});rk()}
-function rmA(i){if(!confirm('删除?'))return;asins.splice(i,1);ra();svCfg()}
-function rmK(i){if(!confirm('删除?'))return;kws.splice(i,1);rk();svCfg()}
-function svCfg(){localStorage.setItem(KEY,JSON.stringify({asins:asins.filter(function(a){return a.asin&&a.asin.trim()}),keywords:kws.filter(function(k){return k.keyword&&k.keyword.trim()}),updatedAt:new Date().toISOString()}))}
-function saveAsins(){var v=asins.filter(function(a){return a.asin&&a.asin.trim()});if(!v.length){st('至少一个有效ASIN',1);return}svCfg();st('已保存 '+v.length+' 个ASIN')}
-function saveKws(){var v=kws.filter(function(k){return k.keyword&&k.keyword.trim()});if(!v.length){st('至少一个有效关键词',1);return}svCfg();st('已保存 '+v.length+' 个关键词')}
-function switchTab(t){
-  var a=document.getElementById('tabA'),k=document.getElementById('tabK');
-  a.style.background=t==='a'?'#131921':'#e6e8ea';a.style.color=t==='a'?'#fff':'#0f1111';
-  k.style.background=t==='k'?'#131921':'#e6e8ea';k.style.color=t==='k'?'#fff':'#0f1111';
-  document.getElementById('panelA').style.display=t==='a'?'block':'none';
-  document.getElementById('panelK').style.display=t==='k'?'block':'none';
-}
-
-/* API地址：本地API服务器 */
-var API_URL='http://127.0.0.1:8765';
-
-async function triggerScrape(){
-  var btn=document.querySelector('[onclick="triggerScrape()"]');if(!btn)return;
-  // 先保存配置到localStorage
-  svCfg();
-  // 获取localStorage中最新的ASIN列表
-  try{
-    var cfg=JSON.parse(localStorage.getItem(KEY)||'{}');
-    var savedAsins=cfg.asins||asins;
-  }catch(e){var savedAsins=asins}
-  var asinList=savedAsins.filter(function(a){return a.asin&&a.asin.trim()}).map(function(a){return a.asin.trim()});
-  // 如果还没有有效ASIN，用默认
-  if(!asinList.length){asinList=['B09V7Z4TJG']}
-
-  btn.disabled=true;btn.textContent='采集中...';
-  var me=document.getElementById('scrapeMsg');
-  me.textContent='正在采集 '+asinList.length+' 个ASIN...';
-  try{
-    var r=await fetch(API_URL+'/api/scrape',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({asins:asinList})});
-    var j=await r.json();
-    if(j.status==='ok'){
-      st('开始采集 '+asinList.length+' 个ASIN');
-      me.textContent='采集中，请稍候...';
-      // 轮询状态直到完成
-      var wait=function(){setTimeout(async function(){
-        try{
-          var sr=await fetch(API_URL+'/api/status');var sj=await sr.json();
-          if(sj.scrape_running){me.textContent='采集中 ('+sj.last_result?.count||0+'/已完成)...';wait()}
-          else{
-            me.textContent='采集完成';
-            st('采集完成，刷新数据中...');
-            setTimeout(function(){load();me.textContent='完成'},1000);
-          }
-        }catch(e){me.textContent='状态查询失败';btn.disabled=false;btn.textContent='立即抓取'}
-      },2000)};
-      wait();
-    }else{st('失败: '+(j.message||''),1);me.textContent='失败';btn.disabled=false;btn.textContent='立即抓取'}
-  }catch(e){
-    st('API服务未启动',1);
-    me.innerHTML='请在终端运行:<br><code>python backend/api_server.py</code><br>然后重试';
-    btn.disabled=false;btn.textContent='立即抓取'
+async function loadData() {
+  try {
+    const r = await fetch('data/monitor-data.json?' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    allAsins = data.asins || [];
+    renderMetrics();
+    render();
+  } catch(e) {
+    document.getElementById('listContainer').innerHTML =
+      '<div class="err">❌ 数据加载失败: ' + e.message + '</div>';
   }
 }
-/* Compute detailed changes between snapshots */
-function computeChanges(snapshots){
-  if(!snapshots||snapshots.length<2)return[];
-  var result=[];
-  for(var i=1;i<snapshots.length;i++){
-    var prev=snapshots[i-1].data||{},cur=snapshots[i].data||{};
-    var t=snapshots[i].timestamp,items=[];
-    if(prev.price!==cur.price)items.push('价格: '+g(prev.price)+' → '+g(cur.price));
-    if(prev.rating!==cur.rating)items.push('评分: '+pn(prev.rating)+' → '+pn(cur.rating));
-    if(prev.review_count!==cur.review_count)items.push('评论: '+(prev.review_count||0)+' → '+(cur.review_count||0));
-    if(prev.bsr!==cur.bsr)items.push('BSR: '+(prev.bsr||'').split(' in ')[0]+' → '+(cur.bsr||'').split(' in ')[0]);
-    if(prev.title!==cur.title)items.push('标题有变化');
-    if(items.length)result.push({time:t,changes:items});
-  }
-  return result;
+
+function renderMetrics() {
+  const a = allAsins;
+  const total = a.length;
+  const priceChg = a.filter(x => x.price_change_pct && Math.abs(x.price_change_pct) > 0.01).length;
+  const bsrBetter = a.filter(x => x.bsr_change && x.bsr_change < 0).length;
+  const updated = a._updated || '—';
+  document.getElementById('metrics').innerHTML =
+    `<div class="met"><div class="n b1">${total}</div><div class="l">📦 监控ASIN</div></div>
+     <div class="met"><div class="n ${priceChg > 0 ? 'r1' : 'a1'}">${priceChg}</div><div class="l">📈 价格波动</div></div>
+     <div class="met"><div class="n g1">${bsrBetter}</div><div class="l">🔄 BSR改善</div></div>
+     <div class="met"><div class="n a1">${getUpdatedStr()}</div><div class="l">🕐 最后更新</div></div>`;
 }
 
-function exportCsv(){
-  var rows=document.querySelectorAll('.asin-row');
-  if(!rows.length){st('无数据可导出',1);return}
-  // First pass: get all data from rendered rows and the underlying JSON
-  var csv='\uFEFFASIN,产品名,品牌,售价,评分,BSR大类,BSR小类,卖家,状态,变化内容,变化时间\n';
-  rows.forEach(function(r){
-    var a=(r.querySelector('.badge')||{}).textContent||'';
-    var n=(r.querySelector('.asin-title .name')||{}).textContent||'';
-    var vs=r.querySelectorAll('.mt .mv');
-    var status=(r.querySelector('.bg-s,.bg-c')||{}).textContent||'稳定';
-    // Try to find changes data from window._data
-    var changes=[];
-    if(window._data&&window._data.asins){
-      var item=window._data.asins.find(function(x){return x.asin===a});
-      if(item&&item.changes&&item.changes.length)changes=item.changes;
+function getUpdatedStr() {
+  for (const a of allAsins) {
+    if (a.history && a.history.length) {
+      const t = a.history[a.history.length-1].timestamp;
+      if (t) return t.substring(5,16).replace('T',' ');
     }
-    // Also compute per-snapshot changes
-    var item2=window._data&&window._data.asins&&window._data.asins.find(function(x){return x.asin===a});
-    var perChanges=item2?computeChanges(item2.snapshots||[]):[];
-    var changeText=changes.length?changes.join('; '):'';
-    var changeTime='';
-    if(perChanges.length){
-      changeTime=perChanges.map(function(p){return fdt(p.time)+': '+p.changes.join(', ')}).join(' | ');
-    }
-    csv+=[a,n,g(vs[0]&&vs[0].textContent),g(vs[1]&&vs[1].textContent),g(vs[2]&&vs[2].textContent),g(vs[3]&&vs[3].textContent),g(vs[4]&&vs[4].textContent),g(vs[5]&&vs[5].textContent),status,changeText,changeTime].map(function(v){return'"'+(v||'').replace(/"/g,'""')+'"'}).join(',')+'\n'
+  }
+  return '—';
+}
+
+function formatNum(n) {
+  if (n === null || n === undefined || n === '') return '-';
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return n.toLocaleString();
+  return n;
+}
+
+function changeHTML(label, val, pct, invert = false) {
+  if (!val && val !== 0) return '';
+  const v = parseFloat(val);
+  if (Math.abs(v) < 0.01) return '<span class="chg flat">➡️ 不变</span>';
+  const isUp = invert ? v < 0 : v > 0;
+  const cls = isUp ? 'up' : 'down';
+  const arrow = isUp ? '🔺' : '🔻';
+  const pctStr = pct ? ` (${Math.abs(pct).toFixed(1)}%)` : '';
+  return `<span class="chg ${cls}">${arrow} ${Math.abs(v).toFixed(v % 1 === 0 ? 0 : 2)}${pctStr}</span>`;
+}
+
+function bsrArrow(val) {
+  if (!val && val !== 0) return '';
+  const v = parseInt(val);
+  if (v === 0) return '<span class="chg flat">➡️</span>';
+  return v < 0
+    ? `<span class="chg up">🔻 ${Math.abs(v).toLocaleString()} (改善)</span>`
+    : `<span class="chg down">🔺 ${v.toLocaleString()} (恶化)</span>`;
+}
+
+function toggleChart(idx) {
+  const elId = 'detail-' + idx;
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const isOpen = el.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('open'));
+  document.querySelectorAll('.prod-row').forEach(r => r.classList.remove('active'));
+  if (!isOpen) {
+    el.classList.add('open');
+    el.parentElement.classList.add('active');
+    drawChart(idx, el);
+  }
+}
+
+function drawChart(idx, el) {
+  const a = allAsins[idx];
+  if (!a || !a.history || a.history.length < 2) return;
+  const canvas = el.querySelector('canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const cid = 'chart-' + idx;
+  if (charts[cid]) { charts[cid].destroy(); delete charts[cid]; }
+  
+  const hist = a.history;
+  const labels = hist.map(h => {
+    const d = h.timestamp || '';
+    return d.length >= 16 ? d.substring(5,16) : d;
   });
-  var b=new Blob([csv],{type:'text/csv;charset=utf-8'});
-  var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='crossmart_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
-  st('已下载')
-}
-function st(m,e){var t=document.getElementById('toast');t.textContent=m;t.className='toast'+(e?' err':'');t.style.display='block';setTimeout(function(){t.style.display='none'},3000)}
-
-async function load(){
-  try{
-    var r=await fetch(API+'?_='+Date.now());
-    if(!r.ok)throw Error('HTTP '+r.status);
-    render(await r.json())
-  }catch(e){
-    document.getElementById('asinList').innerHTML='<div style="padding:60px 24px;text-align:center;color:#999;font-size:13px">暂无监控数据</div>';
-    ['m1','m2','m3','m4'].forEach(function(id){document.getElementById(id).textContent='—'})
-  }
-}
-function render(d){
-  var items=d.asins||[],ov=d.overview||{};
-  // Store raw data for export
-  window._data=d;
-  document.getElementById('m1').textContent=ov.total||items.length||'—';
-  document.getElementById('m2').textContent=ov.stable||0;
-  document.getElementById('m3').textContent=ov.changed||0;
-  document.getElementById('m4').textContent=ov.today_checks||0;
-  var lu=d.generated||'';
-  document.getElementById('lastUpdate').textContent=lu?'最后更新: '+lu.slice(0,16).replace('T',' '):'';
-  var el=document.getElementById('asinList');el.innerHTML='';
-  Object.values(charts).forEach(function(ch){ch.destroy()});charts={};
-  if(!items.length){el.innerHTML='<div style="padding:60px 24px;text-align:center;color:#999;font-size:13px">暂无监控数据</div>';return}
-  items.forEach(function(item){el.appendChild(buildRow(item))})
-}
-
-function buildRow(item){
-  var div=document.createElement('div');div.className='asin-row';
-  var changed=item.has_changes, chgCount=item.change_count||0;
-  var price=item.price||'---', brand=item.brand||'---', rt=item.rating||'---';
-  var rc=item.review_count||'---', seller=item.seller||'---';
-  var bsr=item.bsr||'', bsrSub=item.bsr_sub_rank||'', bsrCat=item.bsr_sub_category||'';
-
-  // BSR display
-  var bsrTop=bsr||'---';
-  var bsrSubDisp=bsrSub&&bsrCat ? bsrSub+' '+bsrCat : (bsrSub||'---');
-  var pvHtml=price;
-  if(item.list_price&&item.price&&item.list_price!==item.price){
-    pvHtml+=' <span style="color:#999;text-decoration:line-through">'+item.list_price+'</span>';
-  }
-
-  // Image
-  var imgURL=item.main_image||'';
-  var imgHTML=imgURL ? ('<img src="'+imgURL+'" onerror="this.style.display=\'none\'">') : '<div class="plh">\ud83d\udcf7</div>';
-
-  // Status column with change timeline
-  var stHTML='';
-  if(changed){
-    stHTML='<div class="bg-c">\u26a0\ufe0f \u53d8\u5316 '+chgCount+'\u6b21</div>';
-    var clist=item.changes||[];
-    var maxShow=3;
-    var slice=clist.slice(-maxShow);
-    slice.forEach(function(chg, idx){
-      var actualIdx=clist.length - (slice.length-idx);
-      stHTML+='<div style="margin:4px 0;background:#fff7ed;border-radius:4px;padding:3px 5px;font-size:10px;line-height:1.4;border:1px solid #fed7aa">';
-      stHTML+='<div style="color:#9a3412;font-weight:600;font-size:9px">\u7b2c'+actualIdx+'\u6b21 '+fmtTime(chg.timestamp)+'</div>';
-      chg.items.forEach(function(c){
-        var cl=c.direction==='up'?'up':'dn';
-        stHTML+='<span class="chg-i '+cl+'">';
-        if(c.field==='price') stHTML+='\ud83d\udcb0 \u4ef7\u683c '+c.from+'\u2192'+c.to;
-        else if(c.field==='rating') stHTML+='\u2b50 \u8bc4\u5206 '+c.from+'\u2192'+c.to;
-        else if(c.field==='review_count') stHTML+='\ud83d\udcdd \u8bc4\u8bba '+c.from+'\u2192'+c.to;
-        else if(c.field==='bsr') stHTML+='\ud83d\udcca BSR '+c.from+'\u2192'+c.to;
-        stHTML+='</span><br>';
-      });
-      stHTML+='</div>';
-    });
-    if(clist.length>maxShow){
-      stHTML+='<div style="font-size:9px;color:#999;margin-top:2px">\u8fd8\u6709 '+(clist.length-maxShow)+' \u6b21\u66f4\u65e9\u53d8\u5316</div>';
+  const prices = hist.map(h => h.price);
+  const bsrs = hist.map(h => h.bsr);
+  
+  // Filter nulls
+  const validPrices = prices.filter(p => p !== null && p !== undefined);
+  const validBsrs = bsrs.filter(b => b !== null && b !== undefined);
+  
+  charts[cid] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: '价格 ($)',
+          data: prices,
+          borderColor: '#007185',
+          backgroundColor: 'rgba(0,113,133,0.08)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          yAxisID: 'y',
+        },
+        {
+          label: 'BSR 排名',
+          data: bsrs,
+          borderColor: '#dc2626',
+          backgroundColor: 'rgba(220,38,38,0.06)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          yAxisID: 'y1',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { usePointStyle: true, padding: 16, font: { size: 11 } }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              if (ctx.dataset.label.includes('价格'))
+                return ctx.dataset.label + ': $' + ctx.parsed.y.toFixed(2);
+              return ctx.dataset.label + ': #' + Math.round(ctx.parsed.y).toLocaleString();
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxRotation: 45, font: { size: 10 } } },
+        y: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          title: { display: true, text: '价格 ($)', font: { size: 11 } },
+          grid: { color: 'rgba(0,0,0,0.04)' },
+          ticks: { font: { size: 10 } }
+        },
+        y1: {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          reverse: true,
+          title: { display: true, text: 'BSR 排名', font: { size: 11 } },
+          grid: { drawOnChartArea: false },
+          ticks: { font: { size: 10 } }
+        }
+      }
     }
-  }else{
-    stHTML='<div class="bg-s">\u2705 \u7a33\u5b9a</div>';
-  }
-  if(item.last_check){
-    stHTML+='<div style="font-size:9px;color:#999;margin-top:4px">\ud83d\udd52 '+fmtTime(item.last_check).replace(' ','')+'</div>';
-  }
-  var times=(item.snapshots||[]).map(function(t){return fmtTime(t)}).join('<br>');
-  if(times) stHTML+='<div style="font-size:9px;color:#ccc;margin-top:2px">'+times+'</div>';
-
-  // Metrics grid
-  var mg=
-    '<span class="ml">\u54c1\u724c</span><span class="mv">'+brand+'</span>'+
-    '<span class="ml">\u552e\u4ef7</span><span class="mv pc">'+pvHtml+'</span>'+
-    '<span class="ml">\u8bc4\u5206</span><span class="mv rt">'+rt+'</span>'+
-    '<span class="ml">\u8bc4\u8bba</span><span class="mv">'+rc+'</span><span></span>'+
-    '<span class="ml">\u5927\u7c7b</span><span class="mv">'+bsrTop+'</span>'+
-    '<span class="ml">\u5c0f\u7c7b</span><span class="mv">'+bsrSubDisp+'</span>'+
-    '<span class="ml">\u5356\u5bb6</span><span class="mv">'+seller+'</span>';
-
-  div.innerHTML=
-    '<div class="asin-img">'+imgHTML+'</div>'+
-    '<div class="asin-body">'+
-      '<div class="asin-title"><span class="name"><a href="https://www.amazon.com/dp/'+item.asin+'" target="_blank">'+g(item.title).substring(0,120)+'</a></span><span class="badge">'+item.asin+'</span></div>'+
-      '<div class="mt">'+mg+'</div>'+
-    '</div>'+
-    '<div class="asin-stat">'+stHTML+'</div>';
-
-  return div;
+  });
 }
 
-function fmtTime(ts){
-  if(!ts) return '';
-  var d=new Date(ts);
-  if(isNaN(d.getTime())) return ts.substring(5,16);
-  return ('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
+function render() {
+  const search = (document.getElementById('searchIn').value || '').toLowerCase().trim();
+  const sortBy = document.getElementById('sortBy').value;
+  const onlyChg = document.getElementById('onlyChg').checked;
+  
+  let list = [...allAsins];
+  
+  if (search) {
+    list = list.filter(a =>
+      (a.title || '').toLowerCase().includes(search) ||
+      (a.asin || '').toLowerCase().includes(search)
+    );
+  }
+  
+  if (onlyChg) {
+    list = list.filter(a =>
+      (a.price_change_pct && Math.abs(a.price_change_pct) > 0.01) ||
+      (a.bsr_change && a.bsr_change !== 0)
+    );
+  }
+  
+  // Sort
+  const sortMap = {
+    'price_chg': (a,b) => Math.abs(b.price_change_pct||0) - Math.abs(a.price_change_pct||0),
+    'bsr_chg': (a,b) => (a.bsr_change||0) - (b.bsr_change||0),
+    'bsr': (a,b) => (a.bsr||999999) - (b.bsr||999999),
+    'rating': (a,b) => (b.rating||0) - (a.rating||0),
+    'reviews': (a,b) => (b.review_count||0) - (a.review_count||0),
+    'price': (a,b) => (b.price||0) - (a.price||0),
+  };
+  list.sort(sortMap[sortBy] || sortMap['price_chg']);
+  
+  const container = document.getElementById('listContainer');
+  
+  if (list.length === 0) {
+    container.innerHTML = '<div class="empty">没有匹配的ASIN</div>';
+    return;
+  }
+  
+  let html = `<div class="card-hdr"><span>📡 ASIN 监控 (${list.length})</span><span style="font-size:11px;color:#999">点击查看趋势</span></div>`;
+  
+  list.forEach((a, i) => {
+    const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-d';
+    const hasHistory = a.history && a.history.length >= 2;
+    const dict = a.list_price && a.list_price > 0 && a.price < a.list_price
+      ? Math.round((1 - a.price / a.list_price) * 100) : 0;
+    const priceStr = a.price ? '$' + a.price.toFixed(2) : '—';
+    const oldStr = (dict > 0 && a.list_price) ? '<div class="old">$' + a.list_price.toFixed(2) + '</div>' : '';
+    const dcTag = dict > 0 ? '<span class="tag g">-' + dict + '%</span>' : '';
+    
+    html += '<div class="prod-row" onclick="toggleChart(' + i + ')">' +
+      '<div class="rank-num ' + rankClass + '">#' + (i+1) + '</div>' +
+      '<div style="width:64px;height:64px;flex-shrink:0;background:#f5f5f5;border-radius:6px;overflow:hidden">' +
+        '<img src="' + (a.main_image || '') + '" style="width:64px;height:64px;object-fit:cover" alt="" onerror="this.style.display=\'none\'">' +
+      '</div>' +
+      '<div class="info">' +
+        '<div class="br">' +
+          (a.brand || '—') +
+          ' <span class="tag">⭐ ' + formatNum(a.rating) + '</span>' +
+          ' <span class="tag">💬 ' + formatNum(a.review_count) + '</span>' +
+        '</div>' +
+        '<div class="ti">' + (a.title || '').substring(0, 80) + '</div>' +
+        '<div class="mt">' +
+          '<span class="tag">🔗 ' + a.asin + '</span>' +
+          (a.bsr ? '<span class="tag y">🏷️ #' + formatNum(a.bsr) + '</span>' : '') +
+          (a.history && a.history.length > 1 ? '<span class="tag">📊 ' + a.history.length + '帧</span>' : '') +
+          ' ' + changeHTML('价格', a.price_change, a.price_change_pct) +
+          ' ' + bsrArrow(a.bsr_change) +
+        '</div>' +
+      '</div>' +
+      '<div class="price-col">' +
+        '<div class="cur">' + priceStr + '</div>' +
+        oldStr + dcTag +
+      '</div>' +
+      '<div class="detail-panel" id="detail-' + i + '">' +
+        '<div class="chart-wrap">' +
+          (hasHistory
+            ? '<canvas id="cv-' + i + '"></canvas>'
+            : '<div style="text-align:center;color:#999;padding:20px;font-size:12px">仅1个快照，暂无历史趋势数据</div>') +
+        '</div>' +
+        (a.seller ? '<div style="padding:4px 20px 12px;font-size:11px;color:#888">卖家: ' + a.seller + '</div>' : '') +
+      '</div>' +
+    '</div>';
+  });
+  
+  container.innerHTML = html;
 }
 
-load();
-loadCfg();
-setInterval(load,30000);
+loadData();
 </script>
 </body>
 </html>
