@@ -1,0 +1,45 @@
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="brand">Cross<span style="color:#e94560">Mart</span></span>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="monitor.html" class="active">Monitor</a>
+    <a href="selection.html">Selection</a>
+  </nav>
+</div>
+
+<div class="filters">
+  <input type="text" id="sf" placeholder="Search ASIN or title..." oninput="render()">
+  <select id="ss" onchange="render()">
+    <option value="bsr">BSR</option>
+    <option value="price_chg">Price Change</option>
+    <option value="bsr_chg">BSR Change</option>
+    <option value="price">Price</option>
+  </select>
+  <label><input type="checkbox" id="sc" onchange="render()"> Changes only</label>
+  <button class="btn btn-sm" onclick="refresh()">Refresh</button>
+  <button class="btn btn-sm btn-p" onclick="exportXlsx()">Export Excel</button>
+</div>
+
+<div id="board" class="board"><div class="loading">Loading...</div></div>
+
+<div id="detail" class="detail-overlay" onclick="if(event.target===this)closeDetail()">
+  <div class="detail-panel">
+    <div class="detail-hdr">
+      <div>
+        <div class="dh-title" id="dtTitle">ASIN Detail</div>
+        <div class="dh-sub" id="dtSub"></div>
+      </div>
+      <button class="dh-close" onclick="closeDetail()">X</button>
+    </div>
+    <div id="dtBody" class="detail-body"></div>
+  </div>
+</div>
+
+<script>
+window.MONITOR_EMBED = __DATA__;
+</script>
+</body>
+</html>
