@@ -867,6 +867,7 @@ var _data = null;
 var _charts = {};
 
 function initMonitor(data) {
+  console.log('[DBG] initMonitor called, data has groups:', data && data.groups ? data.groups.length : 'no groups');
   _data = data;
   render();
 }
