@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-20T18:05:52",
+  "updated": "2026-05-20T19:00:08",
   "groups": [
     {
       "main_asin": "B09V7Z4TJG",
@@ -83,6 +83,13 @@
             },
             {
               "timestamp": "2026-05-20T17:58:03",
+              "price": 18.9,
+              "bsr": 1,
+              "rating": 4.6,
+              "review_count": 24197
+            },
+            {
+              "timestamp": "2026-05-20T18:52:47",
               "price": 18.9,
               "bsr": 1,
               "rating": 4.6,
@@ -232,6 +239,13 @@
               "bsr": 420,
               "rating": 4.1,
               "review_count": 10670
+            },
+            {
+              "timestamp": "2026-05-20T18:56:32",
+              "price": null,
+              "bsr": 420,
+              "rating": 4.1,
+              "review_count": 10670
             }
           ],
           "price_change": 0,
@@ -366,6 +380,13 @@
             },
             {
               "timestamp": "2026-05-20T18:00:50",
+              "price": 8.99,
+              "bsr": 11100,
+              "rating": 4.5,
+              "review_count": 290
+            },
+            {
+              "timestamp": "2026-05-20T19:00:00",
               "price": 8.99,
               "bsr": 11100,
               "rating": 4.5,
@@ -515,6 +536,13 @@
               "bsr": 3459,
               "rating": 4.6,
               "review_count": 1749
+            },
+            {
+              "timestamp": "2026-05-20T18:55:02",
+              "price": 34.0,
+              "bsr": 3459,
+              "rating": 4.6,
+              "review_count": 1749
             }
           ],
           "price_change": 0.0,
@@ -628,8 +656,8 @@
           "list_price": 11.07,
           "rating": 4.5,
           "review_count": 109,
-          "bsr": 2122,
-          "bsr_sub_rank": 2122,
+          "bsr": 2125,
+          "bsr_sub_rank": 2125,
           "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
           "seller": "Anua",
           "history": [
@@ -653,12 +681,19 @@
               "bsr": 2122,
               "rating": 4.5,
               "review_count": 109
+            },
+            {
+              "timestamp": "2026-05-20T18:58:13",
+              "price": 30.0,
+              "bsr": 2125,
+              "rating": 4.5,
+              "review_count": 109
             }
           ],
           "price_change": 0.0,
-          "bsr_change": -23,
+          "bsr_change": -20,
           "price_change_pct": 0.0,
-          "bsr_change_pct": -1.1,
+          "bsr_change_pct": -0.9,
           "is_main": true,
           "has_history": true,
           "has_diff": true
