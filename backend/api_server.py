@@ -24,6 +24,7 @@ CORS_HEADERS = {
 }
 
 SCRAPE_STATUS = {"running": False, "last_result": None, "progress": ""}
+USER_CONFIG_PATH = os.path.join(PROJECT, 'data', 'user_config.json')
 
 def ensure_edge():
     """确保Edge在9225端口运行"""
@@ -186,8 +187,47 @@ class ScrapeHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path == "/api/scrape":
             self._handle_scrape()
+        elif self.path == "/api/save-config":
+            self._handle_save_config()
         else:
             self._send_json({"error": "not found"}, 404)
+
+    def _handle_save_config(self):
+        """保存用户输入的ASIN和关键词到本地文件"""
+        content_len = int(self.headers.get("Content-Length", 0))
+        body = b""
+        if content_len > 0:
+            body = self.rfile.read(content_len)
+        
+        if not body:
+            self._send_json({"status": "error", "message": "empty body"}, 400)
+            return
+        
+        try:
+            data = json.loads(body)
+            asins = data.get("asins", [])
+            keywords = data.get("keywords", [])
+            
+            config = {
+                "asins": asins,
+                "keywords": keywords,
+                "saved_at": time.strftime("%Y-%m-%dT%H:%M:%S")
+            }
+            
+            os.makedirs(os.path.dirname(USER_CONFIG_PATH), exist_ok=True)
+            with open(USER_CONFIG_PATH, 'w', encoding='utf-8') as f:
+                json.dump(config, f, ensure_ascii=False, indent=2)
+            
+            print("[保存] ASINs=%d, KWs=%d -> %s" % (len(asins), len(keywords), USER_CONFIG_PATH))
+            self._send_json({
+                "status": "ok",
+                "message": "配置已保存到本地",
+                "path": USER_CONFIG_PATH,
+                "count": {"asins": len(asins), "keywords": len(keywords)}
+            })
+        except Exception as e:
+            print("[保存] 失败: %s" % e)
+            self._send_json({"status": "error", "message": str(e)}, 500)
     
     def _handle_scrape(self):
         global SCRAPE_STATUS

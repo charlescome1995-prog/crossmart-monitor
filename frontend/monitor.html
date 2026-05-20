@@ -395,6 +395,14 @@ function saveConfig() {
     kws.push(k.trim());
   }
   localStorage.setItem(CONFIG_KEY, JSON.stringify({ asins, keywords: kws }));
+
+  // 发送到本地API服务器，写入本地文件
+  fetch('http://127.0.0.1:8765/api/save-config', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ asins, keywords: kws })
+  }).catch(() => {});
+
   const btn = document.getElementById('btnSaveConfig');
   if (btn) {
     const orig = btn.textContent;
