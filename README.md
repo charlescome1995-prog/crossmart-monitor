@@ -11,4 +11,4 @@ Amazon - TikTok - Shopee: data-driven product research, competitor monitoring, a
 
 ## Quick Start
 
-Open https://yanxvdong123.github.io/crossmart-monitor/
+Open https://charlescome1995-prog.github.io/crossmart-monitor/

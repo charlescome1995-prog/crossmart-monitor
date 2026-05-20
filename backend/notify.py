@@ -170,7 +170,7 @@ def build_summary_message(cfg):
                 msg += f"- {a['asin']} | 价格 {'+' if pct >= 0 else ''}{pct:.1f}% | BSR {'+' if bsr >= 0 else ''}{bsr}\n"
 
     msg += f"\n🕐 数据截至: {updated[:16]}"
-    msg += f"\n🔗 [查看面板](https://yanxvdong123.github.io/crossmart-monitor/monitor.html)"
+    msg += f"\n🔗 [查看面板](https://charlescome1995-prog.github.io/crossmart-monitor/monitor.html)"
     return msg
 
 
