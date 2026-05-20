@@ -1,0 +1,29 @@
+name: Save User Config
+
+on:
+  repository_dispatch:
+    types: [save-config]
+
+permissions:
+  contents: write
+
+jobs:
+  save:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Save config file
+        run: |
+          echo "${{ github.event.client_payload.data }}" > backend/data/user_config.json
+          cat backend/data/user_config.json
+
+      - name: Commit and push
+        run: |
+          git config user.name "CrossMart Bot"
+          git config user.email "bot@crossmart.local"
+          git add backend/data/user_config.json
+          git diff --cached || exit 0
+          git commit -m "feat: update user config $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push
