@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-19T17:46:05",
+  "updated": "2026-05-20T18:05:52",
   "groups": [
     {
       "main_asin": "B09V7Z4TJG",
@@ -8,11 +8,11 @@
           "asin": "B09V7Z4TJG",
           "title": "medicube Toner Pads Zero Pore Pad 2.0 | Dual-Textured Facial Pad for Exfoliation and Pore Care with 4.5% AHA Lactic Acid, 0.45% BHA Salicylic Acid | Ideal for All, Korean Skin Care, 70 Pads (1 Pack)",
           "brand": "medicube",
-          "main_image": "https://m.media-amazon.com/images/I/71Mcspt-6AL._SX466_.jpg",
+          "main_image": "https://m.media-amazon.com/images/I/71Mcspt-6AL._SY355_.jpg",
           "price": 18.9,
           "list_price": 0.27,
           "rating": 4.6,
-          "review_count": 24123,
+          "review_count": 24197,
           "bsr": 1,
           "bsr_sub_rank": 1,
           "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
@@ -73,6 +73,20 @@
               "bsr": 1,
               "rating": 4.6,
               "review_count": 24123
+            },
+            {
+              "timestamp": "2026-05-20T17:56:31",
+              "price": 18.9,
+              "bsr": 1,
+              "rating": 4.6,
+              "review_count": 24197
+            },
+            {
+              "timestamp": "2026-05-20T17:58:03",
+              "price": 18.9,
+              "bsr": 1,
+              "rating": 4.6,
+              "review_count": 24197
             }
           ],
           "price_change": 0,
@@ -181,15 +195,15 @@
           "asin": "B0CGB215HR",
           "title": "goPure Tighten & Lift Neck & Chest Moisturizer Cream for Visibly Firming, Tightening and Lifting the Look of Wrinkles & Crepey Skin, 1.7oz",
           "brand": "goPure",
-          "main_image": "https://m.media-amazon.com/images/I/613gXRGC9XL._SX466_.jpg",
-          "price": 31.49,
-          "list_price": 18.52,
+          "main_image": "https://m.media-amazon.com/images/I/613gXRGC9XL._SY355_.jpg",
+          "price": null,
+          "list_price": null,
           "rating": 4.1,
-          "review_count": 10657,
-          "bsr": 307,
-          "bsr_sub_rank": 307,
+          "review_count": 10670,
+          "bsr": 420,
+          "bsr_sub_rank": 420,
           "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-          "seller": "goPure",
+          "seller": "",
           "history": [
             {
               "timestamp": "2026-05-18T21:26:03",
@@ -211,15 +225,22 @@
               "bsr": 307,
               "rating": 4.1,
               "review_count": 10657
+            },
+            {
+              "timestamp": "2026-05-20T17:59:27",
+              "price": null,
+              "bsr": 420,
+              "rating": 4.1,
+              "review_count": 10670
             }
           ],
-          "price_change": 0.0,
-          "bsr_change": 0,
-          "price_change_pct": 0.0,
-          "bsr_change_pct": 0.0,
+          "price_change": 0,
+          "bsr_change": 113,
+          "price_change_pct": 0,
+          "bsr_change_pct": 36.8,
           "is_main": true,
           "has_history": true,
-          "has_diff": false
+          "has_diff": true
         },
         {
           "asin": null,
@@ -319,13 +340,13 @@
           "asin": "B0DSLGHPPW",
           "title": "UJhay Retinol Neck Cream, Hyaluronic Acid and Caffeine Enriched Neck Firming Cream to Minimize Fine Lines & Dullness - 3-in-1 Moisturizing Cream for Neck, Chest and Face (50 ml/1.7 oz)",
           "brand": "Brand: UJhay",
-          "main_image": "https://m.media-amazon.com/images/I/714u3IHLVmL._SX466_.jpg",
+          "main_image": "https://m.media-amazon.com/images/I/714u3IHLVmL._SY355_.jpg",
           "price": 8.99,
           "list_price": 5.29,
           "rating": 4.5,
-          "review_count": 289,
-          "bsr": 11995,
-          "bsr_sub_rank": 11995,
+          "review_count": 290,
+          "bsr": 11100,
+          "bsr_sub_rank": 11100,
           "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
           "seller": "Guinuo E-commerce",
           "history": [
@@ -342,12 +363,19 @@
               "bsr": 11995,
               "rating": 4.5,
               "review_count": 289
+            },
+            {
+              "timestamp": "2026-05-20T18:00:50",
+              "price": 8.99,
+              "bsr": 11100,
+              "rating": 4.5,
+              "review_count": 290
             }
           ],
           "price_change": 0.0,
-          "bsr_change": 1,
+          "bsr_change": -894,
           "price_change_pct": 0.0,
-          "bsr_change_pct": 0.0,
+          "bsr_change_pct": -7.5,
           "is_main": true,
           "has_history": true,
           "has_diff": true
@@ -450,13 +478,13 @@
           "asin": "B0F2J966QL",
           "title": "Eight Saints Firm Intentions Anti Aging Neck Cream For Firming Skin and Reducing Wrinkles, with Protein Peptides, Hyaluronic Acid, and Niacinamide, 2 Ounces",
           "brand": "Eight Saints",
-          "main_image": "https://m.media-amazon.com/images/I/61XDTWFTneL._SX466_.jpg",
+          "main_image": "https://m.media-amazon.com/images/I/61XDTWFTneL._SY355_.jpg",
           "price": 34.0,
           "list_price": 17.0,
           "rating": 4.6,
-          "review_count": 1748,
-          "bsr": 3692,
-          "bsr_sub_rank": 3692,
+          "review_count": 1749,
+          "bsr": 3459,
+          "bsr_sub_rank": 3459,
           "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
           "seller": "Eight Saints Skincare LLC",
           "history": [
@@ -480,12 +508,19 @@
               "bsr": 3692,
               "rating": 4.6,
               "review_count": 1748
+            },
+            {
+              "timestamp": "2026-05-20T18:03:06",
+              "price": 34.0,
+              "bsr": 3459,
+              "rating": 4.6,
+              "review_count": 1749
             }
           ],
           "price_change": 0.0,
-          "bsr_change": 2,
+          "bsr_change": -231,
           "price_change_pct": 0.0,
-          "bsr_change_pct": 0.1,
+          "bsr_change_pct": -6.3,
           "is_main": true,
           "has_history": true,
           "has_diff": true
@@ -588,13 +623,13 @@
           "asin": "B0GKFD9ZQW",
           "title": "ANUA Collagen Retinol Refining Gua Sha Cream, Neck Cream For Lifting & Firming, Jawline to Décolleté, Daily Moisturizer, Fine Line Care, Neck Massager, Korean Skin Care, 2.7fl.oz",
           "brand": "ANUA",
-          "main_image": "https://m.media-amazon.com/images/I/51XYn-lowjL._SX466_.jpg",
+          "main_image": "https://m.media-amazon.com/images/I/51XYn-lowjL._SY355_.jpg",
           "price": 30.0,
           "list_price": 11.07,
           "rating": 4.5,
-          "review_count": 103,
-          "bsr": 2145,
-          "bsr_sub_rank": 2145,
+          "review_count": 109,
+          "bsr": 2122,
+          "bsr_sub_rank": 2122,
           "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
           "seller": "Anua",
           "history": [
@@ -611,15 +646,22 @@
               "bsr": 2145,
               "rating": 4.5,
               "review_count": 103
+            },
+            {
+              "timestamp": "2026-05-20T18:05:47",
+              "price": 30.0,
+              "bsr": 2122,
+              "rating": 4.5,
+              "review_count": 109
             }
           ],
           "price_change": 0.0,
-          "bsr_change": 0,
+          "bsr_change": -23,
           "price_change_pct": 0.0,
-          "bsr_change_pct": 0.0,
+          "bsr_change_pct": -1.1,
           "is_main": true,
           "has_history": true,
-          "has_diff": false
+          "has_diff": true
         },
         {
           "asin": null,
