@@ -14,8 +14,8 @@ DATA = os.path.join(BASE, 'data', 'monitor-data.json')
 OUT  = os.path.join(BASE, 'monitor.html')
 
 # ── Default monitored ASINs / keywords (built into the HTML on each regeneration) ──
-DEFAULT_ASINS  = ["B09V7Z4TJG", "B0CGB215HR", "B0DSLGHPPW", "B0F2J966QL", "B0GKFD9ZQW"]
-DEFAULT_KWS   = ["Toner Pads", "Neck Cream", "", "", ""]
+DEFAULT_ASINS = ["", "", "", "", ""]
+DEFAULT_KWS   = ["", "", "", "", ""]
 
 # ── HTML shell (cloud version c9a12a1) ──────────────────────────────────────
 HTML_SHELL = """<!DOCTYPE html>
