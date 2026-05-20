@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -107,8 +107,8 @@
           <div class="matrix-col"><label>ASIN 1 (MAIN)</label><input type="text" id="in-asin-0" value="B09V7Z4TJG"></div>
           <div class="matrix-col"><label>ASIN 2</label><input type="text" id="in-asin-1" value="B0CGB215HR"></div>
           <div class="matrix-col"><label>ASIN 3</label><input type="text" id="in-asin-2" value="B0DSLGHPPW"></div>
-          <div class="matrix-col"><label>ASIN 4</label><input type="text" id="in-asin-3" value=""></div>
-          <div class="matrix-col"><label>ASIN 5</label><input type="text" id="in-asin-4" value=""></div>
+          <div class="matrix-col"><label>ASIN 4</label><input type="text" id="in-asin-3" value="B0F2J966QL"></div>
+          <div class="matrix-col"><label>ASIN 5</label><input type="text" id="in-asin-4" value="B0GKFD9ZQW"></div>
         </div>
         <div class="matrix-section" data-label="关键词 监控流 (最多5个)">
           <div class="matrix-col"><label>Keyword 1</label><input type="text" id="in-kw-0" value="Toner Pads"></div>
@@ -118,7 +118,7 @@
           <div class="matrix-col"><label>Keyword 5</label><input type="text" id="in-kw-4" value=""></div>
         </div>
         <div class="matrix-btn-zone">
-          <button class="btn btn-primary" onclick="alert('配置已成功应用并保存！')">保存配置</button>
+          <button class="btn btn-primary" id="btnSaveConfig">保存配置</button>
         </div>
       </div>
     </div>
@@ -361,6 +361,43 @@ const rawData = {
 };
 </script>
 <script>
+const CONFIG_KEY = 'crossmart_monitor_v1';
+function loadConfig() {
+  try {
+    const raw = localStorage.getItem(CONFIG_KEY);
+    if (!raw) return;
+    const cfg = JSON.parse(raw);
+    for (let i = 0; i < 5; i++) {
+      const aIn = document.getElementById('in-asin-' + i);
+      if (aIn && cfg.asins && cfg.asins[i]) aIn.value = cfg.asins[i];
+      const kIn = document.getElementById('in-kw-' + i);
+      if (kIn && cfg.keywords && cfg.keywords[i]) kIn.value = cfg.keywords[i];
+    }
+  } catch(e) {}
+}
+function saveConfig() {
+  const asins = [], kws = [];
+  for (let i = 0; i < 5; i++) {
+    const a = (document.getElementById('in-asin-' + i) || {}).value || '';
+    const k = (document.getElementById('in-kw-' + i) || {}).value || '';
+    asins.push(a.trim());
+    kws.push(k.trim());
+  }
+  localStorage.setItem(CONFIG_KEY, JSON.stringify({ asins, keywords: kws }));
+  const btn = document.getElementById('btnSaveConfig');
+  if (btn) {
+    const orig = btn.textContent;
+    btn.textContent = '\u2705 \u2714\u5df2 \保存';
+    btn.style.background = '#059669';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 1800);
+  }
+}
+</script><script>
 function drawSparkline(history, color) {
   if (!history || history.length < 2) return '';
   const width = 120, height = 22;
@@ -374,6 +411,12 @@ function drawSparkline(history, color) {
     return `${x},${y}`;
   }).join(' ');
   return `<svg width="${width}" height="${height}" style="display:block; overflow:visible;"><polyline points="${points}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+function initConfigBtn() {
+  const btn = document.getElementById('btnSaveConfig');
+  if (btn) btn.addEventListener('click', saveConfig);
+  loadConfig();
 }
 
 function renderTable() {
@@ -484,5 +527,6 @@ function exportToExcel() {
 }
 
 renderTable();
+initConfigBtn();
 </script></body>
 </html>

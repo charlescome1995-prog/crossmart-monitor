@@ -13,9 +13,13 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(BASE, 'data', 'monitor-data.json')
 OUT  = os.path.join(BASE, 'monitor.html')
 
+# ── Default monitored ASINs / keywords (built into the HTML on each regeneration) ──
+DEFAULT_ASINS  = ["B09V7Z4TJG", "B0CGB215HR", "B0DSLGHPPW", "B0F2J966QL", "B0GKFD9ZQW"]
+DEFAULT_KWS   = ["Toner Pads", "Neck Cream", "", "", ""]
+
 # ── HTML shell (cloud version c9a12a1) ──────────────────────────────────────
 HTML_SHELL = """<!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -120,21 +124,21 @@ HTML_SHELL = """<!DOCTYPE html>
     <div class="config-matrix">
       <div class="matrix-wrapper">
         <div class="matrix-section" data-label="ASIN 监控流 (最多5个)">
-          <div class="matrix-col"><label>ASIN 1 (MAIN)</label><input type="text" id="in-asin-0" value="B09V7Z4TJG"></div>
-          <div class="matrix-col"><label>ASIN 2</label><input type="text" id="in-asin-1" value="B0CGB215HR"></div>
-          <div class="matrix-col"><label>ASIN 3</label><input type="text" id="in-asin-2" value="B0DSLGHPPW"></div>
-          <div class="matrix-col"><label>ASIN 4</label><input type="text" id="in-asin-3" value=""></div>
-          <div class="matrix-col"><label>ASIN 5</label><input type="text" id="in-asin-4" value=""></div>
+          <div class="matrix-col"><label>ASIN 1 (MAIN)</label><input type="text" id="in-asin-0" value="__ASIN_0__"></div>
+          <div class="matrix-col"><label>ASIN 2</label><input type="text" id="in-asin-1" value="__ASIN_1__"></div>
+          <div class="matrix-col"><label>ASIN 3</label><input type="text" id="in-asin-2" value="__ASIN_2__"></div>
+          <div class="matrix-col"><label>ASIN 4</label><input type="text" id="in-asin-3" value="__ASIN_3__"></div>
+          <div class="matrix-col"><label>ASIN 5</label><input type="text" id="in-asin-4" value="__ASIN_4__"></div>
         </div>
         <div class="matrix-section" data-label="关键词 监控流 (最多5个)">
-          <div class="matrix-col"><label>Keyword 1</label><input type="text" id="in-kw-0" value="Toner Pads"></div>
-          <div class="matrix-col"><label>Keyword 2</label><input type="text" id="in-kw-1" value="Neck Cream"></div>
-          <div class="matrix-col"><label>Keyword 3</label><input type="text" id="in-kw-2" value=""></div>
-          <div class="matrix-col"><label>Keyword 4</label><input type="text" id="in-kw-3" value=""></div>
-          <div class="matrix-col"><label>Keyword 5</label><input type="text" id="in-kw-4" value=""></div>
+          <div class="matrix-col"><label>Keyword 1</label><input type="text" id="in-kw-0" value="__KW_0__"></div>
+          <div class="matrix-col"><label>Keyword 2</label><input type="text" id="in-kw-1" value="__KW_1__"></div>
+          <div class="matrix-col"><label>Keyword 3</label><input type="text" id="in-kw-2" value="__KW_2__"></div>
+          <div class="matrix-col"><label>Keyword 4</label><input type="text" id="in-kw-3" value="__KW_3__"></div>
+          <div class="matrix-col"><label>Keyword 5</label><input type="text" id="in-kw-4" value="__KW_4__"></div>
         </div>
         <div class="matrix-btn-zone">
-          <button class="btn btn-primary" onclick="alert('配置已成功应用并保存！')">保存配置</button>
+          <button class="btn btn-primary" id="btnSaveConfig">保存配置</button>
         </div>
       </div>
     </div>
@@ -194,6 +198,12 @@ function drawSparkline(history, color) {
     return `${x},${y}`;
   }).join(' ');
   return `<svg width="${width}" height="${height}" style="display:block; overflow:visible;"><polyline points="${points}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+function initConfigBtn() {
+  const btn = document.getElementById('btnSaveConfig');
+  if (btn) btn.addEventListener('click', saveConfig);
+  loadConfig();
 }
 
 function renderTable() {
@@ -304,8 +314,48 @@ function exportToExcel() {
 }
 
 renderTable();
+initConfigBtn();
 """
 
+
+CONFIG_JS = """
+const CONFIG_KEY = 'crossmart_monitor_v1';
+function loadConfig() {
+  try {
+    const raw = localStorage.getItem(CONFIG_KEY);
+    if (!raw) return;
+    const cfg = JSON.parse(raw);
+    for (let i = 0; i < 5; i++) {
+      const aIn = document.getElementById('in-asin-' + i);
+      if (aIn && cfg.asins && cfg.asins[i]) aIn.value = cfg.asins[i];
+      const kIn = document.getElementById('in-kw-' + i);
+      if (kIn && cfg.keywords && cfg.keywords[i]) kIn.value = cfg.keywords[i];
+    }
+  } catch(e) {}
+}
+function saveConfig() {
+  const asins = [], kws = [];
+  for (let i = 0; i < 5; i++) {
+    const a = (document.getElementById('in-asin-' + i) || {}).value || '';
+    const k = (document.getElementById('in-kw-' + i) || {}).value || '';
+    asins.push(a.trim());
+    kws.push(k.trim());
+  }
+  localStorage.setItem(CONFIG_KEY, JSON.stringify({ asins, keywords: kws }));
+  const btn = document.getElementById('btnSaveConfig');
+  if (btn) {
+    const orig = btn.textContent;
+    btn.textContent = '\\u2705 \\u2714\\u5df2 \保\u5b58';
+    btn.style.background = '#059669';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 1800);
+  }
+}
+"""
 
 # ── Data conversion ───────────────────────────────────────────────────────────
 def price_change(member):
@@ -417,11 +467,19 @@ new_raw = {
     "items":   items,
 }
 
+# Build default configs for HTML placeholder injection
+html = HTML_SHELL
+for i, a in enumerate(DEFAULT_ASINS):
+    html = html.replace(f'__ASIN_{i}__', a)
+for i, k in enumerate(DEFAULT_KWS):
+    html = html.replace(f'__KW_{i}__', k)
+
+
 # Embed in HTML
 raw_json = json.dumps(new_raw, ensure_ascii=False, indent=2)
-html = HTML_SHELL.replace('__RAWDATA__', raw_json)
+html = html.replace('__RAWDATA__', raw_json)
 # Append JS engine (replace the placeholder script tag)
-html = html.replace('</body>', f'<script>{JS_ENGINE}</script></body>')
+html = html.replace('</body>', f'<script>{CONFIG_JS}</script><script>{JS_ENGINE}</script></body>')
 
 with open(OUT, 'w', encoding='utf-8', newline='') as f:
     f.write(html)
