@@ -329,7 +329,7 @@ function render() {
     html += '<td class="td-reviews">' + reviews + '</td>';
     html += '<td class="td-seller" title="' + e(m.seller||'') + '">' + e(m.seller||'---') + '</td>';
     html += '<td class="td-group"><span class="grp-badge" title="Group: ' + g.main_asin + '">' + g.members.length + '</span></td>';
-    html += '</tr>\n';
+    html += '</tr' + '\\n';
   });
 
   tbody.innerHTML = html;
@@ -505,7 +505,7 @@ with open(DATA, 'r', encoding='utf-8') as f:
 safe_data = raw_data.replace('</script>', '<\\/script>')
 html = (HTML_PROLOG % {'CSS': CSS}).replace('__DATA__', safe_data) + '\n<script>\n' + JS + '\n</script>'
 
-with open(OUT, 'w', encoding='utf-8') as f:
+with open(OUT, 'w', encoding='utf-8', newline='') as f:
     f.write(html)
 
 print('Written:', OUT)

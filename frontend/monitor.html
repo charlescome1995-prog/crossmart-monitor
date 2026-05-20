@@ -1035,8 +1035,7 @@ function render() {
     html += '<td class="td-reviews">' + reviews + '</td>';
     html += '<td class="td-seller" title="' + e(m.seller||'') + '">' + e(m.seller||'---') + '</td>';
     html += '<td class="td-group"><span class="grp-badge" title="Group: ' + g.main_asin + '">' + g.members.length + '</span></td>';
-    html += '</tr>
-';
+    html += '</tr' + '\n';
   });
 
   tbody.innerHTML = html;
