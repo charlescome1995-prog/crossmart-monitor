@@ -373,18 +373,35 @@ const rawData = {
 </script>
 <script>
 const CONFIG_KEY = 'crossmart_monitor_v1';
-function loadConfig() {
+const WORKER_URL = 'https://crossmart-debug.charlescome1995.workers.dev';
+
+async function loadConfig() {
+  // 先尝试从 Worker（GitHub）读取
+  try {
+    const resp = await fetch(WORKER_URL + '/config');
+    if (resp.ok) {
+      const cfg = await resp.json();
+      localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
+      applyConfig(cfg);
+      return;
+    }
+  } catch(e) {}
+  // 回退到 localStorage
   try {
     const raw = localStorage.getItem(CONFIG_KEY);
     if (!raw) return;
     const cfg = JSON.parse(raw);
-    for (let i = 0; i < 5; i++) {
-      const aIn = document.getElementById('in-asin-' + i);
-      if (aIn && cfg.asins && cfg.asins[i]) aIn.value = cfg.asins[i];
-      const kIn = document.getElementById('in-kw-' + i);
-      if (kIn && cfg.keywords && cfg.keywords[i]) kIn.value = cfg.keywords[i];
-    }
+    applyConfig(cfg);
   } catch(e) {}
+}
+
+function applyConfig(cfg) {
+  for (let i = 0; i < 5; i++) {
+    const aIn = document.getElementById('in-asin-' + i);
+    if (aIn && cfg.asins && cfg.asins[i]) aIn.value = cfg.asins[i];
+    const kIn = document.getElementById('in-kw-' + i);
+    if (kIn && cfg.keywords && cfg.keywords[i]) kIn.value = cfg.keywords[i];
+  }
 }
 function saveConfig() {
   const asins = [], kws = [];
@@ -394,14 +411,15 @@ function saveConfig() {
     asins.push(a.trim());
     kws.push(k.trim());
   }
-  localStorage.setItem(CONFIG_KEY, JSON.stringify({ asins, keywords: kws }));
+  const cfg = { asins, keywords: kws };
+  localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
 
   // 通过Cloudflare Worker保存到GitHub
-  fetch('https://crossmart-debug.charlescome1995.workers.dev', {
+  fetch(WORKER_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ asins, keywords: kws })
-  }).catch(() => {});
+    body: JSON.stringify(cfg)
+  }).then(r => r && r.ok && applyConfig(cfg)).catch(() => {});
 
   const btn = document.getElementById('btnSaveConfig');
   if (btn) {
