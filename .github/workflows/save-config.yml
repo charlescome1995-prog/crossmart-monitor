@@ -18,7 +18,7 @@ jobs:
       
       - name: Save config file
         run: |
-          echo "${{ github.event.client_payload.data }}" > backend/data/user_config.json
+          echo '${{ github.event.client_payload.data }}' > backend/data/user_config.json
           cat backend/data/user_config.json
 
       - name: Commit and push
