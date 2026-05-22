@@ -397,7 +397,7 @@ function saveConfig() {
   localStorage.setItem(CONFIG_KEY, JSON.stringify({ asins, keywords: kws }));
 
   // 通过Cloudflare Worker保存到GitHub
-  fetch('https://crossmart-cfg.charlescome1995.workers.dev', {
+  fetch('https://crossmart-debug.charlescome1995.workers.dev', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ asins, keywords: kws })
