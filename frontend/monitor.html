@@ -402,7 +402,6 @@ function saveConfig() {
   fetch('https://api.github.com/repos/charlescome1995-prog/crossmart-monitor/dispatches', {
     method: 'POST',
     headers: {
-      'Authorization': 'token ' + token,
       'Accept': 'application/vnd.github.v3+json',
       'Content-Type': 'application/json'
     },
