@@ -26,7 +26,7 @@ jobs:
       - name: Pull latest data via API
         run: |
           # 通过API获取最新的监控数据并生成monitor-data.json
-          python backend/sync_to_frontend.py
+          python sync_to_frontend.py
         working-directory: backend/
       
       - name: Commit and push if changed
