@@ -1,98 +1,81 @@
-function encodeBase64(str) {
- return btoa(String.fromCharCode(...new TextEncoder().encode(str)));
-}
+/**
+ * CrossMart Config API Worker
+ * Pure API only - no HTML responses
+ * Endpoints: GET/POST /config
+ */
 
-function addCorsHeaders(response) {
- response.headers.set('Access-Control-Allow-Origin', '*');
- response.headers.set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
- response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
- return response;
-}
+const GH_TOKEN = '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';
+const REPO = 'charlescome1995-prog/crossmart-monitor';
+const CONFIG_PATH = 'backend/data/user_config.json';
 
-export default {
- async fetch(request, env) {
- if (request.method === 'OPTIONS') {
- return addCorsHeaders(new Response(null, { status: 204 }));
- }
-
- const url = new URL(request.url);
- const path = url.pathname;
-
- if (request.method === 'GET' && path === '/config') {
- const token = env.GH_TOKEN;
- if (!token) {
- return addCorsHeaders(new Response('GH_TOKEN not found', { status: 500 }));
- }
- try {
- const downloadUrl = 'https://raw.githubusercontent.com/charlescome1995-prog/crossmart-monitor/main/backend/data/user_config.json';
- const resp = await fetch(downloadUrl, {
- headers: { 'Authorization': `Bearer ${token}` }
- });
- if (!resp.ok) {
- return addCorsHeaders(new Response('Config file not found', { status: 404 }));
- }
- const content = await resp.json();
- return addCorsHeaders(new Response(JSON.stringify(content), { status: 200, headers: { 'Content-Type': 'application/json' } }));
- } catch(e) {
- return addCorsHeaders(new Response('Error: ' + e.message, { status: 500 }));
- }
- }
-
- if (request.method !== 'POST') {
- return addCorsHeaders(new Response('Only POST allowed', { status: 405 }));
- }
-
- try {
- const body = await request.json();
- const { asins, keywords } = body;
- if (!asins || !keywords) {
- return addCorsHeaders(new Response('Missing asins or keywords', { status: 400 }));
- }
-
- const token = env.GH_TOKEN;
- if (!token) {
- return addCorsHeaders(new Response('GH_TOKEN not found', { status: 500 }));
- }
-
- const GITHUB_REPO = 'charlescome1995-prog/crossmart-monitor';
- const filePath = 'backend/data/user_config.json';
- const content = encodeBase64(JSON.stringify({ asins, keywords }));
-
- const headers = {
- 'Authorization': `Bearer ${token}`,
- 'Accept': 'application/vnd.github+json',
- 'User-Agent': 'crossmart-worker',
- 'X-GitHub-Api-Version': '2022-11-28'
- };
-
- let sha = null;
- const getResp = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${filePath}`, { headers });
- if (getResp.ok) {
- const data = await getResp.json();
- sha = data.sha;
- }
-
- const putBody = {
- message: `feat: update config ${new Date().toISOString()}`,
- content,
- branch: 'main'
- };
- if (sha) putBody.sha = sha;
-
- const putResp = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${filePath}`, {
- method: 'PUT',
- headers: { ...headers, 'Content-Type': 'application/json' },
- body: JSON.stringify(putBody)
- });
-
- if (putResp.ok) {
- return addCorsHeaders(new Response(JSON.stringify({ ok: true }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
- } else {
- const err = await putResp.text();
- return addCorsHeaders(new Response(`GitHub error: ${err}`, { status: 500 }));
- }
- } catch(e) {
- return addCorsHeaders(new Response(`Error: ${e.message}`, { status: 500 }));
- }
- }
+const UA = {
+  'Authorization': `token ${GH_TOKEN}`,
+  'Accept': 'application/vnd.github.v3+json',
+  'User-Agent': 'crossmart-monitor/1.0'
 };
+
+async function handleRequest(request) {
+  const url = new URL(request.url);
+
+  if (request.method === 'OPTIONS') {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      }
+    });
+  }
+
+  if (url.pathname === '/config' && request.method === 'GET') {
+    const h = { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' };
+    try {
+      const resp = await fetch(`https://api.github.com/repos/${REPO}/contents/${CONFIG_PATH}`, { headers: UA });
+      if (!resp.ok) return new Response('{}', { headers: h });
+      const data = await resp.json();
+      return new Response(atob(data.content), { headers: h });
+    } catch (e) {
+      return new Response(JSON.stringify({ error: e.message }), { headers: h, status: 500 });
+    }
+  }
+
+  if (url.pathname === '/config' && request.method === 'POST') {
+    const h = { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' };
+    let body;
+    try {
+      body = await request.json();
+    } catch (e) {
+      return new Response(JSON.stringify({ error: 'bad json' }), { headers: h, status: 400 });
+    }
+
+    try {
+      const enc = btoa(unescape(encodeURIComponent(JSON.stringify(body, null, 2))));
+      const getResp = await fetch(`https://api.github.com/repos/${REPO}/contents/${CONFIG_PATH}`, { headers: UA });
+      const existing = getResp.ok ? await getResp.json() : null;
+
+      const putResp = await fetch(`https://api.github.com/repos/${REPO}/contents/${CONFIG_PATH}`, {
+        method: 'PUT',
+        headers: { ...UA, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: `feat: update user config ${new Date().toISOString()}`,
+          content: enc,
+          sha: existing ? existing.sha : undefined
+        })
+      });
+
+      if (!putResp.ok) {
+        const errData = await putResp.json();
+        return new Response(JSON.stringify({ error: errData }), { headers: h, status: 502 });
+      }
+
+      return new Response(JSON.stringify({ ok: true }), { headers: h });
+    } catch (e) {
+      return new Response(JSON.stringify({ error: e.message }), { headers: h, status: 500 });
+    }
+  }
+
+  return new Response('Not Found', { status: 404 });
+}
+
+addEventListener('fetch', event => event.respondWith(handleRequest(event.request)));
