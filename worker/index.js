@@ -4,17 +4,18 @@
  * Endpoints: GET/POST /config
  */
 
-const GH_TOKEN = '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';
 const REPO = 'charlescome1995-prog/crossmart-monitor';
 const CONFIG_PATH = 'backend/data/user_config.json';
 
-const UA = {
-  'Authorization': `token ${GH_TOKEN}`,
-  'Accept': 'application/vnd.github.v3+json',
-  'User-Agent': 'crossmart-monitor/1.0'
-};
+async function handleRequest(request, env) {
+  const GH_TOKEN = env.GH_TOKEN;
+  if (!GH_TOKEN) return new Response(JSON.stringify({ error: 'GH_TOKEN not set' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
 
-async function handleRequest(request) {
+  const UA = {
+    'Authorization': `token ${GH_TOKEN}`,
+    'Accept': 'application/vnd.github.v3+json',
+    'User-Agent': 'crossmart-monitor/1.0'
+  };
   const url = new URL(request.url);
 
   if (request.method === 'OPTIONS') {
@@ -78,4 +79,4 @@ async function handleRequest(request) {
   return new Response('Not Found', { status: 404 });
 }
 
-addEventListener('fetch', event => event.respondWith(handleRequest(event.request)));
+addEventListener('fetch', event => event.respondWith(handleRequest(event.request, event.env)));
