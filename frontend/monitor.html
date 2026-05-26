@@ -415,7 +415,7 @@ function saveConfig() {
   localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
 
   // 通过Cloudflare Worker保存到GitHub
-  fetch(WORKER_URL, {
+  fetch(WORKER_URL + '/config', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(cfg)
