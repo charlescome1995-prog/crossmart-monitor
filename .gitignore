@@ -11,3 +11,9 @@ replace_*.py
 backend/data/processed/
 notify_config.json
 frontend/data/notify_config.json
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
