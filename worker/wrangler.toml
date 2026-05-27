@@ -5,6 +5,7 @@ compatibility_date = "2024-01-01"
 [vars]
 GH_REPO = "charlescome1995-prog/crossmart-monitor"
 GH_CONFIG_PATH = "backend/data/user_config.json"
+CALLBACK_URL = "https://rehab-kids-days-diff.trycloudflare.com"
 
 # 请在 Cloudflare Dashboard → Workers & Pages → crossmart-debug → Settings → Variables
 # 中添加以下加密变量（不要写在代码里）：
