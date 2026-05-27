@@ -119,6 +119,7 @@
         </div>
         <div class="matrix-btn-zone">
           <button class="btn btn-primary" id="btnSaveConfig">保存配置</button>
+          <button class="btn btn-primary" id="btnTrigger" onclick="triggerMonitor()" style="background:#e94560;color:#fff">⚡ 立即抓取</button>
         </div>
       </div>
     </div>
@@ -373,7 +374,22 @@ const rawData = {
 </script>
 <script>
 const CONFIG_KEY = 'crossmart_monitor_v1';
-const WORKER_URL = 'https://crossmart-debug.charlescome1995.workers.dev';
+const WORKER_URL = 'https://crossmart-monitor.charlescome1995.workers.dev';
+
+async function triggerMonitor() {
+  const btn = document.getElementById('btnTrigger');
+  btn.disabled = true;
+  btn.textContent = '⚡ 触发中...';
+  try {
+    const resp = await fetch(WORKER_URL + '/trigger', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+    const data = await resp.json();
+    btn.textContent = resp.ok && data.ok ? '✅ 已触发' : '❌ 失败';
+    setTimeout(() => { btn.textContent = '⚡ 立即抓取'; btn.disabled = false; }, 3000);
+  } catch(e) {
+    btn.textContent = '❌ 网络错误';
+    setTimeout(() => { btn.textContent = '⚡ 立即抓取'; btn.disabled = false; }, 3000);
+  }
+}
 
 async function loadConfig() {
   // 先尝试从 Worker（GitHub）读取
