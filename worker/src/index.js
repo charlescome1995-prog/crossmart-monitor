@@ -93,6 +93,49 @@ export default {
       }
     }
 
+    // /health — 隧道连通性检查
+    if (url.pathname === '/health') {
+      const callbackUrl = env.CALLBACK_URL;
+      if (!callbackUrl) {
+        return new Response(JSON.stringify({ error: 'CALLBACK_URL not set' }), {
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+      try {
+        const r = await fetch(callbackUrl + '/health');
+        const ok = r.ok;
+        return new Response(JSON.stringify({ tunnel: ok ? 'ok' : 'fail', status: r.status }), {
+          headers: { 'Content-Type': 'application/json' },
+        });
+      } catch (e) {
+        return new Response(JSON.stringify({ tunnel: 'fail', error: e.message }), {
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+    }
+
+    // /trigger — 触发本地监控
+    if (url.pathname === '/trigger') {
+      const callbackUrl = env.CALLBACK_URL;
+      if (!callbackUrl) {
+        return new Response(JSON.stringify({ error: 'CALLBACK_URL not set' }), {
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+      try {
+        const r = await fetch(callbackUrl + '/trigger', { method: 'POST' });
+        const text = await r.text();
+        return new Response(JSON.stringify({ ok: r.ok, backend: text }), {
+          headers: { 'Content-Type': 'application/json' },
+        });
+      } catch (e) {
+        return new Response(JSON.stringify({ error: e.message }), {
+          headers: { 'Content-Type': 'application/json' },
+          status: 502,
+        });
+      }
+    }
+
     // 默认返回简单的 HTML 配置页（生产环境建议关闭）
     const HTML = `<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><title>CrossMart Worker</title></head>
