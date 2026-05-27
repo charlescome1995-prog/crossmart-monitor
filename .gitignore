@@ -9,5 +9,8 @@ check_*.py
 test_*.py
 replace_*.py
 backend/data/processed/
+backend/data/cache/
 notify_config.json
 frontend/data/notify_config.json
+frontend/data/
+bos_sync.py

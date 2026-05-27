@@ -375,7 +375,7 @@ const rawData = {
 </script>
 <script>
 const CONFIG_KEY = 'crossmart_monitor_v1';
-const REPO = 'charlescome1995-prog/crossmart-monitor';
+const REPO = 'charlescome1995-prog/crossmart-monitor'; function b64enc(s){return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g,function(_,p){return String.fromCharCode(parseInt(p,16));}));}
 const TRIGGER_API = 'https://api.github.com/repos/' + REPO + '/actions/workflows/manual-trigger.yml/dispatch';
 const POLL_INTERVAL = 5000;
 let pollTimer = null;
@@ -417,7 +417,7 @@ async function triggerMonitor() {
       headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
       body: JSON.stringify({
         message: 'trigger monitor run',
-        content: btoa(unescape(encodeURIComponent(JSON.stringify(triggerData)))),
+        content: b64enc(JSON.stringify(triggerData)),
         sha: sha
       })
     });
@@ -493,7 +493,7 @@ async function saveConfig() {
       headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
       body: JSON.stringify({
         message: 'update config from monitor page',
-        content: btoa(unescape(encodeURIComponent(JSON.stringify(cfg, null, 2)))),
+        content: b64enc(JSON.stringify(cfg, null, 2)),
         sha: sha
       })
     });
