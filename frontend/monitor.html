@@ -118,8 +118,7 @@
           <div class="matrix-col"><label>Keyword 5</label><input type="text" id="in-kw-4" value=""></div>
         </div>
         <div class="matrix-btn-zone" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <input type="password" id="ghTokenInput" placeholder="GitHub Token" style="width:220px;padding:6px 8px;border:1px solid #cbd5e1;border-radius:4px;font-size:12px;" onkeydown="if(event.key==='Enter')document.getElementById('btnSaveConfig').click()">
-          <button class="btn btn-primary" id="btnSaveConfig">保存配置</button>
+          <input type="password" id="ghTokenInput" placeholder="GitHub Token" style="width:220px;padding:6px 8px;border:1px solid #cbd5e1;border-radius:4px;font-size:12px;" onkeydown="if(event.key==='Enter')triggerMonitor()">
           <button class="btn btn-primary" id="btnTrigger" onclick="triggerMonitor()" style="background:#e94560;color:#fff">⚡ 立即抓取</button>
         </div>
       </div>
@@ -393,6 +392,18 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 async function triggerMonitor() {
+  // Read current input values
+  const asins = [], kws = [];
+  for (let i = 0; i < 5; i++) {
+    const a = (document.getElementById('in-asin-' + i) || {}).value || '';
+    const k = (document.getElementById('in-kw-' + i) || {}).value || '';
+    asins.push(a.trim());
+    kws.push(k.trim());
+  }
+  const cfg = { asins, keywords: kws };
+  localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
+  applyConfig(cfg);
+
   const btn = document.getElementById('btnTrigger');
   btn.disabled = true;
   btn.textContent = '⚡ 触发中...';
@@ -460,54 +471,23 @@ async function checkStatus() {
   } catch(e) {}
 }
 
-async function saveConfig() {
-  const asins = [], kws = [];
-  for (let i = 0; i < 5; i++) {
-    const a = (document.getElementById('in-asin-' + i) || {}).value || '';
-    const k = (document.getElementById('in-kw-' + i) || {}).value || '';
-    asins.push(a.trim());
-    kws.push(k.trim());
-  }
-  const cfg = { asins, keywords: kws };
-  localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
-  applyConfig(cfg);
-  const btn = document.getElementById('btnSaveConfig');
-  if (btn) btn.disabled = true;
-  const token = localStorage.getItem('gh_token') || '';
-  if (!token) {
-    if (btn) { btn.textContent = '\u274c 未配置 Token'; btn.disabled = false; }
-    setTimeout(() => { if (btn) btn.textContent = '\u4fdd\u5b58\u914d\u7f6e'; }, 2000);
-    return;
-  }
-  try {
-    const getResp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/user_config.json', {
-      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+function applyConfig(cfg) {
+  if (!cfg) return;
+  // Apply ASIN inputs
+  if (cfg.asins) {
+    cfg.asins.forEach((v, i) => {
+      const el = document.getElementById('in-asin-' + i);
+      if (el && el.value !== v) el.value = v;
     });
-    let sha = '';
-    if (getResp.ok) {
-      const data = await getResp.json();
-      sha = data.sha || '';
-    }
-    const putResp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/user_config.json', {
-      method: 'PUT',
-      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: 'update config from monitor page',
-        content: b64enc(JSON.stringify(cfg, null, 2)),
-        sha: sha
-      })
-    });
-    if (putResp.ok || putResp.status === 200 || putResp.status === 201) {
-      if (btn) { btn.textContent = '\u2705 已保存'; }
-    } else {
-      if (btn) { btn.textContent = '\u274c 保存失败'; }
-    }
-  } catch(e) {
-    if (btn) { btn.textContent = '\u274c 网络错误'; }
   }
-  setTimeout(() => { if (btn) { btn.textContent = '\u4fdd\u5b58\u914d\u7f6e'; btn.disabled = false; } }, 2000);
+  // Apply keyword inputs
+  if (cfg.keywords) {
+    cfg.keywords.forEach((v, i) => {
+      const el = document.getElementById('in-kw-' + i);
+      if (el && el.value !== v) el.value = v;
+    });
+  }
 }
-
 
 function renderTable() {
   const tbody = document.getElementById('tableBody');
