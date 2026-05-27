@@ -390,12 +390,25 @@ async function triggerMonitor() {
     return;
   }
   try {
-    const resp = await fetch(TRIGGER_API, {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' },
-      body: JSON.stringify({ ref: 'main' })
+    let sha = '';
+    const getResp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/trigger.json', {
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
     });
-    if (resp.status === 204 || resp.ok) {
+    if (getResp.ok) {
+      const data = await getResp.json();
+      sha = data.sha || '';
+    }
+    const triggerData = { triggered_at: Date.now(), status: 'pending' };
+    const putResp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/trigger.json', {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: 'trigger monitor run',
+        content: btoa(unescape(encodeURIComponent(JSON.stringify(triggerData)))),
+        sha: sha
+      })
+    });
+    if (putResp.ok || putResp.status === 200 || putResp.status === 201) {
       btn.textContent = '✅ 已触发';
       startPolling();
     } else {
@@ -413,20 +426,20 @@ function startPolling() {
 }
 
 async function checkStatus() {
+  const token = localStorage.getItem('gh_token') || '';
+  if (!token) return;
   try {
-    const token = localStorage.getItem('gh_token') || '';
-    const runsResp = await fetch('https://api.github.com/repos/' + REPO + '/actions/runs?per_page=1', {
+    const resp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/trigger.json', {
       headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
     });
-    if (!runsResp.ok) return;
-    const runs = await runsResp.json();
-    const run = runs.workflow_runs && runs.workflow_runs[0];
-    if (!run) return;
-    if (run.conclusion === 'success') {
+    if (!resp.ok) return;
+    const data = await resp.json();
+    const content = JSON.parse(atob(data.content));
+    if (content.status === 'done') {
       clearInterval(pollTimer); pollTimer = null;
       const btn = document.getElementById('btnTrigger');
       if (btn) { btn.textContent = '✅ 监控完成'; btn.disabled = false; }
-    } else if (run.conclusion === 'failure') {
+    } else if (content.status === 'failed') {
       clearInterval(pollTimer); pollTimer = null;
       const btn = document.getElementById('btnTrigger');
       if (btn) { btn.textContent = '❌ 监控失败'; btn.disabled = false; }
