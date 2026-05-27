@@ -374,51 +374,66 @@ const rawData = {
 </script>
 <script>
 const CONFIG_KEY = 'crossmart_monitor_v1';
-const WORKER_URL = 'https://crossmart-monitor.charlescome1995.workers.dev';
+const REPO = 'charlescome1995-prog/crossmart-monitor';
+const TRIGGER_API = 'https://api.github.com/repos/' + REPO + '/actions/workflows/manual-trigger.yml/dispatch';
+const POLL_INTERVAL = 5000;
+let pollTimer = null;
 
 async function triggerMonitor() {
   const btn = document.getElementById('btnTrigger');
   btn.disabled = true;
   btn.textContent = '⚡ 触发中...';
-  try {
-    const resp = await fetch(WORKER_URL + '/trigger', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
-    const data = await resp.json();
-    btn.textContent = resp.ok && data.ok ? '✅ 已触发' : '❌ 失败';
+  const token = localStorage.getItem('gh_token') || '';
+  if (!token) {
+    btn.textContent = '❌ 未配置 Token';
     setTimeout(() => { btn.textContent = '⚡ 立即抓取'; btn.disabled = false; }, 3000);
+    return;
+  }
+  try {
+    const resp = await fetch(TRIGGER_API, {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' },
+      body: JSON.stringify({ ref: 'main' })
+    });
+    if (resp.status === 204 || resp.ok) {
+      btn.textContent = '✅ 已触发';
+      startPolling();
+    } else {
+      btn.textContent = '❌ 触发失败';
+    }
   } catch(e) {
     btn.textContent = '❌ 网络错误';
-    setTimeout(() => { btn.textContent = '⚡ 立即抓取'; btn.disabled = false; }, 3000);
   }
+  setTimeout(() => { btn.textContent = '⚡ 立即抓取'; btn.disabled = false; }, 5000);
 }
 
-async function loadConfig() {
-  // 先尝试从 Worker（GitHub）读取
+function startPolling() {
+  if (pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(checkStatus, POLL_INTERVAL);
+}
+
+async function checkStatus() {
   try {
-    const resp = await fetch(WORKER_URL + '/config');
-    if (resp.ok) {
-      const cfg = await resp.json();
-      localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
-      applyConfig(cfg);
-      return;
+    const token = localStorage.getItem('gh_token') || '';
+    const runsResp = await fetch('https://api.github.com/repos/' + REPO + '/actions/runs?per_page=1', {
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!runsResp.ok) return;
+    const runs = await runsResp.json();
+    const run = runs.workflow_runs && runs.workflow_runs[0];
+    if (!run) return;
+    if (run.conclusion === 'success') {
+      clearInterval(pollTimer); pollTimer = null;
+      const btn = document.getElementById('btnTrigger');
+      if (btn) { btn.textContent = '✅ 监控完成'; btn.disabled = false; }
+    } else if (run.conclusion === 'failure') {
+      clearInterval(pollTimer); pollTimer = null;
+      const btn = document.getElementById('btnTrigger');
+      if (btn) { btn.textContent = '❌ 监控失败'; btn.disabled = false; }
     }
   } catch(e) {}
-  // 回退到 localStorage
-  try {
-    const raw = localStorage.getItem(CONFIG_KEY);
-    if (!raw) return;
-    const cfg = JSON.parse(raw);
-    applyConfig(cfg);
-  } catch(e) {}
 }
 
-function applyConfig(cfg) {
-  for (let i = 0; i < 5; i++) {
-    const aIn = document.getElementById('in-asin-' + i);
-    if (aIn && cfg.asins && cfg.asins[i]) aIn.value = cfg.asins[i];
-    const kIn = document.getElementById('in-kw-' + i);
-    if (kIn && cfg.keywords && cfg.keywords[i]) kIn.value = cfg.keywords[i];
-  }
-}
 function saveConfig() {
   const asins = [], kws = [];
   for (let i = 0; i < 5; i++) {
@@ -429,48 +444,15 @@ function saveConfig() {
   }
   const cfg = { asins, keywords: kws };
   localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
-
-  // 通过Cloudflare Worker保存到GitHub
-  fetch(WORKER_URL + '/config', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(cfg)
-  }).then(r => r && r.ok && applyConfig(cfg)).catch(() => {});
-
+  applyConfig(cfg);
   const btn = document.getElementById('btnSaveConfig');
   if (btn) {
     const orig = btn.textContent;
-    btn.textContent = '\u2705 \u2714\u5df2 \保存';
-    btn.style.background = '#059669';
-    btn.style.color = '#fff';
-    setTimeout(() => {
-      btn.textContent = orig;
-      btn.style.background = '';
-      btn.style.color = '';
-    }, 1800);
+    btn.textContent = '✅ 已保存';
+    setTimeout(() => { btn.textContent = orig; }, 1800);
   }
 }
-</script><script>
-function drawSparkline(history, color) {
-  if (!history || history.length < 2) return '';
-  const width = 120, height = 22;
-  const min = Math.min(...history);
-  const max = Math.max(...history);
-  const range = max - min || 1;
-  const stepX = width / (history.length - 1);
-  const points = history.map((val, i) => {
-    const x = i * stepX;
-    const y = ((val - min) / range) * height;
-    return `${x},${y}`;
-  }).join(' ');
-  return `<svg width="${width}" height="${height}" style="display:block; overflow:visible;"><polyline points="${points}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-}
 
-function initConfigBtn() {
-  const btn = document.getElementById('btnSaveConfig');
-  if (btn) btn.addEventListener('click', saveConfig);
-  loadConfig();
-}
 
 function renderTable() {
   const tbody = document.getElementById('tableBody');
