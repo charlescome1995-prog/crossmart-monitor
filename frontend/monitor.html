@@ -117,7 +117,8 @@
           <div class="matrix-col"><label>Keyword 4</label><input type="text" id="in-kw-3" value=""></div>
           <div class="matrix-col"><label>Keyword 5</label><input type="text" id="in-kw-4" value=""></div>
         </div>
-        <div class="matrix-btn-zone">
+        <div class="matrix-btn-zone" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <input type="password" id="ghTokenInput" placeholder="GitHub Token" style="width:220px;padding:6px 8px;border:1px solid #cbd5e1;border-radius:4px;font-size:12px;" onkeydown="if(event.key==='Enter')document.getElementById('btnSaveConfig').click()">
           <button class="btn btn-primary" id="btnSaveConfig">保存配置</button>
           <button class="btn btn-primary" id="btnTrigger" onclick="triggerMonitor()" style="background:#e94560;color:#fff">⚡ 立即抓取</button>
         </div>
@@ -378,6 +379,18 @@ const REPO = 'charlescome1995-prog/crossmart-monitor';
 const TRIGGER_API = 'https://api.github.com/repos/' + REPO + '/actions/workflows/manual-trigger.yml/dispatch';
 const POLL_INTERVAL = 5000;
 let pollTimer = null;
+
+// Auto-fill token from localStorage
+window.addEventListener('DOMContentLoaded', () => {
+  const tokenInput = document.getElementById('ghTokenInput');
+  if (tokenInput) {
+    const saved = localStorage.getItem('gh_token') || '';
+    if (saved) tokenInput.value = saved;
+    tokenInput.addEventListener('input', () => {
+      localStorage.setItem('gh_token', tokenInput.value.trim());
+    });
+  }
+});
 
 async function triggerMonitor() {
   const btn = document.getElementById('btnTrigger');
