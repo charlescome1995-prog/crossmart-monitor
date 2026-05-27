@@ -100,10 +100,14 @@ def sync_config_from_github():
         content = json.loads(base64.b64decode(data['content']).decode())
         print(f"[CONFIG] Got config from GitHub: {content}")
 
-        # 写入本地文件
+        # 写入本地文件（scheduler.py 期望 [{"asin": "..."}, ...] 格式）
+        asins_data = []
+        for a in content.get('asins', []):
+            if a and a.strip():
+                asins_data.append({"asin": a.strip(), "keywords": "", "nickname": ""})
         with open(MONITOR_LIST_PATH, 'w', encoding='utf-8') as f:
-            json.dump(content.get('asins', []), f, ensure_ascii=False, indent=2)
-        print(f"[CONFIG] Wrote {len(content.get('asins', []))} asins to monitor_list.json")
+            json.dump(asins_data, f, ensure_ascii=False, indent=2)
+        print(f"[CONFIG] Wrote {len(asins_data)} asins to monitor_list.json")
 
         # keyword_list 格式：{keyword, note, group}
         kw_list = []
@@ -147,7 +151,7 @@ def run_monitor():
     try:
         result = subprocess.run(
             [sys.executable, os.path.join(PROJECT_ROOT, "scheduler.py"), "--once"],
-            capture_output=True, text=True, timeout=600,
+            capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=600,
             env={**os.environ, "GH_TOKEN": GH_TOKEN, "FEISHU_WEBHOOK": FEISHU_WEBHOOK}
         )
         print(f"[MONITOR] done, returncode={result.returncode}")
