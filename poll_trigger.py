@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 轮询 GitHub trigger.json 的脚本
-每分钟检查一次 GitHub 上 backend/data/trigger.json 是否有新触发
-有的话执行本地 monitor，然后发飞书通知
+- 每 60 秒检查 GitHub trigger.json 有没有新触发
+- 同时暴露本地 HTTP 接口（:8765/trigger），收到请求立即执行 monitor
+- 执行完发飞书通知，然后清空 GitHub trigger.json
 """
-import sys, os, json, time, requests, subprocess
+import sys, os, json, time, requests, subprocess, threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
 
 sys.stdout.reconfigure(encoding='utf-8')
 
@@ -16,6 +18,7 @@ LOCAL_TIMESTAMP_FILE = os.path.join(os.path.dirname(__file__), "data", "last_tri
 
 GH_TOKEN = os.environ.get("GH_TOKEN", "")
 FEISHU_WEBHOOK = os.environ.get("FEISHU_WEBHOOK", "")
+LOCAL_PORT = 8765
 
 HEADERS = {
     "Authorization": f"token {GH_TOKEN}",
@@ -24,6 +27,36 @@ HEADERS = {
 }
 
 POLL_INTERVAL = 60
+
+
+class TriggerHandler(BaseHTTPRequestHandler):
+    def do_POST(self):
+        if self.path == "/trigger":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({"ok": True}).encode())
+            # 异步触发，不卡住 HTTP 服务器
+            threading.Thread(target=immediate_trigger, daemon=True).start()
+        else:
+            self.send_response(404)
+            self.end_headers()
+
+    def log_message(self, format, *args):
+        print(f"[HTTP] {format % args}")
+
+
+def immediate_trigger():
+    """立即触发 monitor（不等轮询）"""
+    print("[TRIGGER] Immediate trigger received")
+    ok = run_monitor()
+    ts = time.strftime("%Y-%m-%d %H:%M:%S")
+    send_feishu(f"{'✅' if ok else '❌'} 监控{'完成' if ok else '失败'}，触发时间: {ts}")
+    # 清空 GitHub trigger.json（忽略失败）
+    trigger = fetch_trigger_from_github()
+    if trigger:
+        clear_trigger_on_github(trigger["sha"])
+    print("[TRIGGER] Done")
 
 
 def get_local_timestamp():
@@ -68,9 +101,14 @@ def run_monitor():
     try:
         result = subprocess.run(
             [sys.executable, os.path.join(os.path.dirname(__file__), "scheduler.py"), "--once"],
-            capture_output=True, text=True, timeout=600
+            capture_output=True, text=True, timeout=600,
+            env={**os.environ, "GH_TOKEN": GH_TOKEN, "FEISHU_WEBHOOK": FEISHU_WEBHOOK}
         )
         print(f"[MONITOR] done, returncode={result.returncode}")
+        if result.stdout:
+            print(f"[MONITOR stdout] {result.stdout[:500]}")
+        if result.returncode != 0 and result.stderr:
+            print(f"[MONITOR stderr] {result.stderr[:500]}")
         return result.returncode == 0
     except Exception as e:
         print(f"[ERROR] run_monitor: {e}")
@@ -102,8 +140,18 @@ def clear_trigger_on_github(sha):
         return False
 
 
+def start_http_server():
+    print(f"[HTTP] Starting server on port {LOCAL_PORT}")
+    server = HTTPServer(("127.0.0.1", LOCAL_PORT), TriggerHandler)
+    server.serve_forever()
+
+
 def main():
     print(f"[POLL] Starting, interval={POLL_INTERVAL}s, repo={REPO}")
+    # 启动 HTTP 服务器（独立线程）
+    http_thread = threading.Thread(target=start_http_server, daemon=True)
+    http_thread.start()
+
     while True:
         last_ts = get_local_timestamp()
         trigger = fetch_trigger_from_github()
