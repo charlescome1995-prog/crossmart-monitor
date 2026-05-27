@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 轮询 GitHub trigger.json 的脚本
-- 每 60 秒检查 GitHub trigger.json 有没有新触发
-- 同时暴露本地 HTTP 接口（:8765/trigger），收到请求立即执行 monitor
-- 执行完发飞书通知，然后清空 GitHub trigger.json
+- 前端触发：写 trigger.json（包含 triggered_at + status: pending）
+- poll_trigger.py 检测到新 trigger → 运行 monitor → 写 status: done/failed
+- 前端轮询 trigger.json 的 status 字段，显示结果
 """
-import sys, os, json, time, requests, subprocess, threading
+import sys, os, json, time, requests, subprocess, threading, base64
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 sys.stdout.reconfigure(encoding='utf-8')
@@ -14,7 +14,6 @@ sys.stdout.reconfigure(encoding='utf-8')
 REPO = "charlescome1995-prog/crossmart-monitor"
 TRIGGER_PATH = "backend/data/trigger.json"
 TRIGGER_URL = f"https://api.github.com/repos/{REPO}/contents/{TRIGGER_PATH}"
-LOCAL_TIMESTAMP_FILE = os.path.join(os.path.dirname(__file__), "data", "last_trigger_timestamp.txt")
 
 GH_TOKEN = os.environ.get("GH_TOKEN", "")
 FEISHU_WEBHOOK = os.environ.get("FEISHU_WEBHOOK", "")
@@ -36,7 +35,6 @@ class TriggerHandler(BaseHTTPRequestHandler):
             self.send_header("Content-Type", "application/json")
             self.end_headers()
             self.wfile.write(json.dumps({"ok": True}).encode())
-            # 异步触发，不卡住 HTTP 服务器
             threading.Thread(target=immediate_trigger, daemon=True).start()
         else:
             self.send_response(404)
@@ -46,36 +44,49 @@ class TriggerHandler(BaseHTTPRequestHandler):
         print(f"[HTTP] {format % args}")
 
 
-def immediate_trigger():
-    """立即触发 monitor（不等轮询）"""
-    print("[TRIGGER] Immediate trigger received")
-    ok = run_monitor()
-    ts = time.strftime("%Y-%m-%d %H:%M:%S")
-    send_feishu(f"{'✅' if ok else '❌'} 监控{'完成' if ok else '失败'}，触发时间: {ts}")
-    # 清空 GitHub trigger.json（忽略失败）
-    trigger = fetch_trigger_from_github()
-    if trigger:
-        clear_trigger_on_github(trigger["sha"])
-    print("[TRIGGER] Done")
-
-
-def get_local_timestamp():
+def get_sha():
+    """Get current SHA of trigger.json"""
     try:
-        if os.path.exists(LOCAL_TIMESTAMP_FILE):
-            with open(LOCAL_TIMESTAMP_FILE, "r") as f:
-                return f.read().strip()
+        r = requests.get(TRIGGER_URL, headers=HEADERS, timeout=10)
+        if r.ok:
+            return r.json().get("sha", "")
     except:
         pass
     return ""
 
 
-def save_local_timestamp(ts):
-    os.makedirs(os.path.dirname(LOCAL_TIMESTAMP_FILE), exist_ok=True)
-    with open(LOCAL_TIMESTAMP_FILE, "w") as f:
-        f.write(ts)
+def write_trigger(status, triggered_at):
+    """Write status back to trigger.json"""
+    try:
+        sha = get_sha()
+        data = {"triggered_at": triggered_at, "status": status}
+        enc = base64.b64encode(json.dumps(data).encode()).decode()
+        r = requests.put(TRIGGER_URL, headers={**HEADERS, "Content-Type": "application/json"}, json={
+            "message": f"set trigger status to {status}",
+            "content": enc,
+            "sha": sha,
+        })
+        return r.ok
+    except Exception as e:
+        print(f"[ERROR] write_trigger: {e}")
+        return False
 
 
-def fetch_trigger_from_github():
+def immediate_trigger():
+    print("[TRIGGER] Immediate trigger received")
+    trigger = fetch_trigger()
+    if not trigger:
+        print("[WARN] No trigger file found")
+        return
+    ts = trigger["triggered_at"]
+    ok = run_monitor()
+    write_trigger("done" if ok else "failed", ts)
+    send_feishu(f"{'✅' if ok else '❌'} 监控{'完成' if ok else '失败'}，触发时间: {ts}")
+    print("[TRIGGER] Done")
+
+
+def fetch_trigger():
+    """Fetch trigger.json content"""
     if not GH_TOKEN:
         print("[WARN] GH_TOKEN not set")
         return None
@@ -85,14 +96,14 @@ def fetch_trigger_from_github():
             return None
         if r.ok:
             data = r.json()
-            content = json.loads(__import__('base64').b64decode(data['content']))
+            content = json.loads(base64.b64decode(data['content']).decode())
             return {
-                "content": content,
-                "timestamp": content.get("timestamp", ""),
+                "triggered_at": content.get("triggered_at", ""),
+                "status": content.get("status", ""),
                 "sha": data.get("sha", ""),
             }
     except Exception as e:
-        print(f"[ERROR] fetch_trigger_from_github: {e}")
+        print(f"[ERROR] fetch_trigger: {e}")
     return None
 
 
@@ -125,47 +136,54 @@ def send_feishu(message):
         print(f"[ERROR] send_feishu: {e}")
 
 
-def clear_trigger_on_github(sha):
-    try:
-        empty_content = json.dumps({"triggered": False, "cleared": True})
-        enc = __import__('base64').b64encode(empty_content.encode()).decode()
-        r = requests.put(TRIGGER_URL, headers={**HEADERS, "Content-Type": "application/json"}, json={
-            "message": "clear trigger after processing",
-            "content": enc,
-            "sha": sha,
-        })
-        return r.ok
-    except Exception as e:
-        print(f"[ERROR] clear_trigger_on_github: {e}")
-        return False
-
-
 def start_http_server():
     print(f"[HTTP] Starting server on port {LOCAL_PORT}")
     server = HTTPServer(("127.0.0.1", LOCAL_PORT), TriggerHandler)
     server.serve_forever()
 
 
+def clear_trigger():
+    """Clear trigger.json after processing"""
+    try:
+        sha = get_sha()
+        empty = json.dumps({"triggered": False, "status": "cleared"})
+        enc = base64.b64encode(empty.encode()).decode()
+        requests.put(TRIGGER_URL, headers={**HEADERS, "Content-Type": "application/json"}, json={
+            "message": "clear trigger after processing",
+            "content": enc,
+            "sha": sha,
+        })
+    except Exception as e:
+        print(f"[WARN] clear_trigger: {e}")
+
+
 def main():
     print(f"[POLL] Starting, interval={POLL_INTERVAL}s, repo={REPO}")
-    # 启动 HTTP 服务器（独立线程）
     http_thread = threading.Thread(target=start_http_server, daemon=True)
     http_thread.start()
 
-    while True:
-        last_ts = get_local_timestamp()
-        trigger = fetch_trigger_from_github()
+    last_seen_ts = ""
 
-        if trigger and trigger["content"].get("triggered") and trigger["timestamp"] != last_ts:
-            ts = trigger["timestamp"]
+    while True:
+        trigger = fetch_trigger()
+
+        if trigger and trigger["status"] == "pending" and trigger["triggered_at"] != last_seen_ts:
+            ts = trigger["triggered_at"]
             print(f"[TRIGGER] New trigger at {ts}")
+            last_seen_ts = ts
 
             ok = run_monitor()
+            write_trigger("done" if ok else "failed", ts)
             send_feishu(f"{'✅' if ok else '❌'} 监控{'完成' if ok else '失败'}，触发时间: {ts}")
-            save_local_timestamp(ts)
-            clear_trigger_on_github(trigger["sha"])
+
+            time.sleep(5)  # 给前端留出时间读取状态
+            clear_trigger()
+            last_seen_ts = ""  # 重置，允许下次触发
         else:
-            print(f"[POLL] No new trigger (last={last_ts})")
+            if trigger:
+                print(f"[POLL] trigger status={trigger['status']}, waiting...")
+            else:
+                print(f"[POLL] no trigger file")
 
         time.sleep(POLL_INTERVAL)
 
