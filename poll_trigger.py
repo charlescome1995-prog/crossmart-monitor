@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-轮询 GitHub trigger.json 的脚本
+poll_trigger.py - 轮询 GitHub trigger.json
 - 前端触发：写 trigger.json（包含 triggered_at + status: pending）
-- poll_trigger.py 检测到新 trigger → 运行 monitor → 写 status: done/failed
+- poll_trigger.py 检测到新 trigger → 同步配置 → 运行 monitor → 写 status: done/failed
 - 前端轮询 trigger.json 的 status 字段，显示结果
 """
 import sys, os, json, time, requests, subprocess, threading, base64
@@ -13,7 +13,9 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 REPO = "charlescome1995-prog/crossmart-monitor"
 TRIGGER_PATH = "backend/data/trigger.json"
+CONFIG_PATH = "backend/data/user_config.json"
 TRIGGER_URL = f"https://api.github.com/repos/{REPO}/contents/{TRIGGER_PATH}"
+CONFIG_URL = f"https://api.github.com/repos/{REPO}/contents/{CONFIG_PATH}"
 
 GH_TOKEN = os.environ.get("GH_TOKEN", "")
 FEISHU_WEBHOOK = os.environ.get("FEISHU_WEBHOOK", "")
@@ -26,6 +28,13 @@ HEADERS = {
 }
 
 POLL_INTERVAL = 60
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(PROJECT_ROOT, "data")
+MONITOR_LIST_PATH = os.path.join(DATA_DIR, "monitor_list.json")
+KEYWORD_LIST_PATH = os.path.join(DATA_DIR, "keyword_list.json")
+
+os.makedirs(DATA_DIR, exist_ok=True)
 
 
 class TriggerHandler(BaseHTTPRequestHandler):
@@ -44,10 +53,10 @@ class TriggerHandler(BaseHTTPRequestHandler):
         print(f"[HTTP] {format % args}")
 
 
-def get_sha():
-    """Get current SHA of trigger.json"""
+def get_sha(url):
+    """Get current SHA of a file"""
     try:
-        r = requests.get(TRIGGER_URL, headers=HEADERS, timeout=10)
+        r = requests.get(url, headers=HEADERS, timeout=10)
         if r.ok:
             return r.json().get("sha", "")
     except:
@@ -58,7 +67,7 @@ def get_sha():
 def write_trigger(status, triggered_at):
     """Write status back to trigger.json"""
     try:
-        sha = get_sha()
+        sha = get_sha(TRIGGER_URL)
         data = {"triggered_at": triggered_at, "status": status}
         enc = base64.b64encode(json.dumps(data).encode()).decode()
         r = requests.put(TRIGGER_URL, headers={**HEADERS, "Content-Type": "application/json"}, json={
@@ -72,17 +81,43 @@ def write_trigger(status, triggered_at):
         return False
 
 
-def immediate_trigger():
-    print("[TRIGGER] Immediate trigger received")
-    trigger = fetch_trigger()
-    if not trigger:
-        print("[WARN] No trigger file found")
-        return
-    ts = trigger["triggered_at"]
-    ok = run_monitor()
-    write_trigger("done" if ok else "failed", ts)
-    send_feishu(f"{'✅' if ok else '❌'} 监控{'完成' if ok else '失败'}，触发时间: {ts}")
-    print("[TRIGGER] Done")
+def sync_config_from_github():
+    """
+    从 GitHub 读取 user_config.json，同步到本地 monitor_list.json 和 keyword_list.json
+    """
+    if not GH_TOKEN:
+        print("[WARN] GH_TOKEN not set, skip config sync")
+        return False
+    try:
+        r = requests.get(CONFIG_URL, headers=HEADERS, timeout=10)
+        if r.status_code == 404:
+            print("[WARN] user_config.json not found on GitHub")
+            return False
+        if not r.ok:
+            print(f"[WARN] failed to fetch user_config: {r.status_code}")
+            return False
+        data = r.json()
+        content = json.loads(base64.b64decode(data['content']).decode())
+        print(f"[CONFIG] Got config from GitHub: {content}")
+
+        # 写入本地文件
+        with open(MONITOR_LIST_PATH, 'w', encoding='utf-8') as f:
+            json.dump(content.get('asins', []), f, ensure_ascii=False, indent=2)
+        print(f"[CONFIG] Wrote {len(content.get('asins', []))} asins to monitor_list.json")
+
+        # keyword_list 格式：{keyword, note, group}
+        kw_list = []
+        for kw in content.get('keywords', []):
+            if kw and kw.strip():
+                kw_list.append({"keyword": kw.strip(), "note": "", "group": "main"})
+        with open(KEYWORD_LIST_PATH, 'w', encoding='utf-8') as f:
+            json.dump(kw_list, f, ensure_ascii=False, indent=2)
+        print(f"[CONFIG] Wrote {len(kw_list)} keywords to keyword_list.json")
+
+        return True
+    except Exception as e:
+        print(f"[ERROR] sync_config_from_github: {e}")
+        return False
 
 
 def fetch_trigger():
@@ -111,7 +146,7 @@ def run_monitor():
     print("[INFO] Running monitor...")
     try:
         result = subprocess.run(
-            [sys.executable, os.path.join(os.path.dirname(__file__), "scheduler.py"), "--once"],
+            [sys.executable, os.path.join(PROJECT_ROOT, "scheduler.py"), "--once"],
             capture_output=True, text=True, timeout=600,
             env={**os.environ, "GH_TOKEN": GH_TOKEN, "FEISHU_WEBHOOK": FEISHU_WEBHOOK}
         )
@@ -136,16 +171,10 @@ def send_feishu(message):
         print(f"[ERROR] send_feishu: {e}")
 
 
-def start_http_server():
-    print(f"[HTTP] Starting server on port {LOCAL_PORT}")
-    server = HTTPServer(("127.0.0.1", LOCAL_PORT), TriggerHandler)
-    server.serve_forever()
-
-
 def clear_trigger():
     """Clear trigger.json after processing"""
     try:
-        sha = get_sha()
+        sha = get_sha(TRIGGER_URL)
         empty = json.dumps({"triggered": False, "status": "cleared"})
         enc = base64.b64encode(empty.encode()).decode()
         requests.put(TRIGGER_URL, headers={**HEADERS, "Content-Type": "application/json"}, json={
@@ -155,6 +184,27 @@ def clear_trigger():
         })
     except Exception as e:
         print(f"[WARN] clear_trigger: {e}")
+
+
+def immediate_trigger():
+    print("[TRIGGER] Immediate trigger received")
+    trigger = fetch_trigger()
+    if not trigger:
+        print("[WARN] No trigger file found")
+        return
+    ts = trigger["triggered_at"]
+
+    sync_config_from_github()
+    ok = run_monitor()
+    write_trigger("done" if ok else "failed", ts)
+    send_feishu(f"{'✅' if ok else '❌'} 监控{'完成' if ok else '失败'}，触发时间: {ts}")
+    print("[TRIGGER] Done")
+
+
+def start_http_server():
+    print(f"[HTTP] Starting server on port {LOCAL_PORT}")
+    server = HTTPServer(("127.0.0.1", LOCAL_PORT), TriggerHandler)
+    server.serve_forever()
 
 
 def main():
@@ -172,13 +222,14 @@ def main():
             print(f"[TRIGGER] New trigger at {ts}")
             last_seen_ts = ts
 
+            sync_config_from_github()
             ok = run_monitor()
             write_trigger("done" if ok else "failed", ts)
             send_feishu(f"{'✅' if ok else '❌'} 监控{'完成' if ok else '失败'}，触发时间: {ts}")
 
-            time.sleep(5)  # 给前端留出时间读取状态
+            time.sleep(5)
             clear_trigger()
-            last_seen_ts = ""  # 重置，允许下次触发
+            last_seen_ts = ""
         else:
             if trigger:
                 print(f"[POLL] trigger status={trigger['status']}, waiting...")
