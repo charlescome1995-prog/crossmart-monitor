@@ -1,0 +1,28 @@
+name: Monitor Trigger
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/data/trigger.json'
+
+jobs:
+  trigger-local:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read trigger file
+        id: trigger
+        run: |
+          echo "content=$(cat backend/data/trigger.json)" >> $GITHUB_OUTPUT          
+
+      - name: Notify local monitor via tunnel
+        if: steps.trigger.outputs.content != ''
+        run: |
+          CALLBACK_URL="${{ vars.CALLBACK_URL }}"
+          echo "Calling: $CALLBACK_URL/trigger"
+          curl -s -X POST "$CALLBACK_URL/trigger" -H "Content-Type: application/json" -d "$(cat backend/data/trigger.json)" || echo "Callback failed"       
