@@ -1,7 +1,7 @@
 /**
  * CrossMart Config API Worker
  * Pure API only - no HTML responses
- * Endpoints: GET/POST /config
+ * Endpoints: GET/POST /config, /health, /trigger
  */
 
 const REPO = 'charlescome1995-prog/crossmart-monitor';
@@ -73,6 +73,38 @@ async function handleRequest(request, env) {
       return new Response(JSON.stringify({ ok: true }), { headers: h });
     } catch (e) {
       return new Response(JSON.stringify({ error: e.message }), { headers: h, status: 500 });
+    }
+  }
+
+  // /health — 检测 tunnel 连通性
+  if (url.pathname === '/health' && request.method === 'GET') {
+    const callbackUrl = env.CALLBACK_URL;
+    const h = { 'Content-Type': 'application/json' };
+    if (!callbackUrl) {
+      return new Response(JSON.stringify({ error: 'CALLBACK_URL not set' }), { headers: h, status: 500 });
+    }
+    try {
+      const r = await fetch(callbackUrl + '/health');
+      const ok = r.ok;
+      return new Response(JSON.stringify({ tunnel: ok ? 'ok' : 'fail', status: r.status }), { headers: h });
+    } catch (e) {
+      return new Response(JSON.stringify({ tunnel: 'fail', error: e.message }), { headers: h, status: 502 });
+    }
+  }
+
+  // /trigger — 触发本地监控
+  if (url.pathname === '/trigger' && request.method === 'POST') {
+    const callbackUrl = env.CALLBACK_URL;
+    const h = { 'Content-Type': 'application/json' };
+    if (!callbackUrl) {
+      return new Response(JSON.stringify({ error: 'CALLBACK_URL not set' }), { headers: h, status: 500 });
+    }
+    try {
+      const r = await fetch(callbackUrl + '/trigger', { method: 'POST' });
+      const text = await r.text();
+      return new Response(JSON.stringify({ ok: r.ok, backend: text }), { headers: h });
+    } catch (e) {
+      return new Response(JSON.stringify({ error: e.message }), { headers: h, status: 502 });
     }
   }
 
