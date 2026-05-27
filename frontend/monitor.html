@@ -434,7 +434,7 @@ async function checkStatus() {
   } catch(e) {}
 }
 
-function saveConfig() {
+async function saveConfig() {
   const asins = [], kws = [];
   for (let i = 0; i < 5; i++) {
     const a = (document.getElementById('in-asin-' + i) || {}).value || '';
@@ -446,11 +446,40 @@ function saveConfig() {
   localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
   applyConfig(cfg);
   const btn = document.getElementById('btnSaveConfig');
-  if (btn) {
-    const orig = btn.textContent;
-    btn.textContent = '✅ 已保存';
-    setTimeout(() => { btn.textContent = orig; }, 1800);
+  if (btn) btn.disabled = true;
+  const token = localStorage.getItem('gh_token') || '';
+  if (!token) {
+    if (btn) { btn.textContent = '\u274c 未配置 Token'; btn.disabled = false; }
+    setTimeout(() => { if (btn) btn.textContent = '\u4fdd\u5b58\u914d\u7f6e'; }, 2000);
+    return;
   }
+  try {
+    const getResp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/user_config.json', {
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    let sha = '';
+    if (getResp.ok) {
+      const data = await getResp.json();
+      sha = data.sha || '';
+    }
+    const putResp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/user_config.json', {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: 'update config from monitor page',
+        content: btoa(unescape(encodeURIComponent(JSON.stringify(cfg, null, 2)))),
+        sha: sha
+      })
+    });
+    if (putResp.ok || putResp.status === 200 || putResp.status === 201) {
+      if (btn) { btn.textContent = '\u2705 已保存'; }
+    } else {
+      if (btn) { btn.textContent = '\u274c 保存失败'; }
+    }
+  } catch(e) {
+    if (btn) { btn.textContent = '\u274c 网络错误'; }
+  }
+  setTimeout(() => { if (btn) { btn.textContent = '\u4fdd\u5b58\u914d\u7f6e'; btn.disabled = false; } }, 2000);
 }
 
 
