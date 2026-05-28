@@ -167,21 +167,20 @@ const RAW_DATA_URL = 'https://raw.githubusercontent.com/' + REPO + '/main/fronte
 let rawData = { updated: '', items: [] };
 
 async function loadRawData() {
-  // Try fetching from GitHub with timeout
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
+  const ctrl = new AbortController();
+  const tid = setTimeout(() => ctrl.abort(), 10000);
   try {
-    const r = await fetch(RAW_DATA_URL + '?t=' + Date.now(), { signal: controller.signal });
-    clearTimeout(timeout);
+    const r = await fetch(RAW_DATA_URL + '?t=' + Date.now(), { signal: ctrl.signal });
+    clearTimeout(tid);
     if (r.ok) {
       const d = await r.json();
       rawData = d;
       renderTable();
       return;
     }
-  } catch(e) { console.warn('loadRawData fetch failed:', e.message); }
-  // Fallback: use embedded data or empty
-  renderTable();
+  } catch(e) { console.warn('loadRawData failed:', e.message); }
+  clearTimeout(tid);
+  renderTable(); // render whatever we have (empty ok)
 }
 </script>
 <script>
@@ -318,7 +317,7 @@ function drawSparkline(data, color) {
 function initConfigBtn() {
   const saved = localStorage.getItem(CONFIG_KEY);
   if (saved) { try { applyConfig(JSON.parse(saved)); } catch(_) {} }
-  renderTable(); // Always render whatever rawData we have (may be empty/placeholder)
+  // Don't call renderTable here - let loadRawData do it after data loads
 }
 
 function renderTable() {
