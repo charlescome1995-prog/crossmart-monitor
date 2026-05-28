@@ -375,7 +375,6 @@ const rawData = {
 <script>
 const CONFIG_KEY = 'crossmart_monitor_v1';
 const REPO = 'charlescome1995-prog/crossmart-monitor'; function b64enc(s){return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g,function(_,p){return String.fromCharCode(parseInt(p,16));}));}
-const TRIGGER_API = 'https://api.github.com/repos/' + REPO + '/actions/workflows/manual-trigger.yml/dispatch';
 const POLL_INTERVAL = 5000;
 let pollTimer = null;
 
@@ -391,10 +390,27 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-const CONFIG_API = 'https://api.github.com/repos/' + REPO + '/actions/workflows/save-config.yml/dispatch';
+function b64enc(s){return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g,function(_,p){return String.fromCharCode(parseInt(p,16));}));}
+
+async function putFile(path, content) {
+  const token = localStorage.getItem('gh_token') || '';
+  const url = 'https://api.github.com/repos/' + REPO + '/contents/' + path;
+  // get current sha
+  let sha = '';
+  try {
+    const r = await fetch(url, { headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' } });
+    if (r.ok) { const d = await r.json(); sha = d.sha || ''; }
+  } catch(_) {}
+  const enc = b64enc(JSON.stringify(content));
+  const r = await fetch(url, {
+    method: 'PUT',
+    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'update from monitor page', content: enc, sha })
+  });
+  if (!r.ok && r.status !== 201) throw new Error('put ' + path + ' failed: ' + r.status);
+}
 
 async function triggerMonitor() {
-  // Read current input values
   const asins = [], kws = [];
   for (let i = 0; i < 5; i++) {
     const a = (document.getElementById('in-asin-' + i) || {}).value || '';
@@ -416,41 +432,12 @@ async function triggerMonitor() {
     return;
   }
   try {
-    // Step 1: Save config to user_config.json via repository_dispatch
-    const saveResp = await fetch(CONFIG_API, {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ event_type: 'save-config', client_payload: { data: cfg } })
-    });
-    if (!saveResp.ok && saveResp.status !== 204) {
-      throw new Error('save-config failed: ' + saveResp.status);
-    }
-
-    // Step 2: Write trigger.json
-    let sha = '';
-    const getResp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/trigger.json', {
-      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
-    });
-    if (getResp.ok) {
-      const data = await getResp.json();
-      sha = data.sha || '';
-    }
-    const triggerData = { triggered_at: Date.now(), status: 'pending' };
-    const putResp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/trigger.json', {
-      method: 'PUT',
-      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: 'trigger monitor run',
-        content: b64enc(JSON.stringify(triggerData)),
-        sha: sha
-      })
-    });
-    if (putResp.ok || putResp.status === 200 || putResp.status === 201) {
-      btn.textContent = '✅ 已触发';
-      startPolling();
-    } else {
-      throw new Error('trigger write failed: ' + putResp.status);
-    }
+    // Step 1: Write user_config.json via Contents API
+    await putFile('backend/data/user_config.json', cfg);
+    // Step 2: Write trigger.json (the signal for poll_trigger.py)
+    await putFile('backend/data/trigger.json', { triggered_at: Date.now(), status: 'pending' });
+    btn.textContent = '✅ 已触发';
+    startPolling();
   } catch(e) {
     console.error(e);
     btn.textContent = '❌ 触发失败';
