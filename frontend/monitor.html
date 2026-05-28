@@ -189,8 +189,8 @@ window.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem('gh_token', tokenInput.value.trim());
     });
   }
+  loadGitHubConfig();
   loadRawData();
-  initConfigBtn();
 });
 
 async function putFile(path, content) {
@@ -305,9 +305,22 @@ function drawSparkline(data, color) {
 }
 
 function initConfigBtn() {
-  const saved = localStorage.getItem(CONFIG_KEY);
-  if (saved) { try { applyConfig(JSON.parse(saved)); } catch(_) {} }
-  // Don't call renderTable here - let loadRawData do it after data loads
+  // Load from GitHub (shared across all users) instead of localStorage
+  loadGitHubConfig();
+}
+
+async function loadGitHubConfig() {
+  const token = localStorage.getItem('gh_token') || '';
+  if (!token) return;
+  try {
+    const resp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/user_config.json', {
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!resp.ok) return;
+    const data = await resp.json();
+    const cfg = JSON.parse(atob(data.content));
+    applyConfig(cfg);
+  } catch(e) { console.warn('loadGitHubConfig failed:', e.message); }
 }
 
 function renderTable() {
@@ -424,5 +437,5 @@ function exportToExcel() {
 }
 
 initConfigBtn();
-</script></body>
-</html>
+</script>
+</body>
