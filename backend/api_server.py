@@ -169,6 +169,10 @@ def run_full_scrape(main_asins):
         subprocess.run([
             sys.executable,
             os.path.join(PROJECT, "sync_to_frontend.py")
+        ], cwd=PROJECT, capture_output=True, text=True, timeout=60);
+        subprocess.run([
+            sys.executable,
+            os.path.join(PROJECT, "sync_monitor_data.py")
         ], cwd=PROJECT, capture_output=True, text=True, timeout=60)
     except Exception as e:
         print("[同步] 失败: %s" % e)
