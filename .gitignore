@@ -12,6 +12,8 @@ backend/data/processed/
 backend/data/cache/
 backend/data/user_config.json
 backend/data/trigger.json
+backend/data/monitor_list.json
+backend/data/keyword_list.json
 notify_config.json
 frontend/data/notify_config.json
 frontend/data/
