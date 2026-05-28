@@ -175,7 +175,7 @@ function loadRawData() {
 }
 </script>
 <script>
-const REPO = 'charlescome1995-prog/crossmart-monitor'; function b64enc(s){return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g,function(_,p){return String.fromCharCode(parseInt(p,16));}));}
+function b64enc(s){return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g,function(_,p){return String.fromCharCode(parseInt(p,16));}));}
 const POLL_INTERVAL = 5000;
 let pollTimer = null;
 
