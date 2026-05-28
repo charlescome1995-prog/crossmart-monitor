@@ -8,7 +8,7 @@ import sys, os, json, time
 sys.stdout.reconfigure(encoding='utf-8')
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(PROJECT_ROOT, "data")
+DATA_DIR = os.path.join(PROJECT_ROOT, "backend", "data")
 os.makedirs(DATA_DIR, exist_ok=True)
 
 MONITOR_LIST_PATH = os.path.join(DATA_DIR, "monitor_list.json")
