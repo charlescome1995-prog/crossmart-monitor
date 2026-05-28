@@ -310,11 +310,11 @@ function initConfigBtn() {
 }
 
 async function loadGitHubConfig() {
-  const token = localStorage.getItem('gh_token') || '';
-  if (!token) return;
+  // Read from GitHub (public, no token needed for read)
+  // Token only needed for write (putFile calls)
   try {
     const resp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/user_config.json', {
-      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+      headers: { 'Accept': 'application/vnd.github.v3+json' }
     });
     if (!resp.ok) return;
     const data = await resp.json();
