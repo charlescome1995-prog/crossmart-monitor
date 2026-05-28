@@ -283,18 +283,19 @@ async function checkStatus() {
 
 function applyConfig(cfg) {
   if (!cfg) return;
-  // Apply ASIN inputs
+  // Only apply non-empty values — don't clear slots that aren't in the config
   if (cfg.asins) {
     cfg.asins.forEach((v, i) => {
+      if (!v) return; // skip empty string
       const el = document.getElementById('in-asin-' + i);
-      if (el && el.value !== v) el.value = v;
+      if (el) el.value = v;
     });
   }
-  // Apply keyword inputs
   if (cfg.keywords) {
     cfg.keywords.forEach((v, i) => {
+      if (!v) return; // skip empty string
       const el = document.getElementById('in-kw-' + i);
-      if (el && el.value !== v) el.value = v;
+      if (el) el.value = v;
     });
   }
 }
