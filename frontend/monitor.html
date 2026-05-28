@@ -490,6 +490,24 @@ function applyConfig(cfg) {
   }
 }
 
+function drawSparkline(data, color) {
+  if (!data || data.length < 2) return '<span style="color:#999;font-size:11px;">无数据</span>';
+  const min = Math.min(...data), max = Math.max(...data);
+  const range = max - min || 1;
+  const h = 30, w = 120;
+  const pts = data.map((v, i) => {
+    const x = (i / (data.length - 1)) * w;
+    const y = h - ((v - min) / range) * h;
+    return x + ',' + y;
+  }).join(' ');
+  return `<svg width="${w}" height="${h}" style="display:block;"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`;
+}
+
+function initConfigBtn() {
+  const saved = localStorage.getItem(CONFIG_KEY);
+  if (saved) { try { applyConfig(JSON.parse(saved)); } catch(_) {} }
+}
+
 function renderTable() {
   const tbody = document.getElementById('tableBody');
   const searchTxt = document.getElementById('searchInput').value.toLowerCase();
