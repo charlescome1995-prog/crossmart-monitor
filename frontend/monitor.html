@@ -391,6 +391,8 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+const CONFIG_API = 'https://api.github.com/repos/' + REPO + '/actions/workflows/save-config.yml/dispatch';
+
 async function triggerMonitor() {
   // Read current input values
   const asins = [], kws = [];
@@ -414,6 +416,17 @@ async function triggerMonitor() {
     return;
   }
   try {
+    // Step 1: Save config to user_config.json via repository_dispatch
+    const saveResp = await fetch(CONFIG_API, {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event_type: 'save-config', client_payload: { data: cfg } })
+    });
+    if (!saveResp.ok && saveResp.status !== 204) {
+      throw new Error('save-config failed: ' + saveResp.status);
+    }
+
+    // Step 2: Write trigger.json
     let sha = '';
     const getResp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/trigger.json', {
       headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
@@ -436,10 +449,11 @@ async function triggerMonitor() {
       btn.textContent = '✅ 已触发';
       startPolling();
     } else {
-      btn.textContent = '❌ 触发失败';
+      throw new Error('trigger write failed: ' + putResp.status);
     }
   } catch(e) {
-    btn.textContent = '❌ 网络错误';
+    console.error(e);
+    btn.textContent = '❌ 触发失败';
   }
   setTimeout(() => { btn.textContent = '⚡ 立即抓取'; btn.disabled = false; }, 5000);
 }
