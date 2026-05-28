@@ -14,16 +14,25 @@ jobs:
           python3 - <<'PYEOF'
           import json, os
           data = json.loads('${{ toJSON(github.event.client_payload.data) }}')
-          os.makedirs('data', exist_ok=True)
-          with open('data/user_config.json', 'w', encoding='utf-8') as f:
+          os.makedirs('backend/data', exist_ok=True)
+          with open('backend/data/user_config.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
           print('Written:', data)
+          PYEOF
+
+      - name: Write trigger stub
+        run: |
+          python3 - <<'PYEOF'
+          import json, os
+          os.makedirs('backend/data', exist_ok=True)
+          with open('backend/data/trigger.json', 'w', encoding='utf-8') as f:
+            json.dump({"triggered_at": 0, "status": "cleared"}, f)
           PYEOF
 
       - name: Commit and push
         run: |
           git config user.name "monitor-bot"
           git config user.email "bot@crossmart.local"
-          git add data/user_config.json
+          git add backend/data/user_config.json backend/data/trigger.json
           git diff --staged --quiet || git commit -m "update config from monitor page"
           git push

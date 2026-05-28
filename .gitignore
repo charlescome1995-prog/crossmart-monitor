@@ -10,6 +10,8 @@ test_*.py
 replace_*.py
 backend/data/processed/
 backend/data/cache/
+backend/data/user_config.json
+backend/data/trigger.json
 notify_config.json
 frontend/data/notify_config.json
 frontend/data/

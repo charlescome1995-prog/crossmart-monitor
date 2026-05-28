@@ -12,8 +12,8 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 sys.stdout.reconfigure(encoding='utf-8')
 
 REPO = "charlescome1995-prog/crossmart-monitor"
-TRIGGER_PATH = "data/trigger.json"
-CONFIG_PATH = "data/user_config.json"
+TRIGGER_PATH = "backend/data/trigger.json"
+CONFIG_PATH = "backend/data/user_config.json"
 TRIGGER_URL = f"https://api.github.com/repos/{REPO}/contents/{TRIGGER_PATH}"
 CONFIG_URL = f"https://api.github.com/repos/{REPO}/contents/{CONFIG_PATH}"
 
@@ -30,7 +30,7 @@ HEADERS = {
 POLL_INTERVAL = 60
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(PROJECT_ROOT, "data")
+DATA_DIR = os.path.join(PROJECT_ROOT, "backend", "data")
 MONITOR_LIST_PATH = os.path.join(DATA_DIR, "monitor_list.json")
 KEYWORD_LIST_PATH = os.path.join(DATA_DIR, "keyword_list.json")
 

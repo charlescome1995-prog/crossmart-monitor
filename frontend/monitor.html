@@ -428,7 +428,7 @@ async function triggerMonitor() {
 
     // Step 2: Write trigger.json
     let sha = '';
-    const getResp = await fetch('https://api.github.com/repos/' + REPO + '/contents/data/trigger.json', {
+    const getResp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/trigger.json', {
       headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
     });
     if (getResp.ok) {
@@ -436,7 +436,7 @@ async function triggerMonitor() {
       sha = data.sha || '';
     }
     const triggerData = { triggered_at: Date.now(), status: 'pending' };
-    const putResp = await fetch('https://api.github.com/repos/' + REPO + '/contents/data/trigger.json', {
+    const putResp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/trigger.json', {
       method: 'PUT',
       headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -467,7 +467,7 @@ async function checkStatus() {
   const token = localStorage.getItem('gh_token') || '';
   if (!token) return;
   try {
-    const resp = await fetch('https://api.github.com/repos/' + REPO + '/contents/data/trigger.json', {
+    const resp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/trigger.json', {
       headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
     });
     if (!resp.ok) return;
