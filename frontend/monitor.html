@@ -311,6 +311,7 @@ function drawSparkline(data, color) {
 function initConfigBtn() {
   const saved = localStorage.getItem(CONFIG_KEY);
   if (saved) { try { applyConfig(JSON.parse(saved)); } catch(_) {} }
+  if (rawData.items && rawData.items.length > 0) renderTable();
 }
 
 function renderTable() {
