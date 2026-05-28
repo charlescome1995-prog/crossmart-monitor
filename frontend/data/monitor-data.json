@@ -1,32 +1,4 @@
 {
-  "updated": "2026-05-28T11:31:09",
-  "asins": [
-    {
-      "asin": "B09V7Z4TJG",
-      "title": "medicube Toner Pads Zero Pore Pad 2.0 | Dual-Textured Facial Pad for Exfoliation and Pore Care with 4.5% AHA Lactic Acid, 0.45% BHA Salicylic Acid | Ideal for All, Korean Skin Care, 70 Pads (1 Pack)",
-      "brand": "medicube",
-      "main_image": "https://m.media-amazon.com/images/I/71Mcspt-6AL._SX466_.jpg",
-      "price": 18.9,
-      "list_price": 0.27,
-      "rating": 4.6,
-      "review_count": 24640,
-      "bsr": 2,
-      "bsr_sub_rank": 2,
-      "bsr_sub_category": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "seller": "Medicube & Aprilskin",
-      "history": [
-        {
-          "timestamp": "2026-05-28T11:21:27",
-          "price": 18.9,
-          "bsr": 2,
-          "rating": 4.6,
-          "review_count": 24640
-        }
-      ],
-      "price_change": 0,
-      "bsr_change": 0,
-      "price_change_pct": 0,
-      "bsr_change_pct": 0
-    }
-  ]
+  "updated": "2026-05-28T18:20:02",
+  "asins": []
 }
