@@ -120,6 +120,7 @@
         <div class="matrix-btn-zone" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
           <input type="password" id="ghTokenInput" placeholder="GitHub Token" style="width:220px;padding:6px 8px;border:1px solid #cbd5e1;border-radius:4px;font-size:12px;" onkeydown="if(event.key==='Enter')triggerMonitor()">
           <button class="btn btn-primary" id="btnTrigger" onclick="triggerMonitor()" style="background:#e94560;color:#fff">⚡ 立即抓取</button>
+          <span id="configStatus" style="font-size:12px;padding:4px 10px;border-radius:20px;background:#e2e8f0;color:#64748b;cursor:default;user-select:none;">读取配置...</span>
         </div>
       </div>
     </div>
@@ -320,15 +321,27 @@ function initConfigBtn() {
 async function loadGitHubConfig() {
   // Read from GitHub (public, no token needed for read)
   // Token only needed for write (putFile calls)
+  const statusEl = document.getElementById('configStatus');
+  if (statusEl) statusEl.textContent = '读取配置...';
   try {
     const resp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/user_config.json', {
       headers: { 'Accept': 'application/vnd.github.v3+json' }
     });
-    if (!resp.ok) return;
+    if (!resp.ok) {
+      if (statusEl) statusEl.textContent = '⚠ 读取失败';
+      return;
+    }
     const data = await resp.json();
     const cfg = JSON.parse(atob(data.content));
     applyConfig(cfg);
-  } catch(e) { console.warn('loadGitHubConfig failed:', e.message); }
+    if (statusEl) {
+      const count = (cfg.asins ? cfg.asins.filter(v=>v).length : 0) + (cfg.keywords ? cfg.keywords.filter(v=>v).length : 0);
+      statusEl.textContent = '✓ 已同步 (' + count + ')';
+    }
+  } catch(e) {
+    if (statusEl) statusEl.textContent = '⚠ 读取失败';
+    console.warn('loadGitHubConfig failed:', e.message);
+  }
 }
 
 function renderTable() {
