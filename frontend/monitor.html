@@ -167,6 +167,7 @@ const RAW_DATA_URL = 'https://raw.githubusercontent.com/' + REPO + '/main/fronte
 let rawData = { updated: '', items: [] };
 
 async function loadRawData() {
+  console.log('[loadRawData] starting fetch from', RAW_DATA_URL);
   const ctrl = new AbortController();
   const tid = setTimeout(() => ctrl.abort(), 10000);
   try {
@@ -175,12 +176,14 @@ async function loadRawData() {
     if (r.ok) {
       const d = await r.json();
       rawData = d;
+      console.log('[loadRawData] fetched', d.items.length, 'items, calling renderTable');
       renderTable();
       return;
     }
+    clearTimeout(tid);
   } catch(e) { console.warn('loadRawData failed:', e.message); }
   clearTimeout(tid);
-  renderTable(); // render whatever we have (empty ok)
+  renderTable();
 }
 </script>
 <script>
@@ -320,7 +323,13 @@ function initConfigBtn() {
 }
 
 function renderTable() {
+  if (!rawData || !rawData.items) {
+    console.warn('renderTable: rawData or rawData.items is null, skipping');
+    return;
+  }
   const tbody = document.getElementById('tableBody');
+  if (!tbody) { console.warn('renderTable: tableBody not found'); return; }
+
   const searchTxt = document.getElementById('searchInput').value.toLowerCase();
   const sourceFilter = document.getElementById('sourceFilter').value;
   const onlyChg = document.getElementById('changeFilter').checked;
