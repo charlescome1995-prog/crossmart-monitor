@@ -213,11 +213,19 @@ async function putFile(path, content) {
 
 async function triggerMonitor() {
   const asins = [], kws = [];
+  // Collect non-empty values only — don't overwrite existing GitHub data with empty slots
+  const asins = [], kws = [];
   for (let i = 0; i < 5; i++) {
     const a = (document.getElementById('in-asin-' + i) || {}).value || '';
     const k = (document.getElementById('in-kw-' + i) || {}).value || '';
-    asins.push(a.trim());
-    kws.push(k.trim());
+    if (a.trim()) asins.push(a.trim());
+    if (k.trim()) kws.push(k.trim());
+  }
+  // Block trigger if nothing filled in at all
+  if (asins.length === 0 && kws.length === 0) {
+    btn.textContent = '❌ 请先输入 ASIN 或关键词';
+    setTimeout(() => { btn.textContent = '⚡ 立即抓取'; btn.disabled = false; }, 3000);
+    return;
   }
   const cfg = { asins, keywords: kws };
   localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
