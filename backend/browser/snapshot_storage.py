@@ -8,8 +8,8 @@ import sys, os, json, re
 sys.stdout.reconfigure(encoding='utf-8')
 from datetime import datetime, timedelta
 
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_DIR = os.path.join(PROJECT_ROOT, "data", "processed")
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # backend/ 的父目录 = 项目根
+DATA_DIR = os.path.join(PROJECT_ROOT, "backend", "data", "processed")
 
 os.makedirs(DATA_DIR, exist_ok=True)
 
