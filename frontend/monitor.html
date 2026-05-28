@@ -159,218 +159,23 @@
   </div>
 
 <script>
-const rawData = {
-  "updated": "2026-05-20T19:00:08",
-  "items": [
-    {
-      "monitor_type": "ASIN",
-      "asin": "B09V7Z4TJG",
-      "is_main": true,
-      "logic_type": "主监控",
-      "title": "medicube Toner Pads Zero Pore Pad 2.0 | Dual-Textured Facial Pad for Exfoliation and Pore Care with 4.5% AHA Lactic Acid, 0.45% BHA Salicylic Acid | Ideal for All, Korean Skin Care, 70 Pads (1 Pack)",
-      "brand": "medicube",
-      "img": "https://m.media-amazon.com/images/I/71Mcspt-6AL._SY355_.jpg",
-      "price": 18.9,
-      "chg": 0.0,
-      "rating": 4.6,
-      "reviews": 24197,
-      "listing_status": "正常",
-      "expected_listing_status": "正常",
-      "title_changed": false,
-      "img_changed": false,
-      "bullets_changed": false,
-      "description_changed": false,
-      "variant_status": "正常",
-      "variant_changed": false,
-      "deal_activity": "无",
-      "badges_current": [],
-      "badges_lost": [],
-      "coupon": "无",
-      "prime_discount": "未开启",
-      "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 1,
-      "sub_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "expected_sub_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "sub_bsr": 1,
-      "history_main_bsr": [
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1
-      ],
-      "history_sub_bsr": [],
-      "events": []
-    },
-    {
-      "monitor_type": "ASIN",
-      "asin": "B0CGB215HR",
-      "is_main": true,
-      "logic_type": "主监控",
-      "title": "goPure Tighten & Lift Neck & Chest Moisturizer Cream for Visibly Firming, Tightening and Lifting the Look of Wrinkles & Crepey Skin, 1.7oz",
-      "brand": "goPure",
-      "img": "https://m.media-amazon.com/images/I/613gXRGC9XL._SY355_.jpg",
-      "price": 0,
-      "chg": 0.0,
-      "rating": 4.1,
-      "reviews": 10670,
-      "listing_status": "不可售",
-      "expected_listing_status": "正常",
-      "title_changed": false,
-      "img_changed": false,
-      "bullets_changed": false,
-      "description_changed": false,
-      "variant_status": "正常",
-      "variant_changed": false,
-      "deal_activity": "无",
-      "badges_current": [],
-      "badges_lost": [],
-      "coupon": "无",
-      "prime_discount": "未开启",
-      "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 420,
-      "sub_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "expected_sub_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "sub_bsr": 420,
-      "history_main_bsr": [
-        307,
-        307,
-        307,
-        420,
-        420
-      ],
-      "history_sub_bsr": [],
-      "events": []
-    },
-    {
-      "monitor_type": "ASIN",
-      "asin": "B0DSLGHPPW",
-      "is_main": true,
-      "logic_type": "主监控",
-      "title": "UJhay Retinol Neck Cream, Hyaluronic Acid and Caffeine Enriched Neck Firming Cream to Minimize Fine Lines & Dullness - 3-in-1 Moisturizing Cream for Neck, Chest and Face (50 ml/1.7 oz)",
-      "brand": "Brand: UJhay",
-      "img": "https://m.media-amazon.com/images/I/714u3IHLVmL._SY355_.jpg",
-      "price": 8.99,
-      "chg": 0.0,
-      "rating": 4.5,
-      "reviews": 290,
-      "listing_status": "正常",
-      "expected_listing_status": "正常",
-      "title_changed": false,
-      "img_changed": false,
-      "bullets_changed": false,
-      "description_changed": false,
-      "variant_status": "正常",
-      "variant_changed": false,
-      "deal_activity": "无",
-      "badges_current": [],
-      "badges_lost": [],
-      "coupon": "无",
-      "prime_discount": "未开启",
-      "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 11100,
-      "sub_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "expected_sub_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "sub_bsr": 11100,
-      "history_main_bsr": [
-        11994,
-        11995,
-        11100,
-        11100
-      ],
-      "history_sub_bsr": [],
-      "events": []
-    },
-    {
-      "monitor_type": "ASIN",
-      "asin": "B0F2J966QL",
-      "is_main": true,
-      "logic_type": "主监控",
-      "title": "Eight Saints Firm Intentions Anti Aging Neck Cream For Firming Skin and Reducing Wrinkles, with Protein Peptides, Hyaluronic Acid, and Niacinamide, 2 Ounces",
-      "brand": "Eight Saints",
-      "img": "https://m.media-amazon.com/images/I/61XDTWFTneL._SY355_.jpg",
-      "price": 34.0,
-      "chg": 0.0,
-      "rating": 4.6,
-      "reviews": 1749,
-      "listing_status": "正常",
-      "expected_listing_status": "正常",
-      "title_changed": false,
-      "img_changed": false,
-      "bullets_changed": false,
-      "description_changed": false,
-      "variant_status": "正常",
-      "variant_changed": false,
-      "deal_activity": "无",
-      "badges_current": [],
-      "badges_lost": [],
-      "coupon": "无",
-      "prime_discount": "未开启",
-      "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 3459,
-      "sub_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "expected_sub_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "sub_bsr": 3459,
-      "history_main_bsr": [
-        3690,
-        3690,
-        3692,
-        3459,
-        3459
-      ],
-      "history_sub_bsr": [],
-      "events": []
-    },
-    {
-      "monitor_type": "ASIN",
-      "asin": "B0GKFD9ZQW",
-      "is_main": true,
-      "logic_type": "主监控",
-      "title": "ANUA Collagen Retinol Refining Gua Sha Cream, Neck Cream For Lifting & Firming, Jawline to Décolleté, Daily Moisturizer, Fine Line Care, Neck Massager, Korean Skin Care, 2.7fl.oz",
-      "brand": "ANUA",
-      "img": "https://m.media-amazon.com/images/I/51XYn-lowjL._SY355_.jpg",
-      "price": 30.0,
-      "chg": 0.0,
-      "rating": 4.5,
-      "reviews": 109,
-      "listing_status": "正常",
-      "expected_listing_status": "正常",
-      "title_changed": false,
-      "img_changed": false,
-      "bullets_changed": false,
-      "description_changed": false,
-      "variant_status": "正常",
-      "variant_changed": false,
-      "deal_activity": "无",
-      "badges_current": [],
-      "badges_lost": [],
-      "coupon": "无",
-      "prime_discount": "未开启",
-      "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 2125,
-      "sub_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "expected_sub_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "sub_bsr": 2125,
-      "history_main_bsr": [
-        2145,
-        2145,
-        2122,
-        2125
-      ],
-      "history_sub_bsr": [],
-      "events": []
+const CONFIG_KEY = 'crossmart_monitor_v1';
+const REPO = 'charlescome1995-prog/crossmart-monitor';
+const RAW_DATA_URL = 'https://raw.githubusercontent.com/' + REPO + '/main/frontend/data/rawData.json';
+
+// rawData will be loaded async from rawData.json
+let rawData = { updated: '', items: [] };
+
+async function loadRawData() {
+  try {
+    const r = await fetch(RAW_DATA_URL + '?t=' + Date.now());
+    if (r.ok) {
+      const d = await r.json();
+      rawData = d;
+      renderTable();
     }
-  ]
-};
+  } catch(e) { console.warn('loadRawData failed', e); }
+}
 </script>
 <script>
 const CONFIG_KEY = 'crossmart_monitor_v1';
@@ -388,9 +193,9 @@ window.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem('gh_token', tokenInput.value.trim());
     });
   }
+  loadRawData();
+  initConfigBtn();
 });
-
-function b64enc(s){return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g,function(_,p){return String.fromCharCode(parseInt(p,16));}));}
 
 async function putFile(path, content) {
   const token = localStorage.getItem('gh_token') || '';
@@ -615,7 +420,6 @@ function exportToExcel() {
   XLSX.writeFile(wb, `CrossMart_Comprehensive_Report_${rawData.updated.replace(/[/:]/g,'-')}.xlsx`);
 }
 
-renderTable();
 initConfigBtn();
 </script></body>
 </html>
