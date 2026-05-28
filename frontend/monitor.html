@@ -319,20 +319,18 @@ function initConfigBtn() {
 }
 
 async function loadGitHubConfig() {
-  // Read from GitHub (public, no token needed for read)
-  // Token only needed for write (putFile calls)
+  // Read from GitHub via raw content URL (public, no token needed, no CORS)
   const statusEl = document.getElementById('configStatus');
   if (statusEl) statusEl.textContent = '读取配置...';
   try {
-    const resp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/user_config.json', {
-      headers: { 'Accept': 'application/vnd.github.v3+json' }
+    const resp = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/user_config.json?v=' + Date.now(), {
+      cache: 'no-store'
     });
     if (!resp.ok) {
       if (statusEl) statusEl.textContent = '⚠ 读取失败';
       return;
     }
-    const data = await resp.json();
-    const cfg = JSON.parse(atob(data.content));
+    const cfg = await resp.json();
     applyConfig(cfg);
     if (statusEl) {
       const count = (cfg.asins ? cfg.asins.filter(v=>v).length : 0) + (cfg.keywords ? cfg.keywords.filter(v=>v).length : 0);
