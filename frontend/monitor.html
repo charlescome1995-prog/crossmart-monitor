@@ -166,24 +166,12 @@ const RAW_DATA_URL = 'https://raw.githubusercontent.com/' + REPO + '/main/fronte
 // rawData will be loaded async from rawData.json
 let rawData = { updated: '', items: [] };
 
-async function loadRawData() {
+function loadRawData() {
   console.log('[loadRawData] starting fetch from', RAW_DATA_URL);
-  const ctrl = new AbortController();
-  const tid = setTimeout(() => ctrl.abort(), 10000);
-  try {
-    const r = await fetch(RAW_DATA_URL + '?t=' + Date.now(), { signal: ctrl.signal });
-    clearTimeout(tid);
-    if (r.ok) {
-      const d = await r.json();
-      rawData = d;
-      console.log('[loadRawData] fetched', d.items.length, 'items, calling renderTable');
-      renderTable();
-      return;
-    }
-    clearTimeout(tid);
-  } catch(e) { console.warn('loadRawData failed:', e.message); }
-  clearTimeout(tid);
-  renderTable();
+  fetch(RAW_DATA_URL + '?t=' + Date.now())
+    .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function(d) { rawData = d; console.log('[loadRawData] fetched', d.items.length, 'items, calling renderTable'); renderTable(); })
+    .catch(function(e) { console.warn('loadRawData failed:', e.message); renderTable(); });
 }
 </script>
 <script>
