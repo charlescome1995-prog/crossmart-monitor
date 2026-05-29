@@ -258,11 +258,14 @@ def do_keyword_search(browser, keyword):
     print(f"{'='*60}")
 
     # 1. 打开亚马逊，停顿等用户检查
+    # 关键：强制新建空白标签页，不用任何已有标签页（避免 Neck Duster 等残留状态）
     print(f"\n  🌐 打开亚马逊（请确认账号已登录）...")
+    browser.cmd("Target.createTarget", {"url": "about:blank"})
+    time.sleep(1.5)
     browser.connect_tab(tab_url_filter="about:blank")
     if not browser.tab:
         browser.cmd("Target.createTarget", {"url": "about:blank"})
-        time.sleep(1)
+        time.sleep(1.5)
         browser.connect_tab(tab_url_filter="about:blank")
 
     browser.navigate("https://www.amazon.com/", wait_min=2, wait_max=4)

@@ -206,23 +206,57 @@ def main():
             print(f'  related={len(related_asins)}', end='')
         print()
 
+    # ── 关键词数据 ──────────────────────────────────────────────────
+    keywords_data = []
+    kw_dirs = sorted(glob.glob(os.path.join(DATA_DIR, 'kw_*')))
+    print(f'[SYNC] Found {len(kw_dirs)} keyword directories')
+
+    for d in kw_dirs:
+        kw = os.path.basename(d).replace('kw_', '').replace('_', ' ')
+        latest_path = os.path.join(d, 'latest.json')
+        if not os.path.exists(latest_path):
+            continue
+        with open(latest_path, 'r', encoding='utf-8') as f:
+            latest = json.load(f)
+
+        inner = latest.get('data', latest)
+        top_asins = inner.get('top_asins', [])
+
+        keywords_data.append({
+            "keyword": kw,
+            "top_asins": [
+                {
+                    "asin": a.get('asin', ''),
+                    "type": a.get('type', ''),
+                    "rank": a.get('rank', ''),
+                    "title": a.get('title', ''),
+                    "price": a.get('price', ''),
+                    "rating": a.get('rating', ''),
+                    "reviews": a.get('reviews', ''),
+                }
+                for a in top_asins
+            ]
+        })
+        print(f'  kw [{kw}]: {len(top_asins)} top ASINs')
+
     output = {
         'updated': datetime.now().isoformat()[:19],
-        'items': items
+        'items': items,
+        'keywords': keywords_data
     }
 
     os.makedirs(os.path.dirname(OUTPUT_RAW), exist_ok=True)
     with open(OUTPUT_RAW, 'w', encoding='utf-8') as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
-    print(f'\n✅ Written {len(items)} items to {OUTPUT_RAW}')
+    print(f'\n✅ Written {len(items)} items + {len(keywords_data)} keywords to {OUTPUT_RAW}')
 
     # ── 自动推送到 GitHub ──────────────────────────────────────────
     try:
         subprocess.run(['git', 'add', OUTPUT_RAW], capture_output=True, cwd=BASE)
         diff = subprocess.run(['git', 'diff', '--cached', '--stat'], capture_output=True, text=True, cwd=BASE)
         if diff.stdout.strip():
-            subprocess.run(['git', 'commit', '-m', 'auto: sync rawData.json'], capture_output=True, cwd=BASE)
+            subprocess.run(['git', 'commit', '-m', 'auto: sync rawData.json with keywords'], capture_output=True, cwd=BASE)
             result = subprocess.run(['git', 'push'], capture_output=True, text=True, cwd=BASE)
             if result.returncode == 0:
                 print('🚀 rawData.json 已推送至 GitHub')

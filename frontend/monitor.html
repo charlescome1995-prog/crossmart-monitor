@@ -165,7 +165,7 @@ const REPO = 'charlescome1995-prog/crossmart-monitor';
 const RAW_DATA_URL = 'https://raw.githubusercontent.com/' + REPO + '/main/frontend/data/rawData.json';
 
 // rawData will be loaded async from rawData.json
-let rawData = { updated: '', items: [] };
+let rawData = { updated: '', items: [], keywords: [] };
 
 function loadRawData() {
   console.log('[loadRawData] starting fetch from', RAW_DATA_URL);
