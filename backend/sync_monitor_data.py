@@ -10,7 +10,7 @@ from datetime import datetime
 sys.stdout.reconfigure(encoding='utf-8')
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE, 'backend', 'data', 'processed')
+DATA_DIR = os.path.join(BASE, 'data', 'processed')
 OUTPUT_RAW = os.path.join(BASE, '..', 'frontend', 'data', 'rawData.json')
 
 
