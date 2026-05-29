@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-29T08:13:05",
+  "updated": "2026-05-29T08:52:01",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -33,11 +33,8 @@
       "expected_sub_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
       "sub_bsr": 1,
       "history_main_bsr": [
-        2,
-        2,
-        2,
-        2,
-        2,
+        1,
+        1,
         1
       ],
       "history_sub_bsr": [],

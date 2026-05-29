@@ -19,7 +19,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from browser.cdp_bridge import CDPBrowser
 from browser.amazon_browser import AmazonBrowser
 from browser.sprite_bridge import SpriteBrowser
-from browser.snapshot_storage import save_asin_snapshot, load_latest_asin, diff_asin, diff_summary
+from browser.snapshot_storage import (
+    save_asin_snapshot, load_latest_asin, diff_asin, diff_summary,
+    save_asin_meta, load_asin_meta,
+)
 from browser.human_timer import get_daily_plan
 
 # ─── DOM数据提取工具 ───
@@ -39,7 +42,6 @@ def extract_asin_data(browser: CDPBrowser):
     const corePrice = $('#corePrice_feature_div .a-offscreen') ||
                      ($('#corePrice_feature_div .a-price-whole') ? 
                       '$' + $('#corePrice_feature_div .a-price-whole') : '');
-    // fallback: 如果核心区没有，用第一个.a-price
     const price = corePrice || $('.a-price .a-offscreen') || '';
     
     // 评分 - 只取数字
@@ -52,7 +54,7 @@ def extract_asin_data(browser: CDPBrowser):
     const reviewM = reviewRaw.match(/([\d,]+)/);
     const review_count = reviewM ? reviewM[1].replace(/,/g,'') : reviewRaw;
     
-    // 品牌 - 去掉"访问"和"Store"的中英文
+    // 品牌
     let brand = ($('#bylineInfo') || '').replace(/^Visit the /,'').replace(/ Store$/,'').replace(/^访问/,'').replace(/品牌旗舰店$/,'').trim();
     if (brand.length > 60) brand = brand.substring(0,60);
     
@@ -60,7 +62,7 @@ def extract_asin_data(browser: CDPBrowser):
     const soldBy = $('#merchantInfoFeature_feature_div .a-link-normal') ||
                    $('#merchant-info') || '';
     
-    // 主图 - 高清版
+    // 主图
     let mainImg = (document.querySelector('#landingImage') ||
                    document.querySelector('#imgTagWrapperId img') ||
                    document.querySelector('#main-image'))?.getAttribute('src') || '';
@@ -69,13 +71,12 @@ def extract_asin_data(browser: CDPBrowser):
     // 原价（划线价）
     const listPriceRaw = $('#corePrice_feature_div .a-text-price .a-offscreen') || '';
     
-    // BSR 从页面大段文本中提取
+    // BSR
     let bsr = '', bsrSubCategory = '', bsrSubRank = '';
     const bodyText = document.body.innerText || '';
     const bsrSection = bodyText.match(/Best Sellers Rank[\s\S]{0,500}/);
     if (bsrSection) {
         bsr = bsrSection[0].substring(0, 300);
-        // 找大类BSR: #N in Category
         const topM = bsr.match(/#([\d,]+)\s+in\s+([^#\n\r]+)/);
         if (topM) {
             bsrSubCategory = topM[2].trim().substring(0,80);
@@ -107,10 +108,7 @@ def extract_asin_data(browser: CDPBrowser):
     return {}
 
 def extract_bsr_direct(browser: CDPBrowser):
-    """
-    BSR在商品详情页底部，需要滚动让懒加载触发。
-    如果上面没拿到，这里专门拿。
-    """
+    """BSR在商品详情页底部，需要滚动让懒加载触发"""
     browser.scroll_down(times=3, min_pause=0.5, max_pause=1.5)
     time.sleep(2)
     js = """
@@ -123,7 +121,6 @@ def extract_bsr_direct(browser: CDPBrowser):
             if (t.includes('#') || t.includes('Best Sellers')) return t.substring(0, 200);
             if (/^#[0-9,]+/.test(t)) return t;
         }
-        // 二选：看页面body里有没有bsr
         const body = document.body.innerText;
         const match = body.match(/Best Sellers Rank[^\\n]*\\n([^\\n]+)/);
         return match ? match[1].trim().substring(0, 200) : '';
@@ -171,6 +168,49 @@ def print_card(data: dict):
         print("  BSR Sub: #%s in %s" % (bsr_sub_num, bsr_sub[:30]))
     print("  --------------------------------")
 
+
+def _fetch_related_asin_data(browser: CDPBrowser, related_asins: list) -> list:
+    """
+    对每个关联ASIN，在亚马逊上抓实时数据
+    返回 [{"asin": "...", "title": "...", "price": "...", "rating": "...", "reviews": "...", "source": "..."}, ...]
+    """
+    results = []
+    for item in related_asins:
+        asin = item.get("asin", "")
+        source = item.get("source", "")
+        if not asin:
+            continue
+        try:
+            print(f"  🔍 抓取关联ASIN: {asin}")
+            browser.open_new_tab(f"https://www.amazon.com/dp/{asin}")
+            time.sleep(random.uniform(2, 4))
+            data = extract_asin_data(browser)
+            results.append({
+                "asin": asin,
+                "source": source,
+                "title": data.get("title", ""),
+                "price": data.get("price", ""),
+                "rating": data.get("rating", ""),
+                "reviews": data.get("review_count", ""),
+                "bsr": data.get("bsr", ""),
+                "brand": data.get("brand", ""),
+            })
+            time.sleep(random.uniform(2, 5))
+        except Exception as e:
+            print(f"  ⚠️ 抓取关联ASIN {asin} 失败: {e}")
+            results.append({
+                "asin": asin,
+                "source": source,
+                "title": "",
+                "price": "",
+                "rating": "",
+                "reviews": "",
+                "bsr": "",
+                "brand": "",
+            })
+    return results
+
+
 # ─── 主函数 ───
 
 def check_asin(asin, search_keyword=None, use_sprite=True):
@@ -198,53 +238,60 @@ def check_asin(asin, search_keyword=None, use_sprite=True):
 
     try:
         amazon = AmazonBrowser(browser)
-
-        # 1. 逛首页
         amazon.browse_homepage()
-
-        # 2. 逛随机类目 (不用每次都搞，概率降低)
         if random.random() < 0.5:
             amazon.browse_category()
-
-        # 3. 搜目标ASIN
         amazon.search_for_asin(asin, search_keyword)
-
-        # 4. 在详情页浏览（假装看）
         browser.scroll_down(times=1, min_pause=1, max_pause=2)
         time.sleep(1)
-
-        # 5. 提取数据
         amazon_data = extract_asin_data(browser)
         if not amazon_data.get("bsr"):
             bsr = extract_bsr_direct(browser)
             if bsr:
                 amazon_data["bsr"] = bsr
-
         print_card(amazon_data)
-
-        # 6. 浏览评价页 (伪装)
         if random.random() < 0.5:
             amazon.view_reviews()
-
         print("  亚马逊检查完成")
-
     except Exception as e:
         print("  亚马逊检查失败: %s" % e)
 
-    # ─── Phase B: 卖家精灵 ───
+    # ─── Phase B: 卖家精灵（关联ASIN首次发现） ───
+    related_asins_meta = []
     if use_sprite:
         print("\n" + "="*50)
         print("卖家精灵数据查询")
         print("="*50)
-
         try:
-            # 开新标签页去卖家精灵
             browser.open_new_tab("https://www.sellersprite.com")
             sprite = SpriteBrowser(browser)
             sprite_data = sprite.full_asin_check(asin)
             print("  卖家精灵查询完成")
         except Exception as e:
             print("  卖家精灵失败: %s" % e)
+
+        # ── 首次发现关联ASIN，写入 _meta.json（后续不覆盖） ──
+        existing_meta = load_asin_meta(asin)
+        if not existing_meta:
+            print("\n  [关联ASIN] 首次发现，开始查找...")
+            try:
+                sprite2 = SpriteBrowser(browser)
+                raw_related = sprite2.find_related_asins(asin, max_results=5)
+                # 构建带 source 标记的列表
+                related_asins_meta = [
+                    {"asin": a, "source": "competitor"}
+                    for a in raw_related
+                ]
+                if related_asins_meta:
+                    save_asin_meta(asin, related_asins_meta)
+                    print(f"  [关联ASIN] 找到 {len(related_asins_meta)} 个，已写入 _meta.json")
+                else:
+                    print(f"  [关联ASIN] 未找到关联ASIN")
+            except Exception as e:
+                print(f"  [关联ASIN] 查找失败: {e}")
+        else:
+            related_asins_meta = existing_meta.get("related_asins", [])
+            print(f"\n  [关联ASIN] _meta.json 已存在，{len(related_asins_meta)} 个关联ASIN（跳过写入）")
 
     # ─── Phase C: 对比保存 ───
     print("\n" + "="*50)
@@ -270,8 +317,21 @@ def check_asin(asin, search_keyword=None, use_sprite=True):
         **amazon_data,
         "_sprite_text": sprite_data.get("competitor", {}).get("text", "")[:2000] if sprite_data else "",
         "_timestamp": datetime.now().isoformat(),
+        "_related_asins_meta": related_asins_meta,
     }
     save_asin_snapshot(asin, snapshot_data)
+
+    # ─── Phase D: 抓关联ASIN实时数据（每次都更新） ───
+    if related_asins_meta:
+        print("\n" + "="*50)
+        print("关联ASIN实时数据")
+        print("="*50)
+        # 切回 about:blank 做操作
+        browser.connect_tab(tab_url_filter="about:blank")
+        related_data = _fetch_related_asin_data(browser, related_asins_meta)
+        # 附加入主快照的 data 里
+        snapshot_data["_related_asins"] = related_data
+        save_asin_snapshot(asin, snapshot_data)
 
     browser.close()
 

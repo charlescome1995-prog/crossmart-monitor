@@ -66,10 +66,18 @@ def extract_bsr(data):
     return None
 
 
-def build_rawdata_item(asin, data, history):
-    """用 monitor-data.json 的数据构建前端 rawData.items 格式"""
+def load_asin_meta(asin):
+    """加载 ASIN 的 _meta.json（关联ASIN列表）"""
+    meta_path = os.path.join(DATA_DIR, f'asin_{asin}', '_meta.json')
+    if not os.path.exists(meta_path):
+        return None
+    with open(meta_path, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+
+def build_rawdata_item(asin, data, history, related_asins=None):
+    """构建前端 rawData.items 格式"""
     price = safe_float(data.get('price', '')) or 0
-    list_price = safe_float(data.get('list_price', '')) or 0
     rating = safe_float(data.get('rating', '')) or 0
     review_count = safe_int(data.get('review_count', data.get('reviews', ''))) or 0
     bsr = extract_bsr(data)
@@ -85,7 +93,7 @@ def build_rawdata_item(asin, data, history):
         if first_p and last_p and first_p > 0:
             price_change = round(last_p - first_p, 2)
 
-    return {
+    item = {
         "monitor_type": "ASIN",
         "asin": asin,
         "is_main": True,
@@ -121,6 +129,11 @@ def build_rawdata_item(asin, data, history):
         "events": []
     }
 
+    if related_asins:
+        item["related_asins"] = related_asins
+
+    return item
+
 
 def main():
     items = []
@@ -137,6 +150,29 @@ def main():
             latest = json.load(f)
 
         data = latest.get('data', latest)
+
+        # 关联ASIN数据：meta（固定来源）+ latest里的实时数据
+        related_asins = []
+        meta = load_asin_meta(asin)
+        if meta and meta.get('related_asins'):
+            realtime_map = {}
+            rt_data = data.get('_related_asins', [])
+            if rt_data:
+                for r in rt_data:
+                    realtime_map[r.get('asin', '')] = r
+            for ra in meta['related_asins']:
+                asin_key = ra.get('asin', '')
+                rt = realtime_map.get(asin_key, {})
+                related_asins.append({
+                    "asin": asin_key,
+                    "source": ra.get('source', ''),
+                    "title": rt.get('title', ''),
+                    "price": rt.get('price', ''),
+                    "rating": rt.get('rating', ''),
+                    "reviews": rt.get('reviews', ''),
+                    "bsr": rt.get('bsr', ''),
+                    "brand": rt.get('brand', ''),
+                })
 
         snapshots = sorted(glob.glob(os.path.join(d, 'snapshot_*.json')))
         all_snaps = []
@@ -163,9 +199,12 @@ def main():
         add_snap(latest, None)
         all_snaps.sort(key=lambda x: x['timestamp'])
 
-        item = build_rawdata_item(asin, data, all_snaps)
+        item = build_rawdata_item(asin, data, all_snaps, related_asins if related_asins else None)
         items.append(item)
-        print(f'  {asin}: price=${item["price"]} bsr=#{item["main_bsr"]} snaps={len(all_snaps)}')
+        print(f'  {asin}: price=${item["price"]} bsr=#{item["main_bsr"]} snaps={len(all_snaps)}', end='')
+        if related_asins:
+            print(f'  related={len(related_asins)}', end='')
+        print()
 
     output = {
         'updated': datetime.now().isoformat()[:19],

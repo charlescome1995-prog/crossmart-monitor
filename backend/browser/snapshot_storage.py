@@ -33,6 +33,43 @@ def _keyword_dir(keyword):
     return d
 
 
+# ══════════════════════════════════════════════════
+# ASIN 元数据（首次写入后锁定）
+# ══════════════════════════════════════════════════
+
+META_FILE = "_meta.json"
+
+
+def save_asin_meta(asin, related_asins):
+    """
+    保存ASIN关联ASIN元数据（首次发现后固定，后续不覆盖）
+    related_asins: [{"asin": "B0XXXXXXX", "source": "competitor|keyword_reversal|ads"}, ...]
+    """
+    d = _asin_dir(asin)
+    meta_path = os.path.join(d, META_FILE)
+    if os.path.exists(meta_path):
+        print(f"  [meta] _meta.json 已存在，跳过写入")
+        return
+    meta = {
+        "asin": asin,
+        "related_asins": related_asins,
+        "first_seen": datetime.now().isoformat(),
+    }
+    with open(meta_path, "w", encoding="utf-8") as f:
+        json.dump(meta, f, ensure_ascii=False, indent=2)
+    print(f"  [meta] _meta.json 已写入，{len(related_asins)} 个关联ASIN（首次固定）")
+    return meta
+
+
+def load_asin_meta(asin):
+    """加载ASIN关联ASIN元数据"""
+    meta_path = os.path.join(_asin_dir(asin), META_FILE)
+    if not os.path.exists(meta_path):
+        return None
+    with open(meta_path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
 def save_asin_snapshot(asin, data):
     """
     保存ASIN快照
