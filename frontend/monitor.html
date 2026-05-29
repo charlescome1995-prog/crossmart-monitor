@@ -406,15 +406,19 @@ async function checkStatus() {
 }
 
 // 加载配置到 11 列矩阵
-function applyConfig(cfg) {
-  if (!cfg) return;
+function applyConfig(cfg, kwRelData) {
+  kwRelData = kwRelData || {};
   if (cfg.asins) {
     cfg.asins.forEach((row, i) => {
       if (i < 5) {
-        document.getElementById('in-asin-' + i).value = row.main || '';
+        var mainEl = document.getElementById('in-asin-' + i);
+        if (mainEl) mainEl.value = row.main || '';
         if (row.related) {
           row.related.forEach((val, rIdx) => {
-            if (rIdx < 5) document.getElementById('rel-asin-' + i + '-' + rIdx).value = val;
+            if (rIdx < 5) {
+              var relEl = document.getElementById('rel-asin-' + i + '-' + rIdx);
+              if (relEl) relEl.value = val;
+            }
           });
         }
       }
@@ -423,11 +427,14 @@ function applyConfig(cfg) {
   if (cfg.keywords) {
     cfg.keywords.forEach((row, i) => {
       if (i < 5) {
-        document.getElementById('in-kw-' + i).value = row.main || '';
-        if (row.related) {
-          row.related.forEach((val, rIdx) => {
-            if (rIdx < 5) document.getElementById('rel-kw-' + i + '-' + rIdx).value = val;
-          });
+        var kwMainEl = document.getElementById('in-kw-' + i);
+        if (kwMainEl) kwMainEl.value = row.main || '';
+        // 填充关键词关联 ASINs：从 keyword_related_asins.json 读
+        var kw = row.main || '';
+        var cachedAsins = kwRelData[kw] || [];
+        for (var r = 0; r < 5; r++) {
+          var relEl = document.getElementById('rel-kw-' + i + '-' + r);
+          if (relEl) relEl.value = cachedAsins[r] ? cachedAsins[r].asin : '';
         }
       }
     });
@@ -436,11 +443,17 @@ function applyConfig(cfg) {
 
 async function loadGitHubConfig() {
   var statusEl = document.getElementById('configStatus');
+  var kwRelData = {};
   try {
     var resp = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/user_config.json?v=' + Date.now());
     if (resp.ok) {
       var cfg = await resp.json();
-      applyConfig(cfg);
+      // 同时抓取 keyword_related_asins.json（关键词的 top5 关联 ASINs）
+      try {
+        var kwResp = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/keyword_related_asins.json?v=' + Date.now());
+        if (kwResp.ok) kwRelData = await kwResp.json();
+      } catch(e2) {}
+      applyConfig(cfg, kwRelData);
       statusEl.textContent = '✓ 配置已同步';
     }
   } catch(e) { statusEl.textContent = '⚠ 同步失败'; }
