@@ -436,6 +436,48 @@ function renderTable() {
     </tr>`;
   });
 
+  // ── 关键词 Top5 区块 ──────────────────────────────────────────
+  if (rawData.keywords && rawData.keywords.length > 0) {
+    rawData.keywords.forEach(kw => {
+      kw.top_asins.forEach((a, idx) => {
+        const typeLabel = a.type === 'natural' ? '自然' : (a.type === 'ad' ? '广告' : (a.type === 'new' ? '新品' : a.type));
+        const typeBadgeCls = a.type === 'natural' ? 'source-kw' : (a.type === 'ad' ? 'source-asin' : 'source-kw');
+        const sourceHtml = '<span class="badge ' + typeBadgeCls + '">Keyword Stream</span>';
+        const logicLabel = typeLabel + (idx === 0 ? '第1' : (idx === 1 ? '第2' : (idx === 2 ? '第3' : (idx === 3 ? '第4' : '第5'))));
+        const asinLink = a.asin ? '<a href="https://www.amazon.com/dp/' + a.asin + '" target="_blank" class="asin-link">' + a.asin + '</a>' : '—';
+        const titleText = a.title || ('Keyword: ' + kw.keyword);
+        const priceText = a.price || '—';
+        const ratingText = a.rating || '—';
+        const reviewsText = a.reviews ? Number(a.reviews).toLocaleString() : '—';
+        const rankText = a.rank || '—';
+
+        html += '<tr style="background:#fef9c3;">' +
+          '<td class="col-img"><div style="width:80px;height:80px;background:#fde68a;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#92400e;text-align:center;padding:4px;">KW<br>Top' + (idx+1) + '</div></td>' +
+          '<td>' +
+            '<div class="info-block">' +
+              '<div>' + sourceHtml + ' <span class="badge main">' + logicLabel + '</span></div>' +
+              '<div>' + asinLink + ' <span style="font-size:11px;color:#92400e;">' + rankText + '</span></div>' +
+              '<div class="title-text" title="' + titleText + '">' + titleText.substring(0, 80) + '</div>' +
+              '<div style="color:#b45309;font-size:11px;margin-top:2px;">关键词: ' + kw.keyword + '</div>' +
+            '</div>' +
+          '</td>' +
+          '<td>' +
+            '<div class="metrics-block">' +
+              '<div>价格走势: <strong style="font-size:13px;">' + priceText + '</strong></div>' +
+              '<div>买家反馈: <span style="color:#eab308;">★</span> <strong>' + ratingText + '</strong> (' + reviewsText + ')</div>' +
+              '<div>排名标记: <span style="background:#fef3c7;color:#92400e;padding:1px 4px;border-radius:3px;font-weight:700;">' + rankText + '</span></div>' +
+              '<div>商品标签: <span class="badge source-kw" style="background:#d97706;">' + typeLabel + '</span></div>' +
+            '</div>' +
+          '</td>' +
+          '<td><div class="events-cell"><span class="e-none">指标平稳</span></div></td>' +
+          '<td><div class="trend-container"><div class="trend-label" style="color:#92400e;">关键词流排名</div></div></td>' +
+          '<td><div class="status-indicator stable">稳定</div></td>' +
+          '<td style="color:#64748b;font-weight:700;font-size:12px;">' + (rawData.updated || '') + '</td>' +
+        '</tr>';
+      });
+    });
+  }
+
   tbody.innerHTML = html || '<tr><td colspan="7" style="text-align:center; padding:40px 0; color:#999;">未监测到任何匹配数据</td></tr>';
 }
 
