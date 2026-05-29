@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Test: does using a fresh tab with Target.createTarget + connect_tab work?"""
 import os, sys, time, json
 os.environ["CDP_PORT"] = "9225"
 sys.path.insert(0, 'C:/Users/OPENPC/.openclaw/workspace-openpc_ad/crossmart-monitor/backend')
@@ -6,77 +8,52 @@ sys.path.insert(0, 'C:/Users/OPENPC/.openclaw/workspace-openpc_ad/crossmart-moni
 from browser.amazon_browser import CDPBrowser
 
 browser = CDPBrowser()
+
+# Open a brand new blank tab
+print("Opening new blank tab...")
+browser.cmd("Target.createTarget", {"url": "about:blank"})
+time.sleep(2)
+
 browser._refresh_tabs()
-real_tabs = [(i,t) for i,t in enumerate(browser._raw_tabs) if "amazon.com/s" in t.get("url","") and "view-source" not in t.get("url","")]
+blank_tabs = [(i,t) for i,t in enumerate(browser._raw_tabs) if "about:blank" in t.get("url","")]
+print(f"Blank tabs: {len(blank_tabs)}")
+if blank_tabs:
+    browser.connect_tab(tab_index=blank_tabs[0][0])
+    time.sleep(1)
+    print(f"Connected to blank tab id={browser.tab.get('id','')}")
 
-if not real_tabs:
-    print("No Amazon tab found")
-    browser.close()
-    sys.exit(1)
+# Navigate to search page
+search_url = "https://www.amazon.com/s?k=batana+oil&ref=nb_sb_noss"
+print(f"\nNavigating to: {search_url}")
+browser.navigate(search_url, wait_min=2, wait_max=4)
+time.sleep(8)
 
-browser.connect_tab(tab_index=real_tabs[0][0])
-time.sleep(3)
+# Verify
+title = browser.eval("document.title")
+print(f"Title: {title}")
 
-# Extract the correct plugin markers:
-# "自然位：第1页第1位" - the pattern is "自然位" followed by "第" later in the text
+# Check search results
+count = browser.eval("(function(){ return document.querySelectorAll('.s-result-item').length })()")
+print(f"Search results: {count}")
+
+# Check for plugin markers
 js = r"""
 (function() {
     var items = document.querySelectorAll('.s-result-item[data-component-type="s-search-result"]');
-    var results = [];
-
-    for (var i = 0; i < Math.min(items.length, 10); i++) {
-        var item = items[i];
-        var asinEl = item.querySelector('a[href*="/dp/"]');
-        var asin = '';
-        if (asinEl && asinEl.href) {
-            var m = asinEl.href.match(/\/dp\/([A-Z0-9]{10})/);
-            if (m) asin = m[1];
-        }
-        var title = (item.querySelector('h2') || {}).innerText || '';
-        var inner = item.innerText || '';
-
-        // Pattern: "自然位：第1页第1位" -> "自然位" is the marker, "第X页第Y位" is the position
-        // Pattern: "广告位" -> ad marker (if present)
-        var naturalMatch = inner.match(/自然位[：:](第(\d+)[页页]第(\d+)位)/);
-        var adMatch = inner.match(/广告位[：:]?(第(\d+)[页页]第(\d+)位)/);
-        var newMatch = inner.match(/新品位[：:]?(第(\d+)[页页]第(\d+)位)/);
-
-        // Also check for standalone "自然位" without page info
-        var hasNaturalPos = /自然位/.test(inner);
-        var hasAdPos = /广告位/.test(inner);
-
-        // Get all Chinese text fragments for debugging
-        var chineseFragments = inner.match(/[\u4e00-\u9fa5]{2,}/g) || [];
-
-        results.push({
-            idx: i,
-            asin: asin,
-            title: title.substring(0, 60),
-            naturalMatch: naturalMatch ? naturalMatch[0] : '',
-            adMatch: adMatch ? adMatch[0] : '',
-            newMatch: newMatch ? newMatch[0] : '',
-            hasNaturalPos: hasNaturalPos,
-            hasAdPos: hasAdPos,
-            chineseFragments: chineseFragments.slice(0, 30)
-        });
-    }
-    return results;
+    if (items.length === 0) return { error: 'no items found' };
+    var item = items[0];
+    var inner = item.innerText || '';
+    var naturalPos = inner.indexOf('\u81ea\u7136\u4f4d');
+    var adPos = inner.indexOf('\u5e7f\u544a\u4f4d');
+    return {
+        innerLen: inner.length,
+        naturalPos: naturalPos,
+        adPos: adPos,
+        last300: inner.substring(inner.length - 300).replace(/\n/g, '|')
+    };
 })()
 """
-try:
-    r = browser.eval(js)
-    print("Plugin marker detection:")
-    for item in r:
-        print("=" + "="*60)
-        print(f"Result #{item['idx']} ASIN={item['asin']}")
-        print(f"  naturalMatch: {item['naturalMatch']}")
-        print(f"  adMatch: {item['adMatch']}")
-        print(f"  newMatch: {item['newMatch']}")
-        print(f"  hasNaturalPos: {item['hasNaturalPos']}, hasAdPos: {item['hasAdPos']}")
-        print(f"  Chinese fragments: {item['chineseFragments']}")
-except Exception as e:
-    print("JS error:", e)
-    import traceback
-    traceback.print_exc()
+result = browser.eval(js)
+print(f"Plugin detection: {json.dumps(result, ensure_ascii=False)}")
 
 browser.close()

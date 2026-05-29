@@ -18,15 +18,27 @@
   .container { padding: 16px; }
 
   .config-matrix { background: #fff; padding: 12px; padding-top: 20px; border-radius: 6px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-  .matrix-wrapper { display: flex; gap: 12px; overflow-x: auto; padding-top: 4px; padding-bottom: 6px; }
-  .matrix-section { display: flex; gap: 8px; background: rgba(0,0,0,0.01); padding: 8px; border-radius: 6px; border: 1px solid #f1f5f9; position: relative; }
-  .matrix-section::before { content: attr(data-label); position: absolute; top: -10px; left: 10px; background: #fff; padding: 0 6px; font-size: 11px; font-weight: 700; color: #475569; border: 1px solid #cbd5e1; border-radius: 3px; }
+  .matrix-wrapper { display: flex; gap: 12px; overflow-x: auto; padding-top: 4px; padding-bottom: 6px; align-items: flex-start; }
+  .matrix-section { display: flex; flex-direction: column; gap: 6px; background: rgba(0,0,0,0.01); padding: 10px; padding-top: 14px; border-radius: 6px; border: 1px solid #f1f5f9; position: relative; min-width: 160px; }
+  .matrix-section::before { content: attr(data-label); position: absolute; top: -10px; left: 10px; background: #fff; padding: 0 6px; font-size: 11px; font-weight: 700; color: #475569; border: 1px solid #cbd5e1; border-radius: 3px; white-space: nowrap; }
 
-  .matrix-col { width: 140px; flex-shrink: 0; }
-  .matrix-col label { display: block; font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 3px; }
-  .matrix-col input { width: 100%; padding: 6px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; font-weight: 700; }
-  .matrix-col input:focus { border-color: #e94560; outline: none; }
-  .matrix-btn-zone { display: flex; align-items: flex-end; padding-bottom: 2px; }
+  .matrix-row { display: flex; flex-direction: column; gap: 3px; }
+  .matrix-row input[type="text"] { width: 148px; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; font-weight: 700; }
+  .matrix-row input[type="text"]:focus { border-color: #e94560; outline: none; }
+  .matrix-row input[type="text"]::placeholder { font-weight: 400; color: #cbd5e1; }
+
+  .rel-row { display: flex; align-items: center; gap: 3px; margin-top: 1px; }
+  .rel-row input[type="text"] { width: 110px; padding: 4px 6px; border: 1px solid #e2e8f0; border-radius: 3px; font-size: 11px; }
+  .rel-row input[type="text"]:focus { border-color: #e94560; outline: none; }
+  .rel-row .rel-label { font-size: 10px; color: #94a3b8; width: 18px; flex-shrink: 0; text-align: right; }
+  .rel-del { background: none; border: none; color: #cbd5e1; cursor: pointer; font-size: 11px; padding: 0 2px; flex-shrink: 0; }
+  .rel-del:hover { color: #ef4444; }
+
+  .expand-btn { background: none; border: 1px solid #e2e8f0; border-radius: 3px; color: #64748b; cursor: pointer; font-size: 10px; padding: 1px 5px; margin-top: 2px; width: 148px; text-align: center; }
+  .expand-btn:hover { border-color: #e94560; color: #e94560; }
+  .expand-btn .count { color: #e94560; font-weight: 700; }
+
+  .matrix-btn-zone { display: flex; align-items: flex-end; padding-bottom: 2px; gap: 8px; flex-wrap: wrap; }
 
   .filter-bar { background: #fff; padding: 12px; border-radius: 6px 6px 0 0; border: 1px solid #e2e8f0; border-bottom: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
   .filter-controls { display: flex; align-items: center; gap: 12px; }
@@ -103,21 +115,23 @@
 
     <div class="config-matrix">
       <div class="matrix-wrapper">
-        <div class="matrix-section" data-label="ASIN 监控流 (最多5个)">
-          <div class="matrix-col"><label>ASIN 1 (MAIN)</label><input type="text" id="in-asin-0" value=""></div>
-          <div class="matrix-col"><label>ASIN 2</label><input type="text" id="in-asin-1" value=""></div>
-          <div class="matrix-col"><label>ASIN 3</label><input type="text" id="in-asin-2" value=""></div>
-          <div class="matrix-col"><label>ASIN 4</label><input type="text" id="in-asin-3" value=""></div>
-          <div class="matrix-col"><label>ASIN 5</label><input type="text" id="in-asin-4" value=""></div>
+
+        <!-- ASIN 监控流 -->
+        <div class="matrix-section" data-label="ASIN 监控流 (最多5个)" id="section-asin">
+          <!-- 动态生成 -->
         </div>
-        <div class="matrix-section" data-label="关键词 监控流 (最多5个)">
-          <div class="matrix-col"><label>Keyword 1</label><input type="text" id="in-kw-0" value=""></div>
-          <div class="matrix-col"><label>Keyword 2</label><input type="text" id="in-kw-1" value=""></div>
-          <div class="matrix-col"><label>Keyword 3</label><input type="text" id="in-kw-2" value=""></div>
-          <div class="matrix-col"><label>Keyword 4</label><input type="text" id="in-kw-3" value=""></div>
-          <div class="matrix-col"><label>Keyword 5</label><input type="text" id="in-kw-4" value=""></div>
+
+        <!-- 关键词 监控流 -->
+        <div class="matrix-section" data-label="关键词 监控流 (最多5个)" id="section-kw">
+          <!-- 动态生成 -->
         </div>
-        <div class="matrix-btn-zone" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+
+        <!-- 竞品 ASIN 监控流 -->
+        <div class="matrix-section" data-label="竞品 ASIN 监控流 (最多5个)" id="section-comp">
+          <!-- 动态生成 -->
+        </div>
+
+        <div class="matrix-btn-zone">
           <input type="password" id="ghTokenInput" placeholder="GitHub Token" style="width:220px;padding:6px 8px;border:1px solid #cbd5e1;border-radius:4px;font-size:12px;" onkeydown="if(event.key==='Enter')triggerMonitor()">
           <button class="btn btn-primary" id="btnTrigger" onclick="triggerMonitor()" style="background:#e94560;color:#fff">⚡ 立即抓取</button>
           <span id="configStatus" style="font-size:12px;padding:4px 10px;border-radius:20px;background:#e2e8f0;color:#64748b;cursor:default;user-select:none;">读取配置...</span>
@@ -181,15 +195,18 @@ const POLL_INTERVAL = 5000;
 let pollTimer = null;
 
 // Auto-fill token from localStorage
-window.addEventListener('DOMContentLoaded', () => {
-  const tokenInput = document.getElementById('ghTokenInput');
+window.addEventListener('DOMContentLoaded', function() {
+  var tokenInput = document.getElementById('ghTokenInput');
   if (tokenInput) {
-    const saved = localStorage.getItem('gh_token') || '';
+    var saved = localStorage.getItem('gh_token') || '';
     if (saved) tokenInput.value = saved;
-    tokenInput.addEventListener('input', () => {
+    tokenInput.addEventListener('input', function() {
       localStorage.setItem('gh_token', tokenInput.value.trim());
     });
   }
+  buildMatrixSection('asin');
+  buildMatrixSection('kw');
+  buildMatrixSection('comp');
   loadGitHubConfig();
   loadRawData();
 });
@@ -213,45 +230,48 @@ async function putFile(path, content) {
 }
 
 async function triggerMonitor() {
-  const asins = [], kws = [];
-  // Collect non-empty values only — don't overwrite existing GitHub data with empty slots
-  for (let i = 0; i < 5; i++) {
-    const a = (document.getElementById('in-asin-' + i) || {}).value || '';
-    const k = (document.getElementById('in-kw-' + i) || {}).value || '';
-    if (a.trim()) asins.push(a.trim());
-    if (k.trim()) kws.push(k.trim());
+  var asins = [], kws = [], comps = [];
+  for (var i = 0; i < 5; i++) {
+    var a = (document.getElementById('in-asin-' + i) || {}).value || '';
+    var k = (document.getElementById('in-kw-' + i) || {}).value || '';
+    var c = (document.getElementById('in-comp-' + i) || {}).value || '';
+    var ra = getRelatedVals('asin', i);
+    var rk = getRelatedVals('kw', i);
+    var rc = getRelatedVals('comp', i);
+    if (a.trim()) asins.push({ main: a.trim(), related: ra });
+    if (k.trim()) kws.push({ main: k.trim(), related: rk });
+    if (c.trim()) comps.push({ main: c.trim(), related: rc });
   }
-  // Block trigger if nothing filled in at all
-  if (asins.length === 0 && kws.length === 0) {
-    btn.textContent = '❌ 请先输入 ASIN 或关键词';
-    setTimeout(() => { btn.textContent = '⚡ 立即抓取'; btn.disabled = false; }, 3000);
+  if (asins.length === 0 && kws.length === 0 && comps.length === 0) {
+    var btn = document.getElementById('btnTrigger');
+    btn.textContent = '\u274c 请先输入 ASIN 或关键词';
+    btn.disabled = false;
+    setTimeout(function() { btn.textContent = '\u26a1 立即抓取'; }, 3000);
     return;
   }
-  const cfg = { asins, keywords: kws };
+  var cfg = { asins: asins, keywords: kws, competitors: comps };
   localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
-  applyConfig(cfg);
 
-  const btn = document.getElementById('btnTrigger');
+
+  var btn = document.getElementById('btnTrigger');
   btn.disabled = true;
-  btn.textContent = '⚡ 触发中...';
-  const token = localStorage.getItem('gh_token') || '';
+  btn.textContent = '\u26a1 触发中...';
+  var token = localStorage.getItem('gh_token') || '';
   if (!token) {
-    btn.textContent = '❌ 未配置 Token';
-    setTimeout(() => { btn.textContent = '⚡ 立即抓取'; btn.disabled = false; }, 3000);
+    btn.textContent = '\u274c 未配置 Token';
+    setTimeout(function() { btn.textContent = '\u26a1 立即抓取'; btn.disabled = false; }, 3000);
     return;
   }
   try {
-    // Step 1: Write user_config.json via Contents API
     await putFile('backend/data/user_config.json', cfg);
-    // Step 2: Write trigger.json (the signal for poll_trigger.py)
     await putFile('backend/data/trigger.json', { triggered_at: Date.now(), status: 'pending' });
-    btn.textContent = '✅ 已触发';
+    btn.textContent = '\u2705 已触发';
     startPolling();
   } catch(e) {
     console.error(e);
-    btn.textContent = '❌ 触发失败';
+    btn.textContent = '\u274c 触发失败';
   }
-  setTimeout(() => { btn.textContent = '⚡ 立即抓取'; btn.disabled = false; }, 5000);
+  setTimeout(function() { btn.textContent = '\u26a1 立即抓取'; btn.disabled = false; }, 5000);
 }
 
 function startPolling() {
@@ -283,19 +303,46 @@ async function checkStatus() {
 
 function applyConfig(cfg) {
   if (!cfg) return;
-  // Only apply non-empty values — don't clear slots that aren't in the config
   if (cfg.asins) {
-    cfg.asins.forEach((v, i) => {
-      if (!v) return; // skip empty string
-      const el = document.getElementById('in-asin-' + i);
-      if (el) el.value = v;
+    cfg.asins.forEach(function(row, i) {
+      if (i >= 5) return;
+      var el = document.getElementById('in-asin-' + i);
+      if (el) el.value = row.main || '';
+      if (row.related) {
+        row.related.forEach(function(r, j) {
+          if (j >= 5) return;
+          var relEl = document.getElementById('rel-asin-' + i + '-' + j);
+          if (relEl) relEl.value = r;
+        });
+      }
     });
   }
   if (cfg.keywords) {
-    cfg.keywords.forEach((v, i) => {
-      if (!v) return; // skip empty string
-      const el = document.getElementById('in-kw-' + i);
-      if (el) el.value = v;
+    cfg.keywords.forEach(function(row, i) {
+      if (i >= 5) return;
+      var el = document.getElementById('in-kw-' + i);
+      if (el) el.value = row.main || '';
+      if (row.related) {
+        row.related.forEach(function(r, j) {
+          if (j >= 5) return;
+          var relEl = document.getElementById('rel-kw-' + i + '-' + j);
+          if (relEl) relEl.value = r;
+        });
+      }
+    });
+  }
+  if (cfg.competitors) {
+    cfg.competitors.forEach(function(row, i) {
+      if (i >= 5) return;
+      var el = document.getElementById('in-comp-' + i);
+      if (el) el.value = row.main || '';
+      if (row.related) {
+        row.related.forEach(function(r, j) {
+          if (j >= 5) return;
+          var relEl = document.getElementById('rel-comp-' + i + '-' + j);
+          if (relEl) relEl.value = r;
+        });
+      }
     });
   }
 }
@@ -314,30 +361,176 @@ function drawSparkline(data, color) {
 }
 
 function initConfigBtn() {
-  // Load from GitHub (shared across all users) instead of localStorage
   loadGitHubConfig();
 }
 
+// ── 公共工具函数 ───────────────────────────────────────────────
+function b64enc(s) {
+  return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g, function(_, p) {
+    return String.fromCharCode(parseInt(p, 16));
+  }));
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ── 动态生成每块区域的5行 ──────────────────────────────────────
+function buildMatrixSection(type) {
+  var section = document.getElementById('section-' + type);
+  if (!section) return;
+  var labelPrefix = type === 'asin' ? 'ASIN ' : (type === 'kw' ? 'Keyword ' : 'ASIN ');
+  var placeholder = type === 'kw' ? '输入关键词...' : '输入 ASIN...';
+  var html = '';
+  for (var i = 0; i < 5; i++) {
+    var mainId = 'in-' + type + '-' + i;
+    var relContainerId = 'rel-container-' + type + '-' + i;
+    html += '<div class="matrix-row">';
+    html += '<label style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:2px;">' + labelPrefix + (i + 1) + '</label>';
+    html += '<input type="text" id="' + mainId + '" placeholder="' + placeholder + '" oninput="onMainInput(\'' + type + '\',' + i + ')">';
+    html += '<div id="' + relContainerId + '" style="display:none;"></div>';
+    html += '<button class="expand-btn" id="expand-' + type + '-' + i + '" onclick="toggleRelated(\'' + type + '\',' + i + ')">展开关联 <span class="count">0</span></button>';
+    html += '</div>';
+  }
+  section.innerHTML = html;
+}
+
+function onMainInput(type, idx) {
+  var mainVal = (document.getElementById('in-' + type + '-' + idx) || {}).value || '';
+  var container = document.getElementById('rel-container-' + type + '-' + idx);
+  if (mainVal.trim() && container && container.style.display === 'none') {
+    toggleRelated(type, idx);
+  }
+}
+
+// ── 展开 / 收起 关联 ASIN ─────────────────────────────────────
+function toggleRelated(type, idx) {
+  var container = document.getElementById('rel-container-' + type + '-' + idx);
+  var btn = document.getElementById('expand-' + type + '-' + idx);
+  if (!container || !btn) return;
+  var isOpen = container.style.display !== 'none';
+  if (isOpen) {
+    container.style.display = 'none';
+    btn.innerHTML = '展开关联 <span class="count">' + getRelatedVals(type, idx).length + '</span>';
+  } else {
+    renderRelatedInputs(type, idx);
+    container.style.display = 'block';
+    btn.innerHTML = '收起关联 <span class="count">' + getRelatedVals(type, idx).length + '</span>';
+  }
+}
+
+function getRelatedVals(type, idx) {
+  var out = [];
+  for (var r = 0; r < 5; r++) {
+    var el = document.getElementById('rel-' + type + '-' + idx + '-' + r);
+    if (!el) break;
+    if (el.value && el.value.trim()) out.push(el.value.trim());
+  }
+  return out;
+}
+
+function renderRelatedInputs(type, idx) {
+  var container = document.getElementById('rel-container-' + type + '-' + idx);
+  if (!container) return;
+  var rels = getRelatedVals(type, idx);
+  var html = '';
+  for (var r = 0; r < rels.length; r++) {
+    html += buildRelRow(type, idx, r, rels[r]);
+  }
+  if (rels.length < 5) {
+    html += '<button onclick="addRelatedInput(\'' + type + '\',' + idx + ')" style="background:none;border:1px dashed #e2e8f0;border-radius:3px;color:#94a3b8;cursor:pointer;font-size:10px;padding:2px 6px;width:110px;margin-left:21px;margin-top:2px;">+ 添加</button>';
+  }
+  container.innerHTML = html;
+}
+
+function buildRelRow(type, idx, r, value) {
+  var relId = 'rel-' + type + '-' + idx + '-' + r;
+  var html = '<div class="rel-row" id="rel-row-' + relId + '">';
+  html += '<span class="rel-label">#' + (r + 1) + '</span>';
+  html += '<input type="text" id="' + relId + '" value="' + escHtml(value) + '" placeholder="ASIN">';
+  html += '<button class="rel-del" onclick="removeRelatedInput(\'' + type + '\',' + idx + ',' + r + ')">&#x2715;</button>';
+  html += '</div>';
+  return html;
+}
+
+function addRelatedInput(type, idx) {
+  var rels = getRelatedVals(type, idx);
+  if (rels.length >= 5) return;
+  var container = document.getElementById('rel-container-' + type + '-' + idx);
+  var newIdx = rels.length;
+  var addBtn = container.querySelector('button[onclick*="addRelatedInput"]');
+  var html = buildRelRow(type, idx, newIdx, '');
+  if (addBtn) {
+    addBtn.insertAdjacentHTML('beforebegin', html);
+  } else {
+    container.insertAdjacentHTML('beforeend', html);
+  }
+  document.getElementById('rel-' + type + '-' + idx + '-' + newIdx).focus();
+  if (newIdx + 1 >= 5 && addBtn) addBtn.remove();
+}
+
+function removeRelatedInput(type, idx, relIdx) {
+  var relId = 'rel-' + type + '-' + idx + '-' + relIdx;
+  var row = document.getElementById('rel-row-' + relId);
+  if (row) row.remove();
+  renumberRelatedInputs(type, idx);
+  updateExpandCount(type, idx);
+  var container = document.getElementById('rel-container-' + type + '-' + idx);
+  var hasAdd = container.querySelector('button[onclick*="addRelatedInput"]');
+  if (!hasAdd) {
+    container.insertAdjacentHTML('beforeend', '<button onclick="addRelatedInput(\'' + type + '\',' + idx + ')" style="background:none;border:1px dashed #e2e8f0;border-radius:3px;color:#94a3b8;cursor:pointer;font-size:10px;padding:2px 6px;width:110px;margin-left:21px;margin-top:2px;">+ 添加</button>');
+  }
+}
+
+function renumberRelatedInputs(type, idx) {
+  var container = document.getElementById('rel-container-' + type + '-' + idx);
+  if (!container) return;
+  var rows = container.querySelectorAll('.rel-row');
+  rows.forEach(function(row, i) {
+    var oldIdx = parseInt(row.id.split('-').pop());
+    var newIdx = i;
+    var lbl = row.querySelector('.rel-label');
+    if (lbl) lbl.textContent = '#' + (newIdx + 1);
+    var input = row.querySelector('input');
+    if (input) input.id = 'rel-' + type + '-' + idx + '-' + newIdx;
+    var btn = row.querySelector('.rel-del');
+    if (btn) btn.setAttribute('onclick', "removeRelatedInput('" + type + "'," + idx + "," + newIdx + ")");
+    row.id = 'rel-row-' + type + '-' + idx + '-' + newIdx;
+  });
+}
+
+function updateExpandCount(type, idx) {
+  var rels = getRelatedVals(type, idx);
+  var btn = document.getElementById('expand-' + type + '-' + idx);
+  if (btn) btn.innerHTML = '展开关联 <span class="count">' + rels.length + '</span>';
+}
+
 async function loadGitHubConfig() {
-  // Read from GitHub via raw content URL (public, no token needed, no CORS)
-  const statusEl = document.getElementById('configStatus');
+  var statusEl = document.getElementById('configStatus');
   if (statusEl) statusEl.textContent = '读取配置...';
   try {
-    const resp = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/user_config.json?v=' + Date.now(), {
-      cache: 'no-store'
-    });
+    var resp = await fetch(
+      'https://raw.githubusercontent.com/' + REPO + '/main/backend/data/user_config.json?v=' + Date.now(),
+      { cache: 'no-store' }
+    );
     if (!resp.ok) {
-      if (statusEl) statusEl.textContent = '⚠ 读取失败';
+      if (statusEl) statusEl.textContent = '\u26a0 读取失败';
       return;
     }
-    const cfg = await resp.json();
+    var cfg = await resp.json();
     applyConfig(cfg);
+    // Update expand button counts
+    if (cfg.asins) cfg.asins.forEach(function(row, i) { updateExpandCount('asin', i); });
+    if (cfg.keywords) cfg.keywords.forEach(function(row, i) { updateExpandCount('kw', i); });
+    if (cfg.competitors) cfg.competitors.forEach(function(row, i) { updateExpandCount('comp', i); });
     if (statusEl) {
-      const count = (cfg.asins ? cfg.asins.filter(v=>v).length : 0) + (cfg.keywords ? cfg.keywords.filter(v=>v).length : 0);
-      statusEl.textContent = '✓ 已同步 (' + count + ')';
+      var cnt = (cfg.asins ? cfg.asins.filter(function(r) { return r.main; }).length : 0) +
+                (cfg.keywords ? cfg.keywords.filter(function(r) { return r.main; }).length : 0) +
+                (cfg.competitors ? cfg.competitors.filter(function(r) { return r.main; }).length : 0);
+      statusEl.textContent = '\u2713 已同步 (' + cnt + ')';
     }
   } catch(e) {
-    if (statusEl) statusEl.textContent = '⚠ 读取失败';
+    if (statusEl) statusEl.textContent = '\u26a0 读取失败';
     console.warn('loadGitHubConfig failed:', e.message);
   }
 }
