@@ -17,7 +17,7 @@
 
   .container { padding: 16px; }
 
-  .config-matrix { background: #fff; padding: 14px 12px; border-radius: 6px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 8px; }
+  .config-matrix { background: #fff; padding: 14px 12px; border-radius: 6px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 6px; }
   .config-row { display: flex; align-items: center; gap: 6px; width: 100%; }
   .config-row .lbl { font-size: 11px; font-weight: 700; color: #475569; border: 1px solid #cbd5e1; border-radius: 3px; padding: 0 5px; background: #f8fafc; white-space: nowrap; height: 30px; display: flex; align-items: center; flex-shrink: 0; }
   .config-row .lbl-sep { width: 1px; height: 30px; background: #e2e8f0; flex-shrink: 0; }
@@ -30,11 +30,6 @@
   .config-row .ctrl-group button { background: #e94560; color: #fff; border: none; border-radius: 4px; padding: 5px 10px; font-size: 12px; font-weight: 600; cursor: pointer; height: 30px; }
   .config-row .ctrl-group span { font-size: 12px; padding: 4px 10px; border-radius: 20px; background: #e2e8f0; color: #64748b; white-space: nowrap; }
   .config-row.rel-row .lbl { font-size: 10px; padding: 0 5px; height: 26px; }
-  .config-row.rel-row .in-group input[type="text"] { height: 26px; font-size: 11px; padding: 4px 7px; border: 1px solid #e2e8f0; }
-  .config-row.rel-row .in-group input[type="text"]:focus { border-color: #e94560; outline: none; }
-  .config-row.rel-row .in-group input[type="text"]::placeholder { color: #cbd5e1; }
-  .config-row.rel-row .in-group input[type="text"]:disabled { background: #f8fafc; }
-  .config-row.rel-row .ctrl-group { visibility: hidden; width: 120px; }
   .config-row .sub-lbl { font-size: 10px; color: #94a3b8; width: 14px; flex-shrink: 0; text-align: right; }
   .config-row .rel-del { background: none; border: none; color: #cbd5e1; cursor: pointer; font-size: 10px; padding: 0; width: 14px; flex-shrink: 0; }
   .config-row .rel-del:hover { color: #ef4444; }
@@ -43,6 +38,8 @@
   .config-row .add-btn { background: none; border: 1px dashed #e2e8f0; border-radius: 3px; color: #94a3b8; cursor: pointer; font-size: 10px; padding: 2px; text-align: center; width: 14px; flex-shrink: 0; height: 26px; }
   .config-row .add-btn:hover { border-color: #e94560; color: #e94560; }
   .config-row .add-btn.hidden { visibility: hidden; }
+  .config-row.hdr-row .in-group input[type="text"] { pointer-events: none; border-color: transparent; background: transparent; }
+  .config-row.main-row .sub-lbl { font-size: 11px; color: #64748b; width: 14px; flex-shrink: 0; text-align: right; }
 
   .filter-bar { background: #fff; padding: 12px; border-radius: 6px 6px 0 0; border: 1px solid #e2e8f0; border-bottom: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
   .filter-controls { display: flex; align-items: center; gap: 12px; }
@@ -118,11 +115,12 @@
   <div class="container">
 
     <div class="config-matrix">
-      <div class="config-row">
-        <div class="lbl" style="align-self:flex-end;padding-bottom:4px;">ASIN 监控流</div>
-        <div class="in-group" id="row-asin"></div>
-        <div class="lbl" style="align-self:flex-end;padding-bottom:4px;">关键词 监控流</div>
-        <div class="in-group" id="row-kw"></div>
+      <!-- Row 1: labels + token + trigger -->
+      <div class="config-row hdr-row">
+        <div class="lbl" id="lbl-asin-hdr">ASIN 监控流</div>
+        <div class="in-group" id="row-asin-hdr"></div>
+        <div class="lbl" id="lbl-kw-hdr">关键词 监控流</div>
+        <div class="in-group" id="row-kw-hdr"></div>
         <div class="lbl-sep"></div>
         <div class="ctrl-group">
           <input type="password" id="ghTokenInput" placeholder="Token" onkeydown="if(event.key==='Enter')triggerMonitor()">
@@ -130,6 +128,15 @@
           <span id="configStatus">读取配置...</span>
         </div>
       </div>
+      <!-- Row 2: main inputs -->
+      <div class="config-row main-row">
+        <div class="sub-lbl">目标</div>
+        <div class="in-group" id="row-asin"></div>
+        <div class="sub-lbl">目标</div>
+        <div class="in-group" id="row-kw"></div>
+        <div class="ctrl-group"></div>
+      </div>
+      <!-- Rows 3-7: related inputs (fixed, always visible) -->
       <div class="config-row rel-row">
         <div class="sub-lbl">关联1</div>
         <div class="in-group" id="rel-row-asin-0"></div>
@@ -403,80 +410,19 @@ function buildStreamRow(type) {
 // ── 关联5行生成（固定显示，不折叠）────────────────────────────────
 function buildRelRowGrid() {
   for (var r = 0; r < 5; r++) {
-    // ASIN side
-    var asinContainer = document.getElementById('rel-row-asin-' + r);
-    if (asinContainer) {
-      var asinHtml = '';
-      for (var c = 0; c < 5; c++) {
-        var relId = 'rel-asin-' + r + '-' + c;
-        asinHtml += '<input type="text" id="' + relId + '" placeholder="ASIN" disabled style="cursor:default;">';
+    ['asin', 'kw'].forEach(function(type) {
+      var c = document.getElementById('rel-row-' + type + '-' + r);
+      if (!c) return;
+      var html = '';
+      for (var i = 0; i < 5; i++) {
+        html += '<input type="text" id="rel-' + type + '-' + r + '-' + i + '" placeholder="ASIN" disabled style="background:#f8fafc;cursor:default;" ondblclick="this.readOnly=false;this.style.cursor=\'text\';this.disabled=false;">';
       }
-      asinContainer.innerHTML = asinHtml;
-    }
-    // KW side
-    var kwContainer = document.getElementById('rel-row-kw-' + r);
-    if (kwContainer) {
-      var kwHtml = '';
-      for (var c = 0; c < 5; c++) {
-        var relId = 'rel-kw-' + r + '-' + c;
-        kwHtml += '<input type="text" id="' + relId + '" placeholder="ASIN" disabled style="cursor:default;">';
-      }
-      kwContainer.innerHTML = kwHtml;
-    }
+      c.innerHTML = html;
+    });
   }
 }
 
-// ── 激活关联行（主输入有值时）──────────────────────────────────────
-function activateRelCell(type, mainIdx, relIdx) {
-  var relId = 'rel-' + type + '-' + mainIdx + '-' + relIdx;
-  var el = document.getElementById(relId);
-  if (el) {
-    el.disabled = false;
-    el.style.cursor = '';
-    el.focus();
-  }
-}
-
-// ── 主输入 oninput ───────────────────────────────────────────────
-function onMainInput(type, idx) {
-  var mainEl = document.getElementById('in-' + type + '-' + idx);
-  if (!mainEl || !mainEl.value.trim()) return;
-  // Auto-enable first rel cell when main has value
-  activateRelCell(type, idx, 0);
-}
-
-// ── 添加关联（启用输入）────────────────────────────────────────────
-function addRelatedInput(type, rowIdx) {
-  var container = document.getElementById('rel-row-' + type + '-' + rowIdx);
-  if (!container) return;
-  var inputs = container.querySelectorAll('input:not(:disabled)');
-  if (inputs.length >= 5) return;
-  // Enable next disabled input
-  var allInputs = container.querySelectorAll('input');
-  for (var i = 0; i < allInputs.length; i++) {
-    if (allInputs[i].disabled) {
-      allInputs[i].disabled = false;
-      allInputs[i].style.cursor = '';
-      allInputs[i].focus();
-      break;
-    }
-  }
-}
-
-function removeRelatedInput(type, rowIdx, relIdx) {
-  var relId = 'rel-' + type + '-' + rowIdx + '-' + relIdx;
-  var el = document.getElementById(relId);
-  if (el) { el.value = ''; el.disabled = true; el.style.cursor = 'default'; }
-}
-
-function getRelatedVals(type, rowIdx) {
-  var out = [];
-  var container = document.getElementById('rel-row-' + type + '-' + rowIdx);
-  if (!container) return out;
-  var inputs = container.querySelectorAll('input:not(:disabled)');
-  inputs.forEach(function(inp) { if (inp.value.trim()) out.push(inp.value.trim()); });
-  return out;
-}
+function onMainInput(type, idx) { }
 
 async function loadGitHubConfig() {
   var statusEl = document.getElementById('configStatus');
