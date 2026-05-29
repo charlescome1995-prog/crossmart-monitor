@@ -93,10 +93,10 @@ def sync_and_push():
         subprocess.run("git config --global user.name \"CrossMart Bot\"", shell=True, cwd=repo_dir)
         subprocess.run("git config --global user.email \"bot@crossmart.ai\"", shell=True, cwd=repo_dir)
         ts = datetime.now().strftime("%Y-%m-%d %H:%M")
-        run_command("git add frontend/data/rawData.json", cwd=repo_dir, timeout=15)
+        run_command("git add frontend/data/rawData.json backend/data/keyword_related_asins.json", cwd=repo_dir, timeout=15)
         run_command("git commit -m \"auto: sync rawData " + ts + "\"", cwd=repo_dir, timeout=30)
         run_command("git push", cwd=repo_dir, timeout=60)
-        print("  rawData.json pushed to GitHub")
+        print("  rawData.json + keyword_related_asins.json pushed to GitHub")
     else:
         print("  No data changes to push")
     return True
