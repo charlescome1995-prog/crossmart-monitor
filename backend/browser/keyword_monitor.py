@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-关键词市场监控 - 修复版
-关键修复：
-1. 不再创建空白标签页（Target.createTarget 会导致连接到错误的标签页）
-2. 直接用 navigate() 复用当前标签页导航到搜索页
-3. 插件标记格式：自然位：第1页第1位（从 innerText 中提取）
+Keyword market monitoring - Full version
+Key fixes:
+1. Each keyword search uses an independent new tab (avoids session state confusion)
+2. After navigate, wait up to 15s for Seller Sprite plugin markers to appear
+3. Keyword related ASINs use keep-old logic (cached in keyword_related_asins.json)
 """
 import time
 import random
@@ -13,6 +13,7 @@ import sys
 import os
 import re
 import json
+import websocket
 from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -20,7 +21,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from browser.human_timer import human_pause, read_pause, think_pause
 
 
-# ─── 工具函数 ──────────────────────────────────────────────────────────────
+# --- Tool Functions ---
 
 def random_scroll(browser, times=None, min_pause=1.0, max_pause=2.0):
     t = times if times is not None else random.randint(1, 3)
@@ -47,15 +48,40 @@ def wait_for_render(browser, min_sec=4, max_sec=8):
     time.sleep(random.uniform(min_sec, max_sec))
 
 
-# ─── 数据提取 ──────────────────────────────────────────────────────────
+def wait_for_plugin_markers(browser, timeout=15):
+    """Wait for Seller Sprite plugin markers (polling every 2s, max timeout seconds)"""
+    start = time.time()
+    while time.time() - start < timeout:
+        result = browser.eval("""
+            (function() {
+                var markerCount = 0;
+                var items = document.querySelectorAll('.s-result-item[data-component-type="s-search-result"]');
+                for (var i = 0; i < items.length; i++) {
+                    var inner = items[i].innerText || '';
+                    if (inner.indexOf('\u81ea\u7136\u4f4d') >= 0 || inner.indexOf('\u5e7f\u544a\u4f4d') >= 0) {
+                        markerCount++;
+                    }
+                }
+                return markerCount;
+            })()
+        """)
+        if result and result > 0:
+            print("  [plugin] Detected " + str(result) + " marked products (appeared after " + str(round(time.time() - start, 1)) + "s)")
+            return True
+        time.sleep(2)
+    print("  [plugin] Timeout, using pure DOM results")
+    return False
+
+
+# --- Data Extraction ---
 
 def extract_asin_marks_from_page(browser):
     """
-    从亚马逊搜索结果页提取所有商品标记。
-    插件格式（从 innerText 中提取）：
-      自然位：第1页第1位  →  type = "natural"
-      广告位：第1页第2位  →  type = "ad"
-      新品位：第1页第1位  →  type = "new"
+    Extract all product marks from Amazon search results page.
+    Plugin format (from innerText):
+      natural position: type = "natural"
+      ad position: type = "ad"
+      new product position: type = "new"
     """
     js = r"""
     (function() {
@@ -70,7 +96,6 @@ def extract_asin_marks_from_page(browser):
 
                 var inner = item.innerText || '';
 
-                // 卖家精灵插件格式：自然位：第1页第1位
                 var naturalMatch = inner.match(/\u81ea\u7136\u4f4d[：:]\u7b2c(\d+)\u9875\u7b2c(\d+)\u4f4d/);
                 var adMatch = inner.match(/\u5e7f\u544a\u4f4d[：:]?\u7b2c(\d+)\u9875\u7b2c(\d+)\u4f4d/);
                 var newMatch = inner.match(/\u65b0\u54c1\u4f4d[：:]?\u7b2c(\d+)\u9875\u7b2c(\d+)\u4f4d/);
@@ -132,9 +157,9 @@ def extract_asin_marks_from_page(browser):
 
 def group_and_pick_top5(marks):
     """
-    从所有标记结果中精选 Top5 ASIN：
-      优先级：natural_top1 > ad_top1 > new_natural_top1 > new_ad_top1 > natural_other
-    同类型按排名数字排序。
+    Pick Top5 ASINs from all marked results:
+      Priority: natural_top1 > ad_top1 > new_natural_top1 > new_ad_top1 > natural_other
+    Deduplicated. Same type sorted by rank number.
     """
     natural = [m for m in marks if m.get("type") == "natural"]
     ad = [m for m in marks if m.get("type") == "ad"]
@@ -169,7 +194,6 @@ def group_and_pick_top5(marks):
     pick(ad[1:2], "new_ad_top1")
     pick(natural[1:2], "natural_other")
 
-    # 填充剩余位置（避免重复）
     all_pool = natural + ad + new_list + other
     for m in all_pool:
         if m.get("asin") not in seen and len(selected) < 5:
@@ -180,68 +204,98 @@ def group_and_pick_top5(marks):
     return selected[:5]
 
 
-# ─── 主搜索流程 ─────────────────────────────────────────────────────────
+# --- Keyword Related ASINs Cache (keep-old) ---
+
+def _kw_rel_path(keyword):
+    data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
+    safe = keyword.replace(" ", "_").replace("/", "_")
+    return os.path.join(data_dir, "keyword_related_asins.json")
+
+
+def load_kw_related_asins(keyword):
+    """Load cached keyword related ASINs (keep-old, never auto-reset)"""
+    path = _kw_rel_path(keyword)
+    if not os.path.exists(path):
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            all_data = json.load(f)
+        return all_data.get(keyword, [])
+    except:
+        return []
+
+
+def save_kw_related_asins(keyword, asins):
+    """Save keyword related ASINs (only on first run, keep-old on subsequent)"""
+    path = _kw_rel_path(keyword)
+    all_data = {}
+    if os.path.exists(path):
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                all_data = json.load(f)
+        except:
+            pass
+    all_data[keyword] = asins
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(all_data, f, ensure_ascii=False, indent=2)
+
+
+# --- Main Search Flow ---
 
 def do_keyword_search(browser, keyword):
-    """搜索关键词，模拟人类行为"""
+    """Search keyword with human behavior simulation"""
     sep = "=" * 60
     print("\n" + sep)
     print("Keyword market: " + keyword)
     print(sep)
 
-    # ── 1. 找到已有的 Amazon 标签页 ────────────────────────
-    amazon_tab = None
-    for i, t in enumerate(browser._raw_tabs):
-        url = t.get("url", "")
-        if "amazon.com" in url and "service-worker" not in url and not url.startswith("chrome-extension://"):
-            amazon_tab = i
+    # 1. Save main tab WS, create independent new tab
+    print("  Opening new tab...")
+    main_ws = browser.ws
+    main_tab = browser.tab
+
+    result = browser.cmd("Target.createTarget", {"url": "about:blank"})
+    new_tab_id = result.get("targetId")
+    time.sleep(1.5)
+    browser._refresh_tabs()
+
+    # Connect new tab WS directly (bypass connect_tab which always uses index=0)
+    new_tab = None
+    for t in browser._raw_tabs:
+        if t.get("id") == new_tab_id:
+            new_tab = t
             break
+    if not new_tab:
+        raise RuntimeError("Cannot create new tab")
 
-    if amazon_tab is None:
-        print("  未发现 Amazon 标签页，新建 about:blank")
-        browser.open_new_tab("about:blank")
-        browser._refresh_tabs()
-        for i, t in enumerate(browser._raw_tabs):
-            if "about:blank" in t.get("url", ""):
-                amazon_tab = i
-                break
-    else:
-        print("  找到 Amazon 标签[{}]，直接连接使用".format(amazon_tab))
-        browser.connect_tab(tab_index=amazon_tab)
+    ws_url = new_tab.get("webSocketDebuggerUrl")
+    if browser.ws:
+        try:
+            browser.ws.close()
+        except:
+            pass
+    browser.ws = websocket.create_connection(ws_url, timeout=15)
+    browser.tab = new_tab
+    print("  New tab WS connected")
 
-    # ── 2. 在当前标签内跳转到搜索页 ────────────────────────
+    # 2. Navigate to search page
     search_url = "https://www.amazon.com/s?k=" + keyword.replace(" ", "+") + "&ref=nb_sb_noss"
     print("  Navigating to: " + search_url)
     browser.navigate(search_url, wait_min=2, wait_max=4)
-    wait_s = random.uniform(6, 10)
-    print("  Waiting " + str(int(wait_s)) + "s for Seller Sprite plugin to render...")
-    time.sleep(wait_s)
 
-    # ── 3. 随机滚动模拟人类 ────────────────────────────────
+    # 3. Wait for plugin markers (up to 15s)
+    print("  Waiting for Seller Sprite plugin markers...")
+    plugin_found = wait_for_plugin_markers(browser, timeout=15)
+
+    # 4. Human behavior simulation
     random_scroll(browser, times=random.randint(1, 2))
     human_pause(2, 5)
     random_hovers(browser, count=random.randint(1, 3))
 
-    # ── 4. 重新连接到搜索结果页（navigate 会新建标签，此处找到它并重连） ──
-    browser._refresh_tabs()
-    search_tab_idx = None
-    for i, t in enumerate(browser._raw_tabs):
-        if "amazon.com/s" in t.get("url", "") and "view-source" not in t.get("url", ""):
-            search_tab_idx = i
-            break
-
-    if search_tab_idx is not None and search_tab_idx != amazon_tab:
-        print("  连接到搜索结果页标签[{}]".format(search_tab_idx))
-        browser.connect_tab(tab_index=search_tab_idx)
-
-    random_scroll(browser, times=2)
-    wait_for_render(browser, min_sec=2, max_sec=4)
-    human_pause(2, 5)
-
-    # ── 5. 提取数据 ────────────────────────────────────
+    # 5. Extract data
     print("  Extracting search result data...")
     marks = extract_asin_marks_from_page(browser)
-    print("  Found " + str(len(marks)) + " product results")
+    print("  Found " + str(len(marks)) + " product results (plugin=" + str(plugin_found) + ")")
     for m in marks[:5]:
         t = m.get("type", "")
         a = m.get("asin", "")
@@ -253,13 +307,32 @@ def do_keyword_search(browser, keyword):
     for a in top_asins:
         print("     [" + str(a.get("type", "")).ljust(20) + "] " + a.get("asin", "") + " | " + a.get("price", ""))
 
+    # 6. Close new tab, restore main tab
+    try:
+        browser.cmd("Target.closeTarget", {"targetId": new_tab_id})
+    except:
+        pass
+    browser._refresh_tabs()
+
+    # Restore main tab WS
+    if main_ws:
+        try:
+            main_ws.close()
+        except:
+            pass
+    if main_tab:
+        ws_url = main_tab.get("webSocketDebuggerUrl")
+        if ws_url:
+            browser.ws = websocket.create_connection(ws_url, timeout=15)
+            browser.tab = main_tab
+
     return marks, top_asins
 
 
-# ─── 入口 ──────────────────────────────────────────────────────────────
+# --- Entry Point ---
 
 def check_keyword(keyword):
-    """关键词监控主函数"""
+    """Keyword monitoring main function"""
     from browser.amazon_browser import CDPBrowser
 
     browser = CDPBrowser()
@@ -298,7 +371,7 @@ def check_keyword(keyword):
         ]
     }
 
-    # 保存快照
+    # Save snapshot
     _data_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     _snap_dir = os.path.join(_data_dir, "data", "processed", "kw_" + keyword.replace(" ", "_").replace("/", "_"))
     os.makedirs(_snap_dir, exist_ok=True)
@@ -311,6 +384,15 @@ def check_keyword(keyword):
     latest_file = os.path.join(_snap_dir, "latest.json")
     with open(latest_file, "w", encoding="utf-8") as f:
         json.dump(snapshot, f, ensure_ascii=False, indent=2)
+
+    # Keyword related ASINs: save on first run (keep-old)
+    existing = load_kw_related_asins(keyword)
+    if not existing:
+        asins_to_save = [{"asin": a.get("asin", ""), "name": a.get("title", "")[:60]} for a in top_asins]
+        save_kw_related_asins(keyword, asins_to_save)
+        print("  [kw_rel] First run, saved " + str(len(asins_to_save)) + " related ASINs")
+    else:
+        print("  [kw_rel] Already cached " + str(len(existing)) + " related ASINs (keep-old)")
 
     browser.close()
 
