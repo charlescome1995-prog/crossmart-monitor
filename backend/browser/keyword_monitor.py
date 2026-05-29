@@ -189,7 +189,27 @@ def do_keyword_search(browser, keyword):
     print("Keyword market: " + keyword)
     print(sep)
 
-    # ── 1. 直接导航到搜索页（navigate 会自动处理 WebSocket 重连） ──
+    # ── 1. 找到已有的 Amazon 标签页 ────────────────────────
+    amazon_tab = None
+    for i, t in enumerate(browser._raw_tabs):
+        url = t.get("url", "")
+        if "amazon.com" in url and "service-worker" not in url and not url.startswith("chrome-extension://"):
+            amazon_tab = i
+            break
+
+    if amazon_tab is None:
+        print("  未发现 Amazon 标签页，新建 about:blank")
+        browser.open_new_tab("about:blank")
+        browser._refresh_tabs()
+        for i, t in enumerate(browser._raw_tabs):
+            if "about:blank" in t.get("url", ""):
+                amazon_tab = i
+                break
+    else:
+        print("  找到 Amazon 标签[{}]，直接连接使用".format(amazon_tab))
+        browser.connect_tab(tab_index=amazon_tab)
+
+    # ── 2. 在当前标签内跳转到搜索页 ────────────────────────
     search_url = "https://www.amazon.com/s?k=" + keyword.replace(" ", "+") + "&ref=nb_sb_noss"
     print("  Navigating to: " + search_url)
     browser.navigate(search_url, wait_min=2, wait_max=4)
@@ -197,25 +217,28 @@ def do_keyword_search(browser, keyword):
     print("  Waiting " + str(int(wait_s)) + "s for Seller Sprite plugin to render...")
     time.sleep(wait_s)
 
-    # ── 3. 随机滚动 ────────────────────────────────────
+    # ── 3. 随机滚动模拟人类 ────────────────────────────────
     random_scroll(browser, times=random.randint(1, 2))
     human_pause(2, 5)
-
-    # ── 4. 随机悬停 ────────────────────────────────────
     random_hovers(browser, count=random.randint(1, 3))
 
-    # ── 5. 回到搜索结果页 ──────────────────────────────
+    # ── 4. 重新连接到搜索结果页（navigate 会新建标签，此处找到它并重连） ──
     browser._refresh_tabs()
-    for t in browser._raw_tabs:
+    search_tab_idx = None
+    for i, t in enumerate(browser._raw_tabs):
         if "amazon.com/s" in t.get("url", "") and "view-source" not in t.get("url", ""):
-            browser.connect_tab(tab_index=browser._raw_tabs.index(t))
+            search_tab_idx = i
             break
+
+    if search_tab_idx is not None and search_tab_idx != amazon_tab:
+        print("  连接到搜索结果页标签[{}]".format(search_tab_idx))
+        browser.connect_tab(tab_index=search_tab_idx)
 
     random_scroll(browser, times=2)
     wait_for_render(browser, min_sec=2, max_sec=4)
     human_pause(2, 5)
 
-    # ── 6. 提取数据 ────────────────────────────────────
+    # ── 5. 提取数据 ────────────────────────────────────
     print("  Extracting search result data...")
     marks = extract_asin_marks_from_page(browser)
     print("  Found " + str(len(marks)) + " product results")
