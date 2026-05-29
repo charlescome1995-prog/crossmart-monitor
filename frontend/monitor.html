@@ -114,23 +114,19 @@
   <div class="container">
 
     <div class="config-matrix">
-      <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
-        <div style="flex:1;min-width:0;">
-          <div class="matrix-stream" id="stream-asin">
-            <div class="stream-label">ASIN 监控流（最多5个）</div>
-            <div class="stream-row" id="row-asin"></div>
-          </div>
-          <div class="matrix-stream" id="stream-kw">
-            <div class="stream-label">关键词 监控流（最多5个）</div>
-            <div class="stream-row" id="row-kw"></div>
-          </div>
-        </div>
-        <div class="matrix-btn-zone">
-          <input type="password" id="ghTokenInput" placeholder="GitHub Token" style="width:220px;padding:6px 8px;border:1px solid #cbd5e1;border-radius:4px;font-size:12px;" onkeydown="if(event.key==='Enter')triggerMonitor()">
-          <button class="btn btn-primary" id="btnTrigger" onclick="triggerMonitor()" style="background:#e94560;color:#fff">⚡ 立即抓取</button>
-          <span id="configStatus" style="font-size:12px;padding:4px 10px;border-radius:20px;background:#e2e8f0;color:#64748b;cursor:default;user-select:none;">读取配置...</span>
-        </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:nowrap;overflow-x:auto;padding:4px 0;">
+        <div style="font-size:11px;font-weight:700;color:#475569;border:1px solid #cbd5e1;border-radius:3px;padding:2px 6px;background:#f8fafc;white-space:nowrap;flex-shrink:0;">ASIN 监控流</div>
+        <div class="stream-row" id="row-asin" style="flex:1;min-width:0;display:flex;gap:6px;"></div>
+        <div style="width:1px;height:32px;background:#e2e8f0;flex-shrink:0;"></div>
+        <div style="font-size:11px;font-weight:700;color:#475569;border:1px solid #cbd5e1;border-radius:3px;padding:2px 6px;background:#f8fafc;white-space:nowrap;flex-shrink:0;">关键词 监控流</div>
+        <div class="stream-row" id="row-kw" style="flex:1;min-width:0;display:flex;gap:6px;"></div>
+        <div style="width:1px;height:32px;background:#e2e8f0;flex-shrink:0;"></div>
+        <input type="password" id="ghTokenInput" placeholder="Token" style="width:120px;padding:5px 8px;border:1px solid #cbd5e1;border-radius:4px;font-size:12px;flex-shrink:0;" onkeydown="if(event.key==='Enter')triggerMonitor()">
+        <button class="btn btn-primary" id="btnTrigger" onclick="triggerMonitor()" style="background:#e94560;color:#fff;flex-shrink:0;padding:5px 12px;">⚡ 抓取</button>
+        <span id="configStatus" style="font-size:12px;padding:4px 10px;border-radius:20px;background:#e2e8f0;color:#64748b;cursor:default;user-select:none;flex-shrink:0;white-space:nowrap;">读取配置...</span>
       </div>
+      <div id="rel-row-asin" style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;"></div>
+      <div id="rel-row-kw" style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;"></div>
     </div>
 
     <div class="filter-bar">
@@ -359,18 +355,21 @@ function buildStreamRow(type) {
   var placeholder = type === 'kw' ? '输入关键词...' : '输入 ASIN...';
   var html = '';
   for (var i = 0; i < 5; i++) {
-    html += '<input type="text" id="in-' + type + '-' + i + '" placeholder="' + placeholder + '" style="flex:1;padding:5px 8px;border:1px solid #cbd5e1;border-radius:4px;font-size:12px;font-weight:700;min-width:0;" oninput="onMainInput(\'' + type + '\',' + i + ')">';
+    html += '<input type="text" id="in-' + type + '-' + i + '" placeholder="' + placeholder + '" style="flex:1;min-width:0;padding:5px 8px;border:1px solid #cbd5e1;border-radius:4px;font-size:12px;font-weight:700;" oninput="onMainInput(\'' + type + '\',' + i + ')">';
   }
   container.innerHTML = html;
-  // Add expand row below
-  var expandHtml = '';
-  for (var i = 0; i < 5; i++) {
-    expandHtml += '<div style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;" id="rel-wrap-' + type + '-' + i + '">' +
-      '<button class="expand-btn" id="expand-' + type + '-' + i + '" onclick="toggleRelated(\'' + type + '\',' + i + ')">展开关联 <span class="count">0</span></button>' +
-      '<div id="rel-container-' + type + '-' + i + '" style="display:none;"></div>' +
-    '</div>';
+  // Build expand buttons into the rel-row container
+  var relContainer = document.getElementById('rel-row-' + type);
+  if (relContainer) {
+    var expandHtml = '';
+    for (var i = 0; i < 5; i++) {
+      expandHtml += '<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;" id="rel-wrap-' + type + '-' + i + '">' +
+        '<button class="expand-btn" id="expand-' + type + '-' + i + '" onclick="toggleRelated(\'' + type + '\',' + i + ')">展开关联 <span class="count">0</span></button>' +
+        '<div id="rel-container-' + type + '-' + i + '" style="display:none;"></div>' +
+      '</div>';
+    }
+    relContainer.innerHTML = expandHtml;
   }
-  container.insertAdjacentHTML('afterend', '<div class="stream-row" style="margin-top:4px;">' + expandHtml + '</div>');
 }
 
 function onMainInput(type, idx) {
