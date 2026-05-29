@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-29T08:52:01",
+  "updated": "2026-05-29T10:28:08",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -12,7 +12,7 @@
       "price": 18.9,
       "chg": 0.0,
       "rating": 4.6,
-      "reviews": 24694,
+      "reviews": 24696,
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -35,10 +35,44 @@
       "history_main_bsr": [
         1,
         1,
+        1,
+        1,
         1
       ],
       "history_sub_bsr": [],
-      "events": []
+      "events": [],
+      "related_asins": [
+        {
+          "asin": "B0GCMKDSJB",
+          "source": "competitor",
+          "title": "medicube Toner Pads Deep Vita C Facial Toner Pad for Uneven Skin Tone & Texture | Vitamin Water and 3 Types of Vitamin, Deeply Hydrating & Resurfacing Pad | Korean Skin Care, 70 Pads (1 Pack)",
+          "price": "$18.90",
+          "rating": "4.7",
+          "reviews": "4023",
+          "bsr": "Best Sellers Rank: #1 in Beauty & Personal Care (See Top 100 in Beauty & Personal Care)\n#1 in Facial Toners & Astringents\nCustomer Reviews:\n4.7 \n4.7 out of 5 stars\n   (4,023)\nSimilar brands on Amazon\nSponsored\nBLANC DUBU Nuborn Cell Oasis Pad | Korean Skin Care Toner Pads with Stem Cell Serum & PHA ",
+          "brand": "medicube"
+        },
+        {
+          "asin": "B0BPLYHDPG",
+          "source": "competitor",
+          "title": "medicube Toner Pads Deep Vita C Facial Toner Pad for Uneven Skin Tone & Texture | Vitamin Water and 3 Types of Vitamin, Deeply Hydrating & Resurfacing Pad | Korean Skin Care, 70 Pads (1 Pack)",
+          "price": "$18.90",
+          "rating": "4.7",
+          "reviews": "4023",
+          "bsr": "Best Sellers Rank: #1 in Beauty & Personal Care (See Top 100 in Beauty & Personal Care)\n#1 in Facial Toners & Astringents\nCustomer Reviews:\n4.7 \n4.7 out of 5 stars\n   (4,023)\nSimilar brands on Amazon\nSponsored\nBLANC DUBU Nuborn Cell Oasis Pad | Korean Skin Care Toner Pads with Stem Cell Serum & PHA ",
+          "brand": "medicube"
+        },
+        {
+          "asin": "B0FJ21Z6BW",
+          "source": "competitor",
+          "title": "medicube Toner Pads Kojic Acid Turmeric Clarifying Toner Pad for Troubled Skin & Use After Spot Care, Soothing with Kojic Acid, Turmeric, Niacinamide, Glycolic Acid, Korean Skin Care, 70 Pads (1 Pack)",
+          "price": "$18.90",
+          "rating": "4.5",
+          "reviews": "1810",
+          "bsr": "Best Sellers Rank: #1 in Beauty & Personal Care (See Top 100 in Beauty & Personal Care)\n#1 in Facial Toners & Astringents\nCustomer Reviews:\n4.5 \n4.5 out of 5 stars\n   (1,810)\nSimilar brands on Amazon\nSponsored\nGlycolic Acid Pads 35% - Resurfacing Pads for Face & Body - Exfoliating Peel Pad for Body,",
+          "brand": "medicube"
+        }
+      ]
     }
   ]
 }
