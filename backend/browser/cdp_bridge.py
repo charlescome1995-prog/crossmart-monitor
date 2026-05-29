@@ -126,6 +126,11 @@ class CDPBrowser:
         self._msg_id = 0
         self.ws = None
         self.tab = None
+        # 默认连接第一个可用标签页
+        try:
+            self.connect_tab(0)
+        except:
+            pass
         print(f"  ✅ CDP已连接 — {len(self.tabs)}个标签页")
 
     def _detect_port(self):

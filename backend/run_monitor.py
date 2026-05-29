@@ -57,7 +57,8 @@ def run_command(cmd, cwd=None, timeout=600):
     try:
         result = subprocess.run(
             cmd, shell=True, cwd=cwd or PROJECT_ROOT,
-            capture_output=True, text=True, timeout=timeout
+            capture_output=True, text=True, encoding="utf-8", errors="replace",
+            timeout=timeout
         )
         if result.stdout:
             print(result.stdout[-1000:])
@@ -74,7 +75,7 @@ def run_command(cmd, cwd=None, timeout=600):
 
 
 def sync_and_push():
-    sync_script = os.path.join(PROJECT_ROOT, "sync_monitor_data.py")
+    sync_script = os.path.join(PROJECT_ROOT, "backend", "sync_monitor_data.py")
     if not os.path.exists(sync_script):
         print("  sync_monitor_data.py not found, skipping sync")
         return True
