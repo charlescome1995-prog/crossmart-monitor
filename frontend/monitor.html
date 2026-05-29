@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN>
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,30 +17,29 @@
 
   .container { padding: 16px; }
 
-  .config-matrix { background: #fff; padding: 14px 12px; border-radius: 6px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 6px; }
-  .config-row { display: flex; align-items: center; gap: 6px; width: 100%; }
-  .config-row .lbl { font-size: 11px; font-weight: 700; color: #475569; border: 1px solid #cbd5e1; border-radius: 3px; padding: 0 5px; background: #f8fafc; white-space: nowrap; height: 30px; display: flex; align-items: center; flex-shrink: 0; }
-  .config-row .lbl-sep { width: 1px; height: 30px; background: #e2e8f0; flex-shrink: 0; }
-  .config-row .in-group { display: flex; gap: 5px; flex: 1; min-width: 0; }
-  .config-row .in-group input[type="text"] { flex: 1; min-width: 0; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; font-weight: 700; height: 30px; }
-  .config-row .in-group input[type="text"]:focus { border-color: #e94560; outline: none; }
-  .config-row .in-group input[type="text"]::placeholder { font-weight: 400; color: #cbd5e1; }
-  .config-row .ctrl-group { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-  .config-row .ctrl-group input[type="password"] { width: 110px; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; height: 30px; }
-  .config-row .ctrl-group button { background: #e94560; color: #fff; border: none; border-radius: 4px; padding: 5px 10px; font-size: 12px; font-weight: 600; cursor: pointer; height: 30px; }
-  .config-row .ctrl-group span { font-size: 12px; padding: 4px 10px; border-radius: 20px; background: #e2e8f0; color: #64748b; white-space: nowrap; }
-  .config-row .col-lbl { font-size: 10px; color: #94a3b8; width: 36px; flex-shrink: 0; text-align: center; font-weight: 600; }
-  .config-row .col-lbl-right { font-size: 10px; color: #94a3b8; width: 36px; flex-shrink: 0; text-align: right; font-weight: 600; }
-  .config-row.hdr-row .in-group input[type="text"] { pointer-events: none; border-color: transparent; background: transparent; }
-  .config-row.hdr-row .in-group input[type="text"]::placeholder { color: transparent; }
-  .config-row.hdr-row .lbl { flex-shrink: 0; }
-  .config-row.rel-row .lbl { font-size: 10px; padding: 0 4px; height: 26px; }
-  .config-row.rel-row .in-group input[type="text"] { height: 26px; font-size: 11px; padding: 4px 7px; border: 1px solid #e2e8f0; cursor: text; }
-  .config-row.rel-row .in-group input[type="text"]:focus { border-color: #e94560; outline: none; }
-  .config-row.rel-row .in-group input[type="text"]::placeholder { color: #cbd5e1; }
-  .config-row.rel-row .ctrl-group { visibility: hidden; width: 260px; }
+  /* 核心调整：11列矩阵布局控制 */
+  .control-panel { background: #fff; padding: 12px; border-radius: 6px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+  .action-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9; }
+  .action-bar .left { display: flex; align-items: center; gap: 15px; }
+  .action-bar .token-group { display: flex; align-items: center; gap: 8px; }
+  .action-bar input[type="password"] { width: 220px; padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; height: 32px; }
+  .action-bar button#btnTrigger { background: #e94560; color: #fff; border: none; border-radius: 4px; padding: 0 15px; font-size: 13px; font-weight: 600; cursor: pointer; height: 32px; transition: 0.2s; }
+  .action-bar button#btnTrigger:hover { background: #d6304d; }
+  .action-bar button#btnTrigger:disabled { background: #cbd5e1; cursor: not-allowed; }
+  .action-bar #configStatus { font-size: 12px; color: #64748b; font-weight: 600; }
 
-  .filter-bar { background: #fff; padding: 12px; border-radius: 6px 6px 0 0; border: 1px solid #e2e8f0; border-bottom: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  /* 11列网格设计 */
+  .config-matrix-grid { display: grid; grid-template-columns: 80px repeat(5, 1fr) repeat(5, 1fr); gap: 6px; width: 100%; overflow-x: auto; }
+  .grid-header { font-size: 10px; color: #94a3b8; text-align: center; font-weight: 700; padding: 4px 0; text-transform: uppercase; }
+  .grid-label { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; color: #475569; }
+  .grid-input { width: 100%; }
+  .grid-input input { width: 100%; height: 30px; padding: 0 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; transition: 0.2s; }
+  .grid-input input:focus { border-color: #e94560; outline: none; box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.1); }
+  .grid-input input.main-target { font-weight: 700; background: #fff; border-color: #94a3b8; }
+  .grid-input input::placeholder { color: #cbd5e1; font-weight: 400; }
+
+  /* 原有样式保留 */
+  .filter-bar { background: #fff; padding: 12px; border-radius: 6px 6px 0 0; border: 1px solid #e2e8f0; border-bottom: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
   .filter-controls { display: flex; align-items: center; gap: 12px; }
   .filter-controls input[type="text"] { padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; width: 240px; font-size: 13px; }
   .filter-controls select { padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 13px; outline: none; background: #f8fafc; cursor: pointer; font-weight: 600; }
@@ -113,62 +112,27 @@
 
   <div class="container">
 
-    <div class="config-matrix">
-      <!-- Row 1: section labels + token + trigger -->
-      <div class="config-row hdr-row">
-        <div class="lbl">ASIN 监控流</div>
-        <div class="in-group" id="row-asin-hdr"></div>
-        <div class="lbl">关键词 监控流</div>
-        <div class="in-group" id="row-kw-hdr"></div>
-        <div class="ctrl-group">
-          <input type="password" id="ghTokenInput" placeholder="Token" onkeydown="if(event.key==='Enter')triggerMonitor()">
-          <button id="btnTrigger" onclick="triggerMonitor()">⚡ 抓取</button>
-          <span id="configStatus">读取配置...</span>
+    <!-- 重新布局的配置面板 -->
+    <div class="control-panel">
+      <div class="action-bar">
+        <div class="left">
+          <div class="token-group">
+            <input type="password" id="ghTokenInput" placeholder="GitHub Personal Access Token" onkeydown="if(event.key==='Enter')triggerMonitor()">
+            <button id="btnTrigger" onclick="triggerMonitor()">⚡ 立即抓取</button>
+          </div>
+          <span id="configStatus">正在从服务器读取配置...</span>
         </div>
+        <div style="font-size: 11px; color: #94a3b8; font-weight: 600;">布局模式：1列标签 + 5列ASIN通道 + 5列KW通道</div>
       </div>
-      <!-- Row 2: main inputs (目标) -->
-      <div class="config-row main-row">
-        <div class="col-lbl">目标</div>
-        <div class="in-group" id="row-asin"></div>
-        <div class="col-lbl">目标</div>
-        <div class="in-group" id="row-kw"></div>
-        <div class="ctrl-group"></div>
-      </div>
-      <!-- Rows 3-7: related inputs (关联1-5) -->
-      <div class="config-row rel-row">
-        <div class="col-lbl">关联1</div>
-        <div class="in-group" id="rel-row-asin-0"></div>
-        <div class="col-lbl">关联1</div>
-        <div class="in-group" id="rel-row-kw-0"></div>
-        <div class="ctrl-group"></div>
-      </div>
-      <div class="config-row rel-row">
-        <div class="col-lbl">关联2</div>
-        <div class="in-group" id="rel-row-asin-1"></div>
-        <div class="col-lbl">关联2</div>
-        <div class="in-group" id="rel-row-kw-1"></div>
-        <div class="ctrl-group"></div>
-      </div>
-      <div class="config-row rel-row">
-        <div class="col-lbl">关联3</div>
-        <div class="in-group" id="rel-row-asin-2"></div>
-        <div class="col-lbl">关联3</div>
-        <div class="in-group" id="rel-row-kw-2"></div>
-        <div class="ctrl-group"></div>
-      </div>
-      <div class="config-row rel-row">
-        <div class="col-lbl">关联4</div>
-        <div class="in-group" id="rel-row-asin-3"></div>
-        <div class="col-lbl">关联4</div>
-        <div class="in-group" id="rel-row-kw-3"></div>
-        <div class="ctrl-group"></div>
-      </div>
-      <div class="config-row rel-row">
-        <div class="col-lbl">关联5</div>
-        <div class="in-group" id="rel-row-asin-4"></div>
-        <div class="col-lbl">关联5</div>
-        <div class="in-group" id="rel-row-kw-4"></div>
-        <div class="ctrl-group"></div>
+
+      <div class="config-matrix-grid" id="matrixGrid">
+        <!-- 第0行：表头 -->
+        <div class="grid-header">类型/通道</div>
+        <div class="grid-header" style="grid-column: span 5; background: #eff6ff; color: #1d4ed8; border-radius: 4px;">ASIN 监控流 (1-5)</div>
+        <div class="grid-header" style="grid-column: span 5; background: #fff1f2; color: #be123c; border-radius: 4px;">关键词 监控流 (1-5)</div>
+
+        <!-- 动态生成：目标行 + 5个关联行 -->
+        <!-- 由 JavaScript renderConfigGrid() 生成 -->
       </div>
     </div>
 
@@ -211,23 +175,11 @@ const CONFIG_KEY = 'crossmart_monitor_v1';
 const REPO = 'charlescome1995-prog/crossmart-monitor';
 const RAW_DATA_URL = 'https://raw.githubusercontent.com/' + REPO + '/main/frontend/data/rawData.json';
 
-// rawData will be loaded async from rawData.json
 let rawData = { updated: '', items: [], keywords: [] };
-
-function loadRawData() {
-  console.log('[loadRawData] starting fetch from', RAW_DATA_URL);
-  fetch(RAW_DATA_URL + '?t=' + Date.now())
-    .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-    .then(function(d) { rawData = d; console.log('[loadRawData] fetched', d.items.length, 'items, calling renderTable'); renderTable(); })
-    .catch(function(e) { console.warn('loadRawData failed:', e.message); renderTable(); });
-}
-</script>
-<script>
-function b64enc(s){return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g,function(_,p){return String.fromCharCode(parseInt(p,16));}));}
-const POLL_INTERVAL = 5000;
 let pollTimer = null;
+const POLL_INTERVAL = 5000;
 
-// Auto-fill token from localStorage
+// ── 初始化 ───────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', function() {
   var tokenInput = document.getElementById('ghTokenInput');
   if (tokenInput) {
@@ -237,19 +189,49 @@ window.addEventListener('DOMContentLoaded', function() {
       localStorage.setItem('gh_token', tokenInput.value.trim());
     });
   }
-  buildStreamRow('asin');
-  buildStreamRow('kw');
-  buildHdrRow('asin');
-  buildHdrRow('kw');
-  buildRelRowGrid();
+  renderConfigGrid(); // 渲染 11 列矩阵
   loadGitHubConfig();
   loadRawData();
 });
 
+// ── 渲染配置矩阵 (11列) ────────────────────────────────────────
+function renderConfigGrid() {
+  const grid = document.getElementById('matrixGrid');
+  let html = grid.innerHTML; // 保留表头
+
+  // 生成行：目标(Target) + 关联1-5(Rel 1-5)
+  const rowLabels = ['目标', '关联1', '关联2', '关联3', '关联4', '关联5'];
+  
+  rowLabels.forEach((label, rowIndex) => {
+    // 1. 标签列
+    html += `<div class="grid-label">${label}</div>`;
+
+    // 2. 5个 ASIN 输入框
+    for (let i = 0; i < 5; i++) {
+      const id = rowIndex === 0 ? `in-asin-${i}` : `rel-asin-${i}-${rowIndex-1}`;
+      const placeholder = rowIndex === 0 ? '目标ASIN' : '关联ASIN';
+      const cls = rowIndex === 0 ? 'main-target' : '';
+      html += `<div class="grid-input"><input type="text" id="${id}" class="${cls}" placeholder="${placeholder}"></div>`;
+    }
+
+    // 3. 5个 KW 输入框 (KW列下方的关联项也是ASIN输入)
+    for (let i = 0; i < 5; i++) {
+      const id = rowIndex === 0 ? `in-kw-${i}` : `rel-kw-${i}-${rowIndex-1}`;
+      const placeholder = rowIndex === 0 ? '关键词...' : '关联ASIN';
+      const cls = rowIndex === 0 ? 'main-target' : '';
+      html += `<div class="grid-input"><input type="text" id="${id}" class="${cls}" placeholder="${placeholder}"></div>`;
+    }
+  });
+
+  grid.innerHTML = html;
+}
+
+// ── GitHub API 交互 ──────────────────────────────────────────
+function b64enc(s){return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g,function(_,p){return String.fromCharCode(parseInt(p,16));}));}
+
 async function putFile(path, content) {
   const token = localStorage.getItem('gh_token') || '';
   const url = 'https://api.github.com/repos/' + REPO + '/contents/' + path;
-  // get current sha
   let sha = '';
   try {
     const r = await fetch(url, { headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' } });
@@ -259,7 +241,7 @@ async function putFile(path, content) {
   const r = await fetch(url, {
     method: 'PUT',
     headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: 'update from monitor page', content: enc, sha })
+    body: JSON.stringify({ message: 'update config via dashboard', content: enc, sha })
   });
   if (!r.ok && r.status !== 201) throw new Error('put ' + path + ' failed: ' + r.status);
 }
@@ -267,43 +249,45 @@ async function putFile(path, content) {
 async function triggerMonitor() {
   var asins = [], kws = [];
   for (var i = 0; i < 5; i++) {
-    var a = (document.getElementById('in-asin-' + i) || {}).value || '';
-    var k = (document.getElementById('in-kw-' + i) || {}).value || '';
-    var ra = getRelatedVals('asin', i);
-    var rk = getRelatedVals('kw', i);
-    if (a.trim()) asins.push({ main: a.trim(), related: ra });
-    if (k.trim()) kws.push({ main: k.trim(), related: rk });
+    // 读取 ASIN 通道
+    var aMain = document.getElementById('in-asin-' + i).value.trim();
+    var aRel = [];
+    for (var r = 0; r < 5; r++) {
+      var val = document.getElementById(`rel-asin-${i}-${r}`).value.trim();
+      if(val) aRel.push(val);
+    }
+    if (aMain) asins.push({ main: aMain, related: aRel });
+
+    // 读取 KW 通道
+    var kMain = document.getElementById('in-kw-' + i).value.trim();
+    var kRel = [];
+    for (var r = 0; r < 5; r++) {
+      var val = document.getElementById(`rel-kw-${i}-${r}`).value.trim();
+      if(val) kRel.push(val);
+    }
+    if (kMain) kws.push({ main: kMain, related: kRel });
   }
+
   if (asins.length === 0 && kws.length === 0) {
-    var btn = document.getElementById('btnTrigger');
-    btn.textContent = '\u274c 请先输入 ASIN 或关键词';
-    btn.disabled = false;
-    setTimeout(function() { btn.textContent = '\u26a1 立即抓取'; }, 3000);
+    alert('请至少输入一个目标监控对象');
     return;
   }
+
   var cfg = { asins: asins, keywords: kws };
-  localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
-
-
   var btn = document.getElementById('btnTrigger');
   btn.disabled = true;
-  btn.textContent = '\u26a1 触发中...';
-  var token = localStorage.getItem('gh_token') || '';
-  if (!token) {
-    btn.textContent = '\u274c 未配置 Token';
-    setTimeout(function() { btn.textContent = '\u26a1 立即抓取'; btn.disabled = false; }, 3000);
-    return;
-  }
+  btn.textContent = '触发中...';
+
   try {
     await putFile('backend/data/user_config.json', cfg);
     await putFile('backend/data/trigger.json', { triggered_at: Date.now(), status: 'pending' });
-    btn.textContent = '\u2705 已触发';
+    btn.textContent = '✅ 已触发';
     startPolling();
   } catch(e) {
     console.error(e);
-    btn.textContent = '\u274c 触发失败';
+    btn.textContent = '❌ 失败';
+    btn.disabled = false;
   }
-  setTimeout(function() { btn.textContent = '\u26a1 立即抓取'; btn.disabled = false; }, 5000);
 }
 
 function startPolling() {
@@ -313,7 +297,6 @@ function startPolling() {
 
 async function checkStatus() {
   const token = localStorage.getItem('gh_token') || '';
-  if (!token) return;
   try {
     const resp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/trigger.json', {
       headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
@@ -322,47 +305,54 @@ async function checkStatus() {
     const data = await resp.json();
     const content = JSON.parse(atob(data.content));
     if (content.status === 'done') {
-      clearInterval(pollTimer); pollTimer = null;
-      const btn = document.getElementById('btnTrigger');
-      if (btn) { btn.textContent = '✅ 监控完成'; btn.disabled = false; }
-    } else if (content.status === 'failed') {
-      clearInterval(pollTimer); pollTimer = null;
-      const btn = document.getElementById('btnTrigger');
-      if (btn) { btn.textContent = '❌ 监控失败'; btn.disabled = false; }
+      clearInterval(pollTimer);
+      document.getElementById('btnTrigger').textContent = '✅ 完成';
+      document.getElementById('btnTrigger').disabled = false;
+      loadRawData();
     }
   } catch(e) {}
 }
 
-function applyConfig(cfg) {
-  if (!cfg) return;
-  if (cfg.asins) {
-    cfg.asins.forEach(function(row, i) {
-      if (i >= 5) return;
-      var el = document.getElementById('in-asin-' + i);
-      if (el) el.value = row.main || '';
-      if (row.related) {
-        row.related.forEach(function(r, j) {
-          if (j >= 5) return;
-          var relEl = document.getElementById('rel-asin-' + i + '-' + j);
-          if (relEl) relEl.value = r;
-        });
-      }
-    });
+async function loadGitHubConfig() {
+  const statusEl = document.getElementById('configStatus');
+  try {
+    const resp = await fetch(`https://raw.githubusercontent.com/${REPO}/main/backend/data/user_config.json?t=${Date.now()}`);
+    if (!resp.ok) return;
+    const cfg = await resp.json();
+    // 填充 ASIN
+    if (cfg.asins) {
+      cfg.asins.forEach((item, i) => {
+        if (i < 5) {
+          document.getElementById('in-asin-' + i).value = item.main || '';
+          if (item.related) item.related.forEach((r, idx) => {
+            if (idx < 5) document.getElementById(`rel-asin-${i}-${idx}`).value = r;
+          });
+        }
+      });
+    }
+    // 填充 KW
+    if (cfg.keywords) {
+      cfg.keywords.forEach((item, i) => {
+        if (i < 5) {
+          document.getElementById('in-kw-' + i).value = item.main || '';
+          if (item.related) item.related.forEach((r, idx) => {
+            if (idx < 5) document.getElementById(`rel-kw-${i}-${idx}`).value = r;
+          });
+        }
+      });
+    }
+    statusEl.textContent = '✓ 配置已从云端同步';
+  } catch(e) {
+    statusEl.textContent = '⚠ 配置同步失败';
   }
-  if (cfg.keywords) {
-    cfg.keywords.forEach(function(row, i) {
-      if (i >= 5) return;
-      var el = document.getElementById('in-kw-' + i);
-      if (el) el.value = row.main || '';
-      if (row.related) {
-        row.related.forEach(function(r, j) {
-          if (j >= 5) return;
-          var relEl = document.getElementById('rel-kw-' + i + '-' + j);
-          if (relEl) relEl.value = r;
-        });
-      }
-    });
-  }
+}
+
+// ── 数据渲染 ──────────────────────────────────────────────────
+function loadRawData() {
+  fetch(RAW_DATA_URL + '?t=' + Date.now())
+    .then(r => r.json())
+    .then(d => { rawData = d; renderTable(); })
+    .catch(e => console.warn('Load raw data failed', e));
 }
 
 function drawSparkline(data, color) {
@@ -378,108 +368,21 @@ function drawSparkline(data, color) {
   return `<svg width="${w}" height="${h}" style="display:block;"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`;
 }
 
-function initConfigBtn() {
-  loadGitHubConfig();
-}
-
-// ── 公共工具函数 ───────────────────────────────────────────────
-function b64enc(s) {
-  return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g, function(_, p) {
-    return String.fromCharCode(parseInt(p, 16));
-  }));
-}
-
-function escHtml(s) {
-  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-
-// ── 动态生成每块区域的5行 ──────────────────────────────────────
-// ── 主输入行生成 ───────────────────────────────────────────────
-function buildStreamRow(type) {
-  var container = document.getElementById('row-' + type);
-  if (!container) return;
-  var placeholder = type === 'kw' ? '\u5173\u952e\u8bcd...' : 'ASIN...';
-  var html = '';
-  for (var i = 0; i < 5; i++) {
-    html += '<input type="text" id="in-' + type + '-' + i + '" placeholder="' + placeholder + '" oninput="onMainInput(\'' + type + '\',' + i + ')">';
-  }
-  container.innerHTML = html;
-}
-
-// ── 表头占位输入（透明，不可交互）────────────────────────────────
-function buildHdrRow(type) {
-  var container = document.getElementById('row-' + type + '-hdr');
-  if (!container) return;
-  var html = '';
-  for (var i = 0; i < 5; i++) {
-    html += '<input type="text" placeholder="' + (type === 'kw' ? '\u5173\u952e\u8bcd...' : 'ASIN...') + '" tabindex="-1" style="pointer-events:none;border-color:transparent;background:transparent;">';
-  }
-  container.innerHTML = html;
-}
-
-// ── 关联5行生成（固定显示，不折叠）────────────────────────────────
-function buildRelRowGrid() {
-  for (var r = 0; r < 5; r++) {
-    ['asin', 'kw'].forEach(function(type) {
-      var c = document.getElementById('rel-row-' + type + '-' + r);
-      if (!c) return;
-      var html = '';
-      for (var i = 0; i < 5; i++) {
-        html += '<input type="text" id="rel-' + type + '-' + r + '-' + i + '" placeholder="ASIN">';
-      }
-      c.innerHTML = html;
-    });
-  }
-}
-
-function onMainInput(type, idx) { }
-
-async function loadGitHubConfig() {
-  var statusEl = document.getElementById('configStatus');
-  if (statusEl) statusEl.textContent = '读取配置...';
-  try {
-    var resp = await fetch(
-      'https://raw.githubusercontent.com/' + REPO + '/main/backend/data/user_config.json?v=' + Date.now(),
-      { cache: 'no-store' }
-    );
-    if (!resp.ok) {
-      if (statusEl) statusEl.textContent = '\u26a0 读取失败';
-      return;
-    }
-    var cfg = await resp.json();
-    applyConfig(cfg);
-    if (statusEl) {
-      var cnt = (cfg.asins ? cfg.asins.filter(function(r) { return r.main; }).length : 0) +
-                (cfg.keywords ? cfg.keywords.filter(function(r) { return r.main; }).length : 0);
-      statusEl.textContent = '\u2713 已同步 (' + cnt + ')';
-    }
-  } catch(e) {
-    if (statusEl) statusEl.textContent = '\u26a0 读取失败';
-    console.warn('loadGitHubConfig failed:', e.message);
-  }
-}
-
 function renderTable() {
-  if (!rawData || !rawData.items) {
-    console.warn('renderTable: rawData or rawData.items is null, skipping');
-    return;
-  }
   const tbody = document.getElementById('tableBody');
-  if (!tbody) { console.warn('renderTable: tableBody not found'); return; }
-
   const searchTxt = document.getElementById('searchInput').value.toLowerCase();
   const sourceFilter = document.getElementById('sourceFilter').value;
   const onlyChg = document.getElementById('changeFilter').checked;
 
   let html = '';
+  if (!rawData.items) return;
 
   rawData.items.forEach(item => {
     const isStatusAnomaly = item.listing_status !== item.expected_listing_status;
     const isCatAnomaly = (item.main_cat !== item.expected_main_cat) || (item.sub_cat !== item.expected_sub_cat);
     const isInfoAnomaly = item.title_changed || item.img_changed || item.bullets_changed || item.description_changed;
-    const isVariantAnomaly = item.variant_changed;
     const isPrimeAnomaly = item.prime_discount === '异常取消';
-    const hasActiveAnomaly = item.chg !== 0 || isStatusAnomaly || isCatAnomaly || isInfoAnomaly || isVariantAnomaly || isPrimeAnomaly || (item.badges_lost.length > 0);
+    const hasActiveAnomaly = item.chg !== 0 || isStatusAnomaly || isCatAnomaly || isInfoAnomaly || isPrimeAnomaly || (item.badges_lost.length > 0);
 
     if (sourceFilter !== 'ALL' && item.monitor_type !== sourceFilter) return;
     const matchesSearch = item.asin.toLowerCase().includes(searchTxt) || item.title.toLowerCase().includes(searchTxt) || item.brand.toLowerCase().includes(searchTxt);
@@ -487,133 +390,78 @@ function renderTable() {
     if (onlyChg && !hasActiveAnomaly) return;
 
     let activeEvents = [...item.events];
-    if (isStatusAnomaly) activeEvents.push({ class: "e-alert", text: `状态异动: 变为${item.listing_status}` });
-    if (item.title_changed) activeEvents.push({ class: "e-alert", text: "标题发生变更" });
-    if (item.img_changed) activeEvents.push({ class: "e-alert", text: "主图发生变更" });
-    if (item.bullets_changed) activeEvents.push({ class: "e-alert", text: "五点描述遭篡改" });
-    if (item.description_changed) activeEvents.push({ class: "e-alert", text: "产品描述遭篡改" });
-    if (isCatAnomaly) activeEvents.push({ class: "e-alert", text: "类目遭异常篡改" });
-    if (isVariantAnomaly) activeEvents.push({ class: "e-alert", text: `变体异动: ${item.variant_status}` });
-    if (isPrimeAnomaly) activeEvents.push({ class: "e-alert", text: "Prime折扣异常取消" });
-    item.badges_lost.forEach(badge => { activeEvents.push({ class: "e-alert", text: `失去 ${badge} 标识` }); });
-    if (item.deal_activity !== "无" && !isStatusAnomaly) activeEvents.push({ class: "e-promo", text: `活动: ${item.deal_activity}` });
+    if (isStatusAnomaly) activeEvents.push({ class: "e-alert", text: `状态异动: ${item.listing_status}` });
+    if (item.title_changed) activeEvents.push({ class: "e-alert", text: "标题异常变更" });
+    if (isCatAnomaly) activeEvents.push({ class: "e-alert", text: "类目节点篡改" });
+    if (isPrimeAnomaly) activeEvents.push({ class: "e-alert", text: "折扣异常取消" });
+    item.badges_lost.forEach(b => activeEvents.push({ class: "e-alert", text: `失去 ${b}` }));
 
     const chgClass = item.chg > 0 ? 'up' : (item.chg < 0 ? 'dn' : '');
-    const chgText = item.chg > 0 ? `↑ $${item.chg}` : (item.chg < 0 ? `↓ $${Math.abs(item.chg)}` : '');
+    const chgText = item.chg !== 0 ? (item.chg > 0 ? `↑ $${item.chg}` : `↓ $${Math.abs(item.chg)}`) : '';
 
-    const sourceHtml = item.monitor_type === 'ASIN' ? `<span class="badge source-asin">ASIN Stream</span>` : `<span class="badge source-kw">Keyword Stream</span>`;
-
-    let badgesHtml = '';
-    item.badges_current.forEach(b => {
-      let cls = b.toLowerCase() === 'a+' ? 'aplus' : (b.toLowerCase() === 'bs' ? 'bs' : (b.toLowerCase() === 'ac' ? 'ac' : 'nr'));
-      badgesHtml += `<span class="badge-tag ${cls}">${b}</span>`;
-    });
-    item.badges_lost.forEach(b => { badgesHtml += `<span class="badge-tag lost" title="失去此标识">${b}</span>`; });
-
-    const statusTextHtml = item.listing_status === '正常' ? `<span style="color:#16a34a; font-weight:700;">[状态: 正常]</span>` : `<span style="color:#dc2626; font-weight:700; background:#fef2f2; padding:1px 4px; border-radius:3px;">[状态: ${item.listing_status}]</span>`;
-
-    let eventsHtml = '<span class="e-none">指标平稳无告警</span>';
-    if (activeEvents.length > 0) eventsHtml = activeEvents.map(e => `<span class="e-tag ${e.class}">${e.text}</span>`).join('');
-
-    const statusHtml = hasActiveAnomaly ? `<div class="status-indicator changed">发现异动</div>` : `<div class="status-indicator stable">稳定</div>`;
+    let badgesHtml = item.badges_current.map(b => `<span class="badge-tag ${b.toLowerCase() === 'a+' ? 'aplus' : (b.toLowerCase() === 'bs' ? 'bs' : 'nr')}">${b}</span>`).join('');
+    item.badges_lost.forEach(b => badgesHtml += `<span class="badge-tag lost">${b}</span>`);
 
     html += `<tr>
-      <td class="col-img"><img src="${item.img}" alt="Product Picture"></td>
+      <td class="col-img"><img src="${item.img}"></td>
       <td>
         <div class="info-block">
-          <div>${sourceHtml} <span class="badge ${item.is_main ? 'main' : 'rel'}">${item.logic_type}</span> ${statusTextHtml}</div>
-          <div><a href="https://www.amazon.com/dp/${item.asin}" target="_blank" class="asin-link">${item.asin}</a> <span style="font-weight:700; color:#475569;">[${item.brand}]</span></div>
-          <div class="title-text" title="${item.title}">${item.title}</div>
-          <div style="margin-top:2px;">${badgesHtml}</div>
-          <div style="color:#64748b; font-size:11px;">变体状态: <strong style="color:#334155;">${item.variant_status}</strong></div>
+          <div><span class="badge ${item.monitor_type==='ASIN'?'source-asin':'source-kw'}">${item.monitor_type} Stream</span> <span class="badge ${item.is_main?'main':'rel'}">${item.logic_type}</span></div>
+          <div><a href="https://www.amazon.com/dp/${item.asin}" target="_blank" class="asin-link">${item.asin}</a> <span style="font-weight:700;">[${item.brand}]</span></div>
+          <div class="title-text">${item.title}</div>
+          <div>${badgesHtml}</div>
         </div>
       </td>
       <td>
         <div class="metrics-block">
-          <div>价格走势: <strong style="font-size:13px;">$${item.price.toFixed(2)}</strong> <span class="chg ${chgClass}">${chgText}</span></div>
-          <div>优惠券流: <span style="background:#f0fdf4; color:#16a34a; padding:1px 4px; border-radius:3px; font-weight:700;">${item.coupon}</span></div>
-          <div>Prime折扣: <span style="background:#eff6ff; color:#2563eb; padding:1px 4px; border-radius:3px; font-weight:700;">${item.prime_discount}</span></div>
-          <div>营销活动: <span style="color:#ca8a04; font-weight:700;">${item.deal_activity}</span></div>
-          <div>买家反馈: <span style="color:#eab308;">★</span> <strong>${item.rating}</strong> (${item.reviews.toLocaleString()})</div>
-          <div>大类节点: <span class="cat-item ${item.main_cat !== item.expected_main_cat ? 'err' : ''}" title="当前: ${item.main_cat} / 预期: ${item.expected_main_cat}">${item.main_cat}</span> <strong>#${item.main_bsr.toLocaleString()}</strong></div>
-          <div>小类节点: <span class="cat-item ${item.sub_cat !== item.expected_sub_cat ? 'err' : ''}" title="当前: ${item.sub_cat} / 预期: ${item.expected_sub_cat}">${item.sub_cat}</span> <strong>#${item.sub_bsr.toLocaleString()}</strong></div>
+          <div>价格: <strong>$${item.price.toFixed(2)}</strong> <span class="chg ${chgClass}">${chgText}</span></div>
+          <div>Coupon: <span style="color:#16a34a;font-weight:700;">${item.coupon}</span></div>
+          <div>Prime折扣: <span>${item.prime_discount}</span></div>
+          <div>类目排名: <span class="cat-item ${isCatAnomaly?'err':''}">${item.main_cat}</span> <strong>#${item.main_bsr}</strong></div>
         </div>
       </td>
-      <td><div class="events-cell">${eventsHtml}</div></td>
+      <td><div class="events-cell">${activeEvents.length?activeEvents.map(e=>`<span class="e-tag ${e.class}">${e.text}</span>`).join(''):'<span class="e-none">指标平稳</span>'}</div></td>
       <td>
         <div class="trend-container">
-          <div class="trend-label">大类排名曲线 (Main BSR)</div>
+          <div class="trend-label">Main BSR</div>
           ${drawSparkline(item.history_main_bsr, '#1e3a8a')}
-          <div class="trend-label" style="margin-top:2px;">小类排名曲线 (Sub BSR)</div>
+          <div class="trend-label">Sub BSR</div>
           ${drawSparkline(item.history_sub_bsr, '#0d9488')}
         </div>
       </td>
-      <td>${statusHtml}</td>
-      <td style="color:#64748b; font-weight:700; font-size:12px;">${rawData.updated}</td>
+      <td>${hasActiveAnomaly?'<div class="status-indicator changed">发现异动</div>':'<div class="status-indicator stable">稳定</div>'}</td>
+      <td style="color:#64748b;font-weight:700;">${rawData.updated}</td>
     </tr>`;
   });
 
-  // ── 关键词 Top5 区块 ──────────────────────────────────────────
-  if (rawData.keywords && rawData.keywords.length > 0) {
+  // 关键词 Top5 渲染
+  if (rawData.keywords) {
     rawData.keywords.forEach(kw => {
       kw.top_asins.forEach((a, idx) => {
-        const typeLabel = a.type === 'natural' ? '自然' : (a.type === 'ad' ? '广告' : (a.type === 'new' ? '新品' : a.type));
-        const typeBadgeCls = a.type === 'natural' ? 'source-kw' : (a.type === 'ad' ? 'source-asin' : 'source-kw');
-        const sourceHtml = '<span class="badge ' + typeBadgeCls + '">Keyword Stream</span>';
-        const logicLabel = typeLabel + (idx === 0 ? '第1' : (idx === 1 ? '第2' : (idx === 2 ? '第3' : (idx === 3 ? '第4' : '第5'))));
-        const asinLink = a.asin ? '<a href="https://www.amazon.com/dp/' + a.asin + '" target="_blank" class="asin-link">' + a.asin + '</a>' : '—';
-        const titleText = a.title || ('Keyword: ' + kw.keyword);
-        const priceText = a.price || '—';
-        const ratingText = a.rating || '—';
-        const reviewsText = a.reviews ? Number(a.reviews).toLocaleString() : '—';
-        const rankText = a.rank || '—';
-
-        html += '<tr style="background:#fef9c3;">' +
-          '<td class="col-img"><div style="width:80px;height:80px;background:#fde68a;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#92400e;text-align:center;padding:4px;">KW<br>Top' + (idx+1) + '</div></td>' +
-          '<td>' +
-            '<div class="info-block">' +
-              '<div>' + sourceHtml + ' <span class="badge main">' + logicLabel + '</span></div>' +
-              '<div>' + asinLink + ' <span style="font-size:11px;color:#92400e;">' + rankText + '</span></div>' +
-              '<div class="title-text" title="' + titleText + '">' + titleText.substring(0, 80) + '</div>' +
-              '<div style="color:#b45309;font-size:11px;margin-top:2px;">关键词: ' + kw.keyword + '</div>' +
-            '</div>' +
-          '</td>' +
-          '<td>' +
-            '<div class="metrics-block">' +
-              '<div>价格走势: <strong style="font-size:13px;">' + priceText + '</strong></div>' +
-              '<div>买家反馈: <span style="color:#eab308;">★</span> <strong>' + ratingText + '</strong> (' + reviewsText + ')</div>' +
-              '<div>排名标记: <span style="background:#fef3c7;color:#92400e;padding:1px 4px;border-radius:3px;font-weight:700;">' + rankText + '</span></div>' +
-              '<div>商品标签: <span class="badge source-kw" style="background:#d97706;">' + typeLabel + '</span></div>' +
-            '</div>' +
-          '</td>' +
-          '<td><div class="events-cell"><span class="e-none">指标平稳</span></div></td>' +
-          '<td><div class="trend-container"><div class="trend-label" style="color:#92400e;">关键词流排名</div></div></td>' +
-          '<td><div class="status-indicator stable">稳定</div></td>' +
-          '<td style="color:#64748b;font-weight:700;font-size:12px;">' + (rawData.updated || '') + '</td>' +
-        '</tr>';
+        html += `<tr style="background:#fef9c3;">
+          <td class="col-img"><div style="width:65px;height:85px;background:#fde68a;display:flex;align-items:center;justify-content:center;font-weight:700;color:#92400e;">KW T${idx+1}</div></td>
+          <td><div class="info-block"><div><span class="badge source-kw">KW Stream</span> <span class="badge main">Top ${idx+1}</span></div><a class="asin-link">${a.asin}</a><div class="title-text">${a.title}</div><div style="font-size:10px;color:#b45309;">搜索词: ${kw.keyword}</div></div></td>
+          <td><div class="metrics-block"><div>当前价格: ${a.price}</div><div>评分: ${a.rating} (${a.reviews})</div><div>搜索排名: <strong>${a.rank}</strong></div></div></td>
+          <td><div class="events-cell"><span class="e-none">指标平稳</span></div></td>
+          <td>-</td>
+          <td><div class="status-indicator stable">稳定</div></td>
+          <td>${rawData.updated}</td>
+        </tr>`;
       });
     });
   }
 
-  tbody.innerHTML = html || '<tr><td colspan="7" style="text-align:center; padding:40px 0; color:#999;">未监测到任何匹配数据</td></tr>';
+  tbody.innerHTML = html || '<tr><td colspan="7" style="text-align:center;padding:40px;">暂无监控数据</td></tr>';
 }
 
 function exportToExcel() {
-  const rows = [['监控类型','ASIN','逻辑标签','Listing状态','产品标题','品牌','持存标识','变体状态','营销活动','当前售价','优惠券面额','Prime专享折扣','大类节点','大类排名','小类节点','小类排名','实时判定状态','同步时间']];
-  rawData.items.forEach(m => {
-    const isStatusAnomaly = m.listing_status !== m.expected_listing_status;
-    const isCatAnomaly = (m.main_cat !== m.expected_main_cat) || (m.sub_cat !== m.expected_sub_cat);
-    const isInfoAnomaly = m.title_changed || m.img_changed || m.bullets_changed || m.description_changed;
-    const isVariantAnomaly = m.variant_changed;
-    const statusText = (m.chg !== 0 || isStatusAnomaly || isCatAnomaly || isInfoAnomaly || isVariantAnomaly || m.prime_discount === '异常取消' || m.badges_lost.length > 0) ? '发现异动' : '稳定';
-    rows.push([m.monitor_type, m.asin, m.logic_type, m.listing_status, m.title, m.brand, m.badges_current.join(','), m.variant_status, m.deal_activity, m.price, m.coupon, m.prime_discount, m.main_cat, m.main_bsr, m.sub_cat, m.sub_bsr, statusText, rawData.updated]);
-  });
+  const rows = [['监控类型','ASIN','逻辑','状态','标题','品牌','当前售价','大类排名','同步时间']];
+  rawData.items.forEach(m => rows.push([m.monitor_type, m.asin, m.logic_type, m.listing_status, m.title, m.brand, m.price, m.main_bsr, rawData.updated]));
   const ws = XLSX.utils.aoa_to_sheet(rows);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'MonitorReport');
-  XLSX.writeFile(wb, `CrossMart_Comprehensive_Report_${rawData.updated.replace(/[/:]/g,'-')}.xlsx`);
+  XLSX.writeFile(wb, `CrossMart_Report_${rawData.updated.replace(/[/:]/g,'-')}.xlsx`);
 }
-
-initConfigBtn();
 </script>
 </body>
+</html>
