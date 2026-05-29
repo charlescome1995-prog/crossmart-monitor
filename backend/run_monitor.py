@@ -3,11 +3,11 @@
 """
 run_monitor.py - CrossMart Monitor 本地触发脚本
 功能：
-  1. 检测 backend/data/trigger.json 是否为 pending 状态
+  1. 从 GitHub 读取 backend/data/trigger.json 检查是否为 pending 状态
   2. 读取 backend/data/user_config.json 获取当前配置的 ASINs 和关键词
   3. 依次运行 keyword_monitor（关键词）和 asin_monitor（ASIN）
   4. 同步数据到 rawData.json 并推送到 GitHub
-  5. 将 trigger.json 状态改为 done
+  5. 将 trigger.json 状态改为 done 推回 GitHub
 用法：
   python backend/run_monitor.py
   或配合 Windows 任务计划程序定期执行
@@ -17,31 +17,39 @@ import sys
 import json
 import time
 import subprocess
+import urllib.request
 from datetime import datetime
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(PROJECT_ROOT, "data")
 TRIGGER_FILE = os.path.join(DATA_DIR, "trigger.json")
 CONFIG_FILE = os.path.join(DATA_DIR, "user_config.json")
+REPO = "charlescome1995-prog/crossmart-monitor"
+RAW_BASE = "https://raw.githubusercontent.com/" + REPO + "/main/backend/data"
+
+
+def gh_fetch_json(path):
+    """从 GitHub Raw 下载 JSON 文件"""
+    url = RAW_BASE + "/" + path + "?t=" + str(int(time.time()))
+    try:
+        with urllib.request.urlopen(url, timeout=10) as r:
+            return json.loads(r.read().decode("utf-8"))
+    except Exception as e:
+        print("  fetch " + path + " error: " + str(e))
+        return None
 
 
 def load_trigger():
-    if not os.path.exists(TRIGGER_FILE):
-        return None
-    with open(TRIGGER_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def save_trigger(data):
-    with open(TRIGGER_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    """从 GitHub 加载 trigger.json"""
+    return gh_fetch_json("trigger.json")
 
 
 def load_config():
-    if not os.path.exists(CONFIG_FILE):
+    """从 GitHub 加载 user_config.json"""
+    data = gh_fetch_json("user_config.json")
+    if data is None:
         return {"asins": [], "keywords": []}
-    with open(CONFIG_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
+    return data
 
 
 def run_command(cmd, cwd=None, timeout=600):
@@ -71,7 +79,7 @@ def sync_and_push():
         print("  sync_monitor_data.py not found, skipping sync")
         return True
 
-    ok = run_command('python "' + sync_script + '"', timeout=120)
+    ok = run_command("python \"" + sync_script + "\"", timeout=120)
     if not ok:
         print("  sync failed")
         return False
@@ -91,6 +99,20 @@ def sync_and_push():
     else:
         print("  No data changes to push")
     return True
+
+
+def push_trigger_done(trigger):
+    """将 done 状态的 trigger.json 推送回 GitHub"""
+    os.makedirs(DATA_DIR, exist_ok=True)
+    with open(TRIGGER_FILE, "w", encoding="utf-8") as f:
+        json.dump(trigger, f, ensure_ascii=False, indent=2)
+    repo_dir = PROJECT_ROOT
+    subprocess.run("git config --global user.name \"CrossMart Bot\"", shell=True, cwd=repo_dir)
+    subprocess.run("git config --global user.email \"bot@crossmart.ai\"", shell=True, cwd=repo_dir)
+    subprocess.run("git add backend/data/trigger.json", shell=True, cwd=repo_dir)
+    subprocess.run("git commit -m \"auto: trigger done\"", shell=True, cwd=repo_dir)
+    subprocess.run("git push", shell=True, cwd=repo_dir, timeout=60)
+    print("  trigger.json pushed to GitHub")
 
 
 def run_monitor():
@@ -147,7 +169,7 @@ def run_monitor():
 
     trigger["status"] = "done"
     trigger["completed_at"] = datetime.now().isoformat()
-    save_trigger(trigger)
+    push_trigger_done(trigger)
     print("\n" + sep)
     print("监控完成！状态已更新为 done")
     print(sep)
