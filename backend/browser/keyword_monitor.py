@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-关键词市场监控
-行为规则 - 直接用URL导航到搜索页（绕过输入模拟的各种问题）
-插件识别 - 从 innerText 中提取 "自然位：第X页第Y位" 格式
+关键词市场监控 - 修复版
+关键修复：
+1. 不再创建空白标签页（Target.createTarget 会导致连接到错误的标签页）
+2. 直接用 navigate() 复用当前标签页导航到搜索页
+3. 插件标记格式：自然位：第1页第1位（从 innerText 中提取）
 """
-
 import time
 import random
 import sys
@@ -24,22 +25,22 @@ from browser.human_timer import human_pause, read_pause, think_pause
 def random_scroll(browser, times=None, min_pause=1.0, max_pause=2.0):
     t = times if times is not None else random.randint(1, 3)
     for _ in range(t):
-        browser.eval("window.scrollBy(0, " + str(random.randint(300, 700)) + ")")
+        amt = random.randint(300, 700)
+        browser.eval("window.scrollBy(0, " + str(amt) + ")")
         time.sleep(random.uniform(min_pause, max_pause))
 
 
 def random_hovers(browser, count=None):
     n = count if count is not None else random.randint(1, 3)
-    js = (
-        "(() => {"
+    browser.eval(
+        "((n) => {"
         "const els = document.querySelectorAll('.s-result-item[data-component-type=\"s-search-result\"]');"
-        "const picks = Array.from(els).sort(() => Math.random() - 0.5).slice(0, " + str(n) + ");"
+        "const picks = Array.from(els).sort(() => Math.random() - 0.5).slice(0, n);"
         "picks.forEach((el, i) => {"
         "setTimeout(() => el.dispatchEvent(new MouseEvent('mouseenter', {bubbles:true})), i * 800);"
         "});"
-        "})()"
+        "})(" + str(n) + ")"
     )
-    browser.eval(js)
 
 
 def wait_for_render(browser, min_sec=4, max_sec=8):
@@ -57,71 +58,67 @@ def extract_asin_marks_from_page(browser):
       新品位：第1页第1位  →  type = "new"
     """
     js = r"""
-    (() => {
-        const results = [];
-        const items = document.querySelectorAll('.s-result-item[data-component-type="s-search-result"]');
+    (function() {
+        var results = [];
+        var items = document.querySelectorAll('.s-result-item[data-component-type="s-search-result"]');
 
-        items.forEach((item, idx) => {
-            let markType = '';
-            let rankText = '';
-            let asin = '';
+        for (var i = 0; i < items.length; i++) {
+            (function(item) {
+                var markType = '';
+                var rankText = '';
+                var asin = '';
 
-            const inner = item.innerText || '';
+                var inner = item.innerText || '';
 
-            // 卖家精灵插件格式：自然位：第1页第1位
-            var naturalMatch = inner.match(/\u81ea\u7136\u4f4d[：:]\u7b2c(\d+)\u9875\u7b2c(\d+)\u4f4d/);
-            var adMatch = inner.match(/\u5e7f\u544a\u4f4d[：:]?\u7b2c(\d+)\u9875\u7b2c(\d+)\u4f4d/);
-            var newMatch = inner.match(/\u65b0\u54c1\u4f4d[：:]?\u7b2c(\d+)\u9875\u7b2c(\d+)\u4f4d/);
+                // 卖家精灵插件格式：自然位：第1页第1位
+                var naturalMatch = inner.match(/\u81ea\u7136\u4f4d[：:]\u7b2c(\d+)\u9875\u7b2c(\d+)\u4f4d/);
+                var adMatch = inner.match(/\u5e7f\u544a\u4f4d[：:]?\u7b2c(\d+)\u9875\u7b2c(\d+)\u4f4d/);
+                var newMatch = inner.match(/\u65b0\u54c1\u4f4d[：:]?\u7b2c(\d+)\u9875\u7b2c(\d+)\u4f4d/);
 
-            if (naturalMatch) {
-                markType = 'natural';
-                rankText = '\u81ea\u7136\u4f4d\uff1a\u7b2c' + naturalMatch[1] + '\u9875\u7b2c' + naturalMatch[2] + '\u4f4d';
-            } else if (adMatch) {
-                markType = 'ad';
-                rankText = '\u5e7f\u544a\u4f4d\uff1a\u7b2c' + adMatch[1] + '\u9875\u7b2c' + adMatch[2] + '\u4f4d';
-            } else if (newMatch) {
-                markType = 'new';
-                rankText = '\u65b0\u54c1\u4f4d\uff1a\u7b2c' + newMatch[1] + '\u9875\u7b2c' + newMatch[2] + '\u4f4d';
-            } else {
-                // 没有插件标记，降级用 DOM Sponsored 判断
-                var spon = item.closest('[class*="sponsorship"], [class*="sponsored"], [data-component-type*="sponsored"]');
-                if (spon) {
+                if (naturalMatch) {
+                    markType = 'natural';
+                    rankText = '\u81ea\u7136\u4f4d\uff1a\u7b2c' + naturalMatch[1] + '\u9875\u7b2c' + naturalMatch[2] + '\u4f4d';
+                } else if (adMatch) {
                     markType = 'ad';
-                    rankText = 'ad';
+                    rankText = '\u5e7f\u544a\u4f4d\uff1a\u7b2c' + adMatch[1] + '\u9875\u7b2c' + adMatch[2] + '\u4f4d';
+                } else if (newMatch) {
+                    markType = 'new';
+                    rankText = '\u65b0\u54c1\u4f4d\uff1a\u7b2c' + newMatch[1] + '\u9875\u7b2c' + newMatch[2] + '\u4f4d';
+                } else {
+                    var spon = item.closest('[class*="sponsorship"], [class*="sponsored"], [data-component-type*="sponsored"]');
+                    if (spon) {
+                        markType = 'ad';
+                        rankText = 'ad';
+                    }
                 }
-            }
 
-            // ASIN
-            var link = item.querySelector('a.a-link-normal[href*="/dp/"]');
-            if (link) {
-                var match = link.href.match(/\/dp\/([A-Z0-9]{10})/);
-                if (match) asin = match[1];
-            }
+                var link = item.querySelector('a.a-link-normal[href*="/dp/"]');
+                if (link) {
+                    var match = link.href.match(/\/dp\/([A-Z0-9]{10})/);
+                    if (match) asin = match[1];
+                }
 
-            // Title
-            var titleEl = item.querySelector('h2.a-size-base-plus, h2.a-size-medium, h2');
-            var title = titleEl ? titleEl.innerText || '' : '';
+                var titleEl = item.querySelector('h2.a-size-base-plus, h2.a-size-medium, h2');
+                var title = titleEl ? (titleEl.innerText || '') : '';
 
-            // Price
-            var priceEl = item.querySelector('.a-price .a-offscreen, .a-price-whole');
-            var price = priceEl ? priceEl.innerText || '' : '';
+                var priceEl = item.querySelector('.a-price .a-offscreen, .a-price-whole');
+                var price = priceEl ? (priceEl.innerText || '') : '';
 
-            // Rating
-            var ratingEl = item.querySelector('.a-icon-star-small, .a-icon-star');
-            var rating = ratingEl ? ratingEl.innerText || '' : '';
+                var ratingEl = item.querySelector('.a-icon-star-small, .a-icon-star');
+                var rating = ratingEl ? (ratingEl.innerText || '') : '';
 
-            // Reviews
-            var reviews = '';
-            var revEl = item.querySelector('[aria-label*="star"], .a-size-base');
-            if (revEl) {
-                var m = revEl.innerText.match(/([\d,]+)/);
-                if (m) reviews = m[1];
-            }
+                var reviews = '';
+                var revEl = item.querySelector('[aria-label*="star"], .a-size-base');
+                if (revEl) {
+                    var m = revEl.innerText.match(/([\d,]+)/);
+                    if (m) reviews = m[1];
+                }
 
-            if (asin) {
-                results.push({ asin: asin, type: markType || 'unknown', rank: rankText, title: title, price: price, rating: rating, reviews: reviews });
-            }
-        });
+                if (asin) {
+                    results.push({ asin: asin, type: markType || 'unknown', rank: rankText, title: title, price: price, rating: rating, reviews: reviews });
+                }
+            })(items[i]);
+        }
         return results;
     })()
     """
@@ -192,19 +189,9 @@ def do_keyword_search(browser, keyword):
     print("Keyword market: " + keyword)
     print(sep)
 
-    # ── 1. 尝试连接现有 Amazon 搜索标签页 ─────────────────────
-    browser._refresh_tabs()
-    amazon_tabs = [(i, t) for i, t in enumerate(browser._raw_tabs)
-                    if "amazon.com/s" in t.get("url", "")
-                    and "view-source" not in t.get("url", "")
-                    and "service-worker" not in t.get("url", "")]
-    if amazon_tabs:
-        browser.connect_tab(tab_index=amazon_tabs[0][0])
-        time.sleep(2)
-
-    # ── 2. 直接导航到搜索页 ────────────────────
+    # ── 1. 直接导航到搜索页（navigate 会自动处理 WebSocket 重连） ──
     search_url = "https://www.amazon.com/s?k=" + keyword.replace(" ", "+") + "&ref=nb_sb_noss"
-    print("  Search URL: " + search_url)
+    print("  Navigating to: " + search_url)
     browser.navigate(search_url, wait_min=2, wait_max=4)
     wait_s = random.uniform(6, 10)
     print("  Waiting " + str(int(wait_s)) + "s for Seller Sprite plugin to render...")
