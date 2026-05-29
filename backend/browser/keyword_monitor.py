@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-关键词市场监控 - 重写版
-行为规则 - 搜索页直接用URL导航，绕过输入模拟
-插件识别 - 从 innerText 中提取 "自然位：第X页第Y位" 格式的标记
+关键词市场监控
+行为规则 - 直接用URL导航到搜索页（绕过输入模拟的各种问题）
+插件识别 - 从 innerText 中提取 "自然位：第X页第Y位" 格式
 """
 
 import time
@@ -18,19 +18,17 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from browser.human_timer import human_pause, read_pause, think_pause
 
+
 # ─── 工具函数 ──────────────────────────────────────────────────────────────
 
 def random_scroll(browser, times=None, min_pause=1.0, max_pause=2.0):
-    """随机滚动 + 停顿"""
     t = times if times is not None else random.randint(1, 3)
     for _ in range(t):
-        amt = random.randint(300, 700)
-        browser.eval("window.scrollBy(0, " + str(amt) + ")")
+        browser.eval("window.scrollBy(0, " + str(random.randint(300, 700)) + ")")
         time.sleep(random.uniform(min_pause, max_pause))
 
 
 def random_hovers(browser, count=None):
-    """随机悬停几个商品（模拟人类阅读行为）"""
     n = count if count is not None else random.randint(1, 3)
     js = (
         "(() => {"
@@ -44,41 +42,8 @@ def random_hovers(browser, count=None):
     browser.eval(js)
 
 
-def browse_random_asins(browser, count=2):
-    """随机浏览几个 ASIN 页面（纯人类行为模拟，无数据记录）"""
-    js = (
-        "(() => {"
-        "const links = document.querySelectorAll('a.a-link-normal[href*=\"/dp/\"]');"
-        "const candidates = Array.from(links)"
-        ".map(a => { try { return {href: a.href, asin: (a.href.match(/\\/dp\\/([A-Z0-9]+)/)||[])[1]}; } catch(e) { return null; }})"
-        ".filter(x => x && x.asin)"
-        ".sort(() => Math.random() - 0.5)"
-        ".slice(0, " + str(count) + ");"
-        "if (candidates.length === 0) return;"
-        "candidates.forEach((item, i) => {"
-        "setTimeout(() => { window.open(item.href, '_blank'); }, i * 3500);"
-        "});"
-        "})()"
-    )
-    browser.eval(js)
-    time.sleep(count * 4 + 2)
-    browser._refresh_tabs()
-    tabs = browser._raw_tabs
-    if len(tabs) > 1:
-        last_tab = tabs[-1]
-        try:
-            browser.cmd("Target.closeTarget", {"targetId": last_tab.get("id")})
-        except:
-            pass
-        time.sleep(1)
-
-
 def wait_for_render(browser, min_sec=4, max_sec=8):
-    """等待搜索结果完全渲染"""
     time.sleep(random.uniform(min_sec, max_sec))
-    for _ in range(3):
-        browser.eval("( () => { if (document.querySelector('.s-result-item')) window.__rendered = true; } )()")
-        time.sleep(1)
 
 
 # ─── 数据提取 ──────────────────────────────────────────────────────────
@@ -104,7 +69,6 @@ def extract_asin_marks_from_page(browser):
             const inner = item.innerText || '';
 
             // 卖家精灵插件格式：自然位：第1页第1位
-            // 广告位：第1页第2位 | 新品位：第1页第1位
             var naturalMatch = inner.match(/\u81ea\u7136\u4f4d[：:]\u7b2c(\d+)\u9875\u7b2c(\d+)\u4f4d/);
             var adMatch = inner.match(/\u5e7f\u544a\u4f4d[：:]?\u7b2c(\d+)\u9875\u7b2c(\d+)\u4f4d/);
             var newMatch = inner.match(/\u65b0\u54c1\u4f4d[：:]?\u7b2c(\d+)\u9875\u7b2c(\d+)\u4f4d/);
@@ -135,19 +99,16 @@ def extract_asin_marks_from_page(browser):
             }
 
             // Title
-            var title = '';
             var titleEl = item.querySelector('h2.a-size-base-plus, h2.a-size-medium, h2');
-            if (titleEl) title = titleEl.innerText || '';
+            var title = titleEl ? titleEl.innerText || '' : '';
 
             // Price
-            var price = '';
             var priceEl = item.querySelector('.a-price .a-offscreen, .a-price-whole');
-            if (priceEl) price = priceEl.innerText || '';
+            var price = priceEl ? priceEl.innerText || '' : '';
 
             // Rating
-            var rating = '';
             var ratingEl = item.querySelector('.a-icon-star-small, .a-icon-star');
-            if (ratingEl) rating = ratingEl.innerText || '';
+            var rating = ratingEl ? ratingEl.innerText || '' : '';
 
             // Reviews
             var reviews = '';
@@ -166,8 +127,7 @@ def extract_asin_marks_from_page(browser):
     """
     try:
         raw = browser.eval(js)
-        marks = raw if isinstance(raw, list) else []
-        return marks
+        return raw if isinstance(raw, list) else []
     except Exception as e:
         print("  [extract_asin_marks] JS error: " + str(e))
         return []
@@ -175,7 +135,7 @@ def extract_asin_marks_from_page(browser):
 
 def group_and_pick_top5(marks):
     """
-    从所有标记结果中精选最具代表性的 Top5 ASIN：
+    从所有标记结果中精选 Top5 ASIN：
       优先级：natural_top1 > ad_top1 > new_natural_top1 > new_ad_top1 > natural_other
     同类型按排名数字排序。
     """
@@ -188,11 +148,8 @@ def group_and_pick_top5(marks):
         t = m.get("rank", "")
         if not t:
             return 999
-        # 从 "自然位：第1页第3位" 中提取 "3"
         nums = re.findall(r"\d+", t)
-        if nums:
-            return int(nums[-1])  # 取最后一个数字（排名的位置数字）
-        return 999
+        return int(nums[-1]) if nums else 999
 
     natural.sort(key=rank_num)
     ad.sort(key=rank_num)
@@ -235,17 +192,17 @@ def do_keyword_search(browser, keyword):
     print("Keyword market: " + keyword)
     print(sep)
 
-    # ── 1. 打开新空白标签页 ─────────────────────────────
-    print("\n  Opening new blank tab...")
-    browser.cmd("Target.createTarget", {"url": "about:blank"})
-    time.sleep(1.5)
-    browser.connect_tab(tab_url_filter="about:blank")
-    if not browser.tab:
-        browser.cmd("Target.createTarget", {"url": "about:blank"})
-        time.sleep(1.5)
-        browser.connect_tab(tab_url_filter="about:blank")
+    # ── 1. 尝试连接现有 Amazon 搜索标签页 ─────────────────────
+    browser._refresh_tabs()
+    amazon_tabs = [(i, t) for i, t in enumerate(browser._raw_tabs)
+                    if "amazon.com/s" in t.get("url", "")
+                    and "view-source" not in t.get("url", "")
+                    and "service-worker" not in t.get("url", "")]
+    if amazon_tabs:
+        browser.connect_tab(tab_index=amazon_tabs[0][0])
+        time.sleep(2)
 
-    # ── 2. 直接导航到搜索页（最可靠） ────────────────────
+    # ── 2. 直接导航到搜索页 ────────────────────
     search_url = "https://www.amazon.com/s?k=" + keyword.replace(" ", "+") + "&ref=nb_sb_noss"
     print("  Search URL: " + search_url)
     browser.navigate(search_url, wait_min=2, wait_max=4)
@@ -260,15 +217,10 @@ def do_keyword_search(browser, keyword):
     # ── 4. 随机悬停 ────────────────────────────────────
     random_hovers(browser, count=random.randint(1, 3))
 
-    # ── 5. 随机浏览其他 ASIN ─────────────────────────
-    print("  Browsing other products (no record)...")
-    browse_random_asins(browser, count=random.randint(1, 2))
-    human_pause(2, 5)
-
-    # ── 6. 回到搜索结果 ──────────────────────────────────
+    # ── 5. 回到搜索结果页 ──────────────────────────────
     browser._refresh_tabs()
     for t in browser._raw_tabs:
-        if "amazon.com/s" in t.get("url", ""):
+        if "amazon.com/s" in t.get("url", "") and "view-source" not in t.get("url", ""):
             browser.connect_tab(tab_index=browser._raw_tabs.index(t))
             break
 
@@ -276,7 +228,7 @@ def do_keyword_search(browser, keyword):
     wait_for_render(browser, min_sec=2, max_sec=4)
     human_pause(2, 5)
 
-    # ── 7. 提取数据 ────────────────────────────────────
+    # ── 6. 提取数据 ────────────────────────────────────
     print("  Extracting search result data...")
     marks = extract_asin_marks_from_page(browser)
     print("  Found " + str(len(marks)) + " product results")
@@ -304,6 +256,7 @@ def check_keyword(keyword):
 
     marks = []
     top_asins = []
+    sep = "=" * 60
 
     try:
         marks, top_asins = do_keyword_search(browser, keyword)
