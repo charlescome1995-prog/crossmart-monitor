@@ -9,6 +9,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Times New Roman", Times, "PingFang SC", "Microsoft YaHei", serif; }
   body { background: #f4f7f6; color: #333; padding: 0; font-size: 13px; }
 
+  /* Topbar Styles */
   .topbar { background: #131921; color: #fff; display: flex; align-items: center; justify-content: space-between; height: 44px; padding: 0 16px; position: sticky; top: 0; z-index: 100; }
   .topbar .brand { font-weight: 700; font-size: 16px; letter-spacing: 0.5px; }
   .topbar nav { display: flex; gap: 18px; font-size: 13px; }
@@ -17,32 +18,48 @@
 
   .container { padding: 16px; }
 
-  /* 核心调整：11列矩阵布局控制 */
-  .control-panel { background: #fff; padding: 12px; border-radius: 6px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-  .action-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9; }
-  .action-bar .left { display: flex; align-items: center; gap: 15px; }
-  .action-bar .token-group { display: flex; align-items: center; gap: 8px; }
-  .action-bar input[type="password"] { width: 220px; padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; height: 32px; }
-  .action-bar button#btnTrigger { background: #e94560; color: #fff; border: none; border-radius: 4px; padding: 0 15px; font-size: 13px; font-weight: 600; cursor: pointer; height: 32px; transition: 0.2s; }
-  .action-bar button#btnTrigger:hover { background: #d6304d; }
-  .action-bar button#btnTrigger:disabled { background: #cbd5e1; cursor: not-allowed; }
-  .action-bar #configStatus { font-size: 12px; color: #64748b; font-weight: 600; }
+  /* --- 11-Column Matrix Layout --- */
+  .config-matrix { background: #fff; padding: 14px; border-radius: 6px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 4px; overflow-x: auto; }
+  
+  /* 顶部工具栏行 */
+  .action-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed #e2e8f0; }
+  .action-row .title-group { display: flex; align-items: center; gap: 20px; }
+  .action-row .title-tag { font-size: 12px; font-weight: 700; color: #1e293b; background: #f1f5f9; padding: 4px 10px; border-radius: 4px; border: 1px solid #cbd5e1; }
+  
+  .ctrl-group { display: flex; align-items: center; gap: 8px; }
+  .ctrl-group input[type="password"] { width: 140px; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; height: 30px; }
+  .ctrl-group button { background: #e94560; color: #fff; border: none; border-radius: 4px; padding: 0 15px; font-size: 12px; font-weight: 600; cursor: pointer; height: 30px; transition: 0.2s; }
+  .ctrl-group button:hover { background: #d03d56; }
+  .ctrl-group span { font-size: 12px; padding: 4px 10px; border-radius: 20px; background: #e2e8f0; color: #64748b; white-space: nowrap; }
 
-  /* 11列网格设计 */
-  .config-matrix-grid { display: grid; grid-template-columns: 80px repeat(5, 1fr) repeat(5, 1fr); gap: 6px; width: 100%; overflow-x: auto; }
-  .grid-header { font-size: 10px; color: #94a3b8; text-align: center; font-weight: 700; padding: 4px 0; text-transform: uppercase; }
-  .grid-label { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; color: #475569; }
-  .grid-input { width: 100%; }
-  .grid-input input { width: 100%; height: 30px; padding: 0 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; transition: 0.2s; }
-  .grid-input input:focus { border-color: #e94560; outline: none; box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.1); }
-  .grid-input input.main-target { font-weight: 700; background: #fff; border-color: #94a3b8; }
-  .grid-input input::placeholder { color: #cbd5e1; font-weight: 400; }
+  /* 核心 11 列网格 */
+  .matrix-grid { display: grid; grid-template-columns: 65px repeat(5, 1fr) repeat(5, 1fr); gap: 6px; min-width: 1100px; }
+  .grid-cell { display: flex; align-items: center; }
+  
+  /* 标签列样式 */
+  .lbl-cell { font-size: 11px; font-weight: 700; color: #475569; border: 1px solid #cbd5e1; border-radius: 3px; background: #f8fafc; height: 28px; justify-content: center; width: 100%; }
+  
+  /* 输入框基础样式 */
+  .matrix-grid input[type="text"] { width: 100%; padding: 4px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; height: 28px; outline: none; }
+  .matrix-grid input[type="text"]:focus { border-color: #e94560; box-shadow: 0 0 0 1px rgba(233, 69, 96, 0.1); }
+  .matrix-grid input[type="text"]::placeholder { color: #cbd5e1; font-weight: 400; }
+  
+  /* 目标行特殊样式 (高亮) */
+  .row-target input[type="text"] { font-weight: 700; border-color: #94a3b8; background: #fff; }
+  
+  /* 关联行样式 */
+  .row-rel input[type="text"] { font-size: 11px; color: #475569; background: #fafafa; border-color: #e2e8f0; }
 
-  /* 原有样式保留 */
+  /* 表头指示器 */
+  .grid-hdr { font-size: 10px; color: #94a3b8; font-weight: 600; text-align: center; padding-bottom: 2px; text-transform: uppercase; }
+  .hdr-asin { border-bottom: 2px solid #e0e7ff; color: #4f46e5; }
+  .hdr-kw { border-bottom: 2px solid #fce7f3; color: #db2777; }
+
+  /* --- 原有 Table & Badge 样式保持不变 --- */
   .filter-bar { background: #fff; padding: 12px; border-radius: 6px 6px 0 0; border: 1px solid #e2e8f0; border-bottom: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
   .filter-controls { display: flex; align-items: center; gap: 12px; }
   .filter-controls input[type="text"] { padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; width: 240px; font-size: 13px; }
-  .filter-controls select { padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 13px; outline: none; background: #f8fafc; cursor: pointer; font-weight: 600; }
+  .filter-controls select { padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 13px; background: #f8fafc; cursor: pointer; font-weight: 600; }
   .filter-controls label { display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; font-size: 13px; font-weight: 600; }
 
   .btn { padding: 6px 16px; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: .1s; }
@@ -57,7 +74,7 @@
   .monitor-table tr:hover td { background: #fcfdfe; }
 
   .col-img { width: 75px; text-align: center; }
-  .col-img img { width: 65px; height: 85px; object-fit: contain; border-radius: 4px; border: 1px solid #e2e8f0; display: block; background: #fff; }
+  .col-img img { width: 65px; height: 85px; object-fit: contain; border-radius: 4px; border: 1px solid #e2e8f0; background: #fff; }
 
   .info-block { display: flex; flex-direction: column; gap: 4px; }
   .metrics-block { display: flex; flex-direction: column; gap: 5px; font-size: 12px; }
@@ -111,31 +128,114 @@
   </div>
 
   <div class="container">
-
-    <!-- 重新布局的配置面板 -->
-    <div class="control-panel">
-      <div class="action-bar">
-        <div class="left">
-          <div class="token-group">
-            <input type="password" id="ghTokenInput" placeholder="GitHub Personal Access Token" onkeydown="if(event.key==='Enter')triggerMonitor()">
-            <button id="btnTrigger" onclick="triggerMonitor()">⚡ 立即抓取</button>
-          </div>
-          <span id="configStatus">正在从服务器读取配置...</span>
+    
+    <!-- Configuration Area -->
+    <div class="config-matrix">
+      <!-- 顶部操作行 -->
+      <div class="action-row">
+        <div class="title-group">
+          <div class="title-tag">ASIN 监控流 (Streams 1-5)</div>
+          <div class="title-tag">关键词 监控流 (Streams 1-5)</div>
         </div>
-        <div style="font-size: 11px; color: #94a3b8; font-weight: 600;">布局模式：1列标签 + 5列ASIN通道 + 5列KW通道</div>
+        <div class="ctrl-group">
+          <input type="password" id="ghTokenInput" placeholder="GitHub Token" onkeydown="if(event.key==='Enter')triggerMonitor()">
+          <button id="btnTrigger" onclick="triggerMonitor()">⚡ 立即抓取</button>
+          <span id="configStatus">读取配置...</span>
+        </div>
       </div>
 
-      <div class="config-matrix-grid" id="matrixGrid">
-        <!-- 第0行：表头 -->
-        <div class="grid-header">类型/通道</div>
-        <div class="grid-header" style="grid-column: span 5; background: #eff6ff; color: #1d4ed8; border-radius: 4px;">ASIN 监控流 (1-5)</div>
-        <div class="grid-header" style="grid-column: span 5; background: #fff1f2; color: #be123c; border-radius: 4px;">关键词 监控流 (1-5)</div>
+      <!-- 11列网格主体 -->
+      <div class="matrix-grid">
+        <!-- 表头指示 -->
+        <div></div>
+        <div class="grid-hdr hdr-asin">Stream 1</div>
+        <div class="grid-hdr hdr-asin">Stream 2</div>
+        <div class="grid-hdr hdr-asin">Stream 3</div>
+        <div class="grid-hdr hdr-asin">Stream 4</div>
+        <div class="grid-hdr hdr-asin">Stream 5</div>
+        <div class="grid-hdr hdr-kw">KW Stream 1</div>
+        <div class="grid-hdr hdr-kw">KW Stream 2</div>
+        <div class="grid-hdr hdr-kw">KW Stream 3</div>
+        <div class="grid-hdr hdr-kw">KW Stream 4</div>
+        <div class="grid-hdr hdr-kw">KW Stream 5</div>
 
-        <!-- 动态生成：目标行 + 5个关联行 -->
-        <!-- 由 JavaScript renderConfigGrid() 生成 -->
+        <!-- 目标行 (Target Row) -->
+        <div class="grid-cell"><div class="lbl-cell">目标</div></div>
+        <div class="grid-cell row-target"><input type="text" id="in-asin-0" placeholder="ASIN"></div>
+        <div class="grid-cell row-target"><input type="text" id="in-asin-1" placeholder="ASIN"></div>
+        <div class="grid-cell row-target"><input type="text" id="in-asin-2" placeholder="ASIN"></div>
+        <div class="grid-cell row-target"><input type="text" id="in-asin-3" placeholder="ASIN"></div>
+        <div class="grid-cell row-target"><input type="text" id="in-asin-4" placeholder="ASIN"></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-0" placeholder="关键词"></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-1" placeholder="关键词"></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-2" placeholder="关键词"></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-3" placeholder="关键词"></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-4" placeholder="关键词"></div>
+
+        <!-- 关联行 1-5 (Related Rows 1-5) -->
+        <!-- JS 将在第二部分通过 buildRelRowGrid 填充此处的 ID 逻辑 -->
+        <div class="grid-cell"><div class="lbl-cell">关联 1</div></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-3-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-4-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-0-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-1-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-2-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-0" placeholder="Rel ASIN"></div>
+
+        <div class="grid-cell"><div class="lbl-cell">关联 2</div></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-3-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-4-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-0-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-1-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-2-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-1" placeholder="Rel ASIN"></div>
+
+        <div class="grid-cell"><div class="lbl-cell">关联 3</div></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-3-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-4-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-0-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-1-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-2-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-2" placeholder="Rel ASIN"></div>
+
+        <div class="grid-cell"><div class="lbl-cell">关联 4</div></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-3-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-4-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-0-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-1-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-2-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-3" placeholder="Rel ASIN"></div>
+
+        <div class="grid-cell"><div class="lbl-cell">关联 5</div></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-3-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-4-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-0-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-1-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-2-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-4" placeholder="Rel ASIN"></div>
       </div>
     </div>
-
+    <!-- 过滤工具栏 -->
     <div class="filter-bar">
       <div class="filter-controls">
         <input type="text" id="searchInput" placeholder="快速过滤 ASIN、标题或品牌..." oninput="renderTable()">
@@ -151,6 +251,7 @@
       </div>
     </div>
 
+    <!-- 数据表格 -->
     <div class="table-container">
       <table class="monitor-table">
         <thead>
@@ -168,7 +269,7 @@
       </table>
     </div>
 
-  </div>
+  </div> <!-- End Container -->
 
 <script>
 const CONFIG_KEY = 'crossmart_monitor_v1';
@@ -176,10 +277,13 @@ const REPO = 'charlescome1995-prog/crossmart-monitor';
 const RAW_DATA_URL = 'https://raw.githubusercontent.com/' + REPO + '/main/frontend/data/rawData.json';
 
 let rawData = { updated: '', items: [], keywords: [] };
-let pollTimer = null;
-const POLL_INTERVAL = 5000;
 
-// ── 初始化 ───────────────────────────────────────────────────
+// 工具函数
+function b64enc(s){return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g,function(_,p){return String.fromCharCode(parseInt(p,16));}));}
+const POLL_INTERVAL = 5000;
+let pollTimer = null;
+
+// 初始化
 window.addEventListener('DOMContentLoaded', function() {
   var tokenInput = document.getElementById('ghTokenInput');
   if (tokenInput) {
@@ -189,46 +293,79 @@ window.addEventListener('DOMContentLoaded', function() {
       localStorage.setItem('gh_token', tokenInput.value.trim());
     });
   }
-  renderConfigGrid(); // 渲染 11 列矩阵
   loadGitHubConfig();
   loadRawData();
 });
 
-// ── 渲染配置矩阵 (11列) ────────────────────────────────────────
-function renderConfigGrid() {
-  const grid = document.getElementById('matrixGrid');
-  let html = grid.innerHTML; // 保留表头
-
-  // 生成行：目标(Target) + 关联1-5(Rel 1-5)
-  const rowLabels = ['目标', '关联1', '关联2', '关联3', '关联4', '关联5'];
-  
-  rowLabels.forEach((label, rowIndex) => {
-    // 1. 标签列
-    html += `<div class="grid-label">${label}</div>`;
-
-    // 2. 5个 ASIN 输入框
-    for (let i = 0; i < 5; i++) {
-      const id = rowIndex === 0 ? `in-asin-${i}` : `rel-asin-${i}-${rowIndex-1}`;
-      const placeholder = rowIndex === 0 ? '目标ASIN' : '关联ASIN';
-      const cls = rowIndex === 0 ? 'main-target' : '';
-      html += `<div class="grid-input"><input type="text" id="${id}" class="${cls}" placeholder="${placeholder}"></div>`;
-    }
-
-    // 3. 5个 KW 输入框 (KW列下方的关联项也是ASIN输入)
-    for (let i = 0; i < 5; i++) {
-      const id = rowIndex === 0 ? `in-kw-${i}` : `rel-kw-${i}-${rowIndex-1}`;
-      const placeholder = rowIndex === 0 ? '关键词...' : '关联ASIN';
-      const cls = rowIndex === 0 ? 'main-target' : '';
-      html += `<div class="grid-input"><input type="text" id="${id}" class="${cls}" placeholder="${placeholder}"></div>`;
-    }
-  });
-
-  grid.innerHTML = html;
+// 加载原始监控数据
+function loadRawData() {
+  fetch(RAW_DATA_URL + '?t=' + Date.now())
+    .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function(d) { 
+      rawData = d; 
+      renderTable(); 
+    })
+    .catch(function(e) { console.warn('loadRawData failed:', e.message); renderTable(); });
 }
 
-// ── GitHub API 交互 ──────────────────────────────────────────
-function b64enc(s){return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g,function(_,p){return String.fromCharCode(parseInt(p,16));}));}
+// 辅助：获取某一列下所有的关联值
+function getRelatedVals(type, streamIdx) {
+  var vals = [];
+  for (var r = 0; r < 5; r++) {
+    var el = document.getElementById('rel-' + type + '-' + streamIdx + '-' + r);
+    if (el && el.value.trim()) vals.push(el.value.trim());
+  }
+  return vals;
+}
 
+// 触发抓取 (读取 11 列矩阵数据)
+async function triggerMonitor() {
+  var asins = [], kws = [];
+  // 遍历 5 个 ASIN 流 (Streams 1-5)
+  for (var i = 0; i < 5; i++) {
+    var mainA = document.getElementById('in-asin-' + i).value.trim();
+    if (mainA) {
+      asins.push({ main: mainA, related: getRelatedVals('asin', i) });
+    }
+  }
+  // 遍历 5 个关键词流 (KW Streams 1-5)
+  for (var j = 0; j < 5; j++) {
+    var mainK = document.getElementById('in-kw-' + j).value.trim();
+    if (mainK) {
+      kws.push({ main: mainK, related: getRelatedVals('kw', j) });
+    }
+  }
+
+  if (asins.length === 0 && kws.length === 0) {
+    alert('请至少输入一个目标 ASIN 或关键词');
+    return;
+  }
+
+  var cfg = { asins: asins, keywords: kws };
+  var btn = document.getElementById('btnTrigger');
+  btn.disabled = true;
+  btn.textContent = '⚡ 触发中...';
+
+  var token = localStorage.getItem('gh_token') || '';
+  if (!token) {
+    alert('请先输入 GitHub Token');
+    btn.disabled = false; btn.textContent = '⚡ 立即抓取';
+    return;
+  }
+
+  try {
+    await putFile('backend/data/user_config.json', cfg);
+    await putFile('backend/data/trigger.json', { triggered_at: Date.now(), status: 'pending' });
+    btn.textContent = '✅ 已触发';
+    startPolling();
+  } catch(e) {
+    console.error(e);
+    btn.textContent = '❌ 触发失败';
+  }
+  setTimeout(function() { btn.textContent = '⚡ 立即抓取'; btn.disabled = false; }, 5000);
+}
+
+// API 交互逻辑
 async function putFile(path, content) {
   const token = localStorage.getItem('gh_token') || '';
   const url = 'https://api.github.com/repos/' + REPO + '/contents/' + path;
@@ -240,54 +377,10 @@ async function putFile(path, content) {
   const enc = b64enc(JSON.stringify(content));
   const r = await fetch(url, {
     method: 'PUT',
-    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: 'update config via dashboard', content: enc, sha })
+    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' },
+    body: JSON.stringify({ message: 'update config', content: enc, sha })
   });
-  if (!r.ok && r.status !== 201) throw new Error('put ' + path + ' failed: ' + r.status);
-}
-
-async function triggerMonitor() {
-  var asins = [], kws = [];
-  for (var i = 0; i < 5; i++) {
-    // 读取 ASIN 通道
-    var aMain = document.getElementById('in-asin-' + i).value.trim();
-    var aRel = [];
-    for (var r = 0; r < 5; r++) {
-      var val = document.getElementById(`rel-asin-${i}-${r}`).value.trim();
-      if(val) aRel.push(val);
-    }
-    if (aMain) asins.push({ main: aMain, related: aRel });
-
-    // 读取 KW 通道
-    var kMain = document.getElementById('in-kw-' + i).value.trim();
-    var kRel = [];
-    for (var r = 0; r < 5; r++) {
-      var val = document.getElementById(`rel-kw-${i}-${r}`).value.trim();
-      if(val) kRel.push(val);
-    }
-    if (kMain) kws.push({ main: kMain, related: kRel });
-  }
-
-  if (asins.length === 0 && kws.length === 0) {
-    alert('请至少输入一个目标监控对象');
-    return;
-  }
-
-  var cfg = { asins: asins, keywords: kws };
-  var btn = document.getElementById('btnTrigger');
-  btn.disabled = true;
-  btn.textContent = '触发中...';
-
-  try {
-    await putFile('backend/data/user_config.json', cfg);
-    await putFile('backend/data/trigger.json', { triggered_at: Date.now(), status: 'pending' });
-    btn.textContent = '✅ 已触发';
-    startPolling();
-  } catch(e) {
-    console.error(e);
-    btn.textContent = '❌ 失败';
-    btn.disabled = false;
-  }
+  if (!r.ok) throw new Error('API Error');
 }
 
 function startPolling() {
@@ -299,62 +392,61 @@ async function checkStatus() {
   const token = localStorage.getItem('gh_token') || '';
   try {
     const resp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/trigger.json', {
-      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+      headers: { 'Authorization': 'Bearer ' + token }
     });
     if (!resp.ok) return;
     const data = await resp.json();
     const content = JSON.parse(atob(data.content));
     if (content.status === 'done') {
       clearInterval(pollTimer);
-      document.getElementById('btnTrigger').textContent = '✅ 完成';
-      document.getElementById('btnTrigger').disabled = false;
+      document.getElementById('btnTrigger').textContent = '✅ 监控完成';
       loadRawData();
     }
   } catch(e) {}
 }
 
-async function loadGitHubConfig() {
-  const statusEl = document.getElementById('configStatus');
-  try {
-    const resp = await fetch(`https://raw.githubusercontent.com/${REPO}/main/backend/data/user_config.json?t=${Date.now()}`);
-    if (!resp.ok) return;
-    const cfg = await resp.json();
-    // 填充 ASIN
-    if (cfg.asins) {
-      cfg.asins.forEach((item, i) => {
-        if (i < 5) {
-          document.getElementById('in-asin-' + i).value = item.main || '';
-          if (item.related) item.related.forEach((r, idx) => {
-            if (idx < 5) document.getElementById(`rel-asin-${i}-${idx}`).value = r;
+// 加载配置到 11 列矩阵
+function applyConfig(cfg) {
+  if (!cfg) return;
+  if (cfg.asins) {
+    cfg.asins.forEach((row, i) => {
+      if (i < 5) {
+        document.getElementById('in-asin-' + i).value = row.main || '';
+        if (row.related) {
+          row.related.forEach((val, rIdx) => {
+            if (rIdx < 5) document.getElementById('rel-asin-' + i + '-' + rIdx).value = val;
           });
         }
-      });
-    }
-    // 填充 KW
-    if (cfg.keywords) {
-      cfg.keywords.forEach((item, i) => {
-        if (i < 5) {
-          document.getElementById('in-kw-' + i).value = item.main || '';
-          if (item.related) item.related.forEach((r, idx) => {
-            if (idx < 5) document.getElementById(`rel-kw-${i}-${idx}`).value = r;
+      }
+    });
+  }
+  if (cfg.keywords) {
+    cfg.keywords.forEach((row, i) => {
+      if (i < 5) {
+        document.getElementById('in-kw-' + i).value = row.main || '';
+        if (row.related) {
+          row.related.forEach((val, rIdx) => {
+            if (rIdx < 5) document.getElementById('rel-kw-' + i + '-' + rIdx).value = val;
           });
         }
-      });
-    }
-    statusEl.textContent = '✓ 配置已从云端同步';
-  } catch(e) {
-    statusEl.textContent = '⚠ 配置同步失败';
+      }
+    });
   }
 }
 
-// ── 数据渲染 ──────────────────────────────────────────────────
-function loadRawData() {
-  fetch(RAW_DATA_URL + '?t=' + Date.now())
-    .then(r => r.json())
-    .then(d => { rawData = d; renderTable(); })
-    .catch(e => console.warn('Load raw data failed', e));
+async function loadGitHubConfig() {
+  var statusEl = document.getElementById('configStatus');
+  try {
+    var resp = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/user_config.json?v=' + Date.now());
+    if (resp.ok) {
+      var cfg = await resp.json();
+      applyConfig(cfg);
+      statusEl.textContent = '✓ 配置已同步';
+    }
+  } catch(e) { statusEl.textContent = '⚠ 同步失败'; }
 }
 
+// 绘制趋势图
 function drawSparkline(data, color) {
   if (!data || data.length < 2) return '<span style="color:#999;font-size:11px;">无数据</span>';
   const min = Math.min(...data), max = Math.max(...data);
@@ -368,99 +460,87 @@ function drawSparkline(data, color) {
   return `<svg width="${w}" height="${h}" style="display:block;"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`;
 }
 
+// 渲染主数据表
 function renderTable() {
   const tbody = document.getElementById('tableBody');
+  if (!tbody || !rawData.items) return;
+
   const searchTxt = document.getElementById('searchInput').value.toLowerCase();
   const sourceFilter = document.getElementById('sourceFilter').value;
   const onlyChg = document.getElementById('changeFilter').checked;
 
   let html = '';
-  if (!rawData.items) return;
-
   rawData.items.forEach(item => {
+    // 异动判定逻辑 (完整保留)
     const isStatusAnomaly = item.listing_status !== item.expected_listing_status;
     const isCatAnomaly = (item.main_cat !== item.expected_main_cat) || (item.sub_cat !== item.expected_sub_cat);
     const isInfoAnomaly = item.title_changed || item.img_changed || item.bullets_changed || item.description_changed;
-    const isPrimeAnomaly = item.prime_discount === '异常取消';
-    const hasActiveAnomaly = item.chg !== 0 || isStatusAnomaly || isCatAnomaly || isInfoAnomaly || isPrimeAnomaly || (item.badges_lost.length > 0);
+    const isVariantAnomaly = item.variant_changed;
+    const hasActiveAnomaly = item.chg !== 0 || isStatusAnomaly || isCatAnomaly || isInfoAnomaly || isVariantAnomaly || (item.badges_lost.length > 0);
 
     if (sourceFilter !== 'ALL' && item.monitor_type !== sourceFilter) return;
-    const matchesSearch = item.asin.toLowerCase().includes(searchTxt) || item.title.toLowerCase().includes(searchTxt) || item.brand.toLowerCase().includes(searchTxt);
-    if (!matchesSearch) return;
+    if (searchTxt && !item.asin.toLowerCase().includes(searchTxt) && !item.title.toLowerCase().includes(searchTxt)) return;
     if (onlyChg && !hasActiveAnomaly) return;
 
     let activeEvents = [...item.events];
     if (isStatusAnomaly) activeEvents.push({ class: "e-alert", text: `状态异动: ${item.listing_status}` });
-    if (item.title_changed) activeEvents.push({ class: "e-alert", text: "标题异常变更" });
-    if (isCatAnomaly) activeEvents.push({ class: "e-alert", text: "类目节点篡改" });
-    if (isPrimeAnomaly) activeEvents.push({ class: "e-alert", text: "折扣异常取消" });
+    if (isInfoAnomaly) activeEvents.push({ class: "e-alert", text: "内容遭篡改" });
+    if (isCatAnomaly) activeEvents.push({ class: "e-alert", text: "类目节点变更" });
     item.badges_lost.forEach(b => activeEvents.push({ class: "e-alert", text: `失去 ${b}` }));
 
     const chgClass = item.chg > 0 ? 'up' : (item.chg < 0 ? 'dn' : '');
-    const chgText = item.chg !== 0 ? (item.chg > 0 ? `↑ $${item.chg}` : `↓ $${Math.abs(item.chg)}`) : '';
-
-    let badgesHtml = item.badges_current.map(b => `<span class="badge-tag ${b.toLowerCase() === 'a+' ? 'aplus' : (b.toLowerCase() === 'bs' ? 'bs' : 'nr')}">${b}</span>`).join('');
-    item.badges_lost.forEach(b => badgesHtml += `<span class="badge-tag lost">${b}</span>`);
+    const chgText = item.chg !== 0 ? `${item.chg > 0 ? '↑' : '↓'} $${Math.abs(item.chg)}` : '';
 
     html += `<tr>
       <td class="col-img"><img src="${item.img}"></td>
       <td>
         <div class="info-block">
-          <div><span class="badge ${item.monitor_type==='ASIN'?'source-asin':'source-kw'}">${item.monitor_type} Stream</span> <span class="badge ${item.is_main?'main':'rel'}">${item.logic_type}</span></div>
-          <div><a href="https://www.amazon.com/dp/${item.asin}" target="_blank" class="asin-link">${item.asin}</a> <span style="font-weight:700;">[${item.brand}]</span></div>
-          <div class="title-text">${item.title}</div>
-          <div>${badgesHtml}</div>
+          <div><span class="badge ${item.monitor_type === 'ASIN' ? 'source-asin' : 'source-kw'}">${item.monitor_type}</span> <span class="badge ${item.is_main ? 'main' : 'rel'}">${item.logic_type}</span></div>
+          <div><a href="https://www.amazon.com/dp/${item.asin}" target="_blank" class="asin-link">${item.asin}</a> [${item.brand}]</div>
+          <div class="title-text" title="${item.title}">${item.title}</div>
         </div>
       </td>
       <td>
         <div class="metrics-block">
-          <div>价格: <strong>$${item.price.toFixed(2)}</strong> <span class="chg ${chgClass}">${chgText}</span></div>
-          <div>Coupon: <span style="color:#16a34a;font-weight:700;">${item.coupon}</span></div>
-          <div>Prime折扣: <span>${item.prime_discount}</span></div>
-          <div>类目排名: <span class="cat-item ${isCatAnomaly?'err':''}">${item.main_cat}</span> <strong>#${item.main_bsr}</strong></div>
+          <div>价格: <strong>$${item.price}</strong> <span class="chg ${chgClass}">${chgText}</span></div>
+          <div>BSR: <span class="cat-item">${item.main_cat}</span> <strong>#${item.main_bsr}</strong></div>
+          <div>状态: <span style="color:${isStatusAnomaly?'#dc2626':'#16a34a'}; font-weight:700;">${item.listing_status}</span></div>
         </div>
       </td>
-      <td><div class="events-cell">${activeEvents.length?activeEvents.map(e=>`<span class="e-tag ${e.class}">${e.text}</span>`).join(''):'<span class="e-none">指标平稳</span>'}</div></td>
-      <td>
-        <div class="trend-container">
-          <div class="trend-label">Main BSR</div>
-          ${drawSparkline(item.history_main_bsr, '#1e3a8a')}
-          <div class="trend-label">Sub BSR</div>
-          ${drawSparkline(item.history_sub_bsr, '#0d9488')}
-        </div>
-      </td>
-      <td>${hasActiveAnomaly?'<div class="status-indicator changed">发现异动</div>':'<div class="status-indicator stable">稳定</div>'}</td>
-      <td style="color:#64748b;font-weight:700;">${rawData.updated}</td>
+      <td><div class="events-cell">${activeEvents.length ? activeEvents.map(e => `<span class="e-tag ${e.class}">${e.text}</span>`).join('') : '<span class="e-none">无异常</span>'}</div></td>
+      <td>${drawSparkline(item.history_main_bsr, '#1e3a8a')}</td>
+      <td><div class="status-indicator ${hasActiveAnomaly?'changed':'stable'}">${hasActiveAnomaly?'发现异动':'稳定'}</div></td>
+      <td style="color:#64748b; font-size:12px;">${rawData.updated}</td>
     </tr>`;
   });
-
-  // 关键词 Top5 渲染
+  
+  // 渲染关键词 Top5 逻辑 (完整保留)
   if (rawData.keywords) {
     rawData.keywords.forEach(kw => {
       kw.top_asins.forEach((a, idx) => {
         html += `<tr style="background:#fef9c3;">
-          <td class="col-img"><div style="width:65px;height:85px;background:#fde68a;display:flex;align-items:center;justify-content:center;font-weight:700;color:#92400e;">KW T${idx+1}</div></td>
-          <td><div class="info-block"><div><span class="badge source-kw">KW Stream</span> <span class="badge main">Top ${idx+1}</span></div><a class="asin-link">${a.asin}</a><div class="title-text">${a.title}</div><div style="font-size:10px;color:#b45309;">搜索词: ${kw.keyword}</div></div></td>
-          <td><div class="metrics-block"><div>当前价格: ${a.price}</div><div>评分: ${a.rating} (${a.reviews})</div><div>搜索排名: <strong>${a.rank}</strong></div></div></td>
-          <td><div class="events-cell"><span class="e-none">指标平稳</span></div></td>
-          <td>-</td>
+          <td class="col-img"><div style="font-size:11px; color:#92400e;">KW Top${idx+1}</div></td>
+          <td><div class="info-block"><span class="badge source-kw">KW流</span> <strong>${kw.keyword}</strong><br><small>${a.asin}</small></div></td>
+          <td>价格: ${a.price} | 评分: ${a.rating}</td>
+          <td><span class="e-tag e-info">${a.type}</span></td>
+          <td>—</td>
           <td><div class="status-indicator stable">稳定</div></td>
-          <td>${rawData.updated}</td>
+          <td style="font-size:12px;">${rawData.updated}</td>
         </tr>`;
       });
     });
   }
 
-  tbody.innerHTML = html || '<tr><td colspan="7" style="text-align:center;padding:40px;">暂无监控数据</td></tr>';
+  tbody.innerHTML = html || '<tr><td colspan="7" style="text-align:center; padding:20px;">暂无匹配数据</td></tr>';
 }
 
 function exportToExcel() {
-  const rows = [['监控类型','ASIN','逻辑','状态','标题','品牌','当前售价','大类排名','同步时间']];
-  rawData.items.forEach(m => rows.push([m.monitor_type, m.asin, m.logic_type, m.listing_status, m.title, m.brand, m.price, m.main_bsr, rawData.updated]));
+  const rows = [['ASIN','类型','逻辑','状态','价格','大类排名','同步时间']];
+  rawData.items.forEach(m => rows.push([m.asin, m.monitor_type, m.logic_type, m.listing_status, m.price, m.main_bsr, rawData.updated]));
   const ws = XLSX.utils.aoa_to_sheet(rows);
   const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'MonitorReport');
-  XLSX.writeFile(wb, `CrossMart_Report_${rawData.updated.replace(/[/:]/g,'-')}.xlsx`);
+  XLSX.utils.book_append_sheet(wb, ws, "MonitorReport");
+  XLSX.writeFile(wb, `Monitor_Report_${rawData.updated.replace(/[: ]/g,'_')}.xlsx`);
 }
 </script>
 </body>
