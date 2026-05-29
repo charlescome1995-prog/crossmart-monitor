@@ -24,20 +24,6 @@ from browser.human_timer import human_pause, read_pause, think_pause
 
 # ─── 人类行为工具 ───────────────────────────────────────────────
 
-def human_move_mouse(browser, target_x, target_y, duration_ms=400):
-    """用多次微小移动模拟人类鼠标轨迹（贝塞尔曲线感觉）"""
-    steps = max(6, int(duration_ms / 30))
-    pts = []
-    for i in range(steps + 1):
-        t = i / steps
-        cx = target_x * t + random.uniform(-3, 3)
-        cy = target_y * t + random.uniform(-3, 3)
-        pts.append((cx, cy))
-    for px, py in pts:
-        browser.eval(f"window.moveTo({int(px)}, {int(py)})")
-        time.sleep(0.03)
-
-
 def random_scroll(browser, times=None, min_pause=1.0, max_pause=2.0):
     """随机滚动，带随机停顿"""
     t = times if times is not None else random.randint(1, 3)
@@ -62,15 +48,12 @@ def random_hovers(browser, count=None):
 
 
 def browse_random_asins(browser, count=2):
-    """
-    随机逛一些 ASIN 页面（不记录数据，只模拟人类行为）
-    随便点进去翻翻，然后关掉，继续下一个
-    """
+    """随机逛一些 ASIN 页面（不记录数据，只模拟人类行为）"""
     js = f"""
     (() => {{
         const links = document.querySelectorAll('a.a-link-normal[href*="/dp/"]');
         const candidates = Array.from(links)
-            .map(a => {{ try {{ return {{href: a.href, asin: (a.href.match(/\\/dp\\/([A-Z0-9]]+)/)||[])[1]}}; }} catch(e) {{ return null; }})
+            .map(a => {{ try {{ return {{href: a.href, asin: (a.href.match(/\\/dp\\/([A-Z0-9]+)/)||[])[1]}}; }} catch(e) {{ return null; }}})
             .filter(x => x && x.asin)
             .sort(() => Math.random() - 0.5)
             .slice(0, {count});
@@ -82,7 +65,6 @@ def browse_random_asins(browser, count=2):
     """
     browser.eval(js)
     time.sleep(count * 4 + 2)
-    # 关掉新开的标签页
     browser._refresh_tabs()
     tabs = browser._raw_tabs
     if len(tabs) > 1:
@@ -94,7 +76,7 @@ def browse_random_asins(browser, count=2):
         time.sleep(1)
 
 
-def wait_for_render(browser, min_sec=3, max_sec=6):
+def wait_for_render(browser, min_sec=4, max_sec=8):
     """等页面完全渲染（给卖家精灵插件时间）"""
     time.sleep(random.uniform(min_sec, max_sec))
 
@@ -104,15 +86,10 @@ def wait_for_render(browser, min_sec=3, max_sec=6):
 def extract_asin_marks_from_page(browser):
     """
     从亚马逊搜索结果页 DOM 读取卖家精灵插件标记
-    返回: [{
-        "asin": "B09V7Z4TJG",
-        "type": "natural_top1" | "ad_top1" | "new_natural_top1" | "new_ad_top1" | "natural_other",
-        "rank": "1",
-        "title": "...",
-        "price": "$18.90",
-        "rating": "4.6",
-        "reviews": "24694",
-    }, ...]
+    优先级：
+    1. 插件气泡文字（"自然第1" "广告第2" "新品第1"）——最准确
+    2. 插件 data 属性（data-sg-rank 等）
+    3. DOM Sponsored 标记（最后 fallback，避免误判）
     """
     js = r"""
     (() => {
@@ -143,51 +120,63 @@ def extract_asin_marks_from_page(browser):
             const revEl = item.querySelector('.a-size-base.s-underline-text');
             const reviews = revEl ? revEl.textContent.trim() : '';
 
-            // ── 卖家精灵插件标记 ─────────────────────────────────
             let keyword_type = 'natural';
             let keyword_rank = '';
+            let plugin_found = false;
 
-            // 方法1: 读取 item 上的 data 属性
-            const attrs = ['data-sg-rank', 'data-sr', 'data-position', 'data-keyword-rank',
-                           'data-ad-rank', 'data-natural-rank', 'data-sellersprite-rank'];
-            for (const attr of attrs) {
-                if (item.getAttribute(attr)) {
-                    keyword_rank = item.getAttribute(attr);
-                    break;
-                }
-            }
-
-            // 方法2: 找 Sponsored/Ad 标记
-            const adMark = item.closest('[class*="sponsorship"]') ||
-                          item.querySelector('[class*="sponsorship"], [class*="ad-"], [class*="sponsored"]');
-
-            // 方法3: 找新品标记
-            const newMark = item.querySelector('[class*="new-badge"], [class*="NNew"], [class*="new_arrival"]');
-
-            // 方法4: 插件注入的文字气泡（关键词位置气泡）
+            // ── 方法1: 插件气泡文字（最优先） ──────────────────────
             const allEls = item.querySelectorAll('*');
             for (const el of allEls) {
-                const txt = el.textContent || '';
-                const cls = typeof el.className === 'string' ? el.className : '';
-                if (/自然.*TOP|nat.*TOP/i.test(txt)) {
+                const txt = (el.textContent || '').trim();
+                // 卖家精灵插件格式: "自然第1" "自然第2" "广告第1" "新品第1" "新品广告第1"
+                if (/自然第\d/.test(txt)) {
                     keyword_type = 'natural';
-                    keyword_rank = txt.trim().substring(0, 20);
+                    keyword_rank = txt;
+                    plugin_found = true;
                     break;
                 }
-                if (/广告|第\d.*广告|spons.*\d/i.test(txt) || /ad.*\d/i.test(txt.toLowerCase())) {
+                if (/广告第\d/.test(txt)) {
                     keyword_type = 'ad';
-                    keyword_rank = txt.trim().substring(0, 20);
+                    keyword_rank = txt;
+                    plugin_found = true;
                     break;
                 }
-                if (/新品.*第|New.*\d|new.*top/i.test(txt)) {
+                if (/新品第\d/.test(txt) || /新品广告第\d/.test(txt)) {
                     keyword_type = 'new';
-                    keyword_rank = txt.trim().substring(0, 20);
+                    keyword_rank = txt;
+                    plugin_found = true;
                     break;
                 }
             }
 
-            if (adMark) keyword_type = 'ad';
-            if (newMark) keyword_type = 'new';
+            // ── 方法2: 插件 data 属性 ──────────────────────────────
+            if (!plugin_found) {
+                const attrs = ['data-sg-rank', 'data-sr', 'data-position', 'data-keyword-rank',
+                               'data-ad-rank', 'data-natural-rank', 'data-sellersprite-rank',
+                               'data-market', 'data-kw-rank'];
+                for (const attr of attrs) {
+                    const val = item.getAttribute(attr);
+                    if (val) {
+                        keyword_rank = val;
+                        // 根据属性名判断类型
+                        if (/natural/i.test(attr) || /kw-rank/i.test(attr)) keyword_type = 'natural';
+                        else if (/ad|spons/i.test(attr)) keyword_type = 'ad';
+                        else keyword_type = 'natural';
+                        plugin_found = true;
+                        break;
+                    }
+                }
+            }
+
+            // ── 方法3: DOM Sponsored 标记（最后 fallback）──────────
+            // 只有在插件没有给出任何标记时，才用这个判断
+            if (!plugin_found) {
+                const adEl = item.querySelector('[class*="sponsorship"], [class*="sponsored"], [class*="ad-label"]');
+                if (adEl || item.closest('[data-component-type="s-sponsored"]')) {
+                    keyword_type = 'ad';
+                }
+                // 否则默认 natural，不主动判 new（new 必须有插件标记）
+            }
 
             results.push({
                 asin,
@@ -227,22 +216,16 @@ def group_and_pick_top5(marks):
         if not asin or asin in [v.get('asin') for v in selected.values()]:
             continue
         t = (item.get('type') or '').lower()
-        rank_str = str(item.get('rank') or '')
 
-        # 广告位
-        if 'ad' in t or 'spons' in t:
+        if 'ad' in t and 'new' not in t:
             if 'ad_top1' not in selected:
                 try_add('ad_top1', item)
-        # 新品
+        elif 'new' in t and 'ad' in t:
+            if 'new_ad_top1' not in selected:
+                try_add('new_ad_top1', item)
         elif 'new' in t:
-            # 判断广告位新品还是自然位新品
-            if 'ad' in t:
-                if 'new_ad_top1' not in selected:
-                    try_add('new_ad_top1', item)
-            else:
-                if 'new_natural_top1' not in selected:
-                    try_add('new_natural_top1', item)
-        # 自然位
+            if 'new_natural_top1' not in selected:
+                try_add('new_natural_top1', item)
         else:
             if 'natural_top1' not in selected:
                 try_add('natural_top1', item)
@@ -252,7 +235,7 @@ def group_and_pick_top5(marks):
         if len(selected) >= 5:
             break
 
-    # 降级补充
+    # 降级补充（如果某种类型找不到，用其他类型的广告ASIN填充）
     while len(selected) < 5:
         for item in marks:
             asin = item.get('asin', '')
@@ -266,37 +249,10 @@ def group_and_pick_top5(marks):
     return list(selected.values())[:5]
 
 
-def build_keyword_snapshot(keyword, marks, top_asins):
-    """构建关键词快照"""
-    return {
-        "keyword": keyword,
-        "timestamp": datetime.now().isoformat(),
-        "result_count": len(marks),
-        "top_asins": [
-            {
-                "asin": a.get("asin", ""),
-                "type": a.get("type", ""),
-                "rank": a.get("rank", ""),
-                "title": a.get("title", ""),
-                "price": a.get("price", ""),
-                "rating": a.get("rating", ""),
-                "reviews": a.get("reviews", ""),
-            }
-            for a in top_asins
-        ],
-        "raw_marks": [
-            {"asin": a.get("asin", ""), "type": a.get("type", ""), "rank": a.get("rank", "")}
-            for a in marks[:50]
-        ]
-    }
-
-
 # ─── 人类搜索流程 ───────────────────────────────────────────────
 
 def do_keyword_search(browser, keyword):
-    """
-    在亚马逊上搜索关键词，模拟人类行为
-    """
+    """在亚马逊上搜索关键词，模拟人类行为"""
     print(f"\n{'='*60}")
     print(f"🔍 关键词市场: {keyword}")
     print(f"{'='*60}")
@@ -313,15 +269,11 @@ def do_keyword_search(browser, keyword):
     print(f"  ⏳ 等待 {random.uniform(5,8):.0f}s（检查网络和账号登录）...")
     time.sleep(random.uniform(5, 8))
 
-    # 2. 搜索关键词（不用地址栏，直接点搜索框）
+    # 2. 搜索关键词
     print(f"  🔍 在搜索框输入: {keyword}")
     time.sleep(random.uniform(1, 2))
-
-    # 点击搜索框
     browser.click_element("#twotabsearchtextbox")
     human_pause(1, 3)
-
-    # 清空搜索框
     browser.eval("""
         (() => {
             const inp = document.querySelector('#twotabsearchtextbox');
@@ -330,7 +282,6 @@ def do_keyword_search(browser, keyword):
     """)
     human_pause(0.5, 1.5)
 
-    # 逐字输入（模拟人类打字节奏）
     for ch in keyword:
         browser.eval(f"""
             (() => {{
@@ -347,17 +298,15 @@ def do_keyword_search(browser, keyword):
         human_pause(0.05, 0.2)
 
     human_pause(0.5, 1.5)
-
-    # 点搜索按钮
     browser.click_element("#nav-search-submit-text, #nav-search-submit-button, input[type='submit'][aria-label]")
     print(f"  ⏳ 等待搜索结果渲染（给卖家精灵插件留时间）...")
     wait_for_render(browser, min_sec=4, max_sec=8)
 
-    # 3. 随机滚动浏览
+    # 3. 随机滚动
     random_scroll(browser, times=random.randint(1, 2))
     human_pause(2, 5)
 
-    # 4. 随机悬停商品
+    # 4. 随机悬停
     random_hovers(browser, count=random.randint(1, 3))
 
     # 5. 随机浏览其他 ASIN
@@ -394,9 +343,7 @@ def do_keyword_search(browser, keyword):
 # ─── 主入口 ────────────────────────────────────────────────────
 
 def check_keyword(keyword):
-    """
-    关键词监控主函数
-    """
+    """关键词监控主函数"""
     browser = CDPBrowser()
 
     try:
@@ -406,7 +353,28 @@ def check_keyword(keyword):
         import traceback; traceback.print_exc()
         marks, top_asins = [], []
 
-    snapshot = build_keyword_snapshot(keyword, marks, top_asins)
+    snapshot = {
+        "keyword": keyword,
+        "timestamp": datetime.now().isoformat(),
+        "result_count": len(marks),
+        "top_asins": [
+            {
+                "asin": a.get("asin", ""),
+                "type": a.get("type", ""),
+                "rank": a.get("rank", ""),
+                "title": a.get("title", ""),
+                "price": a.get("price", ""),
+                "rating": a.get("rating", ""),
+                "reviews": a.get("reviews", ""),
+            }
+            for a in top_asins
+        ],
+        "raw_marks": [
+            {"asin": a.get("asin", ""), "type": a.get("type", ""), "rank": a.get("rank", "")}
+            for a in marks[:50]
+        ]
+    }
+
     save_keyword_snapshot(keyword, snapshot)
 
     browser.close()

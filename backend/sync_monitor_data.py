@@ -4,7 +4,7 @@
 sync_monitor_data.py - 从本地快照生成前端可用的 rawData JSON
 写入 frontend/data/rawData.json，供 monitor.html 加载
 """
-import json, os, glob, sys, re
+import json, os, glob, sys, re, subprocess
 from datetime import datetime
 
 sys.stdout.reconfigure(encoding='utf-8')
@@ -216,6 +216,22 @@ def main():
         json.dump(output, f, ensure_ascii=False, indent=2)
 
     print(f'\n✅ Written {len(items)} items to {OUTPUT_RAW}')
+
+    # ── 自动推送到 GitHub ──────────────────────────────────────────
+    try:
+        subprocess.run(['git', 'add', OUTPUT_RAW], capture_output=True, cwd=BASE)
+        diff = subprocess.run(['git', 'diff', '--cached', '--stat'], capture_output=True, text=True, cwd=BASE)
+        if diff.stdout.strip():
+            subprocess.run(['git', 'commit', '-m', 'auto: sync rawData.json'], capture_output=True, cwd=BASE)
+            result = subprocess.run(['git', 'push'], capture_output=True, text=True, cwd=BASE)
+            if result.returncode == 0:
+                print('🚀 rawData.json 已推送至 GitHub')
+            else:
+                print('⚠️ 推送失败:', result.stderr[:200])
+        else:
+            print('ℹ️ rawData.json 无变化，跳过推送')
+    except Exception as e:
+        print(f'⚠️ Git 推送异常: {e}')
 
 
 if __name__ == '__main__':
