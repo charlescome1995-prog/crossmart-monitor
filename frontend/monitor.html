@@ -18,27 +18,27 @@
   .container { padding: 16px; }
 
   .config-matrix { background: #fff; padding: 12px; padding-top: 20px; border-radius: 6px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-  .matrix-wrapper { display: flex; gap: 12px; overflow-x: auto; padding-top: 4px; padding-bottom: 6px; align-items: flex-start; }
-  .matrix-section { display: flex; flex-direction: column; gap: 6px; background: rgba(0,0,0,0.01); padding: 10px; padding-top: 14px; border-radius: 6px; border: 1px solid #f1f5f9; position: relative; min-width: 160px; }
-  .matrix-section::before { content: attr(data-label); position: absolute; top: -10px; left: 10px; background: #fff; padding: 0 6px; font-size: 11px; font-weight: 700; color: #475569; border: 1px solid #cbd5e1; border-radius: 3px; white-space: nowrap; }
+  .matrix-stream { margin-bottom: 14px; }
+  .matrix-stream:last-child { margin-bottom: 0; }
+  .stream-label { font-size: 11px; font-weight: 700; color: #475569; border: 1px solid #cbd5e1; border-radius: 3px; padding: 0 6px; background: #f8fafc; white-space: nowrap; display: inline-block; margin-bottom: 4px; }
+  .stream-row { display: flex; gap: 8px; align-items: flex-start; }
+  .stream-row input[type="text"] { flex: 1; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; font-weight: 700; min-width: 0; }
+  .stream-row input[type="text"]:focus { border-color: #e94560; outline: none; }
+  .stream-row input[type="text"]::placeholder { font-weight: 400; color: #cbd5e1; }
 
-  .matrix-row { display: flex; flex-direction: column; gap: 3px; }
-  .matrix-row input[type="text"] { width: 148px; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; font-weight: 700; }
-  .matrix-row input[type="text"]:focus { border-color: #e94560; outline: none; }
-  .matrix-row input[type="text"]::placeholder { font-weight: 400; color: #cbd5e1; }
-
-  .rel-row { display: flex; align-items: center; gap: 3px; margin-top: 1px; }
-  .rel-row input[type="text"] { width: 110px; padding: 4px 6px; border: 1px solid #e2e8f0; border-radius: 3px; font-size: 11px; }
+  .rel-row { display: flex; align-items: center; gap: 3px; margin-top: 2px; }
+  .rel-row input[type="text"] { flex: 1; padding: 4px 6px; border: 1px solid #e2e8f0; border-radius: 3px; font-size: 11px; min-width: 0; }
   .rel-row input[type="text"]:focus { border-color: #e94560; outline: none; }
   .rel-row .rel-label { font-size: 10px; color: #94a3b8; width: 18px; flex-shrink: 0; text-align: right; }
   .rel-del { background: none; border: none; color: #cbd5e1; cursor: pointer; font-size: 11px; padding: 0 2px; flex-shrink: 0; }
   .rel-del:hover { color: #ef4444; }
 
-  .expand-btn { background: none; border: 1px solid #e2e8f0; border-radius: 3px; color: #64748b; cursor: pointer; font-size: 10px; padding: 1px 5px; margin-top: 2px; width: 148px; text-align: center; }
+  .expand-btn { background: none; border: 1px solid #e2e8f0; border-radius: 3px; color: #64748b; cursor: pointer; font-size: 10px; padding: 1px 5px; margin-top: 2px; white-space: nowrap; }
   .expand-btn:hover { border-color: #e94560; color: #e94560; }
   .expand-btn .count { color: #e94560; font-weight: 700; }
 
   .matrix-btn-zone { display: flex; align-items: flex-end; padding-bottom: 2px; gap: 8px; flex-wrap: wrap; }
+  .matrix-btn-zone > * { flex-shrink: 0; }
 
   .filter-bar { background: #fff; padding: 12px; border-radius: 6px 6px 0 0; border: 1px solid #e2e8f0; border-bottom: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
   .filter-controls { display: flex; align-items: center; gap: 12px; }
@@ -114,23 +114,17 @@
   <div class="container">
 
     <div class="config-matrix">
-      <div class="matrix-wrapper">
-
-        <!-- ASIN 监控流 -->
-        <div class="matrix-section" data-label="ASIN 监控流 (最多5个)" id="section-asin">
-          <!-- 动态生成 -->
+      <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+        <div style="flex:1;min-width:0;">
+          <div class="matrix-stream" id="stream-asin">
+            <div class="stream-label">ASIN 监控流（最多5个）</div>
+            <div class="stream-row" id="row-asin"></div>
+          </div>
+          <div class="matrix-stream" id="stream-kw">
+            <div class="stream-label">关键词 监控流（最多5个）</div>
+            <div class="stream-row" id="row-kw"></div>
+          </div>
         </div>
-
-        <!-- 关键词 监控流 -->
-        <div class="matrix-section" data-label="关键词 监控流 (最多5个)" id="section-kw">
-          <!-- 动态生成 -->
-        </div>
-
-        <!-- 竞品 ASIN 监控流 -->
-        <div class="matrix-section" data-label="竞品 ASIN 监控流 (最多5个)" id="section-comp">
-          <!-- 动态生成 -->
-        </div>
-
         <div class="matrix-btn-zone">
           <input type="password" id="ghTokenInput" placeholder="GitHub Token" style="width:220px;padding:6px 8px;border:1px solid #cbd5e1;border-radius:4px;font-size:12px;" onkeydown="if(event.key==='Enter')triggerMonitor()">
           <button class="btn btn-primary" id="btnTrigger" onclick="triggerMonitor()" style="background:#e94560;color:#fff">⚡ 立即抓取</button>
@@ -204,9 +198,8 @@ window.addEventListener('DOMContentLoaded', function() {
       localStorage.setItem('gh_token', tokenInput.value.trim());
     });
   }
-  buildMatrixSection('asin');
-  buildMatrixSection('kw');
-  buildMatrixSection('comp');
+  buildStreamRow('asin');
+  buildStreamRow('kw');
   loadGitHubConfig();
   loadRawData();
 });
@@ -230,26 +223,23 @@ async function putFile(path, content) {
 }
 
 async function triggerMonitor() {
-  var asins = [], kws = [], comps = [];
+  var asins = [], kws = [];
   for (var i = 0; i < 5; i++) {
     var a = (document.getElementById('in-asin-' + i) || {}).value || '';
     var k = (document.getElementById('in-kw-' + i) || {}).value || '';
-    var c = (document.getElementById('in-comp-' + i) || {}).value || '';
     var ra = getRelatedVals('asin', i);
     var rk = getRelatedVals('kw', i);
-    var rc = getRelatedVals('comp', i);
     if (a.trim()) asins.push({ main: a.trim(), related: ra });
     if (k.trim()) kws.push({ main: k.trim(), related: rk });
-    if (c.trim()) comps.push({ main: c.trim(), related: rc });
   }
-  if (asins.length === 0 && kws.length === 0 && comps.length === 0) {
+  if (asins.length === 0 && kws.length === 0) {
     var btn = document.getElementById('btnTrigger');
     btn.textContent = '\u274c 请先输入 ASIN 或关键词';
     btn.disabled = false;
     setTimeout(function() { btn.textContent = '\u26a1 立即抓取'; }, 3000);
     return;
   }
-  var cfg = { asins: asins, keywords: kws, competitors: comps };
+  var cfg = { asins: asins, keywords: kws };
   localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
 
 
@@ -331,20 +321,6 @@ function applyConfig(cfg) {
       }
     });
   }
-  if (cfg.competitors) {
-    cfg.competitors.forEach(function(row, i) {
-      if (i >= 5) return;
-      var el = document.getElementById('in-comp-' + i);
-      if (el) el.value = row.main || '';
-      if (row.related) {
-        row.related.forEach(function(r, j) {
-          if (j >= 5) return;
-          var relEl = document.getElementById('rel-comp-' + i + '-' + j);
-          if (relEl) relEl.value = r;
-        });
-      }
-    });
-  }
 }
 
 function drawSparkline(data, color) {
@@ -376,23 +352,25 @@ function escHtml(s) {
 }
 
 // ── 动态生成每块区域的5行 ──────────────────────────────────────
-function buildMatrixSection(type) {
-  var section = document.getElementById('section-' + type);
-  if (!section) return;
-  var labelPrefix = type === 'asin' ? 'ASIN ' : (type === 'kw' ? 'Keyword ' : 'ASIN ');
+// ── 动态生成流行（一行5个输入框） ───────────────────────────────
+function buildStreamRow(type) {
+  var container = document.getElementById('row-' + type);
+  if (!container) return;
   var placeholder = type === 'kw' ? '输入关键词...' : '输入 ASIN...';
   var html = '';
   for (var i = 0; i < 5; i++) {
-    var mainId = 'in-' + type + '-' + i;
-    var relContainerId = 'rel-container-' + type + '-' + i;
-    html += '<div class="matrix-row">';
-    html += '<label style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:2px;">' + labelPrefix + (i + 1) + '</label>';
-    html += '<input type="text" id="' + mainId + '" placeholder="' + placeholder + '" oninput="onMainInput(\'' + type + '\',' + i + ')">';
-    html += '<div id="' + relContainerId + '" style="display:none;"></div>';
-    html += '<button class="expand-btn" id="expand-' + type + '-' + i + '" onclick="toggleRelated(\'' + type + '\',' + i + ')">展开关联 <span class="count">0</span></button>';
-    html += '</div>';
+    html += '<input type="text" id="in-' + type + '-' + i + '" placeholder="' + placeholder + '" style="flex:1;padding:5px 8px;border:1px solid #cbd5e1;border-radius:4px;font-size:12px;font-weight:700;min-width:0;" oninput="onMainInput(\'' + type + '\',' + i + ')">';
   }
-  section.innerHTML = html;
+  container.innerHTML = html;
+  // Add expand row below
+  var expandHtml = '';
+  for (var i = 0; i < 5; i++) {
+    expandHtml += '<div style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;" id="rel-wrap-' + type + '-' + i + '">' +
+      '<button class="expand-btn" id="expand-' + type + '-' + i + '" onclick="toggleRelated(\'' + type + '\',' + i + ')">展开关联 <span class="count">0</span></button>' +
+      '<div id="rel-container-' + type + '-' + i + '" style="display:none;"></div>' +
+    '</div>';
+  }
+  container.insertAdjacentHTML('afterend', '<div class="stream-row" style="margin-top:4px;">' + expandHtml + '</div>');
 }
 
 function onMainInput(type, idx) {
@@ -402,6 +380,7 @@ function onMainInput(type, idx) {
     toggleRelated(type, idx);
   }
 }
+
 
 // ── 展开 / 收起 关联 ASIN ─────────────────────────────────────
 function toggleRelated(type, idx) {
@@ -438,7 +417,7 @@ function renderRelatedInputs(type, idx) {
     html += buildRelRow(type, idx, r, rels[r]);
   }
   if (rels.length < 5) {
-    html += '<button onclick="addRelatedInput(\'' + type + '\',' + idx + ')" style="background:none;border:1px dashed #e2e8f0;border-radius:3px;color:#94a3b8;cursor:pointer;font-size:10px;padding:2px 6px;width:110px;margin-left:21px;margin-top:2px;">+ 添加</button>';
+    html += '<button onclick="addRelatedInput(\'' + type + '\',' + idx + ')" style="background:none;border:1px dashed #e2e8f0;border-radius:3px;color:#94a3b8;cursor:pointer;font-size:10px;padding:2px 6px;width:100%;margin-top:2px;">+ 添加关联</button>';
   }
   container.innerHTML = html;
 }
@@ -478,7 +457,7 @@ function removeRelatedInput(type, idx, relIdx) {
   var container = document.getElementById('rel-container-' + type + '-' + idx);
   var hasAdd = container.querySelector('button[onclick*="addRelatedInput"]');
   if (!hasAdd) {
-    container.insertAdjacentHTML('beforeend', '<button onclick="addRelatedInput(\'' + type + '\',' + idx + ')" style="background:none;border:1px dashed #e2e8f0;border-radius:3px;color:#94a3b8;cursor:pointer;font-size:10px;padding:2px 6px;width:110px;margin-left:21px;margin-top:2px;">+ 添加</button>');
+    container.insertAdjacentHTML('beforeend', '<button onclick="addRelatedInput(\'' + type + '\',' + idx + ')" style="background:none;border:1px dashed #e2e8f0;border-radius:3px;color:#94a3b8;cursor:pointer;font-size:10px;padding:2px 6px;width:100%;margin-top:2px;">+ 添加关联</button>');
   }
 }
 
@@ -522,11 +501,9 @@ async function loadGitHubConfig() {
     // Update expand button counts
     if (cfg.asins) cfg.asins.forEach(function(row, i) { updateExpandCount('asin', i); });
     if (cfg.keywords) cfg.keywords.forEach(function(row, i) { updateExpandCount('kw', i); });
-    if (cfg.competitors) cfg.competitors.forEach(function(row, i) { updateExpandCount('comp', i); });
     if (statusEl) {
       var cnt = (cfg.asins ? cfg.asins.filter(function(r) { return r.main; }).length : 0) +
-                (cfg.keywords ? cfg.keywords.filter(function(r) { return r.main; }).length : 0) +
-                (cfg.competitors ? cfg.competitors.filter(function(r) { return r.main; }).length : 0);
+                (cfg.keywords ? cfg.keywords.filter(function(r) { return r.main; }).length : 0);
       statusEl.textContent = '\u2713 已同步 (' + cnt + ')';
     }
   } catch(e) {
