@@ -17,28 +17,32 @@
 
   .container { padding: 16px; }
 
-  .config-matrix { background: #fff; padding: 12px; padding-top: 20px; border-radius: 6px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-  .matrix-stream { margin-bottom: 14px; }
-  .matrix-stream:last-child { margin-bottom: 0; }
-  .stream-label { font-size: 11px; font-weight: 700; color: #475569; border: 1px solid #cbd5e1; border-radius: 3px; padding: 0 6px; background: #f8fafc; white-space: nowrap; display: inline-block; margin-bottom: 4px; }
-  .stream-row { display: flex; gap: 8px; align-items: flex-start; }
-  .stream-row input[type="text"] { flex: 1; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; font-weight: 700; min-width: 0; }
-  .stream-row input[type="text"]:focus { border-color: #e94560; outline: none; }
-  .stream-row input[type="text"]::placeholder { font-weight: 400; color: #cbd5e1; }
+  .config-matrix { background: #fff; padding: 12px; padding-top: 16px; border-radius: 6px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+  .matrix-row { display: grid; grid-template-columns: 70px repeat(5, 1fr) 1px repeat(5, 1fr) 1px 140px auto 100px; gap: 0 6px; align-items: center; }
+  .matrix-row .stream-label { font-size: 11px; font-weight: 700; color: #475569; border: 1px solid #cbd5e1; border-radius: 3px; padding: 0 4px; background: #f8fafc; white-space: nowrap; height: 30px; display: flex; align-items: center; justify-content: center; }
+  .matrix-row input[type="text"] { padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; font-weight: 700; height: 30px; }
+  .matrix-row input[type="text"]:focus { border-color: #e94560; outline: none; }
+  .matrix-row input[type="text"]::placeholder { font-weight: 400; color: #cbd5e1; }
+  .matrix-row .sep { width: 1px; height: 30px; background: #e2e8f0; }
+  .matrix-row .ctrl { display: flex; align-items: center; gap: 6px; }
+  .matrix-row .ctrl input[type="password"] { width: 110px; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; height: 30px; }
+  .matrix-row .ctrl button { background: #e94560; color: #fff; border: none; border-radius: 4px; padding: 5px 10px; font-size: 12px; font-weight: 600; cursor: pointer; height: 30px; }
+  .matrix-row .ctrl span { font-size: 12px; padding: 4px 10px; border-radius: 20px; background: #e2e8f0; color: #64748b; white-space: nowrap; }
 
-  .rel-row { display: flex; align-items: center; gap: 3px; margin-top: 2px; }
-  .rel-row input[type="text"] { flex: 1; padding: 4px 6px; border: 1px solid #e2e8f0; border-radius: 3px; font-size: 11px; min-width: 0; }
-  .rel-row input[type="text"]:focus { border-color: #e94560; outline: none; }
-  .rel-row .rel-label { font-size: 10px; color: #94a3b8; width: 18px; flex-shrink: 0; text-align: right; }
-  .rel-del { background: none; border: none; color: #cbd5e1; cursor: pointer; font-size: 11px; padding: 0 2px; flex-shrink: 0; }
-  .rel-del:hover { color: #ef4444; }
+  .rel-row { display: grid; grid-template-columns: 70px repeat(5, 1fr) 1px repeat(5, 1fr) 1px 140px auto 100px; gap: 0 6px; align-items: start; margin-top: 6px; }
+  .rel-cell { display: flex; flex-direction: column; gap: 2px; }
+  .rel-cell .rel-label { font-size: 10px; color: #94a3b8; font-weight: 600; text-align: center; }
+  .rel-cell input[type="text"] { padding: 4px 6px; border: 1px solid #e2e8f0; border-radius: 3px; font-size: 11px; height: 26px; }
+  .rel-cell input[type="text"]:focus { border-color: #e94560; outline: none; }
+  .rel-cell input[type="text"]::placeholder { color: #cbd5e1; }
+  .rel-cell .add-rel { background: none; border: 1px dashed #e2e8f0; border-radius: 3px; color: #94a3b8; cursor: pointer; font-size: 10px; padding: 2px 4px; text-align: center; width: 100%; }
+  .rel-cell .add-rel:hover { border-color: #e94560; color: #e94560; }
+  .rel-cell .rel-del { background: none; border: none; color: #cbd5e1; cursor: pointer; font-size: 10px; padding: 0; text-align: center; width: 100%; }
+  .rel-cell .rel-del:hover { color: #ef4444; }
 
-  .expand-btn { background: none; border: 1px solid #e2e8f0; border-radius: 3px; color: #64748b; cursor: pointer; font-size: 10px; padding: 1px 5px; margin-top: 2px; white-space: nowrap; }
+  .expand-btn { background: none; border: 1px solid #e2e8f0; border-radius: 3px; color: #64748b; cursor: pointer; font-size: 10px; padding: 1px 4px; white-space: nowrap; width: 100%; text-align: center; }
   .expand-btn:hover { border-color: #e94560; color: #e94560; }
   .expand-btn .count { color: #e94560; font-weight: 700; }
-
-  .matrix-btn-zone { display: flex; align-items: flex-end; padding-bottom: 2px; gap: 8px; flex-wrap: wrap; }
-  .matrix-btn-zone > * { flex-shrink: 0; }
 
   .filter-bar { background: #fff; padding: 12px; border-radius: 6px 6px 0 0; border: 1px solid #e2e8f0; border-bottom: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
   .filter-controls { display: flex; align-items: center; gap: 12px; }
@@ -114,19 +118,30 @@
   <div class="container">
 
     <div class="config-matrix">
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:nowrap;overflow-x:auto;padding:4px 0;">
-        <div style="font-size:11px;font-weight:700;color:#475569;border:1px solid #cbd5e1;border-radius:3px;padding:2px 6px;background:#f8fafc;white-space:nowrap;flex-shrink:0;">ASIN 监控流</div>
-        <div class="stream-row" id="row-asin" style="flex:1;min-width:0;display:flex;gap:6px;"></div>
-        <div style="width:1px;height:32px;background:#e2e8f0;flex-shrink:0;"></div>
-        <div style="font-size:11px;font-weight:700;color:#475569;border:1px solid #cbd5e1;border-radius:3px;padding:2px 6px;background:#f8fafc;white-space:nowrap;flex-shrink:0;">关键词 监控流</div>
-        <div class="stream-row" id="row-kw" style="flex:1;min-width:0;display:flex;gap:6px;"></div>
-        <div style="width:1px;height:32px;background:#e2e8f0;flex-shrink:0;"></div>
-        <input type="password" id="ghTokenInput" placeholder="Token" style="width:120px;padding:5px 8px;border:1px solid #cbd5e1;border-radius:4px;font-size:12px;flex-shrink:0;" onkeydown="if(event.key==='Enter')triggerMonitor()">
-        <button class="btn btn-primary" id="btnTrigger" onclick="triggerMonitor()" style="background:#e94560;color:#fff;flex-shrink:0;padding:5px 12px;">⚡ 抓取</button>
-        <span id="configStatus" style="font-size:12px;padding:4px 10px;border-radius:20px;background:#e2e8f0;color:#64748b;cursor:default;user-select:none;flex-shrink:0;white-space:nowrap;">读取配置...</span>
+      <div class="matrix-row">
+        <div style="grid-column:1;"></div>
+        <div class="stream-label" style="grid-column:2;">ASIN 监控流</div>
+        <div id="row-asin" style="grid-column:3 / 8;display:grid;grid-template-columns:repeat(5,1fr);gap:0 6px;"></div>
+        <div class="sep"></div>
+        <div class="stream-label" style="grid-column:9;">关键词 监控流</div>
+        <div id="row-kw" style="grid-column:10 / 15;display:grid;grid-template-columns:repeat(5,1fr);gap:0 6px;"></div>
+        <div class="sep"></div>
+        <div class="ctrl" style="grid-column:16;">
+          <input type="password" id="ghTokenInput" placeholder="Token" onkeydown="if(event.key==='Enter')triggerMonitor()">
+        </div>
+        <button id="btnTrigger" onclick="triggerMonitor()">⚡ 抓取</button>
+        <span id="configStatus">读取配置...</span>
       </div>
-      <div id="rel-row-asin" style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;"></div>
-      <div id="rel-row-kw" style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;"></div>
+      <div class="rel-row">
+        <div></div>
+        <div id="rel-asin-header" style="display:grid;grid-column:3 / 8;grid-template-columns:repeat(5,1fr);gap:0 6px;"></div>
+        <div class="sep"></div>
+        <div id="rel-kw-header" style="display:grid;grid-column:10 / 15;grid-template-columns:repeat(5,1fr);gap:0 6px;"></div>
+        <div class="sep"></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
 
     <div class="filter-bar">
@@ -196,6 +211,8 @@ window.addEventListener('DOMContentLoaded', function() {
   }
   buildStreamRow('asin');
   buildStreamRow('kw');
+  buildRelRowGrid();
+  loadGitHubConfig();
   loadGitHubConfig();
   loadRawData();
 });
@@ -348,53 +365,90 @@ function escHtml(s) {
 }
 
 // ── 动态生成每块区域的5行 ──────────────────────────────────────
-// ── 动态生成流行（一行5个输入框） ───────────────────────────────
+// ── 动态生成10列主输入行 ─────────────────────────────────────
 function buildStreamRow(type) {
   var container = document.getElementById('row-' + type);
   if (!container) return;
-  var placeholder = type === 'kw' ? '输入关键词...' : '输入 ASIN...';
+  var placeholder = type === 'kw' ? '\u5173\u952e\u8bcd...' : 'ASIN...';
   var html = '';
   for (var i = 0; i < 5; i++) {
-    html += '<input type="text" id="in-' + type + '-' + i + '" placeholder="' + placeholder + '" style="flex:1;min-width:0;padding:5px 8px;border:1px solid #cbd5e1;border-radius:4px;font-size:12px;font-weight:700;" oninput="onMainInput(\'' + type + '\',' + i + ')">';
+    html += '<input type="text" id="in-' + type + '-' + i + '" placeholder="' + placeholder + '" oninput="onMainInput(\'' + type + '\',' + i + ')">';
   }
   container.innerHTML = html;
-  // Build expand buttons into the rel-row container
-  var relContainer = document.getElementById('rel-row-' + type);
-  if (relContainer) {
-    var expandHtml = '';
+}
+
+function buildRelRowGrid() {
+  // Build related inputs into 5-cell groups aligned under each main column
+  ['asin', 'kw'].forEach(function(type) {
+    var container = document.getElementById('rel-' + type + '-header');
+    if (!container) return;
+    var html = '';
     for (var i = 0; i < 5; i++) {
-      expandHtml += '<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;" id="rel-wrap-' + type + '-' + i + '">' +
-        '<button class="expand-btn" id="expand-' + type + '-' + i + '" onclick="toggleRelated(\'' + type + '\',' + i + ')">展开关联 <span class="count">0</span></button>' +
-        '<div id="rel-container-' + type + '-' + i + '" style="display:none;"></div>' +
+      html += '<div class="rel-cell" id="rel-cell-' + type + '-' + i + '">' +
+        '<div style="display:flex;align-items:center;gap:2px;margin-bottom:2px;">' +
+          '<span style="font-size:10px;color:#94a3b8;font-weight:600;">\u5173\u8054 ' + (i + 1) + '</span>' +
+          '<button class="add-rel" onclick="addRelatedInput(\'' + type + '\',' + i + ')">+</button>' +
+        '</div>' +
+        '<div id="rel-container-' + type + '-' + i + '"></div>' +
       '</div>';
     }
-    relContainer.innerHTML = expandHtml;
-  }
+    container.innerHTML = html;
+  });
 }
 
 function onMainInput(type, idx) {
-  var mainVal = (document.getElementById('in-' + type + '-' + idx) || {}).value || '';
-  var container = document.getElementById('rel-container-' + type + '-' + idx);
-  if (mainVal.trim() && container && container.style.display === 'none') {
-    toggleRelated(type, idx);
+  var cell = document.getElementById('rel-cell-' + type + '-' + idx);
+  if (cell) {
+    var mainEl = document.getElementById('in-' + type + '-' + idx);
+    cell.style.background = (mainEl && mainEl.value.trim()) ? '#fef9c3' : '';
   }
 }
 
-
-// ── 展开 / 收起 关联 ASIN ─────────────────────────────────────
-function toggleRelated(type, idx) {
+// ── 关联输入行 ──────────────────────────────────────────────────
+function addRelatedInput(type, idx) {
   var container = document.getElementById('rel-container-' + type + '-' + idx);
-  var btn = document.getElementById('expand-' + type + '-' + idx);
-  if (!container || !btn) return;
-  var isOpen = container.style.display !== 'none';
-  if (isOpen) {
-    container.style.display = 'none';
-    btn.innerHTML = '展开关联 <span class="count">' + getRelatedVals(type, idx).length + '</span>';
-  } else {
-    renderRelatedInputs(type, idx);
-    container.style.display = 'block';
-    btn.innerHTML = '收起关联 <span class="count">' + getRelatedVals(type, idx).length + '</span>';
+  if (!container) return;
+  var inputs = container.querySelectorAll('input');
+  if (inputs.length >= 5) return;
+  var r = inputs.length;
+  var relId = 'rel-' + type + '-' + idx + '-' + r;
+  var html = '<div style="display:flex;align-items:center;gap:2px;margin-top:2px;">' +
+    '<span style="font-size:10px;color:#94a3b8;width:18px;flex-shrink:0;text-align:right;">#' + (r + 1) + '</span>' +
+    '<input type="text" id="' + relId + '" placeholder="ASIN" style="flex:1;">' +
+    '<button onclick="removeRelatedInput(\'' + type + '\',' + idx + ',' + r + ')" style="background:none;border:none;color:#cbd5e1;cursor:pointer;font-size:10px;padding:0;">&#x2715;</button>' +
+  '</div>';
+  container.insertAdjacentHTML('beforeend', html);
+  document.getElementById(relId).focus();
+  if (r + 1 >= 5) {
+    var addBtn = container.parentElement.querySelector('.add-rel');
+    if (addBtn) addBtn.style.display = 'none';
   }
+}
+
+function removeRelatedInput(type, idx, relIdx) {
+  var container = document.getElementById('rel-container-' + type + '-' + idx);
+  var relId = 'rel-' + type + '-' + idx + '-' + relIdx;
+  var div = document.getElementById('rel-div-' + relId);
+  if (div) div.remove();
+  renumberRelatedInputs(type, idx);
+  var addBtn = container.parentElement.querySelector('.add-rel');
+  if (addBtn) addBtn.style.display = '';
+}
+
+function renumberRelatedInputs(type, idx) {
+  var container = document.getElementById('rel-container-' + type + '-' + idx);
+  if (!container) return;
+  var divs = container.querySelectorAll('div[style*="display:flex"]');
+  divs.forEach(function(div, i) {
+    var newIdx = i;
+    var lbl = div.querySelector('span');
+    if (lbl) lbl.textContent = '#' + (newIdx + 1);
+    var input = div.querySelector('input');
+    if (input) input.id = 'rel-' + type + '-' + idx + '-' + newIdx;
+    var btn = div.querySelector('button');
+    if (btn) btn.setAttribute('onclick', "removeRelatedInput('" + type + "'," + idx + "," + newIdx + ")");
+    div.id = 'rel-div-' + type + '-' + idx + '-' + newIdx;
+  });
 }
 
 function getRelatedVals(type, idx) {
@@ -405,82 +459,6 @@ function getRelatedVals(type, idx) {
     if (el.value && el.value.trim()) out.push(el.value.trim());
   }
   return out;
-}
-
-function renderRelatedInputs(type, idx) {
-  var container = document.getElementById('rel-container-' + type + '-' + idx);
-  if (!container) return;
-  var rels = getRelatedVals(type, idx);
-  var html = '';
-  for (var r = 0; r < rels.length; r++) {
-    html += buildRelRow(type, idx, r, rels[r]);
-  }
-  if (rels.length < 5) {
-    html += '<button onclick="addRelatedInput(\'' + type + '\',' + idx + ')" style="background:none;border:1px dashed #e2e8f0;border-radius:3px;color:#94a3b8;cursor:pointer;font-size:10px;padding:2px 6px;width:100%;margin-top:2px;">+ 添加关联</button>';
-  }
-  container.innerHTML = html;
-}
-
-function buildRelRow(type, idx, r, value) {
-  var relId = 'rel-' + type + '-' + idx + '-' + r;
-  var html = '<div class="rel-row" id="rel-row-' + relId + '">';
-  html += '<span class="rel-label">#' + (r + 1) + '</span>';
-  html += '<input type="text" id="' + relId + '" value="' + escHtml(value) + '" placeholder="ASIN">';
-  html += '<button class="rel-del" onclick="removeRelatedInput(\'' + type + '\',' + idx + ',' + r + ')">&#x2715;</button>';
-  html += '</div>';
-  return html;
-}
-
-function addRelatedInput(type, idx) {
-  var rels = getRelatedVals(type, idx);
-  if (rels.length >= 5) return;
-  var container = document.getElementById('rel-container-' + type + '-' + idx);
-  var newIdx = rels.length;
-  var addBtn = container.querySelector('button[onclick*="addRelatedInput"]');
-  var html = buildRelRow(type, idx, newIdx, '');
-  if (addBtn) {
-    addBtn.insertAdjacentHTML('beforebegin', html);
-  } else {
-    container.insertAdjacentHTML('beforeend', html);
-  }
-  document.getElementById('rel-' + type + '-' + idx + '-' + newIdx).focus();
-  if (newIdx + 1 >= 5 && addBtn) addBtn.remove();
-}
-
-function removeRelatedInput(type, idx, relIdx) {
-  var relId = 'rel-' + type + '-' + idx + '-' + relIdx;
-  var row = document.getElementById('rel-row-' + relId);
-  if (row) row.remove();
-  renumberRelatedInputs(type, idx);
-  updateExpandCount(type, idx);
-  var container = document.getElementById('rel-container-' + type + '-' + idx);
-  var hasAdd = container.querySelector('button[onclick*="addRelatedInput"]');
-  if (!hasAdd) {
-    container.insertAdjacentHTML('beforeend', '<button onclick="addRelatedInput(\'' + type + '\',' + idx + ')" style="background:none;border:1px dashed #e2e8f0;border-radius:3px;color:#94a3b8;cursor:pointer;font-size:10px;padding:2px 6px;width:100%;margin-top:2px;">+ 添加关联</button>');
-  }
-}
-
-function renumberRelatedInputs(type, idx) {
-  var container = document.getElementById('rel-container-' + type + '-' + idx);
-  if (!container) return;
-  var rows = container.querySelectorAll('.rel-row');
-  rows.forEach(function(row, i) {
-    var oldIdx = parseInt(row.id.split('-').pop());
-    var newIdx = i;
-    var lbl = row.querySelector('.rel-label');
-    if (lbl) lbl.textContent = '#' + (newIdx + 1);
-    var input = row.querySelector('input');
-    if (input) input.id = 'rel-' + type + '-' + idx + '-' + newIdx;
-    var btn = row.querySelector('.rel-del');
-    if (btn) btn.setAttribute('onclick', "removeRelatedInput('" + type + "'," + idx + "," + newIdx + ")");
-    row.id = 'rel-row-' + type + '-' + idx + '-' + newIdx;
-  });
-}
-
-function updateExpandCount(type, idx) {
-  var rels = getRelatedVals(type, idx);
-  var btn = document.getElementById('expand-' + type + '-' + idx);
-  if (btn) btn.innerHTML = '展开关联 <span class="count">' + rels.length + '</span>';
 }
 
 async function loadGitHubConfig() {
