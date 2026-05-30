@@ -52,18 +52,39 @@ def load_config():
     return data
 
 
-def run_command(cmd, cwd=None, timeout=600):
-    print("  Running: " + cmd)
+def _safe_print(s):
+    """Print unicode string to GBK console without crashing"""
     try:
+        print(s)
+    except UnicodeEncodeError:
+        print(s.encode('gbk', errors='replace').decode('gbk'))
+
+def run_command(cmd, cwd=None, timeout=600):
+    cmd_list = cmd if isinstance(cmd, list) else cmd.split()
+    cmd_str = ' '.join(cmd_list)
+    print("  Running: " + cmd_str)
+    try:
+        env = os.environ.copy()
+        env['PYTHONIOENCODING'] = 'utf-8'
+        env['CDP_PORT'] = '9225'
+        python_dir = os.path.dirname(sys.executable)
+        if 'PATH' in env:
+            env['PATH'] = python_dir + os.pathsep + env['PATH']
+        else:
+            env['PATH'] = python_dir + os.pathsep + os.environ.get('PATH', '')
+        # Windows needs SYSTEMROOT to find cmd.exe
+        if 'SYSTEMROOT' not in env:
+            env['SYSTEMROOT'] = os.environ.get('SYSTEMROOT', r'C:\WINDOWS')
+        # Run directly as list, shell=False - avoids PATH issues
         result = subprocess.run(
-            cmd, shell=True, cwd=cwd or PROJECT_ROOT,
+            cmd_list, shell=False, cwd=cwd or PROJECT_ROOT,
             capture_output=True, text=True, encoding="utf-8", errors="replace",
-            timeout=timeout
+            timeout=timeout, env=env
         )
         if result.stdout:
-            print(result.stdout[-1000:])
+            _safe_print(result.stdout[-1000:])
         if result.returncode != 0:
-            print("  ERROR: " + result.stderr[-500:])
+            _safe_print("  ERROR: " + result.stderr[-500:])
             return False
         return True
     except subprocess.TimeoutExpired:
@@ -80,22 +101,22 @@ def sync_and_push():
         print("  sync_monitor_data.py not found, skipping sync")
         return True
 
-    ok = run_command("python \"" + sync_script + "\"", timeout=120)
+    ok = run_command([sys.executable, sync_script], timeout=120)
     if not ok:
         print("  sync failed")
         return False
 
     repo_dir = PROJECT_ROOT
     result = subprocess.run(
-        "git status --porcelain", shell=True, cwd=repo_dir, capture_output=True, text=True
+        "git status --porcelain", shell=True, cwd=repo_dir, capture_output=True, text=True, encoding="utf-8", errors="replace"
     )
     if result.stdout.strip():
-        subprocess.run("git config --global user.name \"CrossMart Bot\"", shell=True, cwd=repo_dir)
-        subprocess.run("git config --global user.email \"bot@crossmart.ai\"", shell=True, cwd=repo_dir)
+        subprocess.run("git config --global user.name \"CrossMart Bot\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
+        subprocess.run("git config --global user.email \"bot@crossmart.ai\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
         ts = datetime.now().strftime("%Y-%m-%d %H:%M")
-        run_command("git add frontend/data/rawData.json backend/data/keyword_related_asins.json", cwd=repo_dir, timeout=15)
-        run_command("git commit -m \"auto: sync rawData " + ts + "\"", cwd=repo_dir, timeout=30)
-        run_command("git push", cwd=repo_dir, timeout=60)
+        run_command(["git", "add", "frontend/data/rawData.json", "backend/data/keyword_related_asins.json"], cwd=repo_dir, timeout=15)
+        run_command(["git", "commit", "-m", "auto: sync rawData " + ts], cwd=repo_dir, timeout=30)
+        run_command(["git", "push"], cwd=repo_dir, timeout=60)
         print("  rawData.json + keyword_related_asins.json pushed to GitHub")
     else:
         print("  No data changes to push")
@@ -108,11 +129,11 @@ def push_trigger_done(trigger):
     with open(TRIGGER_FILE, "w", encoding="utf-8") as f:
         json.dump(trigger, f, ensure_ascii=False, indent=2)
     repo_dir = PROJECT_ROOT
-    subprocess.run("git config --global user.name \"CrossMart Bot\"", shell=True, cwd=repo_dir)
-    subprocess.run("git config --global user.email \"bot@crossmart.ai\"", shell=True, cwd=repo_dir)
-    subprocess.run("git add backend/data/trigger.json", shell=True, cwd=repo_dir)
-    subprocess.run("git commit -m \"auto: trigger done\"", shell=True, cwd=repo_dir)
-    subprocess.run("git push", shell=True, cwd=repo_dir, timeout=60)
+    subprocess.run("git config --global user.name \"CrossMart Bot\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
+    subprocess.run("git config --global user.email \"bot@crossmart.ai\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
+    subprocess.run("git add backend/data/trigger.json", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
+    subprocess.run("git commit -m \"auto: trigger done\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
+    subprocess.run("git push", shell=True, cwd=repo_dir, timeout=60, encoding="utf-8", errors="replace")
     print("  trigger.json pushed to GitHub")
 
 
@@ -145,7 +166,7 @@ def run_monitor():
             continue
         print("\n--- 关键词监控: " + kw + " ---")
         ok = run_command(
-            "python -m browser.keyword_monitor \"" + kw + "\"",
+            [sys.executable, "-m", "browser.keyword_monitor", kw],
             cwd=os.path.join(PROJECT_ROOT, "backend"),
             timeout=300
         )
@@ -158,7 +179,7 @@ def run_monitor():
             continue
         print("\n--- ASIN 监控: " + asin + " ---")
         ok = run_command(
-            "python -m browser.asin_monitor \"" + asin + "\"",
+            [sys.executable, "-m", "browser.asin_monitor", asin],
             cwd=os.path.join(PROJECT_ROOT, "backend"),
             timeout=300
         )
