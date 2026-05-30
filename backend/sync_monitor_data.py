@@ -76,7 +76,7 @@ def load_asin_meta(asin):
 
 
 def build_rawdata_item(asin, data, history, related_asins=None):
-    """构建前端 rawData.items 格式"""
+    """构建前端 rawData.items 格式（主ASIN或关联ASIN）"""
     price = safe_float(data.get('price', '')) or 0
     rating = safe_float(data.get('rating', '')) or 0
     review_count = safe_int(data.get('review_count', data.get('reviews', ''))) or 0
@@ -93,7 +93,7 @@ def build_rawdata_item(asin, data, history, related_asins=None):
         if first_p and last_p and first_p > 0:
             price_change = round(last_p - first_p, 2)
 
-    item = {
+    return {
         "monitor_type": "ASIN",
         "asin": asin,
         "is_main": True,
@@ -126,13 +126,67 @@ def build_rawdata_item(asin, data, history, related_asins=None):
         "sub_bsr": main_bsr,
         "history_main_bsr": [h.get('bsr') or main_bsr for h in history] if history else [main_bsr],
         "history_sub_bsr": [],
-        "events": []
+        "events": [],
+        "related_asins": related_asins if related_asins else []
     }
 
-    if related_asins:
-        item["related_asins"] = related_asins
 
-    return item
+def build_related_item(asin, rel_data, main_asin=None):
+    """构建关联ASIN的独立items"""
+    price = safe_float(rel_data.get('price', '')) or 0
+    rating = safe_float(rel_data.get('rating', '')) or 0
+    reviews = safe_int(rel_data.get('reviews', '')) or 0
+    bsr_raw = rel_data.get('bsr', '')
+    bsr = None
+    if bsr_raw:
+        m = re.search(r'#([\d,]+)', bsr_raw)
+        bsr = safe_int(m.group(1) if m else bsr_raw) if m else None
+    main_bsr = bsr or 0
+    main_cat = ''
+    if bsr_raw:
+        m = re.search(r'#\d+ in ([^(]+)', bsr_raw)
+        if m:
+            main_cat = m.group(1).strip()
+        else:
+            m = re.search(r'in ([A-Za-z& ]+)\s*\(', bsr_raw)
+            if m:
+                main_cat = m.group(1).strip()
+
+    return {
+        "monitor_type": "ASIN",
+        "asin": asin,
+        "is_main": False,
+        "logic_type": "关联竞品",
+        "title": rel_data.get('title', '')[:200],
+        "brand": rel_data.get('brand', '')[:60] if rel_data.get('brand') else '',
+        "img": rel_data.get('img', ''),
+        "price": price,
+        "chg": 0.0,
+        "rating": rating,
+        "reviews": reviews,
+        "listing_status": "正常",
+        "expected_listing_status": "正常",
+        "title_changed": False,
+        "img_changed": False,
+        "bullets_changed": False,
+        "description_changed": False,
+        "variant_status": "正常",
+        "variant_changed": False,
+        "deal_activity": "无",
+        "badges_current": [],
+        "badges_lost": [],
+        "coupon": "无",
+        "prime_discount": "未开启",
+        "main_cat": main_cat,
+        "expected_main_cat": main_cat,
+        "main_bsr": main_bsr,
+        "sub_cat": main_cat,
+        "expected_sub_cat": main_cat,
+        "sub_bsr": main_bsr,
+        "history_main_bsr": [main_bsr],
+        "history_sub_bsr": [],
+        "events": []
+    }
 
 
 def main():
@@ -199,8 +253,19 @@ def main():
         add_snap(latest, None)
         all_snaps.sort(key=lambda x: x['timestamp'])
 
-        item = build_rawdata_item(asin, data, all_snaps, related_asins if related_asins else None)
+        item = build_rawdata_item(asin, data, all_snaps)
         items.append(item)
+
+        # 每个关联ASIN也作为独立行输出
+        if related_asins:
+            rt_data = data.get('_related_asins', [])
+            rt_map = {r.get('asin', ''): r for r in rt_data}
+            for ra in meta['related_asins']:
+                asin_key = ra.get('asin', '')
+                rt = rt_map.get(asin_key, {})
+                rel_item = build_related_item(asin_key, rt)
+                items.append(rel_item)
+
         print(f'  {asin}: price=${item["price"]} bsr=#{item["main_bsr"]} snaps={len(all_snaps)}', end='')
         if related_asins:
             print(f'  related={len(related_asins)}', end='')
