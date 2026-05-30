@@ -274,21 +274,36 @@ def run_monitor():
         # 抓取间隔随机化
         time.sleep(random.randint(15, 40))
 
-    # ---- Phase B: ASIN 监控 ----
+    # ---- Phase B: ASIN 监控（主ASIN + 关联竞品）----
     for asin_entry in asins:
-        asin = asin_entry.get("main", "").strip()
-        if not asin:
-            continue
-        print("\n--- ASIN 监控: " + asin + " ---")
-        ok = run_command(
-            [sys.executable, "-m", "browser.asin_monitor", asin],
-            cwd=os.path.join(PROJECT_ROOT, "backend"),
-            timeout=300
-        )
-        if not ok:
-            print("  ASIN " + asin + " 执行失败，继续")
-        # 抓取间隔随机化
-        time.sleep(random.randint(20, 50))
+        # 抓主ASIN
+        main_asin = asin_entry.get("main", "").strip()
+        if main_asin:
+            print("\n--- ASIN 监控: " + main_asin + " ---")
+            ok = run_command(
+                [sys.executable, "-m", "browser.asin_monitor", main_asin],
+                cwd=os.path.join(PROJECT_ROOT, "backend"),
+                timeout=300
+            )
+            if not ok:
+                print("  ASIN " + main_asin + " 执行失败，继续")
+            time.sleep(random.randint(20, 50))
+
+        # 抓关联竞品ASIN
+        related_list = asin_entry.get("related", [])
+        for rel_asin in related_list:
+            rel_asin = rel_asin.strip()
+            if not rel_asin:
+                continue
+            print("\n--- 关联竞品: " + rel_asin + " ---")
+            ok = run_command(
+                [sys.executable, "-m", "browser.asin_monitor", rel_asin],
+                cwd=os.path.join(PROJECT_ROOT, "backend"),
+                timeout=300
+            )
+            if not ok:
+                print("  关联ASIN " + rel_asin + " 执行失败，继续")
+            time.sleep(random.randint(20, 50))
 
     # ---- Phase C: 同步推送 ----
     print("\n--- 同步数据 ---")
