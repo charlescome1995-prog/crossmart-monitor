@@ -516,8 +516,15 @@ function renderTable() {
       <td>
         <div class="metrics-block">
           <div>价格: <strong>$${item.price}</strong> <span class="chg ${chgClass}">${chgText}</span></div>
-          <div>BSR: <span class="cat-item">${item.main_cat}</span> <strong>#${item.main_bsr}</strong></div>
-          <div>状态: <span style="color:${isStatusAnomaly?'#dc2626':'#16a34a'}; font-weight:700;">${item.listing_status}</span></div>
+          <div>评分: <strong>${item.rating || '—'}</strong> <span style="color:#64748b;font-size:12px;">评论 ${item.reviews || 0}</span></div>
+          <div>BSR: <span class="cat-item">${item.main_cat}</span> <strong>#${item.main_bsr || '—'}</strong>${item.sub_bsr ? ` / <span class="cat-item">${item.sub_cat}</span> #${item.sub_bsr}` : ''}</div>
+          <div>状态: <span style="color:${isStatusAnomaly?'#dc2626':'#16a34a'};font-weight:700;">${item.listing_status}</span>${item.variant_status !== '正常' ? ` <span style="color:#d97706;font-size:12px;">变体:${item.variant_status}</span>` : ''}</div>
+          ${item.deal_activity && item.deal_activity !== '无' ? `<div style="color:#b45309;font-weight:600;">⚡ Deal: ${item.deal_activity}</div>` : ''}
+          ${item.coupon && item.coupon !== '无' ? `<div style="color:#059669;font-weight:600;">🎟️ 优惠券: ${item.coupon}</div>` : ''}
+          ${item.prime_discount && item.prime_discount !== '未开启' ? `<div style="color:#7c3aed;font-weight:600;">📦 Prime折扣: ${item.prime_discount}</div>` : ''}
+          ${item.badges_current && item.badges_current.length ? `<div style="font-size:12px;">🏷️ 获得: ${item.badges_current.join(', ')}</div>` : ''}
+          ${item.badges_lost && item.badges_lost.length ? `<div style="font-size:12px;color:#dc2626;">💨 失去: ${item.badges_lost.join(', ')}</div>` : ''}
+          ${item.title_changed || item.img_changed || item.bullets_changed || item.description_changed ? `<div style="font-size:12px;color:#d97706;">📝 信息变更:${item.title_changed?' 标题':''}${item.img_changed?' 图片':''}${item.bullets_changed?' 五点':''}${item.description_changed?' 描述':''}</div>` : ''}
         </div>
       </td>
       <td><div class="events-cell">${activeEvents.length ? activeEvents.map(e => `<span class="e-tag ${e.class}">${e.text}</span>`).join('') : '<span class="e-none">无异常</span>'}</div></td>
