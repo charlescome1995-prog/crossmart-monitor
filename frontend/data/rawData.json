@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-30T22:13:15",
+  "updated": "2026-05-31T01:30:18",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -77,6 +77,8 @@
         1,
         1,
         1,
+        1,
+        1,
         1
       ],
       "history_sub_bsr": [],
@@ -90,7 +92,7 @@
       "logic_type": "关联竞品",
       "title": "medicube Toner Pads Deep Vita C Facial Toner Pad for Uneven Skin Tone & Texture | Vitamin Water and 3 Types of Vitamin, Deeply Hydrating & Resurfacing Pad | Korean Skin Care, 70 Pads (1 Pack)",
       "brand": "medicube",
-      "img": "",
+      "img": "https://m.media-amazon.com/images/I/41FsewKRV+L._SY300_SX300_QL70_FMwebp_.jpg",
       "price": 18.9,
       "chg": 0.0,
       "rating": 4.7,
@@ -127,7 +129,7 @@
       "logic_type": "关联竞品",
       "title": "medicube Toner Pads Deep Vita C Facial Toner Pad for Uneven Skin Tone & Texture | Vitamin Water and 3 Types of Vitamin, Deeply Hydrating & Resurfacing Pad | Korean Skin Care, 70 Pads (1 Pack)",
       "brand": "medicube",
-      "img": "",
+      "img": "https://m.media-amazon.com/images/I/41FsewKRV+L._SY300_SX300_QL70_FMwebp_.jpg",
       "price": 18.9,
       "chg": 0.0,
       "rating": 4.7,
@@ -164,7 +166,7 @@
       "logic_type": "关联竞品",
       "title": "medicube Toner Pads Kojic Acid Turmeric Clarifying Toner Pad for Troubled Skin & Use After Spot Care, Soothing with Kojic Acid, Turmeric, Niacinamide, Glycolic Acid, Korean Skin Care, 70 Pads (1 Pack)",
       "brand": "medicube",
-      "img": "",
+      "img": "https://m.media-amazon.com/images/I/41qusNjGHaL._SY300_SX300_QL70_FMwebp_.jpg",
       "price": 18.9,
       "chg": 0.0,
       "rating": 4.5,
