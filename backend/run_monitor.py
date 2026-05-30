@@ -1,16 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-run_monitor.py - CrossMart Monitor 本地触发脚本
-功能：
-  1. 从 GitHub 读取 backend/data/trigger.json 检查是否为 pending 状态
-  2. 读取 backend/data/user_config.json 获取当前配置的 ASINs 和关键词
-  3. 依次运行 keyword_monitor（关键词）和 asin_monitor（ASIN）
-  4. 同步数据到 rawData.json 并推送到 GitHub
-  5. 将 trigger.json 状态改为 done 推回 GitHub
+run_monitor.py - 跨境电商 ASIN 监控系统入口
 用法：
   python backend/run_monitor.py
-  或配合 Windows 任务计划程序定期执行
 """
 import os
 import sys
@@ -28,7 +21,7 @@ REPO = "charlescome1995-prog/crossmart-monitor"
 
 
 def gh_fetch_json(path):
-    """从 GitHub API 下载 JSON 文件（绕过CDN缓存）"""
+    """从 GitHub API 下载 JSON（绕过CDN缓存）"""
     api_url = "https://api.github.com/repos/" + REPO + "/contents/" + path
     req = urllib.request.Request(api_url, headers={"Accept": "application/vnd.github.v3+json"})
     try:
@@ -43,12 +36,10 @@ def gh_fetch_json(path):
 
 
 def load_trigger():
-    """从 GitHub 加载 trigger.json"""
     return gh_fetch_json("backend/data/trigger.json")
 
 
 def load_config():
-    """从 GitHub 加载 user_config.json"""
     data = gh_fetch_json("backend/data/user_config.json")
     if data is None:
         return {"asins": [], "keywords": []}
@@ -56,25 +47,20 @@ def load_config():
 
 
 def _safe_print(s):
-    """Print unicode string to GBK console without crashing"""
     try:
         print(s)
     except UnicodeEncodeError:
         print(s.encode('gbk', errors='replace').decode('gbk'))
 
-def run_command(cmd, cwd=None, timeout=600):
-    cmd_list = cmd if isinstance(cmd, list) else cmd.split()
-    cmd_str = ' '.join(cmd_list)
-    print("  Running: " + cmd_str)
+
+def run_command(cmd_list, cwd=None, timeout=600):
+    print("  Running: " + ' '.join(cmd_list))
     try:
         env = os.environ.copy()
         env['PYTHONIOENCODING'] = 'utf-8'
         env['CDP_PORT'] = '9225'
         python_dir = os.path.dirname(sys.executable)
-        if 'PATH' in env:
-            env['PATH'] = python_dir + os.pathsep + env['PATH']
-        else:
-            env['PATH'] = python_dir + os.pathsep + os.environ.get('PATH', '')
+        env['PATH'] = python_dir + os.pathsep + env.get('PATH', '')
         if 'SYSTEMROOT' not in env:
             env['SYSTEMROOT'] = os.environ.get('SYSTEMROOT', r'C:\WINDOWS')
         result = subprocess.run(
@@ -83,11 +69,10 @@ def run_command(cmd, cwd=None, timeout=600):
             timeout=timeout, env=env
         )
         if result.stdout:
-            _safe_print(result.stdout[-1000:])
-        if result.returncode != 0:
-            _safe_print("  ERROR: " + result.stderr[-500:])
-            return False
-        return True
+            _safe_print(result.stdout[-2000:])
+        if result.returncode != 0 and result.stderr:
+            _safe_print("  STDERR: " + result.stderr[-500:])
+        return result.returncode == 0
     except subprocess.TimeoutExpired:
         print("  TIMEOUT after " + str(timeout) + "s")
         return False
@@ -99,36 +84,31 @@ def run_command(cmd, cwd=None, timeout=600):
 def sync_and_push():
     sync_script = os.path.join(PROJECT_ROOT, "backend", "sync_monitor_data.py")
     if not os.path.exists(sync_script):
-        print("  sync_monitor_data.py not found, skipping sync")
+        print("  sync_monitor_data.py not found, skip sync")
         return True
-
     ok = run_command([sys.executable, sync_script], timeout=120)
     if not ok:
         print("  sync failed")
         return False
-
     repo_dir = PROJECT_ROOT
-    result = subprocess.run(
-        "git status --porcelain", shell=True, cwd=repo_dir, capture_output=True, text=True, encoding="utf-8", errors="replace"
-    )
+    subg = subprocess.run("git config --global user.name \"CrossMart Bot\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
+    subg = subprocess.run("git config --global user.email \"bot@crossmart.ai\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
+    result = subprocess.run("git status --porcelain", shell=True, cwd=repo_dir, capture_output=True, text=True, encoding="utf-8", errors="replace")
     if result.stdout.strip():
-        subprocess.run("git config --global user.name \"CrossMart Bot\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
-        subprocess.run("git config --global user.email \"bot@crossmart.ai\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
         ts = datetime.now().strftime("%Y-%m-%d %H:%M")
         run_command(["git", "add", "frontend/data/rawData.json", "backend/data/keyword_related_asins.json"], cwd=repo_dir, timeout=15)
         run_command(["git", "commit", "-m", "auto: sync rawData " + ts], cwd=repo_dir, timeout=30)
-        push_r = run_command(["git", "push"], cwd=repo_dir, timeout=60)
-        if not push_r:
-            print("  push rejected, force-pushing...")
+        push_ok = run_command(["git", "push"], cwd=repo_dir, timeout=60)
+        if not push_ok:
+            print("  push rejected, force-push...")
             run_command(["git", "push", "-f"], cwd=repo_dir, timeout=60)
-        print("  rawData.json + keyword_related_asins.json pushed to GitHub")
+        print("  rawData.json + keyword_related_asins.json pushed")
     else:
         print("  No data changes to push")
     return True
 
 
 def push_trigger_done(trigger):
-    """将 done 状态的 trigger.json 推送回 GitHub"""
     os.makedirs(DATA_DIR, exist_ok=True)
     with open(TRIGGER_FILE, "w", encoding="utf-8") as f:
         json.dump(trigger, f, ensure_ascii=False, indent=2)
@@ -137,11 +117,11 @@ def push_trigger_done(trigger):
     subprocess.run("git config --global user.email \"bot@crossmart.ai\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
     subprocess.run("git add " + TRIGGER_FILE, shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
     subprocess.run("git commit -m \"auto: trigger done\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
-    push_result = subprocess.run("git push", shell=True, cwd=repo_dir, timeout=60, encoding="utf-8", errors="replace")
-    if push_result.returncode != 0:
-        print("  remote ahead, force-pushing...")
+    pr = subprocess.run("git push", shell=True, cwd=repo_dir, timeout=60, encoding="utf-8", errors="replace")
+    if pr.returncode != 0:
+        print("  force-pushing trigger...")
         subprocess.run("git push -f", shell=True, cwd=repo_dir, timeout=60, encoding="utf-8", errors="replace")
-    print("  trigger.json pushed to GitHub")
+    print("  trigger.json pushed")
 
 
 def run_monitor():
@@ -153,14 +133,14 @@ def run_monitor():
 
     trigger = load_trigger()
     if trigger is None:
-        print("trigger.json 不存在，请先在 monitor.html 上点击'立即抓取'")
+        print("trigger.json 读取失败，请检查网络和仓库配置")
         return
 
     if trigger.get("status") != "pending":
         print("触发器状态: " + str(trigger.get("status")) + "，无需执行")
         return
 
-    print("检测到 pending 触发器，上次触发时间: " + str(trigger.get("triggered_at")))
+    print("检测到 pending 触发器，上次触发: " + str(trigger.get("triggered_at")))
 
     config = load_config()
     asins = config.get("asins", [])
@@ -178,7 +158,7 @@ def run_monitor():
             timeout=300
         )
         if not ok:
-            print("  关键词 " + kw + " 执行失败，继续下一个")
+            print("  关键词 " + kw + " 执行失败，继续")
 
     for asin_entry in asins:
         asin = asin_entry.get("main", "").strip()
@@ -191,7 +171,7 @@ def run_monitor():
             timeout=300
         )
         if not ok:
-            print("  ASIN " + asin + " 执行失败，继续下一个")
+            print("  ASIN " + asin + " 执行失败，继续")
 
     print("\n--- 同步数据 ---")
     sync_and_push()
@@ -200,7 +180,7 @@ def run_monitor():
     trigger["completed_at"] = datetime.now().isoformat()
     push_trigger_done(trigger)
     print("\n" + sep)
-    print("监控完成！状态已更新为 done")
+    print("监控完成！")
     print(sep)
 
 
