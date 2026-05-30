@@ -41,7 +41,7 @@ def gh_fetch_json(path):
 
 def load_trigger():
     """从 GitHub 加载 trigger.json"""
-    return gh_fetch_json("../data/trigger.json")
+    return gh_fetch_json("backend/data/trigger.json")
 
 
 def load_config():
