@@ -1,309 +1,255 @@
-# CrossMart Monitor — 亚马逊运营全链路工具箱
+# CrossMart Monitor — 亚马逊 ASIN 智能监控系统
 
-> 让选品、监控、模拟、运营分析全流程自动化，专注决策本身。
-
-**🌐 在线预览**: https://charlescome1995-prog.github.io/crossmart-monitor/frontend/monitor.html
-**📦 GitHub 仓库**: https://github.com/charlescome1995-prog/crossmart-monitor
+**在线预览**: https://charlescome1995-prog.github.io/crossmart-monitor/frontend/monitor.html
 
 ---
 
-## 🎯 这个项目做什么？
+## 这个项目做什么？
 
-简单说：**帮你监控亚马逊 ASIN 和关键词数据，筛选潜力产品，模拟运营收益。**
-
-具体来说，它能帮你：
-
-- 📦 **ASIN 监控** — 自动抓取 ASIN 的价格、评分、评论数、BSR 排名变化
-- 🔑 **关键词排名** — 通过卖家精灵追踪关键词搜索结果排名
-- 🎯 **智能选品** — 基于 16 个核心指标 + 4 种策略（蓝海/红海/差异化/跟随）筛选潜力产品
-- 📊 **运营模拟** — 蒙特卡洛模拟不同推广策略下的收益区间
-- 📈 **定时调度** — 每天早/中/晚自动跑，无需人工干预
-- 📋 **Excel 报告** — 自动生成监控报告
+**核心功能**：监控亚马逊 ASIN 的价格、评分、评论数、BSR 排名、变体状态、Deal 活动、优惠券、Prime 折扣、徽章变化等全维度指标，支持 ASIN 监控 + 关键词搜索结果监控，定时抓取 + 实时展示。
 
 ---
 
-## 🗂️ 云端与本地文件对应关系
+## 系统架构
 
-> 新手必读！理解这个关系很重要。
-
-| GitHub 云端（main 分支） | 本地开发目录 | 说明 |
-|------|------|------|
-| `frontend/monitor.html` | `frontend/monitor.html` | 监控展示页面，GitHub Pages 直接托管 |
-| `backend/` | `backend/` | API Server + 爬虫脚本，**不参与 Pages 部署**，本地运行 |
-| `.github/workflows/save-config.yml` | `.github/workflows/save-config.yml` | GitHub Actions workflow，前端保存配置时触发 |
-| — | `browser/` | **不在 GitHub 仓库里**，仅本地，用于 CDP 浏览器自动化 |
-| — | `data/processed/` | 快照数据，`.gitignore` 忽略，不上传 |
-| — | `data/browser_profiles/` | Edge 用户数据，`.gitignore` 忽略，不上传 |
-
-**一句话概括**：`main` 分支里的代码部署到 GitHub Pages（前端），本地目录里的代码跑在你自己的电脑上（爬虫/调度）。
-
----
-
-## 🚀 新手快速上手
-
-### 前置要求
-
-- Windows 10+
-- Python 3.10+
-- Edge 浏览器（闫旭默认安装的那个）
-- 卖家精灵插件（已登录）
-
-### 第一步：安装依赖
-
-```powershell
-cd crossmart-monitor
-pip install -r requirements.txt
 ```
+用户浏览器（GitHub Pages）
+        ↓ 刷新
+┌─────────────────────────────────────────────┐
+│  GitHub Pages (charlescome1995-prog.github.io) │
+│  frontend/monitor.html ← 展示层，读取 rawData.json │
+└─────────────────────────────────────────────┘
 
-### 第二步：启动 Edge 调试模式
-
-> ⚠️ **必须用闫旭的默认 Edge 账户**，不能指定 `--user-data-dir`。
-
-```powershell
-# 1. 先关掉所有 Edge 窗口
-# 2. 在命令行执行：
-msedge --remote-debugging-port=9225 --remote-allow-origins=* --new-window about:blank
-```
-
-### 第三步：配置要监控的 ASIN
-
-编辑 `data/monitor_list.json`：
-
-```json
-[
-  {"asin": "B0DFLTJQ3N", "nickname": "须后膏"},
-  {"asin": "B0DFL5BK8H", "nickname": "折叠足浴盆"}
-]
-```
-
-最多 5 个。
-
-### 第四步：手动跑一次监控
-
-```powershell
-python browser/asin_monitor.py B0DFLTJQ3N
-```
-
-成功的话你应该能在终端看到商品数据卡片（价格/评分/BSR/评论数）。
-
-### 第五步：启动本地面板（可选）
-
-```powershell
-python server.py
-# 然后浏览器打开 http://localhost:5005/monitor
-```
-
-### 第六步：设置定时调度（可选）
-
-Windows 任务计划程序，添加任务每天定时运行：
-
-```powershell
-python scheduler.py --force
+操作者电脑（本地）
+┌─────────────────────────────────────────────┐
+│  Edge 浏览器（闫旭默认 profile，CDP 端口 9225）   │
+│  ├─ 亚马逊前台（已登录）                         │
+│  └─ 卖家精灵 sellersprite.com（已登录）           │
+│                                             │
+│  backend/run_monitor.py ← 入口脚本            │
+│  ├─ keyword_monitor.py  ← 关键词搜索结果抓取    │
+│  ├─ asin_monitor.py     ← ASIN详情页抓取        │
+│  └─ sync_monitor_data.py ← 同步数据到 rawData.json │
+└─────────────────────────────────────────────┘
+        ↓ 推送
+┌─────────────────────────────────────────────┐
+│  GitHub 仓库（main 分支）                       │
+│  frontend/data/rawData.json                  │
+│  backend/data/user_config.json               │
+│  backend/data/trigger.json                   │
+└─────────────────────────────────────────────┘
 ```
 
 ---
 
-## 📁 目录结构详解
+## 目录结构
 
 ```
 crossmart-monitor/
 │
-├── 📂 browser/          # 浏览器自动化（Edge CDP 控制）
-│   ├── asin_monitor.py       # ⭐ ASIN 监控主脚本
-│   ├── keyword_monitor.py    # 关键词排名监控
-│   ├── amazon_browser.py    # 亚马逊前台操作
-│   ├── sprite_bridge.py     # 卖家精灵 SPA 操作
-│   ├── cdp_bridge.py       # CDP 协议底层桥接
-│   ├── human_timer.py      # 人类行为模拟（反爬）
-│   └── snapshot_storage.py  # 快照存取
+├── backend/                    # 后端（本地运行，不上 GitHub Pages）
+│   ├── run_monitor.py          # 监控入口脚本（本地触发抓取）
+│   ├── sync_monitor_data.py    # 同步快照数据 → frontend/data/rawData.json
+│   ├── api_server.py           # 本地 API Server（端口 8765）
+│   ├── data/
+│   │   ├── user_config.json    # 用户配置的 ASINs + 关键词（GitHub Actions 写入）
+│   │   ├── trigger.json        # 触发器状态（pending/done）
+│   │   ├── keyword_related_asins.json  # 关键词关联的 ASIN 列表
+│   │   ├── monitor_list.json   # 历史监控列表（备用）
+│   │   ├── keyword_list.json   # 历史关键词列表（备用）
+│   │   └── processed/          # 抓取快照数据（每个 ASIN/关键词一个目录）
+│   │       ├── asin_B09V7Z4TJG/
+│   │       │   ├── _meta.json           # ASIN 基本信息 + 关联竞品列表
+│   │       │   ├── latest.json          # 最新快照
+│   │       │   └── snapshot_YYYYMMDD_HHMMSS.json  # 历史快照
+│   │       └── kw_batana_oil/
+│   │           ├── latest.json           # 关键词最新快照
+│   │           └── snapshot_YYYYMMDD_HHMMSS.json  # 历史快照
+│   └── browser/
+│       ├── asin_monitor.py      # ASIN 详情页抓取（价格/BSR/评分/评论/变体/Deal/徽章等）
+│       ├── keyword_monitor.py   # 关键词搜索结果抓取（top 5 ASINs + 图片）
+│       ├── amazon_browser.py    # 亚马逊前台操作底层
+│       ├── sprite_bridge.py     # 卖家精灵 SPA 操作桥接
+│       ├── cdp_bridge.py         # Chrome DevTools Protocol 底层桥接
+│       ├── human_timer.py       # 人类行为模拟（反爬）
+│       ├── snapshot_storage.py  # 快照读写
+│       └── init_browsers.py     # Edge 浏览器启动
 │
-├── 📂 data/             # 数据目录
-│   ├── monitor_list.json   # 监控的 ASIN 列表
-│   ├── keyword_list.json   # 监控的关键词列表
-│   └── monitor_report.xlsx # Excel 报告
+├── frontend/                   # 前端（部署到 GitHub Pages）
+│   ├── monitor.html            # ⭐ 监控展示页面
+│   ├── selection.html          # 选品页面（未启用）
+│   └── data/
+│       ├── rawData.json        # 实时监控数据（run_monitor.py 推送）
+│       ├── monitor-data.json   # 历史监控报告（备用）
+│       ├── notify_config.json  # 通知配置
+│       └── selection-data.json # 选品数据（备用）
 │
-├── 📂 backend/          # 后端（本地运行，不上 GitHub Pages）
-│   ├── api_server.py       # API Server（端口 8765）
-│   ├── run_monitor.py      # 监控抓取入口
-│   └── data/user_config.json  # 用户配置（GitHub Actions 写入）
+├── .github/workflows/
+│   ├── save-config.yml         # 前端保存配置时写入 user_config.json
+│   └── sync_data.yml           # 定时同步 rawData.json 到云端（Cloudflare R2）
 │
-├── 📂 frontend/         # 前端（部署到 GitHub Pages）
-│   └── monitor.html      # 监控展示页面
-│
-├── 📂 selectors/         # 选品引擎
-│   └── product_selector.py  # 16指标选品 + 4种策略
-│
-├── 📂 pipelines/        # 四阶段选品流水线
-│   ├── s1_keyword_layer.py   # S1: 关键词评分
-│   ├── s2_asin_layer.py      # S2: ASIN 选品
-│   ├── s3_operation_plan.py  # S3: 运营模拟
-│   └── s4_final_recommendation.py  # S4: 最终推荐
-│
-├── 📂 research/         # 数据采集
-│   ├── sellersprite_crawler.py  # 卖家精灵爬虫
-│   └── supply_chain.py        # 1688 供应链调研
-│
-├── 📂 listing/           # ASIN 详情 JSON
-│
-├── 📂 simulation/       # 蒙特卡洛模拟引擎
-│
-├── config.py             # 全局配置（选品指标/策略/FBA利润模型/AI API）
-├── ai_client.py          # 统一 AI 客户端（DeepSeek/Kimi/Gemini）
-├── scheduler.py          # ⏰ 调度器（每天三窗口定时运行）
-├── server.py             # Flask 本地面板（端口 5005）
-├── data_reporter.py      # Excel 报告生成
-└── requirements.txt     # Python 依赖
+├── logs/                       # 日志目录
+├── output/screenshots/         # 爬虫截图（广告追踪/竞品快照）
+├── selectors/                  # 选品引擎（16 指标 + 4 种策略）
+├── pipelines/                  # 四阶段选品流水线（S1-S4）
+├── research/                   # 数据采集（卖家精灵/1688）
+├── listing/                    # ASIN 详情 JSON
+└── simulation/                 # 蒙特卡洛运营模拟
 ```
 
 ---
 
-## ⚙️ 核心模块说明
+## 快速开始
 
-### 🕐 调度器 — scheduler.py
+### 前置要求
 
-为什么要用调度器？因为亚马逊和卖家精灵都有反爬限制。
+- Windows 10+，Python 3.10+
+- Edge 浏览器（闫旭默认安装，已登录卖家精灵）
+- 卖家精灵插件（已安装且已登录 sellersprite.com）
 
-**解决方案：模拟人类行为**
+### 第一步：启动 Edge 调试模式
 
-- 每天三个随机时间窗口（早 8-10 点、中 13-15 点、晚 17:30-19:30）
-- 时间窗口每天基于日期 hash 变化，避免固定规律
-- ASIN 之间随机间隔 15-50 秒，模拟人工浏览
-- 每次启动先逛首页/类目/搜索页再正经干活
+> ⚠️ **必须使用闫旭的默认 Edge 账户**（不指定 `--user-data-dir`）
 
+```powershell
+# 1. 先关掉所有 Edge 窗口
+# 2. 执行：
+msedge --remote-debugging-port=9225 --remote-allow-origins=* --new-window about:blank
 ```
-启动 → 判断当前时间是否在窗口内
-  ├── 否 → 等待到下一个窗口
-  └── 是 → Phase A（ASIN监控）→ Phase B（关键词监控）→ Phase C（生成报告）
+
+### 第二步：重置触发器并运行监控
+
+```powershell
+cd crossmart-monitor
+
+# 重置 trigger 为 pending（每次抓取前必须）
+python reset_and_run.py
+
+# 或手动分步：
+# 1. 重置触发器
+python reset_trigger.py
+
+# 2. 运行监控抓取
+python backend/run_monitor.py
 ```
 
-### 🎯 选品引擎 — product_selector.py
+运行流程：
+1. 检测 `trigger.json` 为 `pending` → 继续抓取
+2. 依次执行关键词监控（keyword_monitor.py）→ ASIN 监控（asin_monitor.py）
+3. 同步数据到 `frontend/data/rawData.json` 并推送到 GitHub
+4. 将 `trigger.json` 状态置为 `done`
 
-**16 个核心指标**（来自亚马逊爆款选品思维）：
+### 第三步：查看结果
 
-1. 价格 $10-50（冲动购买甜蜜点）
-2. 重量 < 2-3 磅（利润空间）
-3. 大分类排名 < 5000
-4. 无大品牌垄断
-5. 坚固耐用
-6. 首页 2-3 个竞品 Review < 50
-7. 毛利率 > 30%
-8. Listing 有优化空间
-9. 前三关键字月搜 > 10 万
-10. 中国可找到供货商
-11. 非季节性尤佳
-12. eBay 也有售
-13. 可拓展品牌
-14. 可升级改良
-15. 需定期购买
-16. 多样化关键词
-
-**4 种策略**：
-
-| 策略 | 特点 | 适合场景 |
-|------|------|---------|
-| 🟢 蓝海策略 | 小众低竞争高利润 | 新手切入，低竞争赛道 |
-| 🔴 红海策略 | 成熟大市场高销量 | 有资源，搏大体量 |
-| 🟡 差异化策略 | 有改进空间的细分市场 | 排名上升中，产品有痛点可优化 |
-| ⚪ 跟随策略 | 已验证市场稳定收益 | 保守打法，跟成熟爆款 |
-
-### 🌐 浏览器自动化 — browser/
-
-使用闫旭的 **Edge 默认 profile**（`--remote-debugging-port=9225`，不指定 `--user-data-dir`），复用：
-- 收藏夹
-- 亚马逊登录态
-- 卖家精灵登录态
-
-**为什么不用 Selenium 的 headless 模式？**
-因为需要用到闫旭已登录的卖家精灵会话，headless 无法加载已保存的登录 Cookie。
+刷新页面：https://charlescome1995-prog.github.io/crossmart-monitor/frontend/monitor.html
 
 ---
 
-## 🔧 配置说明
+## 监控数据内容（全维度指标）
 
-### 全局配置 — config.py
+每个 ASIN 行展示以下指标：
 
-```python
-# 选品规则示例
-SELECTION_RULES = {
-    "min_price": 10,           # 价格下限 $10
-    "max_price": 50,           # 价格上限 $50
-    "min_review_count": 0,     # 最低评分数
-    "min_rating": 4.0,         # 最低评分
-    "max_review_count": 10000, # 避免饱和市场
-}
+| 指标分类 | 具体内容 |
+|---------|---------|
+| **基础信息** | ASIN / 产品标题 / 品牌 / 图片 / 价格 / 评分 / 评论数 |
+| **排名** | 大类 BSR / 子类 BSR |
+| **变体状态** | 父子关系 / 变体异常检测 |
+| **Deal 活动** | Lightning Deal / 秒杀 / Coupon |
+| **优惠券** | 🎟️ 是否有 Coupon |
+| **Prime 折扣** | 📦 Prime 专享折扣 |
+| **徽章状态** | A+ / Best Seller / AC / New Release |
+| **信息变更** | 标题变化 / 图片变化 / 五点描述变化 / 详情页变化 |
+| **历史趋势** | 价格/BSR 涨跌记录 |
 
-# 4种策略配置
-STRATEGY_CONFIG = {
-    "strategy1_blue_ocean": { "quota": 30, ... },
-    "strategy2_red_ocean": { "quota": 30, ... },
-    ...
-}
-```
+---
 
-### AI API 配置
+## 配置管理
 
-支持 DeepSeek / Kimi / Gemini，可在 `config.py` 中切换默认提供商：
+### 用户配置（前端保存）
 
-```python
-AI_CONFIG = {
-    "default_provider": "deepseek",  # 切换这里
-    "deepseek": { "api_key": "...", "enabled": True },
-    "kimi": { "api_key": "...", "enabled": False },
+访问 monitor.html → 输入 ASIN 和关键词 → 点保存
+
+前端通过 GitHub Actions（repository_dispatch）写入 `backend/data/user_config.json`，无需携带 Token 安全上传。
+
+### 手动编辑配置
+
+直接编辑 `backend/data/user_config.json`：
+
+```json
+{
+  "asins": [
+    { "main": "B09V7Z4TJG", "nickname": "medicube Toner Pads", "related": ["B0GCMKDSJB", "B0BPLYHDPG", "B0FJ21Z6BW"] }
+  ],
+  "keywords": [
+    { "main": "batana oil" }
+  ]
 }
 ```
 
 ---
 
-## ❓ 常见问题
+## 工作流程详解
 
-**Q: 为什么 monitor.html 打开是空白的？**
-→ 确保 Edge 已登录卖家精灵，且 sellersprite.com 可以正常访问。
+### 抓取流程（本地）
 
-**Q: 监控数据保存在哪里？**
-→ `data/processed/asin_{ASIN}/snapshot_{日期}.json`，每个 ASIN 一个文件夹。
+```
+reset_trigger.py → 写入 trigger.json {status: "pending"}
+    ↓
+run_monitor.py → load_trigger() 读取 GitHub trigger.json
+    ↓ 检测 pending
+    ├─ keyword_monitor.py batana oil → backend/data/processed/kw_batana_oil/
+    ├─ asin_monitor.py B09V7Z4TJG → backend/data/processed/asin_B09V7Z4TJG/
+    │   └─ _fetch_related_asin_data() → 抓取关联竞品 B0GCMKDSJB/B0BPLYHDPG/B0FJ21Z6BW
+    ├─ sync_monitor_data.py → 生成 frontend/data/rawData.json
+    └─ push_trigger_done() → 写入 trigger.json {status: "done"}
+```
 
-**Q: GitHub Actions Secret 是什么？**
-→ `GH_TOKEN`，用于 workflow 写入 `backend/data/user_config.json`。前端不携带 token，防止 GitHub GH013 检测拒绝 push。
+### 同步流程
 
-**Q: 想新增一个 ASIN 怎么操作？**
-→ 编辑 `data/monitor_list.json`，或者访问本地面板 http://localhost:5005/monitor 添加。
+`sync_monitor_data.py` 从本地快照读取数据，构建 `rawData.json`：
 
-**Q: 调度器不跑怎么办？**
-→ 检查是否在时间窗口内：`python scheduler.py --show-plan`
-→ 强制运行一次：`python scheduler.py --force`
+- 主 ASIN：`processed/asin_{ASIN}/latest.json`
+- 关联竞品：每个竞品自己的 `latest.json`（`is_related_item: true`）
+- 关键词 ASINs：`processed/kw_{keyword}/latest.json` 的 `top_asins`
+
+最终 `rawData.items` 包含：主 ASIN + 关联竞品 + 关键词 ASINs，统一展示。
 
 ---
 
-## 📊 工作流图
+## GitHub Actions 说明
 
-```
-[本地]                     [GitHub]              [浏览器]
- ┌──────────────────┐      ┌──────────────┐      ┌──────────────┐
- │  monitor_list.json│      │              │      │              │
- │  keyword_list.json│──push──▶│ GitHub Pages │      │              │
- └──────────┬─────────┘      └──────────────┘      └──────┬───────┘
-            │                        ▲                     │
-            │schedule               │deploy               │
-            ▼                        │                     ▼
- ┌──────────────────┐      ┌──────────────┐      ┌──────────────┐
- │   scheduler.py   │      │  main 分支   │      │  Edge CDP    │
- │  (定时三窗口运行) │      └──────────────┘      │ (闫旭默认配置)│
- └──────────┬─────────┘                             └──────┬───────┘
-            │                                             │
-            │ ASIN监控            读取                    ▼
-            ▼                                    ┌──────────────────┐
- ┌──────────────────┐                          │ 亚马逊前台      │
- │ asin_monitor.py  │───────────────────────────│ sellersprite.com │
- └──────────┬─────────┘                          └──────────────────┘
-            │
-            │快照保存
-            ▼
- ┌──────────────────┐
- │ data/processed/   │
- │ asin_XXXXX/      │
- │ snapshot_*.json   │
- └──────────────────┘
-```
+| Workflow | 触发方式 | 功能 |
+|---------|---------|------|
+| `save-config.yml` | `repository_dispatch`（前端保存配置） | 写入 `backend/data/user_config.json` |
+| `sync_data.yml` | push to main（自动） | 同步 `rawData.json` 到 Cloudflare R2（长期存档） |
+
+---
+
+## 常见问题
+
+**Q: run_monitor.py 提示"触发器状态: done，无需执行"**
+→ 每次抓取前需要先重置：`python reset_trigger.py`
+
+**Q: 为什么需要 Edge 默认 profile？**
+→ 复用闫旭已登录的亚马逊和卖家精灵 Cookie，headless 模式无法加载已保存的登录态
+
+**Q: 前端页面数据不更新**
+→ 确认 `trigger.json` 状态为 `pending`，然后运行 `python backend/run_monitor.py`
+
+**Q: 卖家精灵登录失效**
+→ 在 Edge 默认 profile 中重新登录 sellersprite.com
+
+---
+
+## 相关文件说明
+
+| 文件 | 说明 |
+|------|------|
+| `reset_trigger.py` | 重置 trigger.json 为 pending |
+| `reset_and_run.py` | 重置 + 运行监控（一步到位） |
+| `backend/data/user_config.json` | 用户配置的 ASINs + 关键词 |
+| `backend/data/trigger.json` | 触发器状态（pending=done）|
+| `frontend/data/rawData.json` | 前端展示用的实时数据 |
 
 ---
 
