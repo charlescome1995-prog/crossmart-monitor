@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-31T01:30:18",
+  "updated": "2026-05-31T01:32:33",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -12,7 +12,7 @@
       "price": 18.9,
       "chg": 0.0,
       "rating": 4.6,
-      "reviews": 24830,
+      "reviews": 24831,
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -33,6 +33,8 @@
       "expected_sub_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
       "sub_bsr": 1,
       "history_main_bsr": [
+        1,
+        1,
         1,
         1,
         1,
