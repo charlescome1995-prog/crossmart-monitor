@@ -527,23 +527,6 @@ function renderTable() {
     </tr>`;
   });
   
-  // 渲染关键词 Top5 逻辑 (完整保留)
-  if (rawData.keywords) {
-    rawData.keywords.forEach(kw => {
-      kw.top_asins.forEach((a, idx) => {
-        html += `<tr style="background:#fef9c3;">
-          <td class="col-img"><div style="font-size:11px; color:#92400e;">KW Top${idx+1}</div></td>
-          <td><div class="info-block"><span class="badge source-kw">KW流</span> <strong>${kw.keyword}</strong><br><small>${a.asin}</small></div></td>
-          <td>价格: ${a.price} | 评分: ${a.rating}</td>
-          <td><span class="e-tag e-info">${a.type}</span></td>
-          <td>—</td>
-          <td><div class="status-indicator stable">稳定</div></td>
-          <td style="font-size:12px;">${rawData.updated}</td>
-        </tr>`;
-      });
-    });
-  }
-
   tbody.innerHTML = html || '<tr><td colspan="7" style="text-align:center; padding:20px;">暂无匹配数据</td></tr>';
 }
 
