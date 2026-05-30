@@ -189,6 +189,48 @@ def build_related_item(asin, rel_data, main_asin=None):
     }
 
 
+def build_keyword_item(kw, a):
+    """构建关键词找到的 ASIN 的独立 items"""
+    price = safe_float(a.get('price', '')) or 0
+    rating = safe_float(a.get('rating', '')) or 0
+    reviews = safe_int(a.get('reviews', '')) or 0
+    return {
+        "monitor_type": "KW",
+        "asin": a.get('asin', ''),
+        "is_main": False,
+        "logic_type": f"关键词-{kw}",
+        "title": a.get('title', '')[:200],
+        "brand": a.get('brand', '')[:60] if a.get('brand') else '',
+        "img": a.get('main_image', a.get('img', '')),
+        "price": price,
+        "chg": 0.0,
+        "rating": rating,
+        "reviews": reviews,
+        "listing_status": "正常",
+        "expected_listing_status": "正常",
+        "title_changed": False,
+        "img_changed": False,
+        "bullets_changed": False,
+        "description_changed": False,
+        "variant_status": "正常",
+        "variant_changed": False,
+        "deal_activity": "无",
+        "badges_current": [],
+        "badges_lost": [],
+        "coupon": "无",
+        "prime_discount": "未开启",
+        "main_cat": '',
+        "expected_main_cat": '',
+        "main_bsr": 0,
+        "sub_cat": '',
+        "expected_sub_cat": '',
+        "sub_bsr": 0,
+        "history_main_bsr": [],
+        "history_sub_bsr": [],
+        "events": []
+    }
+
+
 def main():
     items = []
 
@@ -302,6 +344,9 @@ def main():
                 for a in top_asins
             ]
         })
+        # 每个关键词 ASIN 也作为独立行输出（用 build_keyword_item）
+        for a in top_asins:
+            items.append(build_keyword_item(kw, a))
         print(f'  kw [{kw}]: {len(top_asins)} top ASINs')
 
     output = {
