@@ -25,15 +25,18 @@ DATA_DIR = os.path.join(PROJECT_ROOT, "backend", "data")
 TRIGGER_FILE = os.path.join(DATA_DIR, "trigger.json")
 CONFIG_FILE = os.path.join(DATA_DIR, "user_config.json")
 REPO = "charlescome1995-prog/crossmart-monitor"
-RAW_BASE = "https://raw.githubusercontent.com/" + REPO + "/main/backend/data"
 
 
 def gh_fetch_json(path):
-    """从 GitHub Raw 下载 JSON 文件"""
-    url = RAW_BASE + "/" + path + "?t=" + str(int(time.time()))
+    """从 GitHub API 下载 JSON 文件（绕过CDN缓存）"""
+    api_url = "https://api.github.com/repos/" + REPO + "/contents/" + path
+    req = urllib.request.Request(api_url, headers={"Accept": "application/vnd.github.v3+json"})
     try:
-        with urllib.request.urlopen(url, timeout=10) as r:
-            return json.loads(r.read().decode("utf-8"))
+        with urllib.request.urlopen(req, timeout=10) as r:
+            import base64
+            data = json.loads(r.read())
+            content = base64.b64decode(data["content"]).decode("utf-8")
+            return json.loads(content)
     except Exception as e:
         print("  fetch " + path + " error: " + str(e))
         return None
@@ -41,12 +44,12 @@ def gh_fetch_json(path):
 
 def load_trigger():
     """从 GitHub 加载 trigger.json"""
-    return gh_fetch_json("trigger.json")
+    return gh_fetch_json("backend/data/trigger.json")
 
 
 def load_config():
     """从 GitHub 加载 user_config.json"""
-    data = gh_fetch_json("user_config.json")
+    data = gh_fetch_json("backend/data/user_config.json")
     if data is None:
         return {"asins": [], "keywords": []}
     return data
@@ -72,10 +75,8 @@ def run_command(cmd, cwd=None, timeout=600):
             env['PATH'] = python_dir + os.pathsep + env['PATH']
         else:
             env['PATH'] = python_dir + os.pathsep + os.environ.get('PATH', '')
-        # Windows needs SYSTEMROOT to find cmd.exe
         if 'SYSTEMROOT' not in env:
             env['SYSTEMROOT'] = os.environ.get('SYSTEMROOT', r'C:\WINDOWS')
-        # Run directly as list, shell=False - avoids PATH issues
         result = subprocess.run(
             cmd_list, shell=False, cwd=cwd or PROJECT_ROOT,
             capture_output=True, text=True, encoding="utf-8", errors="replace",
@@ -136,10 +137,8 @@ def push_trigger_done(trigger):
     subprocess.run("git config --global user.email \"bot@crossmart.ai\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
     subprocess.run("git add " + TRIGGER_FILE, shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
     subprocess.run("git commit -m \"auto: trigger done\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
-    # Handle potential fetch-first push rejection
     push_result = subprocess.run("git push", shell=True, cwd=repo_dir, timeout=60, encoding="utf-8", errors="replace")
     if push_result.returncode != 0:
-        # Remote has new commits - force push to overwrite
         print("  remote ahead, force-pushing...")
         subprocess.run("git push -f", shell=True, cwd=repo_dir, timeout=60, encoding="utf-8", errors="replace")
     print("  trigger.json pushed to GitHub")
