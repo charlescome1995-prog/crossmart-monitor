@@ -3,6 +3,7 @@
 """
 sync_monitor_data.py - 从本地快照生成前端可用的 rawData JSON
 写入 frontend/data/rawData.json，供 monitor.html 加载
+支持与上次快照的 diff 比对
 """
 import json, os, glob, sys, re, subprocess
 from datetime import datetime
@@ -66,6 +67,142 @@ def extract_bsr(data):
     return None
 
 
+# ── Diff 比对逻辑 ────────────────────────────────────────────────
+
+def build_diff(curr_data, prev_data):
+    """
+    比对当前快照与上次快照，生成 diff 字段。
+    diff 格式：
+      price:    {current, prev, change, pct, direction}
+      rating:   {current, prev, change, direction}
+      review_count: {current, prev, change, direction}
+      bsr:      {current, prev, change, direction}
+      variants: {current, prev, change, direction}
+      deal_activity: {current, prev, direction}
+      badges:   {current, prev, lost, gained, direction}
+    """
+    if prev_data is None:
+        return {}
+
+    diff = {}
+
+    def cf(key, default=None):
+        """safe_float from curr"""
+        return safe_float(curr_data.get(key, ''), default)
+
+    def pf(key, default=None):
+        """safe_float from prev"""
+        return safe_float(prev_data.get(key, ''), default)
+
+    def ci(key, default=None):
+        """safe_int from curr"""
+        return safe_int(curr_data.get(key, curr_data.get(key.replace('_count', ''), '')), default)
+
+    def pi(key, default=None):
+        """safe_int from prev"""
+        return safe_int(prev_data.get(key, prev_data.get(key.replace('_count', ''), '')), default)
+
+    # 价格
+    p_c = cf('price')
+    p_p = pf('price')
+    if p_c is not None and p_p is not None and p_p > 0:
+        chg = round(p_c - p_p, 2)
+        pct = round((p_c - p_p) / p_p * 100, 1)
+        diff['price'] = {
+            'current': p_c,
+            'prev': p_p,
+            'change': ('+' if chg >= 0 else '') + str(chg),
+            'pct': ('+' if pct >= 0 else '') + str(pct) + '%',
+            'direction': 'up' if chg > 0 else ('dn' if chg < 0 else 'same')
+        }
+
+    # 评分
+    r_c = cf('rating')
+    r_p = pf('rating')
+    if r_c is not None and r_p is not None:
+        chg = round(r_c - r_p, 1)
+        diff['rating'] = {
+            'current': r_c,
+            'prev': r_p,
+            'change': ('+' if chg >= 0 else '') + str(chg),
+            'direction': 'up' if chg > 0 else ('dn' if chg < 0 else 'same')
+        }
+
+    # 评论数
+    rc_c = ci('review_count')
+    rc_p = pi('review_count')
+    if rc_c is not None and rc_p is not None:
+        chg = rc_c - rc_p
+        diff['review_count'] = {
+            'current': rc_c,
+            'prev': rc_p,
+            'change': ('+' if chg >= 0 else '') + str(chg),
+            'direction': 'up' if chg > 0 else ('dn' if chg < 0 else 'same')
+        }
+
+    # BSR 大类排名
+    b_c = extract_bsr(curr_data)
+    b_p = extract_bsr(prev_data)
+    if b_c is not None and b_p is not None:
+        chg = b_c - b_p  # 排名数字增加 = 跌（差值为正 = 排名变差）
+        diff['bsr'] = {
+            'current': b_c,
+            'prev': b_p,
+            'change': ('+' if chg >= 0 else '') + str(abs(chg)),
+            'direction': 'up' if chg < 0 else ('dn' if chg > 0 else 'same')
+        }
+
+    # 变体
+    v_c = curr_data.get('variants', '')
+    v_p = prev_data.get('variants', '')
+    if v_c != v_p:
+        diff['variants'] = {
+            'current': v_c,
+            'prev': v_p,
+            'direction': 'changed'
+        }
+
+    # Deal 状态
+    d_c = curr_data.get('deal_activity', '无')
+    d_p = prev_data.get('deal_activity', '无')
+    if d_c != d_p:
+        diff['deal_activity'] = {
+            'current': d_c,
+            'prev': d_p,
+            'direction': 'changed'
+        }
+
+    # 徽章
+    b_c2 = curr_data.get('badges', []) or []
+    b_p2 = prev_data.get('badges', []) or []
+    if b_c2 != b_p2:
+        lost = [b for b in b_p2 if b not in b_c2]
+        gained = [b for b in b_c2 if b not in b_p2]
+        diff['badges'] = {
+            'current': b_c2,
+            'prev': b_p2,
+            'lost': lost,
+            'gained': gained,
+            'direction': 'changed' if lost or gained else 'same'
+        }
+
+    return diff
+
+
+def get_prev_snapshot_data(history):
+    """从 history 列表中取出倒数第二个快照的 data"""
+    if len(history) < 2:
+        return None
+    snap = history[-2]
+    if isinstance(snap, dict) and 'data' in snap:
+        return snap['data']
+    if isinstance(snap, dict):
+        return snap
+    return None
+
+
+# ── 构建函数 ────────────────────────────────────────────────────
+
 def load_asin_meta(asin):
     """加载 ASIN 的 _meta.json（关联ASIN列表）"""
     meta_path = os.path.join(DATA_DIR, f'asin_{asin}', '_meta.json')
@@ -86,12 +223,9 @@ def build_rawdata_item(asin, data, history, related_asins=None):
     brand = data.get('brand', '')
     main_cat = data.get('bsr_sub_category', '') or ''
 
-    price_change = 0.0
-    if len(history) >= 2:
-        first_p = history[0].get('price')
-        last_p = history[-1].get('price')
-        if first_p and last_p and first_p > 0:
-            price_change = round(last_p - first_p, 2)
+    # 与上次快照的 diff
+    prev_data = get_prev_snapshot_data(history)
+    diff = build_diff(data, prev_data)
 
     return {
         "monitor_type": "ASIN",
@@ -102,9 +236,10 @@ def build_rawdata_item(asin, data, history, related_asins=None):
         "brand": brand[:60] if brand else '',
         "img": data.get('main_image', data.get('img', '')),
         "price": price,
-        "chg": price_change,
+        "chg": 0.0,
         "rating": rating,
         "reviews": review_count,
+        "diff": diff,
         "listing_status": "正常",
         "expected_listing_status": "正常",
         "title_changed": False,
@@ -113,11 +248,11 @@ def build_rawdata_item(asin, data, history, related_asins=None):
         "description_changed": False,
         "variant_status": "正常",
         "variant_changed": False,
-        "deal_activity": "无",
-        "badges_current": [],
+        "deal_activity": data.get('deal_activity', '无') or '无',
+        "badges_current": data.get('badges', []) or [],
         "badges_lost": [],
-        "coupon": "无",
-        "prime_discount": "未开启",
+        "coupon": data.get('coupon', '无') or '无',
+        "prime_discount": data.get('prime_discount', '未开启') or '未开启',
         "main_cat": main_cat,
         "expected_main_cat": main_cat,
         "main_bsr": main_bsr,
@@ -164,6 +299,7 @@ def build_related_item(asin, rel_data, main_asin=None):
         "chg": 0.0,
         "rating": rating,
         "reviews": reviews,
+        "diff": {},
         "listing_status": "正常",
         "expected_listing_status": "正常",
         "title_changed": False,
@@ -206,6 +342,7 @@ def build_keyword_item(kw, a):
         "chg": 0.0,
         "rating": rating,
         "reviews": reviews,
+        "diff": {},
         "listing_status": "正常",
         "expected_listing_status": "正常",
         "title_changed": False,
@@ -247,7 +384,7 @@ def main():
 
         data = latest.get('data', latest)
 
-        # 关联ASIN数据：meta（固定来源）+ latest里的实时数据
+        # 关联ASIN数据
         related_asins = []
         meta = load_asin_meta(asin)
         if meta and meta.get('related_asins'):
@@ -270,6 +407,7 @@ def main():
                     "brand": rt.get('brand', ''),
                 })
 
+        # 加载历史快照
         snapshots = sorted(glob.glob(os.path.join(d, 'snapshot_*.json')))
         all_snaps = []
         seen_keys = set()
@@ -285,7 +423,8 @@ def main():
                 'price': safe_float(sd.get('price', '')),
                 'bsr': extract_bsr(sd),
                 'rating': safe_float(sd.get('rating', '')),
-                'review_count': safe_int(sd.get('review_count', sd.get('reviews', '')))
+                'review_count': safe_int(sd.get('review_count', sd.get('reviews', ''))),
+                'data': sd
             })
 
         for sp in snapshots:
@@ -313,7 +452,7 @@ def main():
             print(f'  related={len(related_asins)}', end='')
         print()
 
-    # ── 关键词数据 ──────────────────────────────────────────────────
+    # ── 关键词数据 ──────────────────────────────────────────────
     keywords_data = []
     kw_dirs = sorted(glob.glob(os.path.join(DATA_DIR, 'kw_*')))
     print(f'[SYNC] Found {len(kw_dirs)} keyword directories')
@@ -344,7 +483,6 @@ def main():
                 for a in top_asins
             ]
         })
-        # 每个关键词 ASIN 也作为独立行输出（用 build_keyword_item）
         for a in top_asins:
             items.append(build_keyword_item(kw, a))
         print(f'  kw [{kw}]: {len(top_asins)} top ASINs')
@@ -361,12 +499,12 @@ def main():
 
     print(f'\n✅ Written {len(items)} items + {len(keywords_data)} keywords to {OUTPUT_RAW}')
 
-    # ── 自动推送到 GitHub ──────────────────────────────────────────
+    # ── 自动推送到 GitHub ────────────────────────────────────────
     try:
         subprocess.run(['git', 'add', OUTPUT_RAW], capture_output=True, cwd=BASE)
         diff = subprocess.run(['git', 'diff', '--cached', '--stat'], capture_output=True, text=True, cwd=BASE)
         if diff.stdout.strip():
-            subprocess.run(['git', 'commit', '-m', 'auto: sync rawData.json with keywords'], capture_output=True, cwd=BASE)
+            subprocess.run(['git', 'commit', '-m', 'auto: sync rawData.json with keywords + diff'], capture_output=True, cwd=BASE)
             result = subprocess.run(['git', 'push'], capture_output=True, text=True, cwd=BASE)
             if result.returncode == 0:
                 print('🚀 rawData.json 已推送至 GitHub')

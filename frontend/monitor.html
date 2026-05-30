@@ -114,6 +114,28 @@
   .status-indicator { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 4px; width: 85px; justify-content: center; }
   .status-indicator.changed { background: #dc2626; color: #fff; }
   .status-indicator.stable { background: #059669; color: #fff; }
+
+  .diff-cell { font-size: 12px; line-height: 1.6; min-width: 90px; }
+  .diff-item { display: flex; align-items: center; gap: 4px; }
+  .diff-arrow { font-size: 11px; }
+  .diff-arrow.up { color: #dc2626; }
+  .diff-arrow.dn { color: #059669; }
+  .diff-arrow.same { color: #94a3b8; }
+  .diff-val { font-weight: 700; }
+  .diff-val.up { color: #dc2626; }
+  .diff-val.dn { color: #059669; }
+  .diff-val.same { color: #64748b; }
+  .diff-none { color: #cbd5e1; font-size: 11px; }
+  .diff-tip { position: relative; cursor: help; border-bottom: 1px dashed #94a3b8; display: inline-block; }
+  .diff-tip:hover .tip-box { display: block; }
+  .tip-box { display: none; position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%); background: #1e293b; color: #f1f5f9; border-radius: 6px; padding: 8px 12px; font-size: 11px; line-height: 1.8; min-width: 160px; z-index: 50; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+  .tip-box::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: #1e293b; }
+  .tip-row { display: flex; justify-content: space-between; gap: 12px; }
+  .tip-label { color: #94a3b8; }
+  .tip-val.up { color: #f87171; }
+  .tip-val.dn { color: #34d399; }
+  .tip-val.same { color: #94a3b8; }
+  .tip-section { border-top: 1px solid #334155; margin-top: 4px; padding-top: 4px; }
 </style>
 </head>
 <body>
@@ -259,6 +281,7 @@
             <th>主图</th>
             <th>监控源及基本商品信息</th>
             <th>核心监控指标 (状态、促销及节点)</th>
+            <th>变化（较上次）</th>
             <th>即时异常事件</th>
             <th>监控全期排名曲线</th>
             <th>实时状态判定</th>
@@ -502,9 +525,50 @@ function renderTable() {
     item.badges_lost.forEach(b => activeEvents.push({ class: "e-alert", text: `失去 ${b}` }));
 
     const chgClass = item.chg > 0 ? 'up' : (item.chg < 0 ? 'dn' : '');
-    const chgText = item.chg !== 0 ? `${item.chg > 0 ? '↑' : '↓'} $${Math.abs(item.chg)}` : '';
+        const chgText = item.chg !== 0 ? `${item.chg > 0 ? String.fromCharCode(9650) : String.fromCharCode(9660)} $${Math.abs(item.chg)}` : '';
 
-    html += `<tr>
+    const diff = item.diff || {};
+    let diffHtml = '<div class="diff-none">—</div>';
+    const diffLines = [];
+    if (diff.price) {
+      const dir = diff.price.direction;
+      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '▲' : dir === 'dn' ? '▼' : '—') + '</span> 价格: <span class="diff-val ' + dir + '">$' + diff.price.current + (diff.price.pct ? ' (' + diff.price.pct + ')' : '') + '</span></div>');
+    }
+    if (diff.review_count) {
+      const dir = diff.review_count.direction;
+      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '▲' : dir === 'dn' ? '▼' : '—') + '</span> 评论: <span class="diff-val ' + dir + '">' + diff.review_count.change + '</span></div>');
+    }
+    if (diff.rating) {
+      const dir = diff.rating.direction;
+      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '▲' : dir === 'dn' ? '▼' : '—') + '</span> 评分: <span class="diff-val ' + dir + '">' + diff.rating.change + '</span></div>');
+    }
+    if (diff.bsr) {
+      const dir = diff.bsr.direction;
+      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '▲' : dir === 'dn' ? '▼' : '—') + '</span> BSR: <span class="diff-val ' + dir + '">' + diff.bsr.change + '</span></div>');
+    }
+    if (diff.deal_activity && diff.deal_activity.direction === 'changed') {
+      diffLines.push('<div class="diff-item"><span class="diff-arrow changed">⚡</span> Deal: <span class="diff-val">' + (diff.deal_activity.current !== '无' ? diff.deal_activity.current : '无') + '</span></div>');
+    }
+    if (diff.badges && diff.badges.direction === 'changed') {
+      if (diff.badges.gained && diff.badges.gained.length) diffLines.push('<div class="diff-item"><span class="diff-arrow up">🏅</span> 获得: <span class="diff-val up">' + diff.badges.gained.join(', ') + '</span></div>');
+      if (diff.badges.lost && diff.badges.lost.length) diffLines.push('<div class="diff-item"><span class="diff-arrow dn">💨</span> 失去: <span class="diff-val dn">' + diff.badges.lost.join(', ') + '</span></div>');
+    }
+    if (diffLines.length > 0) {
+      let tipHtml = '';
+      if (diff.price) tipHtml += '<div class="tip-row"><span class="tip-label">价格</span><span class="tip-val ' + diff.price.direction + '">$' + diff.price.prev + ' → $' + diff.price.current + ' (' + diff.price.change + ')</span></div>';
+      if (diff.review_count) tipHtml += '<div class="tip-row"><span class="tip-label">评论数</span><span class="tip-val ' + diff.review_count.direction + '">' + diff.review_count.prev + ' → ' + diff.review_count.current + ' (' + diff.review_count.change + ')</span></div>';
+      if (diff.rating) tipHtml += '<div class="tip-row"><span class="tip-label">评分</span><span class="tip-val ' + diff.rating.direction + '">' + diff.rating.prev + ' → ' + diff.rating.current + ' (' + diff.rating.change + ')</span></div>';
+      if (diff.bsr) { var d = diff.bsr.direction === 'up' ? 'dn' : diff.bsr.direction === 'dn' ? 'up' : 'same'; tipHtml += '<div class="tip-row"><span class="tip-label">BSR</span><span class="tip-val ' + d + '">#' + diff.bsr.prev + ' → #' + diff.bsr.current + ' (' + diff.bsr.change + ')</span></div>'; }
+      if (diff.variants) tipHtml += '<div class="tip-row"><span class="tip-label">变体</span><span class="tip-val">' + (diff.variants.prev || '无') + ' → ' + (diff.variants.current || '无') + '</span></div>';
+      if (diff.deal_activity && diff.deal_activity.direction === 'changed') tipHtml += '<div class="tip-row"><span class="tip-label">Deal</span><span class="tip-val">' + diff.deal_activity.prev + ' → ' + diff.deal_activity.current + '</span></div>';
+      if (diff.badges && diff.badges.direction === 'changed') {
+        if (diff.badges.gained && diff.badges.gained.length) tipHtml += '<div class="tip-row"><span class="tip-label">获得徽章</span><span class="tip-val up">' + diff.badges.gained.join(', ') + '</span></div>';
+        if (diff.badges.lost && diff.badges.lost.length) tipHtml += '<div class="tip-row"><span class="tip-label">失去徽章</span><span class="tip-val dn">' + diff.badges.lost.join(', ') + '</span></div>';
+      }
+      if (tipHtml) tipHtml = '<div class="tip-section">' + tipHtml + '</div>';
+      diffHtml = '<div class="diff-tip">' + diffLines.slice(0, 3).join('') + '<div class="tip-box">上次 → 当前' + tipHtml + '</div></div>';
+    }
+html += `<tr>
       <td class="col-img"><img src="${item.img}"></td>
       <td>
         <div class="info-block">
@@ -528,13 +592,14 @@ function renderTable() {
         </div>
       </td>
       <td><div class="events-cell">${activeEvents.length ? activeEvents.map(e => `<span class="e-tag ${e.class}">${e.text}</span>`).join('') : '<span class="e-none">无异常</span>'}</div></td>
+      <td><div class="diff-cell">${diffHtml}</div></td>
       <td>${drawSparkline(item.history_main_bsr, '#1e3a8a')}</td>
       <td><div class="status-indicator ${hasActiveAnomaly?'changed':'stable'}">${hasActiveAnomaly?'发现异动':'稳定'}</div></td>
       <td style="color:#64748b; font-size:12px;">${rawData.updated}</td>
     </tr>`;
   });
   
-  tbody.innerHTML = html || '<tr><td colspan="7" style="text-align:center; padding:20px;">暂无匹配数据</td></tr>';
+  tbody.innerHTML = html || '<tr><td colspan="8" style="text-align:center; padding:20px;">暂无匹配数据</td></tr>';
 }
 
 function exportToExcel() {
