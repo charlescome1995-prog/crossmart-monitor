@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-30T09:26:33",
+  "updated": "2026-05-30T09:54:47",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -90,7 +90,53 @@
   "keywords": [
     {
       "keyword": "batana oil",
-      "top_asins": []
+      "top_asins": [
+        {
+          "asin": "B0DSHXCT4N",
+          "type": "natural",
+          "rank": "自然位：第1页第1位",
+          "title": "Batana Oil for Hair Growth Dr Sebi, 100% Raw Organic Batana Hair Mask from Honduras, Wild Growth Hair Oil, Scalp Oil Promotes Hair Thickness, Prevents Loss for Men & Women, 4.06 fl oz",
+          "price": "$16.19",
+          "rating": "",
+          "reviews": "4"
+        },
+        {
+          "asin": "B0DCX7628T",
+          "type": "natural",
+          "rank": "自然位：第1页第2位",
+          "title": "Lebanta Raw Batana Oil for Hair Growth - 100% Pure, Organic 4oz Batana from Honduras for Thick and Strong Natural Hair - Dr. Sebi Unrefined Cold Pressed Cosmetic Scalp Mask Gifts for Women (1 Pack)",
+          "price": "$21.22",
+          "rating": "",
+          "reviews": "4"
+        },
+        {
+          "asin": "B0DW3YH4WH",
+          "type": "natural",
+          "rank": "自然位：第1页第3位",
+          "title": "Batana Oil for Hair Growth, 100% Natural Pure Batana Oil Paste from Dr. Sebi Honduras, Prevents Hair Loss, Enhances Thickness, Organic Raw Scalp Mask for Women & Men (4.05 Oz)",
+          "price": "$9.97",
+          "rating": "",
+          "reviews": ""
+        },
+        {
+          "asin": "B0D6V2M5V1",
+          "type": "natural",
+          "rank": "自然位：第1页第4位",
+          "title": "Dolahair Batana Oil for Hair Growth Organics Pure Batana Hair Oil 100% Natural Batana Oil Nourishes Damaged Hair Natural Hair Growth Oil and Conditioner Batana Hair Oil 2.02 Fl Oz",
+          "price": "$9.99",
+          "rating": "",
+          "reviews": "2"
+        },
+        {
+          "asin": "B0DBLCYTZ6",
+          "type": "natural",
+          "rank": "自然位：第1页第5位",
+          "title": "Botanic Hearth Batana Oil for Hair Growth & Hair Treatment Oils 4 Fl Oz | Dr Sebi Inspired, 100% Raw & Pure Batana Oil | Scalp & Hair Treatment for Thickness & Strength | All Hair Types",
+          "price": "$12.99",
+          "rating": "",
+          "reviews": "4"
+        }
+      ]
     }
   ]
 }
