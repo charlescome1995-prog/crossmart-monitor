@@ -139,8 +139,11 @@ def extract_asin_marks_from_page(browser):
                     if (m) reviews = m[1];
                 }
 
+                var imgEl = item.querySelector('img.s-image');
+                var mainImage = imgEl ? (imgEl.src || '') : '';
+
                 if (asin) {
-                    results.push({ asin: asin, type: markType || 'unknown', rank: rankText, title: title, price: price, rating: rating, reviews: reviews });
+                    results.push({ asin: asin, type: markType || 'unknown', rank: rankText, title: title, price: price, rating: rating, reviews: reviews, main_image: mainImage });
                 }
             })(items[i]);
         }
@@ -362,6 +365,7 @@ def check_keyword(keyword):
                 "price": a.get("price", ""),
                 "rating": a.get("rating", ""),
                 "reviews": a.get("reviews", ""),
+                "main_image": a.get("main_image", ""),
             }
             for a in top_asins
         ],

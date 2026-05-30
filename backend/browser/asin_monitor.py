@@ -194,6 +194,7 @@ def _fetch_related_asin_data(browser: CDPBrowser, related_asins: list) -> list:
                 "reviews": data.get("review_count", ""),
                 "bsr": data.get("bsr", ""),
                 "brand": data.get("brand", ""),
+                "img": data.get("main_image", ""),
             })
             time.sleep(random.uniform(2, 5))
         except Exception as e:
