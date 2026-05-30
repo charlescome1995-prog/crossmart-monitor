@@ -1,1 +1,5 @@
-{"triggered_at":1780104037088,"status":"pending"}
+{
+  "triggered_at": 1780104037088,
+  "status": "done",
+  "completed_at": "2026-05-30T10:30:00"
+}
