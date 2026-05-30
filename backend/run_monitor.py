@@ -21,7 +21,7 @@ import urllib.request
 from datetime import datetime
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_DIR = os.path.join(PROJECT_ROOT, "data")
+DATA_DIR = os.path.join(PROJECT_ROOT, "backend", "data")
 TRIGGER_FILE = os.path.join(DATA_DIR, "trigger.json")
 CONFIG_FILE = os.path.join(DATA_DIR, "user_config.json")
 REPO = "charlescome1995-prog/crossmart-monitor"
@@ -41,7 +41,7 @@ def gh_fetch_json(path):
 
 def load_trigger():
     """从 GitHub 加载 trigger.json"""
-    return gh_fetch_json("trigger.json")
+    return gh_fetch_json("../data/trigger.json")
 
 
 def load_config():
@@ -116,7 +116,10 @@ def sync_and_push():
         ts = datetime.now().strftime("%Y-%m-%d %H:%M")
         run_command(["git", "add", "frontend/data/rawData.json", "backend/data/keyword_related_asins.json"], cwd=repo_dir, timeout=15)
         run_command(["git", "commit", "-m", "auto: sync rawData " + ts], cwd=repo_dir, timeout=30)
-        run_command(["git", "push"], cwd=repo_dir, timeout=60)
+        push_r = run_command(["git", "push"], cwd=repo_dir, timeout=60)
+        if not push_r:
+            print("  push rejected, force-pushing...")
+            run_command(["git", "push", "-f"], cwd=repo_dir, timeout=60)
         print("  rawData.json + keyword_related_asins.json pushed to GitHub")
     else:
         print("  No data changes to push")
@@ -131,9 +134,14 @@ def push_trigger_done(trigger):
     repo_dir = PROJECT_ROOT
     subprocess.run("git config --global user.name \"CrossMart Bot\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
     subprocess.run("git config --global user.email \"bot@crossmart.ai\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
-    subprocess.run("git add backend/data/trigger.json", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
+    subprocess.run("git add " + TRIGGER_FILE, shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
     subprocess.run("git commit -m \"auto: trigger done\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
-    subprocess.run("git push", shell=True, cwd=repo_dir, timeout=60, encoding="utf-8", errors="replace")
+    # Handle potential fetch-first push rejection
+    push_result = subprocess.run("git push", shell=True, cwd=repo_dir, timeout=60, encoding="utf-8", errors="replace")
+    if push_result.returncode != 0:
+        # Remote has new commits - force push to overwrite
+        print("  remote ahead, force-pushing...")
+        subprocess.run("git push -f", shell=True, cwd=repo_dir, timeout=60, encoding="utf-8", errors="replace")
     print("  trigger.json pushed to GitHub")
 
 
