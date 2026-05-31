@@ -21,7 +21,7 @@
   /* --- 11-Column Matrix Layout --- */
   .config-matrix { background: #fff; padding: 14px; border-radius: 6px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 4px; overflow-x: auto; }
   
-  /* 椤堕儴宸ュ叿鏍忚 */
+  /* 妞ゅ爼鍎村?銉ュ徔閺嶅繗顢 */
   .action-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed #e2e8f0; }
   .action-row .title-group { display: flex; align-items: center; gap: 20px; }
   .action-row .title-tag { font-size: 12px; font-weight: 700; color: #1e293b; background: #f1f5f9; padding: 4px 10px; border-radius: 4px; border: 1px solid #cbd5e1; }
@@ -32,30 +32,30 @@
   .ctrl-group button:hover { background: #d03d56; }
   .ctrl-group span { font-size: 12px; padding: 4px 10px; border-radius: 20px; background: #e2e8f0; color: #64748b; white-space: nowrap; }
 
-  /* 鏍稿績 11 鍒楃綉鏍?*/
+  /* 閺嶇?绺¾ 11 閸掓?缍夐弽?*/
   .matrix-grid { display: grid; grid-template-columns: 65px repeat(5, 1fr) repeat(5, 1fr); gap: 6px; min-width: 1100px; }
   .grid-cell { display: flex; align-items: center; }
   
-  /* 鏍囩鍒楁牱寮?*/
+  /* 閺嶅洨顒烽崚妤佺壉瀵®?*/
   .lbl-cell { font-size: 11px; font-weight: 700; color: #475569; border: 1px solid #cbd5e1; border-radius: 3px; background: #f8fafc; height: 28px; justify-content: center; width: 100%; }
   
-  /* 杈撳叆妗嗗熀纭€鏍峰紡 */
+  /* 鏉堟挸鍙嗗?鍡楃唨绾?偓閺嶅嘲绱¡ */
   .matrix-grid input[type="text"] { width: 100%; padding: 4px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; height: 28px; outline: none; }
   .matrix-grid input[type="text"]:focus { border-color: #e94560; box-shadow: 0 0 0 1px rgba(233, 69, 96, 0.1); }
   .matrix-grid input[type="text"]::placeholder { color: #cbd5e1; font-weight: 400; }
   
-  /* 鐩爣琛岀壒娈婃牱寮?(楂樹寒) */
+  /* 閻╊喗鐖ｇ悰宀澹掑▓濠冪壉瀵®?(妤傛ü瀵) */
   .row-target input[type="text"] { font-weight: 700; border-color: #94a3b8; background: #fff; }
   
-  /* 鍏宠仈琛屾牱寮?*/
+  /* 閸忓疇浠堢悰灞剧壉瀵®?*/
   .row-rel input[type="text"] { font-size: 11px; color: #475569; background: #fafafa; border-color: #e2e8f0; }
 
-  /* 琛ㄥご鎸囩ず鍣?*/
+  /* 鐞涖劌銇旈幐鍥┿仛閸£?*/
   .grid-hdr { font-size: 10px; color: #94a3b8; font-weight: 600; text-align: center; padding-bottom: 2px; text-transform: uppercase; }
   .hdr-asin { border-bottom: 2px solid #e0e7ff; color: #4f46e5; }
   .hdr-kw { border-bottom: 2px solid #fce7f3; color: #db2777; }
 
-  /* --- 鍘熸湁 Table & Badge 鏍峰紡淇濇寔涓嶅彉 --- */
+  /* --- 閸樼喐婀 Table & Badge 閺嶅嘲绱℃穱婵囧瘮娑撳秴褰 --- */
   .filter-bar { background: #fff; padding: 12px; border-radius: 6px 6px 0 0; border: 1px solid #e2e8f0; border-bottom: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
   .filter-controls { display: flex; align-items: center; gap: 12px; }
   .filter-controls input[type="text"] { padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; width: 240px; font-size: 13px; }
@@ -153,22 +153,22 @@
     
     <!-- Configuration Area -->
     <div class="config-matrix">
-      <!-- 椤堕儴鎿嶄綔琛?-->
+      <!-- 妞ゅ爼鍎撮幙宥勭稊鐞?-->
       <div class="action-row">
         <div class="title-group">
-          <div class="title-tag">ASIN 鐩戞帶娴?(Streams 1-5)</div>
-          <div class="title-tag">鍏抽敭璇?鐩戞帶娴?(Streams 1-5)</div>
+          <div class="title-tag">ASIN 閻╂垶甯跺ù?(Streams 1-5)</div>
+          <div class="title-tag">閸忔娊鏁?拠?閻╂垶甯跺ù?(Streams 1-5)</div>
         </div>
         <div class="ctrl-group">
           <input type="password" id="ghTokenInput" placeholder="GitHub Token" onkeydown="if(event.key==='Enter')triggerMonitor()">
-          <button id="btnTrigger" onclick="triggerMonitor()">鈿?绔嬪嵆鎶撳彇</button>
-          <span id="configStatus">璇诲彇閰嶇疆...</span>
+          <button id="btnTrigger" onclick="triggerMonitor()">閳¿?缁斿?宓嗛幎鎾冲絿</button>
+          <span id="configStatus">鐠囪?褰囬柊宥囩枂...</span>
         </div>
       </div>
 
-      <!-- 11鍒楃綉鏍间富浣?-->
+      <!-- 11閸掓?缍夐弽闂村瘜娴£?-->
       <div class="matrix-grid">
-        <!-- 琛ㄥご鎸囩ず -->
+        <!-- 鐞涖劌銇旈幐鍥┿仛 -->
         <div></div>
         <div class="grid-hdr hdr-asin">Stream 1</div>
         <div class="grid-hdr hdr-asin">Stream 2</div>
@@ -181,22 +181,22 @@
         <div class="grid-hdr hdr-kw">KW Stream 4</div>
         <div class="grid-hdr hdr-kw">KW Stream 5</div>
 
-        <!-- 鐩爣琛?(Target Row) -->
-        <div class="grid-cell"><div class="lbl-cell">鐩爣</div></div>
+        <!-- 閻╊喗鐖ｇ悰?(Target Row) -->
+        <div class="grid-cell"><div class="lbl-cell">閻╊喗鐖£</div></div>
         <div class="grid-cell row-target"><input type="text" id="in-asin-0" placeholder="ASIN"></div>
         <div class="grid-cell row-target"><input type="text" id="in-asin-1" placeholder="ASIN"></div>
         <div class="grid-cell row-target"><input type="text" id="in-asin-2" placeholder="ASIN"></div>
         <div class="grid-cell row-target"><input type="text" id="in-asin-3" placeholder="ASIN"></div>
         <div class="grid-cell row-target"><input type="text" id="in-asin-4" placeholder="ASIN"></div>
-        <div class="grid-cell row-target"><input type="text" id="in-kw-0" placeholder="鍏抽敭璇?></div>
-        <div class="grid-cell row-target"><input type="text" id="in-kw-1" placeholder="鍏抽敭璇?></div>
-        <div class="grid-cell row-target"><input type="text" id="in-kw-2" placeholder="鍏抽敭璇?></div>
-        <div class="grid-cell row-target"><input type="text" id="in-kw-3" placeholder="鍏抽敭璇?></div>
-        <div class="grid-cell row-target"><input type="text" id="in-kw-4" placeholder="鍏抽敭璇?></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-0" placeholder="閸忔娊鏁?拠?></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-1" placeholder="閸忔娊鏁?拠?></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-2" placeholder="閸忔娊鏁?拠?></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-3" placeholder="閸忔娊鏁?拠?></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-4" placeholder="閸忔娊鏁?拠?></div>
 
-        <!-- 鍏宠仈琛?1-5 (Related Rows 1-5) -->
-        <!-- JS 灏嗗湪绗簩閮ㄥ垎閫氳繃 buildRelRowGrid 濉厖姝ゅ鐨?ID 閫昏緫 -->
-        <div class="grid-cell"><div class="lbl-cell">鍏宠仈 1</div></div>
+        <!-- 閸忓疇浠堢悰?1-5 (Related Rows 1-5) -->
+        <!-- JS 鐏忓棗婀?粭顑跨癌闁?劌鍨庨柅姘崇箖 buildRelRowGrid 婵夘偄鍘栧?銈咁槱閻¨?ID 闁?槒绶« -->
+        <div class="grid-cell"><div class="lbl-cell">閸忓疇浠 1</div></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-0" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-0" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-0" placeholder="Rel ASIN"></div>
@@ -208,7 +208,7 @@
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-0" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-0" placeholder="Rel ASIN"></div>
 
-        <div class="grid-cell"><div class="lbl-cell">鍏宠仈 2</div></div>
+        <div class="grid-cell"><div class="lbl-cell">閸忓疇浠 2</div></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-1" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-1" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-1" placeholder="Rel ASIN"></div>
@@ -220,7 +220,7 @@
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-1" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-1" placeholder="Rel ASIN"></div>
 
-        <div class="grid-cell"><div class="lbl-cell">鍏宠仈 3</div></div>
+        <div class="grid-cell"><div class="lbl-cell">閸忓疇浠 3</div></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-2" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-2" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-2" placeholder="Rel ASIN"></div>
@@ -232,7 +232,7 @@
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-2" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-2" placeholder="Rel ASIN"></div>
 
-        <div class="grid-cell"><div class="lbl-cell">鍏宠仈 4</div></div>
+        <div class="grid-cell"><div class="lbl-cell">閸忓疇浠 4</div></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-3" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-3" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-3" placeholder="Rel ASIN"></div>
@@ -244,7 +244,7 @@
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-3" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-3" placeholder="Rel ASIN"></div>
 
-        <div class="grid-cell"><div class="lbl-cell">鍏宠仈 5</div></div>
+        <div class="grid-cell"><div class="lbl-cell">閸忓疇浠 5</div></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-4" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-4" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-4" placeholder="Rel ASIN"></div>
@@ -257,35 +257,35 @@
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-4" placeholder="Rel ASIN"></div>
       </div>
     </div>
-    <!-- 杩囨护宸ュ叿鏍?-->
+    <!-- 鏉╁洦鎶ゅ?銉ュ徔閺?-->
     <div class="filter-bar">
       <div class="filter-controls">
-        <input type="text" id="searchInput" placeholder="蹇€熻繃婊?ASIN銆佹爣棰樻垨鍝佺墝..." oninput="renderTable()">
+        <input type="text" id="searchInput" placeholder="韫囶偊鈧?喕绻冨??ASIN閵嗕焦鐖ｆ０妯诲灗閸濅胶澧..." oninput="renderTable()">
         <select id="sourceFilter" onchange="renderTable()">
-          <option value="ALL">鍏ㄩ儴鐩戞帶瀵硅薄 (ALL)</option>
-          <option value="ASIN">浠呯湅 ASIN 鐩戞帶</option>
-          <option value="KW">浠呯湅 鍏抽敭璇嶇洃鎺?/option>
+          <option value="ALL">閸忋劑鍎撮惄鎴炲付鐎电?钖 (ALL)</option>
+          <option value="ASIN">娴犲懐婀 ASIN 閻╂垶甯¶</option>
+          <option value="KW">娴犲懐婀 閸忔娊鏁?拠宥囨磧閹º?/option>
         </select>
-        <label><input type="checkbox" id="changeFilter" onchange="renderTable()"> 浠呯湅寮傚姩鍟嗗搧</label>
+        <label><input type="checkbox" id="changeFilter" onchange="renderTable()"> 娴犲懐婀呭?鍌氬З閸熷棗鎼§</label>
       </div>
       <div>
-        <button class="btn btn-secondary" onclick="exportToExcel()">瀵煎嚭鐩戞帶鎶ヨ〃</button>
+        <button class="btn btn-secondary" onclick="exportToExcel()">鐎电厧鍤?惄鎴炲付閹躲儴銆</button>
       </div>
     </div>
 
-    <!-- 鏁版嵁琛ㄦ牸 -->
+    <!-- 閺佺増宓佺悰銊︾壐 -->
     <div class="table-container">
       <table class="monitor-table">
         <thead>
           <tr>
-            <th>涓诲浘</th>
-            <th>鐩戞帶婧愬強鍩烘湰鍟嗗搧淇℃伅</th>
-            <th>鏍稿績鐩戞帶鎸囨爣 (鐘舵€併€佷績閿€鍙婅妭鐐?</th>
-            <th>鍙樺寲锛堣緝涓婃锛?/th>
-            <th>鍗虫椂寮傚父浜嬩欢</th>
-            <th>鐩戞帶鍏ㄦ湡鎺掑悕鏇茬嚎</th>
-            <th>瀹炴椂鐘舵€佸垽瀹?/th>
-            <th>鏈€鍚庣洃鎺у悓姝ユ椂闂?/th>
+            <th>娑撹?娴</th>
+            <th>閻╂垶甯跺┃鎰?挤閸╃儤婀伴崯鍡楁惂娣団剝浼</th>
+            <th>閺嶇?绺鹃惄鎴炲付閹稿洦鐖£ (閻樿埖鈧?降鈧?椒绺鹃柨鈧?崣濠呭Ν閻?</th>
+            <th>閸欐ê瀵查敍鍫ｇ窛娑撳﹥顐奸敍?/th>
+            <th>閸楄櫕妞傚?鍌氱埗娴滃?娆¢</th>
+            <th>閻╂垶甯堕崗銊︽埂閹烘帒鎮曢弴鑼?殠</th>
+            <th>鐎圭偞妞傞悩鑸碘偓浣稿灲鐎¹?/th>
+            <th>閺堚偓閸氬海娲冮幒褍鎮撳?銉︽?闂?/th>
           </tr>
         </thead>
         <tbody id="tableBody"></tbody>
@@ -301,12 +301,12 @@ const RAW_DATA_URL = 'https://api.github.com/repos/' + REPO + '/contents/fronten
 
 let rawData = { updated: '', items: [], keywords: [] };
 
-// 宸ュ叿鍑芥暟
+// 瀹搞儱鍙块崙鑺ユ殶
 function b64enc(s){return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g,function(_,p){return String.fromCharCode(parseInt(p,16));}));}
 const POLL_INTERVAL = 5000;
 let pollTimer = null;
 
-// 鍒濆鍖?window.addEventListener('DOMContentLoaded', function() {
+// 閸掓繂顫愰崠?window.addEventListener('DOMContentLoaded', function() {
   var tokenInput = document.getElementById('ghTokenInput');
   if (tokenInput) {
     var saved = sessionStorage.getItem('gh_token') || '';
@@ -319,7 +319,7 @@ let pollTimer = null;
   loadRawData();
 });
 
-// 鍔犺浇鍘熷鐩戞帶鏁版嵁
+// 閸旂姾娴囬崢鐔奉潗閻╂垶甯堕弫鐗堝祦
 async function loadRawData() {
   try {
     const resp = await fetch(RAW_DATA_URL + '&t=' + Date.now(), {
@@ -336,7 +336,7 @@ async function loadRawData() {
   }
 }
 
-// 杈呭姪锛氳幏鍙栨煇涓€鍒椾笅鎵€鏈夌殑鍏宠仈鍊?function getRelatedVals(type, streamIdx) {
+// 鏉堝懎濮?敍姘冲箯閸欐牗鐓囨稉鈧?崚妞剧瑓閹碘偓閺堝?娈戦崗瀹犱粓閸?function getRelatedVals(type, streamIdx) {
   var vals = [];
   for (var r = 0; r < 5; r++) {
     var el = document.getElementById('rel-' + type + '-' + streamIdx + '-' + r);
@@ -345,17 +345,17 @@ async function loadRawData() {
   return vals;
 }
 
-// 瑙﹀彂鎶撳彇 (璇诲彇 11 鍒楃煩闃垫暟鎹?
+// 鐟欙箑褰傞幎鎾冲絿 (鐠囪?褰 11 閸掓?鐓╅梼鍨?殶閹¹?
 async function triggerMonitor() {
   var asins = [], kws = [];
-  // 閬嶅巻 5 涓?ASIN 娴?(Streams 1-5)
+  // 闁?秴宸» 5 娑?ASIN 濞´?(Streams 1-5)
   for (var i = 0; i < 5; i++) {
     var mainA = document.getElementById('in-asin-' + i).value.trim();
     if (mainA) {
       asins.push({ main: mainA, related: getRelatedVals('asin', i) });
     }
   }
-  // 閬嶅巻 5 涓叧閿瘝娴?(KW Streams 1-5)
+  // 闁?秴宸» 5 娑擃亜鍙ч柨顔跨槤濞´?(KW Streams 1-5)
   for (var j = 0; j < 5; j++) {
     var mainK = document.getElementById('in-kw-' + j).value.trim();
     if (mainK) {
@@ -364,35 +364,35 @@ async function triggerMonitor() {
   }
 
   if (asins.length === 0 && kws.length === 0) {
-    alert('璇疯嚦灏戣緭鍏ヤ竴涓洰鏍?ASIN 鎴栧叧閿瘝');
+    alert('鐠囩柉鍤︾亸鎴ｇ翻閸忋儰绔存稉顏嗘窗閺?ASIN 閹存牕鍙ч柨顔跨槤');
     return;
   }
 
   var cfg = { asins: asins, keywords: kws };
   var btn = document.getElementById('btnTrigger');
   btn.disabled = true;
-  btn.textContent = '鈿?瑙﹀彂涓?..';
+  btn.textContent = '閳¿?鐟欙箑褰傛稉?..';
 
   var token = sessionStorage.getItem('gh_token') || '';
   if (!token) {
-    alert('璇峰厛杈撳叆 GitHub Token');
-    btn.disabled = false; btn.textContent = '鈿?绔嬪嵆鎶撳彇';
+    alert('鐠囧嘲鍘涙潏鎾冲弳 GitHub Token');
+    btn.disabled = false; btn.textContent = '閳¿?缁斿?宓嗛幎鎾冲絿';
     return;
   }
 
   try {
     await putFile('backend/data/user_config.json', cfg);
     await putFile('backend/data/trigger.json', { triggered_at: Date.now(), status: 'pending' });
-    btn.textContent = '鉁?宸茶Е鍙?;
+    btn.textContent = '閴?瀹歌尪袝閸?;
     startPolling();
   } catch(e) {
     console.error(e);
-    btn.textContent = '鉂?瑙﹀彂澶辫触';
+    btn.textContent = '閴?鐟欙箑褰傛径杈?Е';
   }
-  setTimeout(function() { btn.textContent = '鈿?绔嬪嵆鎶撳彇'; btn.disabled = false; }, 5000);
+  setTimeout(function() { btn.textContent = '閳¿?缁斿?宓嗛幎鎾冲絿'; btn.disabled = false; }, 5000);
 }
 
-// API 浜や簰閫昏緫
+// API 娴溿倓绨伴柅鏄忕帆
 async function putFile(path, content) {
   const token = sessionStorage.getItem('gh_token') || '';
   const url = 'https://api.github.com/repos/' + REPO + '/contents/' + path;
@@ -426,13 +426,13 @@ async function checkStatus() {
     const content = JSON.parse(atob(data.content));
     if (content.status === 'done') {
       clearInterval(pollTimer);
-      document.getElementById('btnTrigger').textContent = '鉁?鐩戞帶瀹屾垚';
+      document.getElementById('btnTrigger').textContent = '閴?閻╂垶甯剁瑰本鍨';
       loadRawData();
     }
   } catch(e) {}
 }
 
-// 鍔犺浇閰嶇疆鍒?11 鍒楃煩闃?function applyConfig(cfg, kwRelData) {
+// 閸旂姾娴囬柊宥囩枂閸?11 閸掓?鐓╅梼?function applyConfig(cfg, kwRelData) {
   kwRelData = kwRelData || {};
   if (cfg.asins) {
     cfg.asins.forEach((row, i) => {
@@ -455,7 +455,7 @@ async function checkStatus() {
       if (i < 5) {
         var kwMainEl = document.getElementById('in-kw-' + i);
         if (kwMainEl) kwMainEl.value = row.main || '';
-        // 濉厖鍏抽敭璇嶅叧鑱?ASINs锛氫粠 keyword_related_asins.json 璇?        var kw = row.main || '';
+        // 婵夘偄鍘栭崗鎶芥暛鐠囧秴鍙ч懕?ASINs閿涙矮绮  keyword_related_asins.json 鐠?        var kw = row.main || '';
         var cachedAsins = kwRelData[kw] || [];
         for (var r = 0; r < 5; r++) {
           var relEl = document.getElementById('rel-kw-' + i + '-' + r);
@@ -473,18 +473,18 @@ async function loadGitHubConfig() {
     var resp = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/user_config.json?v=' + Date.now());
     if (resp.ok) {
       var cfg = await resp.json();
-      // 鍚屾椂鎶撳彇 keyword_related_asins.json锛堝叧閿瘝鐨?top5 鍏宠仈 ASINs锛?      try {
+      // 閸氬本妞傞幎鎾冲絿 keyword_related_asins.json閿涘牆鍙ч柨顔跨槤閻¨?top5 閸忓疇浠 ASINs閿?      try {
         var kwResp = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/keyword_related_asins.json?v=' + Date.now());
         if (kwResp.ok) kwRelData = await kwResp.json();
       } catch(e2) {}
       applyConfig(cfg, kwRelData);
-      statusEl.textContent = '鉁?閰嶇疆宸插悓姝?;
+      statusEl.textContent = '閴?闁板秶鐤嗗?鎻掓倱濮?;
     }
-  } catch(e) { statusEl.textContent = '鈿?鍚屾澶辫触'; }
+  } catch(e) { statusEl.textContent = '閳¿?閸氬本顒炴径杈?Е'; }
 }
 
-// 缁樺埗瓒嬪娍鍥?function drawSparkline(data, color) {
-  if (!data || data.length < 2) return '<span style="color:#999;font-size:11px;">鏃犳暟鎹?/span>';
+// 缂佹ê鍩楃搾瀣?◢閸¥?function drawSparkline(data, color) {
+  if (!data || data.length < 2) return '<span style="color:#999;font-size:11px;">閺冪姵鏆熼幑?/span>';
   const min = Math.min(...data), max = Math.max(...data);
   const range = max - min || 1;
   const h = 30, w = 120;
@@ -496,7 +496,7 @@ async function loadGitHubConfig() {
   return `<svg width="${w}" height="${h}" style="display:block;"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`;
 }
 
-// 娓叉煋涓绘暟鎹〃
+// 濞撳弶鐓嬫稉缁樻殶閹诡喛銆
 function renderTable() {
   const tbody = document.getElementById('tableBody');
   if (!tbody || !rawData.items) return;
@@ -507,7 +507,7 @@ function renderTable() {
 
   let html = '';
   rawData.items.forEach(item => {
-    // 寮傚姩鍒ゅ畾閫昏緫 (瀹屾暣淇濈暀)
+    // 瀵?倸濮╅崚銈呯暰闁?槒绶« (鐎瑰本鏆ｆ穱婵堟殌)
     const isStatusAnomaly = item.listing_status !== item.expected_listing_status;
     const isCatAnomaly = (item.main_cat !== item.expected_main_cat) || (item.sub_cat !== item.expected_sub_cat);
     const isInfoAnomaly = item.title_changed || item.img_changed || item.bullets_changed || item.description_changed;
@@ -519,10 +519,10 @@ function renderTable() {
     if (onlyChg && !hasActiveAnomaly) return;
 
     let activeEvents = [...item.events];
-    if (isStatusAnomaly) activeEvents.push({ class: "e-alert", text: `鐘舵€佸紓鍔? ${item.listing_status}` });
-    if (isInfoAnomaly) activeEvents.push({ class: "e-alert", text: "鍐呭閬鏀? });
-    if (isCatAnomaly) activeEvents.push({ class: "e-alert", text: "绫荤洰鑺傜偣鍙樻洿" });
-    item.badges_lost.forEach(b => activeEvents.push({ class: "e-alert", text: `澶卞幓 ${b}` }));
+    if (isStatusAnomaly) activeEvents.push({ class: "e-alert", text: `閻樿埖鈧?礁绱撻崝? ${item.listing_status}` });
+    if (isInfoAnomaly) activeEvents.push({ class: "e-alert", text: "閸愬懎顔愰柆顓狀嚃閺? });
+    if (isCatAnomaly) activeEvents.push({ class: "e-alert", text: "缁?崵娲伴懞鍌滃仯閸欐ɑ娲¿" });
+    item.badges_lost.forEach(b => activeEvents.push({ class: "e-alert", text: `婢跺崬骞 ${b}` }));
 
     const chgClass = item.chg > 0 ? 'up' : (item.chg < 0 ? 'dn' : '');
         const chgText = item.chg !== 0 ? `${item.chg > 0 ? String.fromCharCode(9650) : String.fromCharCode(9660)} $${Math.abs(item.chg)}` : '';
@@ -532,41 +532,41 @@ function renderTable() {
     const diffLines = [];
     if (diff.price) {
       const dir = diff.price.direction;
-      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> 浠锋牸: <span class="diff-val ' + dir + '">$' + diff.price.current + (diff.price.pct ? ' (' + diff.price.pct + ')' : '') + '</span></div>');
+      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> 娴犻攱鐗¸: <span class="diff-val ' + dir + '">$' + diff.price.current + (diff.price.pct ? ' (' + diff.price.pct + ')' : '') + '</span></div>');
     }
     if (diff.review_count) {
       const dir = diff.review_count.direction;
-      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> 璇勮: <span class="diff-val ' + dir + '">' + diff.review_count.change + '</span></div>');
+      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> 鐠囧嫯顔: <span class="diff-val ' + dir + '">' + diff.review_count.change + '</span></div>');
     }
     if (diff.rating) {
       const dir = diff.rating.direction;
-      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> 璇勫垎: <span class="diff-val ' + dir + '">' + diff.rating.change + '</span></div>');
+      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> 鐠囧嫬鍨: <span class="diff-val ' + dir + '">' + diff.rating.change + '</span></div>');
     }
     if (diff.bsr) {
       const dir = diff.bsr.direction;
       diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> BSR: <span class="diff-val ' + dir + '">' + diff.bsr.change + '</span></div>');
     }
     if (diff.deal_activity && diff.deal_activity.direction === 'changed') {
-      diffLines.push('<div class="diff-item"><span class="diff-arrow changed">鈿?/span> Deal: <span class="diff-val">' + (diff.deal_activity.current !== '鏃? ? diff.deal_activity.current : '鏃?) + '</span></div>');
+      diffLines.push('<div class="diff-item"><span class="diff-arrow changed">閳¿?/span> Deal: <span class="diff-val">' + (diff.deal_activity.current !== '閺? ? diff.deal_activity.current : '閺?) + '</span></div>');
     }
     if (diff.badges && diff.badges.direction === 'changed') {
-      if (diff.badges.gained && diff.badges.gained.length) diffLines.push('<div class="diff-item"><span class="diff-arrow up">馃弲</span> 鑾峰緱: <span class="diff-val up">' + diff.badges.gained.join(', ') + '</span></div>');
-      if (diff.badges.lost && diff.badges.lost.length) diffLines.push('<div class="diff-item"><span class="diff-arrow dn">馃挩</span> 澶卞幓: <span class="diff-val dn">' + diff.badges.lost.join(', ') + '</span></div>');
+      if (diff.badges.gained && diff.badges.gained.length) diffLines.push('<div class="diff-item"><span class="diff-arrow up">棣冨疾</span> 閼惧嘲绶±: <span class="diff-val up">' + diff.badges.gained.join(', ') + '</span></div>');
+      if (diff.badges.lost && diff.badges.lost.length) diffLines.push('<div class="diff-item"><span class="diff-arrow dn">棣冩尒</span> 婢跺崬骞: <span class="diff-val dn">' + diff.badges.lost.join(', ') + '</span></div>');
     }
     if (diffLines.length > 0) {
       let tipHtml = '';
-      if (diff.price) tipHtml += '<div class="tip-row"><span class="tip-label">浠锋牸</span><span class="tip-val ' + diff.price.direction + '">$' + diff.price.prev + ' 鈫?$' + diff.price.current + ' (' + diff.price.change + ')</span></div>';
-      if (diff.review_count) tipHtml += '<div class="tip-row"><span class="tip-label">璇勮鏁?/span><span class="tip-val ' + diff.review_count.direction + '">' + diff.review_count.prev + ' 鈫?' + diff.review_count.current + ' (' + diff.review_count.change + ')</span></div>';
-      if (diff.rating) tipHtml += '<div class="tip-row"><span class="tip-label">璇勫垎</span><span class="tip-val ' + diff.rating.direction + '">' + diff.rating.prev + ' 鈫?' + diff.rating.current + ' (' + diff.rating.change + ')</span></div>';
-      if (diff.bsr) { var d = diff.bsr.direction === 'up' ? 'dn' : diff.bsr.direction === 'dn' ? 'up' : 'same'; tipHtml += '<div class="tip-row"><span class="tip-label">BSR</span><span class="tip-val ' + d + '">#' + diff.bsr.prev + ' 鈫?#' + diff.bsr.current + ' (' + diff.bsr.change + ')</span></div>'; }
-      if (diff.variants) tipHtml += '<div class="tip-row"><span class="tip-label">鍙樹綋</span><span class="tip-val">' + (diff.variants.prev || '鏃?) + ' 鈫?' + (diff.variants.current || '鏃?) + '</span></div>';
-      if (diff.deal_activity && diff.deal_activity.direction === 'changed') tipHtml += '<div class="tip-row"><span class="tip-label">Deal</span><span class="tip-val">' + diff.deal_activity.prev + ' 鈫?' + diff.deal_activity.current + '</span></div>';
+      if (diff.price) tipHtml += '<div class="tip-row"><span class="tip-label">娴犻攱鐗¸</span><span class="tip-val ' + diff.price.direction + '">$' + diff.price.prev + ' 閳«?$' + diff.price.current + ' (' + diff.price.change + ')</span></div>';
+      if (diff.review_count) tipHtml += '<div class="tip-row"><span class="tip-label">鐠囧嫯顔戦弫?/span><span class="tip-val ' + diff.review_count.direction + '">' + diff.review_count.prev + ' 閳«?' + diff.review_count.current + ' (' + diff.review_count.change + ')</span></div>';
+      if (diff.rating) tipHtml += '<div class="tip-row"><span class="tip-label">鐠囧嫬鍨</span><span class="tip-val ' + diff.rating.direction + '">' + diff.rating.prev + ' 閳«?' + diff.rating.current + ' (' + diff.rating.change + ')</span></div>';
+      if (diff.bsr) { var d = diff.bsr.direction === 'up' ? 'dn' : diff.bsr.direction === 'dn' ? 'up' : 'same'; tipHtml += '<div class="tip-row"><span class="tip-label">BSR</span><span class="tip-val ' + d + '">#' + diff.bsr.prev + ' 閳«?#' + diff.bsr.current + ' (' + diff.bsr.change + ')</span></div>'; }
+      if (diff.variants) tipHtml += '<div class="tip-row"><span class="tip-label">閸欐ü缍</span><span class="tip-val">' + (diff.variants.prev || '閺?) + ' 閳«?' + (diff.variants.current || '閺?) + '</span></div>';
+      if (diff.deal_activity && diff.deal_activity.direction === 'changed') tipHtml += '<div class="tip-row"><span class="tip-label">Deal</span><span class="tip-val">' + diff.deal_activity.prev + ' 閳«?' + diff.deal_activity.current + '</span></div>';
       if (diff.badges && diff.badges.direction === 'changed') {
-        if (diff.badges.gained && diff.badges.gained.length) tipHtml += '<div class="tip-row"><span class="tip-label">鑾峰緱寰界珷</span><span class="tip-val up">' + diff.badges.gained.join(', ') + '</span></div>';
-        if (diff.badges.lost && diff.badges.lost.length) tipHtml += '<div class="tip-row"><span class="tip-label">澶卞幓寰界珷</span><span class="tip-val dn">' + diff.badges.lost.join(', ') + '</span></div>';
+        if (diff.badges.gained && diff.badges.gained.length) tipHtml += '<div class="tip-row"><span class="tip-label">閼惧嘲绶卞?鐣岀彿</span><span class="tip-val up">' + diff.badges.gained.join(', ') + '</span></div>';
+        if (diff.badges.lost && diff.badges.lost.length) tipHtml += '<div class="tip-row"><span class="tip-label">婢跺崬骞撳?鐣岀彿</span><span class="tip-val dn">' + diff.badges.lost.join(', ') + '</span></div>';
       }
       if (tipHtml) tipHtml = '<div class="tip-section">' + tipHtml + '</div>';
-      diffHtml = '<div class="diff-tip">' + diffLines.slice(0, 3).join('') + '<div class="tip-box">涓婃 鈫?褰撳墠' + tipHtml + '</div></div>';
+      diffHtml = '<div class="diff-tip">' + diffLines.slice(0, 3).join('') + '<div class="tip-box">娑撳﹥顐¼ 閳«?瑜版挸澧 ' + tipHtml + '</div></div>';
     }
 html += `<tr>
       <td class="col-img"><img src="${item.img}"></td>
@@ -579,31 +579,31 @@ html += `<tr>
       </td>
       <td>
         <div class="metrics-block">
-          <div>浠锋牸: <strong>$${item.price}</strong> <span class="chg ${chgClass}">${chgText}</span></div>
-          <div>璇勫垎: <strong>${item.rating || '↓?}</strong> <span style="color:#64748b;font-size:12px;">璇勮 ${item.reviews || 0}</span></div>
+          <div>娴犻攱鐗¸: <strong>$${item.price}</strong> <span class="chg ${chgClass}">${chgText}</span></div>
+          <div>鐠囧嫬鍨: <strong>${item.rating || '↓?}</strong> <span style="color:#64748b;font-size:12px;">鐠囧嫯顔 ${item.reviews || 0}</span></div>
           <div>BSR: <span class="cat-item">${item.main_cat}</span> <strong>#${item.main_bsr || '↓?}</strong>${item.sub_bsr ? ` / <span class="cat-item">${item.sub_cat}</span> #${item.sub_bsr}` : ''}</div>
-          <div>鐘舵€? <span style="color:${isStatusAnomaly?'#dc2626':'#16a34a'};font-weight:700;">${item.listing_status}</span>${item.variant_status !== '姝ｅ父' ? ` <span style="color:#d97706;font-size:12px;">鍙樹綋:${item.variant_status}</span>` : ''}</div>
-          ${item.deal_activity && item.deal_activity !== '鏃? ? `<div style="color:#b45309;font-weight:600;">鈿?Deal: ${item.deal_activity}</div>` : ''}
-          ${item.coupon && item.coupon !== '鏃? ? `<div style="color:#059669;font-weight:600;">馃師锔?浼樻儬鍒? ${item.coupon}</div>` : ''}
-          ${item.prime_discount && item.prime_discount !== '鏈紑鍚? ? `<div style="color:#7c3aed;font-weight:600;">馃摝 Prime鎶樻墸: ${item.prime_discount}</div>` : ''}
-          ${item.badges_current && item.badges_current.length ? `<div style="font-size:12px;">馃彿锔?鑾峰緱: ${item.badges_current.join(', ')}</div>` : ''}
-          ${item.badges_lost && item.badges_lost.length ? `<div style="font-size:12px;color:#dc2626;">馃挩 澶卞幓: ${item.badges_lost.join(', ')}</div>` : ''}
-          ${item.title_changed || item.img_changed || item.bullets_changed || item.description_changed ? `<div style="font-size:12px;color:#d97706;">馃摑 淇℃伅鍙樻洿:${item.title_changed?' 鏍囬':''}${item.img_changed?' 鍥剧墖':''}${item.bullets_changed?' 浜旂偣':''}${item.description_changed?' 鎻忚堪':''}</div>` : ''}
+          <div>閻樿埖鈧¬? <span style="color:${isStatusAnomaly?'#dc2626':'#16a34a'};font-weight:700;">${item.listing_status}</span>${item.variant_status !== '濮濓絽鐖¶' ? ` <span style="color:#d97706;font-size:12px;">閸欐ü缍:${item.variant_status}</span>` : ''}</div>
+          ${item.deal_activity && item.deal_activity !== '閺? ? `<div style="color:#b45309;font-weight:600;">閳¿?Deal: ${item.deal_activity}</div>` : ''}
+          ${item.coupon && item.coupon !== '閺? ? `<div style="color:#059669;font-weight:600;">棣冨斧閿?娴兼ɑ鍎?崚? ${item.coupon}</div>` : ''}
+          ${item.prime_discount && item.prime_discount !== '閺堫亜绱戦崥? ? `<div style="color:#7c3aed;font-weight:600;">棣冩憹 Prime閹舵ɑ澧¸: ${item.prime_discount}</div>` : ''}
+          ${item.badges_current && item.badges_current.length ? `<div style="font-size:12px;">棣冨娇閿?閼惧嘲绶±: ${item.badges_current.join(', ')}</div>` : ''}
+          ${item.badges_lost && item.badges_lost.length ? `<div style="font-size:12px;color:#dc2626;">棣冩尒 婢跺崬骞: ${item.badges_lost.join(', ')}</div>` : ''}
+          ${item.title_changed || item.img_changed || item.bullets_changed || item.description_changed ? `<div style="font-size:12px;color:#d97706;">棣冩憫 娣団剝浼呴崣妯绘纯:${item.title_changed?' 閺嶅洭顣½':''}${item.img_changed?' 閸ュ墽澧':''}${item.bullets_changed?' 娴滄梻鍋£':''}${item.description_changed?' 閹诲繗鍫ª':''}</div>` : ''}
         </div>
       </td>
-      <td><div class="events-cell">${activeEvents.length ? activeEvents.map(e => `<span class="e-tag ${e.class}">${e.text}</span>`).join('') : '<span class="e-none">鏃犲紓甯?/span>'}</div></td>
+      <td><div class="events-cell">${activeEvents.length ? activeEvents.map(e => `<span class="e-tag ${e.class}">${e.text}</span>`).join('') : '<span class="e-none">閺冪姴绱撶敮?/span>'}</div></td>
       <td><div class="diff-cell">${diffHtml}</div></td>
       <td>${drawSparkline(item.history_main_bsr, '#1e3a8a')}</td>
-      <td><div class="status-indicator ${hasActiveAnomaly?'changed':'stable'}">${hasActiveAnomaly?'鍙戠幇寮傚姩':'绋冲畾'}</div></td>
+      <td><div class="status-indicator ${hasActiveAnomaly?'changed':'stable'}">${hasActiveAnomaly?'閸欐垹骞囧?鍌氬З':'缁嬪啿鐣¾'}</div></td>
       <td style="color:#64748b; font-size:12px;">${rawData.updated}</td>
     </tr>`;
   });
   
-  tbody.innerHTML = html || '<tr><td colspan="8" style="text-align:center; padding:20px;">暂无匹配数据</td></tr>';
+  tbody.innerHTML = html || '<tr><td colspan="8" style="text-align:center; padding:20px;">鏆傛棤鍖归厤鏁版嵁</td></tr>';
 }
 
 function exportToExcel() {
-  const rows = [['ASIN','绫诲瀷','閫昏緫','鐘舵€?,'浠锋牸','澶х被鎺掑悕','鍚屾鏃堕棿']];
+  const rows = [['ASIN','缁??鐎·','闁?槒绶«','閻樿埖鈧¬?,'娴犻攱鐗¸','婢堆呰?閹烘帒鎮','閸氬本顒為弮鍫曟？']];
   rawData.items.forEach(m => rows.push([m.asin, m.monitor_type, m.logic_type, m.listing_status, m.price, m.main_bsr, rawData.updated]));
   const ws = XLSX.utils.aoa_to_sheet(rows);
   const wb = XLSX.utils.book_new();
