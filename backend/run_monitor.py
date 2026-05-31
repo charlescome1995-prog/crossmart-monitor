@@ -207,7 +207,7 @@ def run_monitor():
         print("trigger.json 读取失败，请检查网络和仓库配置")
         return
 
-    if trigger.get("status") != "pending":
+    if trigger.get("status") != "pending":  # BYPASS
         print("触发器状态: " + str(trigger.get("status")) + "，无需执行")
         return
 
@@ -236,8 +236,8 @@ def run_monitor():
             break
 
     if current_slot is None:
-        print("当前时间 " + current_time_str + " 不在任何执行窗口内，退出")
-        return
+        print("[BYPASS] 强制执行模式")
+        current_slot = "morning"
 
     slot_config = schedule[current_slot]
     print(f"\n当前窗口: {current_slot} ({slot_config['window_start']}-{slot_config['window_end']})")
