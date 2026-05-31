@@ -32,7 +32,7 @@
   .ctrl-group button:hover { background: #d03d56; }
   .ctrl-group span { font-size: 12px; padding: 4px 10px; border-radius: 20px; background: #e2e8f0; color: #64748b; white-space: nowrap; }
 
-  /* 閺嶇?绺¾ 11 閸掓?缍夐弽?*/
+  /* 閺嶇?绺¾ 11 显掓?缍夐弽?*/
   .matrix-grid { display: grid; grid-template-columns: 65px repeat(5, 1fr) repeat(5, 1fr); gap: 6px; min-width: 1100px; }
   .grid-cell { display: flex; align-items: center; }
   
@@ -44,18 +44,18 @@
   .matrix-grid input[type="text"]:focus { border-color: #e94560; box-shadow: 0 0 0 1px rgba(233, 69, 96, 0.1); }
   .matrix-grid input[type="text"]::placeholder { color: #cbd5e1; font-weight: 400; }
   
-  /* 閻╊喗鐖ｇ悰宀澹掑▓濠冪壉瀵®?(妤傛ü瀵) */
+  /* 试╊喗鐖ｇ悰宀澹掑▓濠冪壉瀵®?(妤傛ü瀵) */
   .row-target input[type="text"] { font-weight: 700; border-color: #94a3b8; background: #fff; }
   
-  /* 閸忓疇浠堢悰灞剧壉瀵®?*/
+  /* 显忓疇浠堢悰灞剧壉瀵®?*/
   .row-rel input[type="text"] { font-size: 11px; color: #475569; background: #fafafa; border-color: #e2e8f0; }
 
-  /* 鐞涖劌銇旈幐鍥┿仛閸£?*/
+  /* 鐞涖劌銇旈幐鍥┿仛显£?*/
   .grid-hdr { font-size: 10px; color: #94a3b8; font-weight: 600; text-align: center; padding-bottom: 2px; text-transform: uppercase; }
   .hdr-asin { border-bottom: 2px solid #e0e7ff; color: #4f46e5; }
   .hdr-kw { border-bottom: 2px solid #fce7f3; color: #db2777; }
 
-  /* --- 閸樼喐婀 Table & Badge 閺嶅嘲绱℃穱婵囧瘮娑撳秴褰 --- */
+  /* --- 显樼喐婀 Table & Badge 閺嶅嘲绱℃穱婵囧瘮娑撳秴褰 --- */
   .filter-bar { background: #fff; padding: 12px; border-radius: 6px 6px 0 0; border: 1px solid #e2e8f0; border-bottom: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
   .filter-controls { display: flex; align-items: center; gap: 12px; }
   .filter-controls input[type="text"] { padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; width: 240px; font-size: 13px; }
@@ -166,7 +166,7 @@
         </div>
       </div>
 
-      <!-- 11閸掓?缍夐弽闂村瘜娴£?-->
+      <!-- 11显掓?缍夐弽闂村瘜娴£?-->
       <div class="matrix-grid">
         <!-- 鐞涖劌銇旈幐鍥┿仛 -->
         <div></div>
@@ -181,21 +181,21 @@
         <div class="grid-hdr hdr-kw">KW Stream 4</div>
         <div class="grid-hdr hdr-kw">KW Stream 5</div>
 
-        <!-- 閻╊喗鐖ｇ悰?(Target Row) -->
+        <!-- 试╊喗鐖ｇ悰?(Target Row) -->
         <div class="grid-cell"><div class="lbl-cell">确定</div></div>
         <div class="grid-cell row-target"><input type="text" id="in-asin-0" placeholder="ASIN"></div>
         <div class="grid-cell row-target"><input type="text" id="in-asin-1" placeholder="ASIN"></div>
         <div class="grid-cell row-target"><input type="text" id="in-asin-2" placeholder="ASIN"></div>
         <div class="grid-cell row-target"><input type="text" id="in-asin-3" placeholder="ASIN"></div>
         <div class="grid-cell row-target"><input type="text" id="in-asin-4" placeholder="ASIN"></div>
-        <div class="grid-cell row-target"><input type="text" id="in-kw-0" placeholder="閸忔娊鏁?拠?></div>
-        <div class="grid-cell row-target"><input type="text" id="in-kw-1" placeholder="閸忔娊鏁?拠?></div>
-        <div class="grid-cell row-target"><input type="text" id="in-kw-2" placeholder="閸忔娊鏁?拠?></div>
-        <div class="grid-cell row-target"><input type="text" id="in-kw-3" placeholder="閸忔娊鏁?灏?></div>
-        <div class="grid-cell row-target"><input type="text" id="in-kw-4" placeholder="閸忔娊鏁?拠?></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-0" placeholder="显忔娊鏁?拠?></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-1" placeholder="显忔娊鏁?拠?></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-2" placeholder="显忔娊鏁?拠?></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-3" placeholder="显忔娊鏁?灏?></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-4" placeholder="显忔娊鏁?拠?></div>
 
-        <!-- 閸忓疇浠堢悰?1-5 (Related Rows 1-5) -->
-        <!-- JS 鐏忓棗婀?粭顑跨癌闁?劌鍨庨柅姘崇箖 buildRelRowGrid 婵夘偄鍘栧?銈咁槱閻¨?ID 闁?槒绶« -->
+        <!-- 显忓疇浠堢悰?1-5 (Related Rows 1-5) -->
+        <!-- JS 鐏忓棗婀?粭顑跨癌闁?劌鍨庨柅姘崇箖 buildRelRowGrid 婵夘偄鍘栧?銈咁槱试¨?ID 闁?槒绶« -->
         <div class="grid-cell"><div class="lbl-cell">监控流 1</div></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-0" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-0" placeholder="Rel ASIN"></div>
@@ -260,7 +260,7 @@
     <!-- 鏉╁洦鎶ゅ?銉ュ徔閺?-->
     <div class="filter-bar">
       <div class="filter-controls">
-        <input type="text" id="searchInput" placeholder="韫囶偊鈧?喕绻冨??ASIN閵嗕焦鐖ｆ０妯诲灗閸濅胶澧..." oninput="renderTable()">
+        <input type="text" id="searchInput" placeholder="韫囶偊鈧?喕绻冨??ASIN閵嗕焦鐖ｆ０妯诲灗显濅胶澧..." oninput="renderTable()">
         <select id="sourceFilter" onchange="renderTable()">
           <option value="ALL">全部 ASIN 监控流 (ALL)</option>
           <option value="ASIN">全部 ASIN 监控流</option>
@@ -285,7 +285,7 @@
             <th>监控流┃较上次变化</th>
             <th>监控流┃评分/评论数</th>
             <th>暂无数据/th>
-            <th>閺堚偓閸氬海娲冮幒褍鎮撳?銉︽?闂?/th>
+            <th>閺堚偓显氬海娲冮幒褍鎮撳?銉︽?闂?/th>
           </tr>
         </thead>
         <tbody id="tableBody"></tbody>
@@ -306,7 +306,7 @@ function b64enc(s){return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g,f
 const POLL_INTERVAL = 5000;
 let pollTimer = null;
 
-// 閸掓繂顫愰崠?window.addEventListener('DOMContentLoaded', function() {
+// 显掓繂顫愰崠?window.addEventListener('DOMContentLoaded', function() {
   var tokenInput = document.getElementById('ghTokenInput');
   if (tokenInput) {
     var saved = sessionStorage.getItem('gh_token') || '';
@@ -319,7 +319,7 @@ let pollTimer = null;
   loadRawData();
 });
 
-// 閸旂姾娴囬崢鐔奉潗閻╂垶甯堕弫鐗堝祦
+// 显旂姾娴囬崢鐔奉潗试╂垶甯堕弫鐗堝祦
 async function loadRawData() {
   try {
     const resp = await fetch(RAW_DATA_URL + '&t=' + Date.now(), {
@@ -336,7 +336,7 @@ async function loadRawData() {
   }
 }
 
-// 鏉堝懎濮?敍姘冲箯閸欐牗鐓囨稉鈧?崚妞剧瑓閹碘偓閺堝?娈戦崗瀹犱粓閸?function getRelatedVals(type, streamIdx) {
+// 鏉堝懎濮?敍姘冲箯显欐牗鐓囨稉鈧?崚妞剧瑓閹碘偓閺堝?娈戦崗瀹犱粓显?function getRelatedVals(type, streamIdx) {
   var vals = [];
   for (var r = 0; r < 5; r++) {
     var el = document.getElementById('rel-' + type + '-' + streamIdx + '-' + r);
@@ -345,7 +345,7 @@ async function loadRawData() {
   return vals;
 }
 
-// 鐟欙箑褰傞幎鎾冲絿 (鐠囪?褰 11 閸掓?鐓╅梼鍨?殶閹¹?
+// 鐟欙箑褰傞幎鎾冲絿 (鐠囪?褰 11 显掓?鐓╅梼鍨?殶閹¹?
 async function triggerMonitor() {
   var asins = [], kws = [];
   // 闁?秴疯» 5 娑?ASIN 濞´?(Streams 1-5)
@@ -371,7 +371,7 @@ async function triggerMonitor() {
   var cfg = { asins: asins, keywords: kws };
   var btn = document.getElementById('btnTrigger');
   btn.disabled = true;
-  btn.textContent = '閳¿?鐟欙箑褰傛稉?..';
+  btn.textContent = '单¿?鐟欙箑褰傛稉?..';
 
   var token = sessionStorage.getItem('gh_token') || '';
   if (!token) {
@@ -383,7 +383,7 @@ async function triggerMonitor() {
   try {
     await putFile('backend/data/user_config.json', cfg);
     await putFile('backend/data/trigger.json', { triggered_at: Date.now(), status: 'pending' });
-    btn.textContent = '閴?瀹歌尪袝閸?;
+    btn.textContent = '閴?瀹歌尪袝显?;
     startPolling();
   } catch(e) {
     console.error(e);
@@ -426,13 +426,13 @@ async function checkStatus() {
     const content = JSON.parse(atob(data.content));
     if (content.status === 'done') {
       clearInterval(pollTimer);
-      document.getElementById('btnTrigger').textContent = '閴?閻╂垶甯剁瑰本鍨';
+      document.getElementById('btnTrigger').textContent = '閴?试╂垶甯剁瑰本鍨';
       loadRawData();
     }
   } catch(e) {}
 }
 
-// 閸旂姾娴囬柊宥囩枂閸?11 閸掓?鐓╅梼?function applyConfig(cfg, kwRelData) {
+// 显旂姾娴囬柊宥囩枂显?11 显掓?鐓╅梼?function applyConfig(cfg, kwRelData) {
   kwRelData = kwRelData || {};
   if (cfg.asins) {
     cfg.asins.forEach((row, i) => {
@@ -473,17 +473,17 @@ async function loadGitHubConfig() {
     var resp = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/user_config.json?v=' + Date.now());
     if (resp.ok) {
       var cfg = await resp.json();
-      // 閸氬本妞傞幎鎾冲絿 keyword_related_asins.json閿涘牆鍙ч柨顔跨槤閻¨?top5 閸忓疇浠 ASINs閿?      try {
+      // 显氬本妞傞幎鎾冲絿 keyword_related_asins.json閿涘牆鍙ч柨顔跨槤试¨?top5 显忓疇浠 ASINs閿?      try {
         var kwResp = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/keyword_related_asins.json?v=' + Date.now());
         if (kwResp.ok) kwRelData = await kwResp.json();
       } catch(e2) {}
       applyConfig(cfg, kwRelData);
       statusEl.textContent = '閴?闁板秶鐤嗗?鎻掓倱濮?;
     }
-  } catch(e) { statusEl.textContent = '閳¿?閸氬本顒炴径杈?Е'; }
+  } catch(e) { statusEl.textContent = '单¿?显氬本顒炴径杈?Е'; }
 }
 
-// 缂佹ê鍩楃搾瀣?◢閸¥?function drawSparkline(data, color) {
+// 缂佹ê鍩楃搾瀣?◢显¥?function drawSparkline(data, color) {
   if (!data || data.length < 2) return '<span style="color:#999;font-size:11px;">閺冪姵鏆熼幑?/span>';
   const min = Math.min(...data), max = Math.max(...data);
   const range = max - min || 1;
@@ -519,9 +519,9 @@ function renderTable() {
     if (onlyChg && !hasActiveAnomaly) return;
 
     let activeEvents = [...item.events];
-    if (isStatusAnomaly) activeEvents.push({ class: "e-alert", text: `閻樿埖鈧?礁绱撻崝? ${item.listing_status}` });
+    if (isStatusAnomaly) activeEvents.push({ class: "e-alert", text: `试樿埖鈧?礁绱撻崝? ${item.listing_status}` });
     if (isInfoAnomaly) activeEvents.push({ class: "e-alert", text: "商品信息异常? });
-    if (isCatAnomaly) activeEvents.push({ class: "e-alert", text: "缁?崵娲伴懞鍌滃仯閸欐ɑ娲¿" });
+    if (isCatAnomaly) activeEvents.push({ class: "e-alert", text: "缁?崵娲伴懞鍌滃仯显欐ɑ娲¿" });
     item.badges_lost.forEach(b => activeEvents.push({ class: "e-alert", text: `婢跺崬骞 ${b}` }));
 
     const chgClass = item.chg > 0 ? 'up' : (item.chg < 0 ? 'dn' : '');
@@ -547,7 +547,7 @@ function renderTable() {
       diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> BSR: <span class="diff-val ' + dir + '">' + diff.bsr.change + '</span></div>');
     }
     if (diff.deal_activity && diff.deal_activity.direction === 'changed') {
-      diffLines.push('<div class="diff-item"><span class="diff-arrow changed">閳¿?/span> Deal: <span class="diff-val">' + (diff.deal_activity.current !== '閺? ? diff.deal_activity.current : '閺?) + '</span></div>');
+      diffLines.push('<div class="diff-item"><span class="diff-arrow changed">单¿?/span> Deal: <span class="diff-val">' + (diff.deal_activity.current !== '閺? ? diff.deal_activity.current : '閺?) + '</span></div>');
     }
     if (diff.badges && diff.badges.direction === 'changed') {
       if (diff.badges.gained && diff.badges.gained.length) diffLines.push('<div class="diff-item"><span class="diff-arrow up">棣冨疾</span> 閼惧嘲绶±: <span class="diff-val up">' + diff.badges.gained.join(', ') + '</span></div>');
@@ -555,18 +555,18 @@ function renderTable() {
     }
     if (diffLines.length > 0) {
       let tipHtml = '';
-      if (diff.price) tipHtml += '<div class="tip-row"><span class="tip-label">娴犻攱鐗¸</span><span class="tip-val ' + diff.price.direction + '">$' + diff.price.prev + ' 閳«?$' + diff.price.current + ' (' + diff.price.change + ')</span></div>';
-      if (diff.review_count) tipHtml += '<div class="tip-row"><span class="tip-label">鐠囧嫯顔戦弫?/span><span class="tip-val ' + diff.review_count.direction + '">' + diff.review_count.prev + ' 閳«?' + diff.review_count.current + ' (' + diff.review_count.change + ')</span></div>';
-      if (diff.rating) tipHtml += '<div class="tip-row"><span class="tip-label">鐠囧嫬鍨</span><span class="tip-val ' + diff.rating.direction + '">' + diff.rating.prev + ' 閳«?' + diff.rating.current + ' (' + diff.rating.change + ')</span></div>';
-      if (diff.bsr) { var d = diff.bsr.direction === 'up' ? 'dn' : diff.bsr.direction === 'dn' ? 'up' : 'same'; tipHtml += '<div class="tip-row"><span class="tip-label">BSR</span><span class="tip-val ' + d + '">#' + diff.bsr.prev + ' 閳«?#' + diff.bsr.current + ' (' + diff.bsr.change + ')</span></div>'; }
-      if (diff.variants) tipHtml += '<div class="tip-row"><span class="tip-label">閸欐ü缍</span><span class="tip-val">' + (diff.variants.prev || '閺?) + ' 閳«?' + (diff.variants.current || '閺?) + '</span></div>';
-      if (diff.deal_activity && diff.deal_activity.direction === 'changed') tipHtml += '<div class="tip-row"><span class="tip-label">Deal</span><span class="tip-val">' + diff.deal_activity.prev + ' 閳«?' + diff.deal_activity.current + '</span></div>';
+      if (diff.price) tipHtml += '<div class="tip-row"><span class="tip-label">娴犻攱鐗¸</span><span class="tip-val ' + diff.price.direction + '">$' + diff.price.prev + ' 单«?$' + diff.price.current + ' (' + diff.price.change + ')</span></div>';
+      if (diff.review_count) tipHtml += '<div class="tip-row"><span class="tip-label">鐠囧嫯顔戦弫?/span><span class="tip-val ' + diff.review_count.direction + '">' + diff.review_count.prev + ' 单«?' + diff.review_count.current + ' (' + diff.review_count.change + ')</span></div>';
+      if (diff.rating) tipHtml += '<div class="tip-row"><span class="tip-label">鐠囧嫬鍨</span><span class="tip-val ' + diff.rating.direction + '">' + diff.rating.prev + ' 单«?' + diff.rating.current + ' (' + diff.rating.change + ')</span></div>';
+      if (diff.bsr) { var d = diff.bsr.direction === 'up' ? 'dn' : diff.bsr.direction === 'dn' ? 'up' : 'same'; tipHtml += '<div class="tip-row"><span class="tip-label">BSR</span><span class="tip-val ' + d + '">#' + diff.bsr.prev + ' 单«?#' + diff.bsr.current + ' (' + diff.bsr.change + ')</span></div>'; }
+      if (diff.variants) tipHtml += '<div class="tip-row"><span class="tip-label">显欐ü缍</span><span class="tip-val">' + (diff.variants.prev || '閺?) + ' 单«?' + (diff.variants.current || '閺?) + '</span></div>';
+      if (diff.deal_activity && diff.deal_activity.direction === 'changed') tipHtml += '<div class="tip-row"><span class="tip-label">Deal</span><span class="tip-val">' + diff.deal_activity.prev + ' 单«?' + diff.deal_activity.current + '</span></div>';
       if (diff.badges && diff.badges.direction === 'changed') {
         if (diff.badges.gained && diff.badges.gained.length) tipHtml += '<div class="tip-row"><span class="tip-label">閼惧嘲绶卞?鐣岀彿</span><span class="tip-val up">' + diff.badges.gained.join(', ') + '</span></div>';
         if (diff.badges.lost && diff.badges.lost.length) tipHtml += '<div class="tip-row"><span class="tip-label">婢跺崬骞撳?鐣岀彿</span><span class="tip-val dn">' + diff.badges.lost.join(', ') + '</span></div>';
       }
       if (tipHtml) tipHtml = '<div class="tip-section">' + tipHtml + '</div>';
-      diffHtml = '<div class="diff-tip">' + diffLines.slice(0, 3).join('') + '<div class="tip-box">娑撳﹥顐¼ 閳«?瑜版挸澧 ' + tipHtml + '</div></div>';
+      diffHtml = '<div class="diff-tip">' + diffLines.slice(0, 3).join('') + '<div class="tip-box">娑撳﹥顐¼ 单«?瑜版挸澧 ' + tipHtml + '</div></div>';
     }
 html += `<tr>
       <td class="col-img"><img src="${item.img}"></td>
@@ -582,19 +582,19 @@ html += `<tr>
           <div>娴犻攱鐗¸: <strong>$${item.price}</strong> <span class="chg ${chgClass}">${chgText}</span></div>
           <div>鐠囧嫬鍨: <strong>${item.rating || '↓?}</strong> <span style="color:#64748b;font-size:12px;">鐠囧嫯顔 ${item.reviews || 0}</span></div>
           <div>BSR: <span class="cat-item">${item.main_cat}</span> <strong>#${item.main_bsr || '↓?}</strong>${item.sub_bsr ? ` / <span class="cat-item">${item.sub_cat}</span> #${item.sub_bsr}` : ''}</div>
-          <div>閻樿埖鈧¬? <span style="color:${isStatusAnomaly?'#dc2626':'#16a34a'};font-weight:700;">${item.listing_status}</span>${item.variant_status !== '濮濓絽鐖¶' ? ` <span style="color:#d97706;font-size:12px;">閸欐ü缍:${item.variant_status}</span>` : ''}</div>
-          ${item.deal_activity && item.deal_activity !== '閺? ? `<div style="color:#b45309;font-weight:600;">閳¿?Deal: ${item.deal_activity}</div>` : ''}
+          <div>试樿埖鈧¬? <span style="color:${isStatusAnomaly?'#dc2626':'#16a34a'};font-weight:700;">${item.listing_status}</span>${item.variant_status !== '濮濓絽鐖¶' ? ` <span style="color:#d97706;font-size:12px;">显欐ü缍:${item.variant_status}</span>` : ''}</div>
+          ${item.deal_activity && item.deal_activity !== '閺? ? `<div style="color:#b45309;font-weight:600;">单¿?Deal: ${item.deal_activity}</div>` : ''}
           ${item.coupon && item.coupon !== '閺? ? `<div style="color:#059669;font-weight:600;">棣冨斧閿?娴兼ɑ鍎?崚? ${item.coupon}</div>` : ''}
           ${item.prime_discount && item.prime_discount !== '閺堫亜绱鏃犲? ? `<div style="color:#7c3aed;font-weight:600;">棣冩憹 Prime閹舵ɑ澧¸: ${item.prime_discount}</div>` : ''}
           ${item.badges_current && item.badges_current.length ? `<div style="font-size:12px;">棣冨娇閿?閼惧嘲绶±: ${item.badges_current.join(', ')}</div>` : ''}
           ${item.badges_lost && item.badges_lost.length ? `<div style="font-size:12px;color:#dc2626;">棣冩尒 婢跺崬骞: ${item.badges_lost.join(', ')}</div>` : ''}
-          ${item.title_changed || item.img_changed || item.bullets_changed || item.description_changed ? `<div style="font-size:12px;color:#d97706;">棣冩憫 鎺掑悕浼鍚崣妯鏃堕:${item.title_changed?' 閺嶅洭顣½':''}${item.img_changed?' 閸ュ墽澧':''}${item.bullets_changed?' 娴滄梻鍋£':''}${item.description_changed?' 閹诲繗鍫ª':''}</div>` : ''}
+          ${item.title_changed || item.img_changed || item.bullets_changed || item.description_changed ? `<div style="font-size:12px;color:#d97706;">棣冩憫 鎺掑悕浼鍚崣妯鏃堕:${item.title_changed?' 閺嶅洭顣½':''}${item.img_changed?' 显ュ墽澧':''}${item.bullets_changed?' 娴滄梻鍋£':''}${item.description_changed?' 閹诲繗鍫ª':''}</div>` : ''}
         </div>
       </td>
       <td><div class="events-cell">${activeEvents.length ? activeEvents.map(e => `<span class="e-tag ${e.class}">${e.text}</span>`).join('') : '<span class="e-none">閺冪姴绱撶敮?/span>'}</div></td>
       <td><div class="diff-cell">${diffHtml}</div></td>
       <td>${drawSparkline(item.history_main_bsr, '#1e3a8a')}</td>
-      <td><div class="status-indicator ${hasActiveAnomaly?'changed':'stable'}">${hasActiveAnomaly?'閸欐垹骞囧?鍌氬З':'缁嬪啿鐣¾'}</div></td>
+      <td><div class="status-indicator ${hasActiveAnomaly?'changed':'stable'}">${hasActiveAnomaly?'显欐垹骞囧?鍌氬З':'缁嬪啿鐣¾'}</div></td>
       <td style="color:#64748b; font-size:12px;">${rawData.updated}</td>
     </tr>`;
   });
@@ -603,7 +603,7 @@ html += `<tr>
 }
 
 function exportToExcel() {
-  const rows = [['ASIN','缁??鐎·','闁?槒绶«','閻樿埖鈧¬?,'娴犻攱鐗¸','婢堆呰?閹烘帒鎮','閸氬本顒為弮鍫曟？']];
+  const rows = [['ASIN','缁??鐎·','闁?槒绶«','试樿埖鈧¬?,'娴犻攱鐗¸','婢堆呰?閹烘帒鎮','显氬本顒為弮鍫曟？']];
   rawData.items.forEach(m => rows.push([m.asin, m.monitor_type, m.logic_type, m.listing_status, m.price, m.main_bsr, rawData.updated]));
   const ws = XLSX.utils.aoa_to_sheet(rows);
   const wb = XLSX.utils.book_new();
