@@ -297,7 +297,7 @@
 <script>
 const CONFIG_KEY = 'crossmart_monitor_v1';
 const REPO = 'charlescome1995-prog/crossmart-monitor';
-const RAW_DATA_URL = 'https://raw.githubusercontent.com/' + REPO + '/main/frontend/data/rawData.json';
+const RAW_DATA_URL = 'https://api.github.com/repos/' + REPO + '/contents/frontend/data/rawData.json?ref=main';
 
 let rawData = { updated: '', items: [], keywords: [] };
 
@@ -321,14 +321,20 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 // 加载原始监控数据
-function loadRawData() {
-  fetch(RAW_DATA_URL + '?t=' + Date.now())
-    .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-    .then(function(d) { 
-      rawData = d; 
-      renderTable(); 
-    })
-    .catch(function(e) { console.warn('loadRawData failed:', e.message); renderTable(); });
+async function loadRawData() {
+  try {
+    const resp = await fetch(RAW_DATA_URL + '&t=' + Date.now(), {
+      headers: { 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const meta = await resp.json();
+    const data = JSON.parse(atob(meta.content));
+    rawData = data;
+    renderTable();
+  } catch(e) {
+    console.warn('loadRawData failed:', e.message);
+    renderTable();
+  }
 }
 
 // 辅助：获取某一列下所有的关联值
