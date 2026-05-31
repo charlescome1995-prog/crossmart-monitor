@@ -364,7 +364,7 @@ async function triggerMonitor() {
   }
 
   if (asins.length === 0 && kws.length === 0) {
-    alert('鐠囩柉鍤︾亸鎴ｇ翻閸忋儰绔存稉顏嗘窗閺?ASIN 閹存牕鍙ч茶顔跨槤');
+    alert('鐠囩柉鍤︾亸鎴ｇ翻仅显示儰绔存稉顏嗘窗閺?ASIN 閹存牕鍙ч茶顔跨槤');
     return;
   }
 
@@ -389,7 +389,7 @@ async function triggerMonitor() {
     console.error(e);
     btn.textContent = '閴?鐟欙箑褰傛径杈?Е';
   }
-  setTimeout(function() { btn.textContent = '閳¿?缁斿?宓嗛幎鎾冲絿'; btn.disabled = false; }, 5000);
+  setTimeout(function() { btn.textContent = '刷新重试'; btn.disabled = false; }, 5000);
 }
 
 // API 娴溿倓绨伴柅鏄忕帆
