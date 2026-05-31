@@ -528,23 +528,23 @@ function renderTable() {
         const chgText = item.chg !== 0 ? `${item.chg > 0 ? String.fromCharCode(9650) : String.fromCharCode(9660)} $${Math.abs(item.chg)}` : '';
 
     const diff = item.diff || {};
-    let diffHtml = '<div class="diff-none">鈥?/div>';
+    let diffHtml = '<div class="diff-none">↓?/div>';
     const diffLines = [];
     if (diff.price) {
       const dir = diff.price.direction;
-      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '鈻? : dir === 'dn' ? '鈻? : '鈥?) + '</span> 浠锋牸: <span class="diff-val ' + dir + '">$' + diff.price.current + (diff.price.pct ? ' (' + diff.price.pct + ')' : '') + '</span></div>');
+      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> 浠锋牸: <span class="diff-val ' + dir + '">$' + diff.price.current + (diff.price.pct ? ' (' + diff.price.pct + ')' : '') + '</span></div>');
     }
     if (diff.review_count) {
       const dir = diff.review_count.direction;
-      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '鈻? : dir === 'dn' ? '鈻? : '鈥?) + '</span> 璇勮: <span class="diff-val ' + dir + '">' + diff.review_count.change + '</span></div>');
+      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> 璇勮: <span class="diff-val ' + dir + '">' + diff.review_count.change + '</span></div>');
     }
     if (diff.rating) {
       const dir = diff.rating.direction;
-      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '鈻? : dir === 'dn' ? '鈻? : '鈥?) + '</span> 璇勫垎: <span class="diff-val ' + dir + '">' + diff.rating.change + '</span></div>');
+      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> 璇勫垎: <span class="diff-val ' + dir + '">' + diff.rating.change + '</span></div>');
     }
     if (diff.bsr) {
       const dir = diff.bsr.direction;
-      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '鈻? : dir === 'dn' ? '鈻? : '鈥?) + '</span> BSR: <span class="diff-val ' + dir + '">' + diff.bsr.change + '</span></div>');
+      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> BSR: <span class="diff-val ' + dir + '">' + diff.bsr.change + '</span></div>');
     }
     if (diff.deal_activity && diff.deal_activity.direction === 'changed') {
       diffLines.push('<div class="diff-item"><span class="diff-arrow changed">鈿?/span> Deal: <span class="diff-val">' + (diff.deal_activity.current !== '鏃? ? diff.deal_activity.current : '鏃?) + '</span></div>');
@@ -580,8 +580,8 @@ html += `<tr>
       <td>
         <div class="metrics-block">
           <div>浠锋牸: <strong>$${item.price}</strong> <span class="chg ${chgClass}">${chgText}</span></div>
-          <div>璇勫垎: <strong>${item.rating || '鈥?}</strong> <span style="color:#64748b;font-size:12px;">璇勮 ${item.reviews || 0}</span></div>
-          <div>BSR: <span class="cat-item">${item.main_cat}</span> <strong>#${item.main_bsr || '鈥?}</strong>${item.sub_bsr ? ` / <span class="cat-item">${item.sub_cat}</span> #${item.sub_bsr}` : ''}</div>
+          <div>璇勫垎: <strong>${item.rating || '↓?}</strong> <span style="color:#64748b;font-size:12px;">璇勮 ${item.reviews || 0}</span></div>
+          <div>BSR: <span class="cat-item">${item.main_cat}</span> <strong>#${item.main_bsr || '↓?}</strong>${item.sub_bsr ? ` / <span class="cat-item">${item.sub_cat}</span> #${item.sub_bsr}` : ''}</div>
           <div>鐘舵€? <span style="color:${isStatusAnomaly?'#dc2626':'#16a34a'};font-weight:700;">${item.listing_status}</span>${item.variant_status !== '姝ｅ父' ? ` <span style="color:#d97706;font-size:12px;">鍙樹綋:${item.variant_status}</span>` : ''}</div>
           ${item.deal_activity && item.deal_activity !== '鏃? ? `<div style="color:#b45309;font-weight:600;">鈿?Deal: ${item.deal_activity}</div>` : ''}
           ${item.coupon && item.coupon !== '鏃? ? `<div style="color:#059669;font-weight:600;">馃師锔?浼樻儬鍒? ${item.coupon}</div>` : ''}
@@ -599,7 +599,7 @@ html += `<tr>
     </tr>`;
   });
   
-  tbody.innerHTML = html || '<tr><td colspan="8" style="text-align:center; padding:20px;">鏆傛棤鍖归厤鏁版嵁</td></tr>';
+  tbody.innerHTML = html || '<tr><td colspan="8" style="text-align:center; padding:20px;">暂无匹配数据</td></tr>';
 }
 
 function exportToExcel() {
