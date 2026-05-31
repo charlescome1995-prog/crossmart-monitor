@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-run_monitor.py - 跨境电商 ASIN 监控系统入口
-带反检测随机化：
-  - 时间窗口内随机延迟启动
-  - 70% 执行概率（模拟人类惰性）
-  - ASIN/关键词顺序打乱
-  - 执行前先浏览无关页面
+run_monitor.py - 璺ㄥ鐢靛晢 ASIN 鐩戞帶绯荤粺鍏ュ彛
+甯﹀弽妫€娴嬮殢鏈哄寲锛?  - 鏃堕棿绐楀彛鍐呴殢鏈哄欢杩熷惎鍔?  - 70% 鎵ц姒傜巼锛堟ā鎷熶汉绫绘儼鎬э級
+  - ASIN/鍏抽敭璇嶉『搴忔墦涔?  - 鎵ц鍓嶅厛娴忚鏃犲叧椤甸潰
 """
 import os
 import sys
@@ -23,7 +20,7 @@ TRIGGER_FILE = os.path.join(DATA_DIR, "trigger.json")
 CONFIG_FILE = os.path.join(DATA_DIR, "user_config.json")
 REPO = "charlescome1995-prog/crossmart-monitor"
 
-# 默认时间窗口配置（无 schedule 配置时使用）
+# 榛樿鏃堕棿绐楀彛閰嶇疆锛堟棤 schedule 閰嶇疆鏃朵娇鐢級
 DEFAULT_SCHEDULE = {
     "morning": {
         "anchor": "05:00",
@@ -50,7 +47,7 @@ DEFAULT_SCHEDULE = {
 
 
 def gh_fetch_json(path):
-    """从 GitHub API 下载 JSON（绕过CDN缓存）"""
+    """浠?GitHub API 涓嬭浇 JSON锛堢粫杩嘋DN缂撳瓨锛?""
     api_url = "https://api.github.com/repos/" + REPO + "/contents/" + path
     req = urllib.request.Request(api_url, headers={"Accept": "application/vnd.github.v3+json"})
     try:
@@ -83,7 +80,7 @@ def _safe_print(s):
 
 
 def now_in_window(window_start, window_end):
-    """检查当前时间是否在窗口内（时间格式 HH:MM）"""
+    """妫€鏌ュ綋鍓嶆椂闂存槸鍚﹀湪绐楀彛鍐咃紙鏃堕棿鏍煎紡 HH:MM锛?""
     now = datetime.now()
     current_min = now.hour * 60 + now.minute
     start_parts = window_start.split(":")
@@ -94,19 +91,19 @@ def now_in_window(window_start, window_end):
 
 
 def wait_random(max_minutes, label=""):
-    """随机等待（模拟人类不确定感）"""
+    """闅忔満绛夊緟锛堟ā鎷熶汉绫讳笉纭畾鎰燂級"""
     wait = random.randint(0, max_minutes)
     if wait > 0:
-        print(f"  [{label}] 随机等待 {wait} 分钟...")
+        print(f"  [{label}] 闅忔満绛夊緟 {wait} 鍒嗛挓...")
         time.sleep(wait * 60)
 
 
 def should_run(slot_config):
-    """掷骰子：是否真正执行"""
+    """鎺烽瀛愶細鏄惁鐪熸鎵ц"""
     prob = slot_config.get("run_probability", 1.0)
     roll = random.random()
     execute = roll < prob
-    print(f"  掷骰子结果: {roll:.3f} {'>= ' if not execute else '< '}{prob:.1f} → {'执行' if execute else '跳过'}")
+    print(f"  鎺烽瀛愮粨鏋? {roll:.3f} {'>= ' if not execute else '< '}{prob:.1f} 鈫?{'鎵ц' if execute else '璺宠繃'}")
     return execute
 
 
@@ -182,50 +179,48 @@ def push_trigger_done(trigger):
 
 
 def browse_unrelated_pages():
-    """Phase 0: 浏览无关页面，模拟人类行为"""
-    print("  [Phase 0] 人类行为模拟：先逛几个无关页面...")
+    """Phase 0: 娴忚鏃犲叧椤甸潰锛屾ā鎷熶汉绫昏涓?""
+    print("  [Phase 0] 浜虹被琛屼负妯℃嫙锛氬厛閫涘嚑涓棤鍏抽〉闈?..")
     urls = [
         "https://www.amazon.com",
         "https://www.amazon.com/gp/bestsellers/",
     ]
     random.shuffle(urls)
     for url in urls[:2]:
-        print(f"  浏览: {url}")
-        # 模拟人类行为：随机等待 3-8 秒
-        time.sleep(random.randint(3, 8))
+        print(f"  娴忚: {url}")
+        # 妯℃嫙浜虹被琛屼负锛氶殢鏈虹瓑寰?3-8 绉?        time.sleep(random.randint(3, 8))
 
 
 def run_monitor():
     sep = "=" * 60
     print("\n" + sep)
-    print("CrossMart Monitor - 本地触发执行")
-    print("时间: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    print("CrossMart Monitor - 鏈湴瑙﹀彂鎵ц")
+    print("鏃堕棿: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     print(sep)
 
     trigger = load_trigger()
     if trigger is None:
-        print("trigger.json 读取失败，请检查网络和仓库配置")
+        print("trigger.json 璇诲彇澶辫触锛岃妫€鏌ョ綉缁滃拰浠撳簱閰嶇疆")
         return
 
-    if trigger.get("status") != "pending":  # BYPASS
-        print("触发器状态: " + str(trigger.get("status")) + "，无需执行")
+    if trigger.get("status") != "pending":
+        print("瑙﹀彂鍣ㄧ姸鎬? " + str(trigger.get("status")) + "锛屾棤闇€鎵ц")
         return
 
-    print("检测到 pending 触发器，上次触发: " + str(trigger.get("triggered_at")))
+    print("妫€娴嬪埌 pending 瑙﹀彂鍣紝涓婃瑙﹀彂: " + str(trigger.get("triggered_at")))
 
     config = load_config()
     asins = config.get("asins", [])
     keywords = config.get("keywords", [])
     schedule = config.get("schedule", DEFAULT_SCHEDULE)
-    print("配置: " + str(len(asins)) + " 个 ASIN, " + str(len(keywords)) + " 个关键词")
+    print("閰嶇疆: " + str(len(asins)) + " 涓?ASIN, " + str(len(keywords)) + " 涓叧閿瘝")
 
-    # ---- 确定当前时间段 ----
+    # ---- 纭畾褰撳墠鏃堕棿娈?----
     now = datetime.now()
     current_slot = None
     current_time_str = now.strftime("%H:%M")
 
-    # 找当前时间落在哪个窗口
-    for slot_name, slot_cfg in schedule.items():
+    # 鎵惧綋鍓嶆椂闂磋惤鍦ㄥ摢涓獥鍙?    for slot_name, slot_cfg in schedule.items():
         ws = slot_cfg["window_start"]
         we = slot_cfg["window_end"]
         ws_min = int(ws.split(":")[0]) * 60 + int(ws.split(":")[1])
@@ -236,84 +231,83 @@ def run_monitor():
             break
 
     if current_slot is None:
-        print("[BYPASS] 强制执行模式")
+        print("[BYPASS] 寮哄埗鎵ц妯″紡")
         current_slot = "morning"
 
     slot_config = schedule[current_slot]
-    print(f"\n当前窗口: {current_slot} ({slot_config['window_start']}-{slot_config['window_end']})")
+    print(f"\n褰撳墠绐楀彛: {current_slot} ({slot_config['window_start']}-{slot_config['window_end']})")
 
-    # ---- 掷骰子：是否执行 ----
+    # ---- 鎺烽瀛愶細鏄惁鎵ц ----
     if not should_run(slot_config):
-        print("本次不执行（随机跳过）")
+        print("鏈涓嶆墽琛岋紙闅忔満璺宠繃锛?)
         return
 
-    # ---- 随机延迟 ----
+    # ---- 闅忔満寤惰繜 ----
     jitter_max = slot_config.get("jitter_max_minutes", 30)
     wait_random(jitter_max, label=current_slot)
 
-    # ---- Phase 0: 人类行为模拟 ----
+    # ---- Phase 0: 浜虹被琛屼负妯℃嫙 ----
     browse_unrelated_pages()
 
-    # ---- 打乱顺序 ----
+    # ---- 鎵撲贡椤哄簭 ----
     random.shuffle(keywords)
     random.shuffle(asins)
 
-    # ---- Phase A: 关键词监控 ----
+    # ---- Phase A: 鍏抽敭璇嶇洃鎺?----
     for kw_entry in keywords:
         kw = kw_entry.get("main", "").strip()
         if not kw:
             continue
-        print("\n--- 关键词监控: " + kw + " ---")
+        print("\n--- 鍏抽敭璇嶇洃鎺? " + kw + " ---")
         ok = run_command(
             [sys.executable, "-m", "browser.keyword_monitor", kw],
             cwd=os.path.join(PROJECT_ROOT, "backend"),
             timeout=300
         )
         if not ok:
-            print("  关键词 " + kw + " 执行失败，继续")
-        # 抓取间隔随机化
-        time.sleep(random.randint(15, 40))
+            print("  鍏抽敭璇?" + kw + " 鎵ц澶辫触锛岀户缁?)
+        # 鎶撳彇闂撮殧闅忔満鍖?        time.sleep(random.randint(15, 40))
 
-    # ---- Phase B: ASIN 监控（主ASIN + 关联竞品）----
+    # ---- Phase B: ASIN 鐩戞帶锛堜富ASIN + 鍏宠仈绔炲搧锛?---
     for asin_entry in asins:
-        # 抓主ASIN
+        # 鎶撲富ASIN
         main_asin = asin_entry.get("main", "").strip()
         if main_asin:
-            print("\n--- ASIN 监控: " + main_asin + " ---")
+            print("\n--- ASIN 鐩戞帶: " + main_asin + " ---")
             ok = run_command(
                 [sys.executable, "-m", "browser.asin_monitor", main_asin],
                 cwd=os.path.join(PROJECT_ROOT, "backend"),
                 timeout=300
             )
             if not ok:
-                print("  ASIN " + main_asin + " 执行失败，继续")
+                print("  ASIN " + main_asin + " 鎵ц澶辫触锛岀户缁?)
             time.sleep(random.randint(20, 50))
 
-        # 抓关联竞品ASIN
+        # 鎶撳叧鑱旂珵鍝丄SIN
         related_list = asin_entry.get("related", [])
         for rel_asin in related_list:
             rel_asin = rel_asin.strip()
             if not rel_asin:
                 continue
-            print("\n--- 关联竞品: " + rel_asin + " ---")
+            print("\n--- 鍏宠仈绔炲搧: " + rel_asin + " ---")
             ok = run_command(
                 [sys.executable, "-m", "browser.asin_monitor", rel_asin],
                 cwd=os.path.join(PROJECT_ROOT, "backend"),
                 timeout=300
             )
             if not ok:
-                print("  关联ASIN " + rel_asin + " 执行失败，继续")
+                print("  鍏宠仈ASIN " + rel_asin + " 鎵ц澶辫触锛岀户缁?)
             time.sleep(random.randint(20, 50))
 
-    # ---- Phase C: 同步推送 ----
-    print("\n--- 同步数据 ---")
+    # ---- Phase C: 鍚屾鎺ㄩ€?----
+    print("\n--- 鍚屾鏁版嵁 ---")
     sync_and_push()
 
     trigger["status"] = "done"
     trigger["completed_at"] = datetime.now().isoformat()
     push_trigger_done(trigger)
     print("\n" + sep)
-    print("监控完成！")
+    print("鐩戞帶瀹屾垚锛?)
     print(sep)
 
 
