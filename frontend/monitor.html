@@ -520,7 +520,7 @@ function renderTable() {
 
     let activeEvents = [...item.events];
     if (isStatusAnomaly) activeEvents.push({ class: "e-alert", text: `閻樿埖鈧?礁绱撻崝? ${item.listing_status}` });
-    if (isInfoAnomaly) activeEvents.push({ class: "e-alert", text: "閸愬懎顔愰柆顓狀嚃閺? });
+    if (isInfoAnomaly) activeEvents.push({ class: "e-alert", text: "商品信息异常? });
     if (isCatAnomaly) activeEvents.push({ class: "e-alert", text: "缁?崵娲伴懞鍌滃仯閸欐ɑ娲¿" });
     item.badges_lost.forEach(b => activeEvents.push({ class: "e-alert", text: `婢跺崬骞 ${b}` }));
 
