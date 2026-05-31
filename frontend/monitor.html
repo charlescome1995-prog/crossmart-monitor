@@ -21,7 +21,7 @@
   /* --- 11-Column Matrix Layout --- */
   .config-matrix { background: #fff; padding: 14px; border-radius: 6px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 4px; overflow-x: auto; }
   
-  /* 妞ゅ爼鍎村?銉ュ徔閺嶅繗顢 */
+  /* 椤堕儴宸村?銉ュ徔閺嶅繗顢 */
   .action-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed #e2e8f0; }
   .action-row .title-group { display: flex; align-items: center; gap: 20px; }
   .action-row .title-tag { font-size: 12px; font-weight: 700; color: #1e293b; background: #f1f5f9; padding: 4px 10px; border-radius: 4px; border: 1px solid #cbd5e1; }
@@ -39,7 +39,7 @@
   /* 閺嶅洨顒烽崚妤佺壉瀵®?*/
   .lbl-cell { font-size: 11px; font-weight: 700; color: #475569; border: 1px solid #cbd5e1; border-radius: 3px; background: #f8fafc; height: 28px; justify-content: center; width: 100%; }
   
-  /* 鏉堟挸鍙嗗?鍡楃唨绾?偓閺嶅嘲绱¡ */
+  /* 紡堟挸鍙嗗?鍡楃唨绾?偓閺嶅嘲绱¡ */
   .matrix-grid input[type="text"] { width: 100%; padding: 4px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; height: 28px; outline: none; }
   .matrix-grid input[type="text"]:focus { border-color: #e94560; box-shadow: 0 0 0 1px rgba(233, 69, 96, 0.1); }
   .matrix-grid input[type="text"]::placeholder { color: #cbd5e1; font-weight: 400; }
@@ -162,7 +162,7 @@
         <div class="ctrl-group">
           <input type="password" id="ghTokenInput" placeholder="GitHub Token" onkeydown="if(event.key==='Enter')triggerMonitor()">
           <button id="btnTrigger" onclick="triggerMonitor()">閳¿?缁斿?宓嗛幎鎾冲絿</button>
-          <span id="configStatus">鐠囪?褰囬柊宥囩枂...</span>
+          <span id="configStatus">鐠囪?褰囬鎸宥囩枂...</span>
         </div>
       </div>
 
@@ -191,7 +191,7 @@
         <div class="grid-cell row-target"><input type="text" id="in-kw-0" placeholder="閸忔娊鏁?拠?></div>
         <div class="grid-cell row-target"><input type="text" id="in-kw-1" placeholder="閸忔娊鏁?拠?></div>
         <div class="grid-cell row-target"><input type="text" id="in-kw-2" placeholder="閸忔娊鏁?拠?></div>
-        <div class="grid-cell row-target"><input type="text" id="in-kw-3" placeholder="閸忔娊鏁?拠?></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-3" placeholder="閸忔娊鏁?灏?></div>
         <div class="grid-cell row-target"><input type="text" id="in-kw-4" placeholder="閸忔娊鏁?拠?></div>
 
         <!-- 閸忓疇浠堢悰?1-5 (Related Rows 1-5) -->
@@ -273,13 +273,13 @@
       </div>
     </div>
 
-    <!-- 閺佺増宓佺悰銊︾壐 -->
+    <!-- 閺堣緝涓婃悰銊︾壐 -->
     <div class="table-container">
       <table class="monitor-table">
         <thead>
           <tr>
-            <th>娑撹?娴</th>
-            <th>閻╂垶甯跺┃鎰?挤閸╃儤婀伴崯鍡楁惂娣団剝浼</th>
+            <th>娑撹?椂</th>
+            <th>閻╂垶甯跺┃鎰?鍚庣洃鎺婀伴崯鍡楁惂娣団剝浼</th>
             <th>閺嶇?绺鹃惄鎴炲付閹稿洦鐖£ (閻樿埖鈧?降鈧?椒绺鹃柨鈧?崣濠呭Ν閻?</th>
             <th>閸欐ê瀵查敍鍫ｇ窛娑撳﹥顐奸敍?/th>
             <th>閸楄櫕妞傚?鍌氱埗娴滃?娆¢</th>
@@ -348,7 +348,7 @@ async function loadRawData() {
 // 鐟欙箑褰傞幎鎾冲絿 (鐠囪?褰 11 閸掓?鐓╅梼鍨?殶閹¹?
 async function triggerMonitor() {
   var asins = [], kws = [];
-  // 闁?秴宸» 5 娑?ASIN 濞´?(Streams 1-5)
+  // 闁?秴疯» 5 娑?ASIN 濞´?(Streams 1-5)
   for (var i = 0; i < 5; i++) {
     var mainA = document.getElementById('in-asin-' + i).value.trim();
     if (mainA) {
@@ -364,7 +364,7 @@ async function triggerMonitor() {
   }
 
   if (asins.length === 0 && kws.length === 0) {
-    alert('鐠囩柉鍤︾亸鎴ｇ翻閸忋儰绔存稉顏嗘窗閺?ASIN 閹存牕鍙ч柨顔跨槤');
+    alert('鐠囩柉鍤︾亸鎴ｇ翻閸忋儰绔存稉顏嗘窗閺?ASIN 閹存牕鍙ч茶顔跨槤');
     return;
   }
 
@@ -455,7 +455,7 @@ async function checkStatus() {
       if (i < 5) {
         var kwMainEl = document.getElementById('in-kw-' + i);
         if (kwMainEl) kwMainEl.value = row.main || '';
-        // 婵夘偄鍘栭崗鎶芥暛鐠囧秴鍙ч懕?ASINs閿涙矮绮  keyword_related_asins.json 鐠?        var kw = row.main || '';
+        // 婵夘偄鍘栭崗鎶芥暛鐠囧秴鍙ч懕?ASINs閿涙矮锛  keyword_related_asins.json 仈?        var kw = row.main || '';
         var cachedAsins = kwRelData[kw] || [];
         for (var r = 0; r < 5; r++) {
           var relEl = document.getElementById('rel-kw-' + i + '-' + r);
@@ -585,10 +585,10 @@ html += `<tr>
           <div>閻樿埖鈧¬? <span style="color:${isStatusAnomaly?'#dc2626':'#16a34a'};font-weight:700;">${item.listing_status}</span>${item.variant_status !== '濮濓絽鐖¶' ? ` <span style="color:#d97706;font-size:12px;">閸欐ü缍:${item.variant_status}</span>` : ''}</div>
           ${item.deal_activity && item.deal_activity !== '閺? ? `<div style="color:#b45309;font-weight:600;">閳¿?Deal: ${item.deal_activity}</div>` : ''}
           ${item.coupon && item.coupon !== '閺? ? `<div style="color:#059669;font-weight:600;">棣冨斧閿?娴兼ɑ鍎?崚? ${item.coupon}</div>` : ''}
-          ${item.prime_discount && item.prime_discount !== '閺堫亜绱戦崥? ? `<div style="color:#7c3aed;font-weight:600;">棣冩憹 Prime閹舵ɑ澧¸: ${item.prime_discount}</div>` : ''}
+          ${item.prime_discount && item.prime_discount !== '閺堫亜绱鏃犲? ? `<div style="color:#7c3aed;font-weight:600;">棣冩憹 Prime閹舵ɑ澧¸: ${item.prime_discount}</div>` : ''}
           ${item.badges_current && item.badges_current.length ? `<div style="font-size:12px;">棣冨娇閿?閼惧嘲绶±: ${item.badges_current.join(', ')}</div>` : ''}
           ${item.badges_lost && item.badges_lost.length ? `<div style="font-size:12px;color:#dc2626;">棣冩尒 婢跺崬骞: ${item.badges_lost.join(', ')}</div>` : ''}
-          ${item.title_changed || item.img_changed || item.bullets_changed || item.description_changed ? `<div style="font-size:12px;color:#d97706;">棣冩憫 娣団剝浼呴崣妯绘纯:${item.title_changed?' 閺嶅洭顣½':''}${item.img_changed?' 閸ュ墽澧':''}${item.bullets_changed?' 娴滄梻鍋£':''}${item.description_changed?' 閹诲繗鍫ª':''}</div>` : ''}
+          ${item.title_changed || item.img_changed || item.bullets_changed || item.description_changed ? `<div style="font-size:12px;color:#d97706;">棣冩憫 鎺掑悕浼鍚崣妯鏃堕:${item.title_changed?' 閺嶅洭顣½':''}${item.img_changed?' 閸ュ墽澧':''}${item.bullets_changed?' 娴滄梻鍋£':''}${item.description_changed?' 閹诲繗鍫ª':''}</div>` : ''}
         </div>
       </td>
       <td><div class="events-cell">${activeEvents.length ? activeEvents.map(e => `<span class="e-tag ${e.class}">${e.text}</span>`).join('') : '<span class="e-none">閺冪姴绱撶敮?/span>'}</div></td>
@@ -599,7 +599,7 @@ html += `<tr>
     </tr>`;
   });
   
-  tbody.innerHTML = html || '<tr><td colspan="8" style="text-align:center; padding:20px;">鏆傛棤鍖归厤鏁版嵁</td></tr>';
+  tbody.innerHTML = html || '<tr><td colspan="8" style="text-align:center; padding:20px;">暂无匹配数据</td></tr>';
 }
 
 function exportToExcel() {
