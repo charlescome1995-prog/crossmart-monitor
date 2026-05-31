@@ -375,8 +375,8 @@ async function triggerMonitor() {
 
   var token = sessionStorage.getItem('gh_token') || '';
   if (!token) {
-    alert('鐠囧嘲鍘涙潏鎾冲弳 GitHub Token');
-    btn.disabled = false; btn.textContent = '閳¿?缁斿?宓嗛幎鎾冲絿';
+    alert('正在加载... GitHub Token');
+    btn.disabled = false; btn.textContent = '刷新重试';
     return;
   }
 
