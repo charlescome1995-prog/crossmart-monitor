@@ -23,23 +23,23 @@ REPO = "charlescome1995-prog/crossmart-monitor"
 # 榛樿鏃堕棿绐楀彛閰嶇疆锛堟棤 schedule 閰嶇疆鏃朵娇鐢級
 DEFAULT_SCHEDULE = {
     "morning": {
-        "anchor": "05:00",
-        "window_start": "05:00",
-        "window_end": "06:00",
+        "anchor": "06:20",
+        "window_start": "06:20",
+        "window_end": "07:20",
         "jitter_max_minutes": 30,
         "run_probability": 1.0
     },
     "midday": {
-        "anchor": "11:00",
-        "window_start": "11:00",
-        "window_end": "12:00",
+        "anchor": "06:30",
+        "window_start": "06:30",
+        "window_end": "07:30",
         "jitter_max_minutes": 30,
         "run_probability": 1.0
     },
     "evening": {
-        "anchor": "21:00",
-        "window_start": "21:00",
-        "window_end": "22:00",
+        "anchor": "06:40",
+        "window_start": "06:40",
+        "window_end": "07:40",
         "jitter_max_minutes": 30,
         "run_probability": 1.0
     }
