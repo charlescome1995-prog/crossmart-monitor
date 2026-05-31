@@ -3,9 +3,6 @@ name: Monitor Capture
 on:
   repository_dispatch:
     types: [trigger-capture]
-  schedule:
-    # Random window: every 6 hours UTC =北京时间 14:00-20:00 或 02:00-08:00
-    - cron: '30 2,8,14,20 * * *'
   workflow_dispatch:
 
 permissions:
