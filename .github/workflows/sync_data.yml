@@ -31,10 +31,3 @@ jobs:
           # 通过API获取最新的监控数据并生成monitor-data.json
           python sync_to_frontend.py
         working-directory: backend/
-      
-      - name: Commit and push if changed
-        run: |
-          git config --global user.name 'CrossMart Bot'
-          git config --global user.email 'bot@crossmart.ai'
-          git add frontend/data/monitor-data.json
-          git diff --staged --quiet || (git commit -m "auto: sync monitor data $(date -u '+%Y-%m-%d %H:%M UTC')" && git push)
