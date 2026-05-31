@@ -61,11 +61,11 @@ pip install websocket-client requests
 ]
 ```
 
-### 第二步：运行调度器（一键跑完 ASIN + 关键词）
+### 第二步：运行监控（一键跑完 ASIN + 关键词）
 
 ```
 cd C:\Users\OPENPC\.openclaw\workspace-openpc_ad\crossmart-monitor
-python scheduler.py
+python reset_and_run.py
 ```
 
 **调度器流程：**
@@ -157,12 +157,12 @@ crossmart-monitor/
 
 **只跑 ASIN，不跑关键词：**
 ```
-python scheduler.py --asin-only
+python reset_and_run.py
 ```
 
 **只跑关键词，不跑 ASIN：**
 ```
-python scheduler.py --keyword-only
+python reset_and_run.py
 ```
 
 **只跑单个 ASIN：**

@@ -86,7 +86,7 @@ crossmart-monitor/
 │
 ├── .github/workflows/
 │   ├── save-config.yml         # 前端保存配置时写入 user_config.json
-│   └── sync_data.yml           # 定时同步 rawData.json 到云端（Cloudflare R2）
+│   └── sync_data.yml           # 手动人触发（无实际功能）
 │
 ├── logs/                       # 日志目录
 ├── output/screenshots/         # 爬虫截图（广告追踪/竞品快照）
@@ -221,7 +221,7 @@ run_monitor.py → load_trigger() 读取 GitHub trigger.json
 | Workflow | 触发方式 | 功能 |
 |---------|---------|------|
 | `save-config.yml` | `repository_dispatch`（前端保存配置） | 写入 `backend/data/user_config.json` |
-| `sync_data.yml` | push to main（自动） | 同步 `rawData.json` 到 Cloudflare R2（长期存档） |
+| `sync_data.yml` | workflow_dispatch手动 | 空生手动（无实际功能） |
 
 ---
 
