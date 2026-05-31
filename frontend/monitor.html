@@ -156,13 +156,13 @@
       <!-- 妞ゅ爼鍎撮幙宥勭稊鐞?-->
       <div class="action-row">
         <div class="title-group">
-          <div class="title-tag">ASIN 閻╂垶甯跺ù?(Streams 1-5)</div>
-          <div class="title-tag">閸忔娊鏁?拠?閻╂垶甯跺ù?(Streams 1-5)</div>
+          <div class="title-tag">ASIN 监控流 (Streams 1-5)</div>
+          <div class="title-tag">监控流(Streams 1-5)</div>
         </div>
         <div class="ctrl-group">
           <input type="password" id="ghTokenInput" placeholder="GitHub Token" onkeydown="if(event.key==='Enter')triggerMonitor()">
-          <button id="btnTrigger" onclick="triggerMonitor()">閳¿?缁斿?宓嗛幎鎾冲絿</button>
-          <span id="configStatus">鐠囪?褰囬鎸宥囩枂...</span>
+          <button id="btnTrigger" onclick="triggerMonitor()">刷新重试</button>
+          <span id="configStatus">正在加载...</span>
         </div>
       </div>
 
@@ -182,7 +182,7 @@
         <div class="grid-hdr hdr-kw">KW Stream 5</div>
 
         <!-- 閻╊喗鐖ｇ悰?(Target Row) -->
-        <div class="grid-cell"><div class="lbl-cell">閻╊喗鐖£</div></div>
+        <div class="grid-cell"><div class="lbl-cell">确定</div></div>
         <div class="grid-cell row-target"><input type="text" id="in-asin-0" placeholder="ASIN"></div>
         <div class="grid-cell row-target"><input type="text" id="in-asin-1" placeholder="ASIN"></div>
         <div class="grid-cell row-target"><input type="text" id="in-asin-2" placeholder="ASIN"></div>
@@ -196,7 +196,7 @@
 
         <!-- 閸忓疇浠堢悰?1-5 (Related Rows 1-5) -->
         <!-- JS 鐏忓棗婀?粭顑跨癌闁?劌鍨庨柅姘崇箖 buildRelRowGrid 婵夘偄鍘栧?銈咁槱閻¨?ID 闁?槒绶« -->
-        <div class="grid-cell"><div class="lbl-cell">閸忓疇浠 1</div></div>
+        <div class="grid-cell"><div class="lbl-cell">监控流 1</div></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-0" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-0" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-0" placeholder="Rel ASIN"></div>
@@ -208,7 +208,7 @@
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-0" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-0" placeholder="Rel ASIN"></div>
 
-        <div class="grid-cell"><div class="lbl-cell">閸忓疇浠 2</div></div>
+        <div class="grid-cell"><div class="lbl-cell">监控流 2</div></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-1" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-1" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-1" placeholder="Rel ASIN"></div>
@@ -220,7 +220,7 @@
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-1" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-1" placeholder="Rel ASIN"></div>
 
-        <div class="grid-cell"><div class="lbl-cell">閸忓疇浠 3</div></div>
+        <div class="grid-cell"><div class="lbl-cell">监控流 3</div></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-2" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-2" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-2" placeholder="Rel ASIN"></div>
@@ -232,7 +232,7 @@
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-2" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-2" placeholder="Rel ASIN"></div>
 
-        <div class="grid-cell"><div class="lbl-cell">閸忓疇浠 4</div></div>
+        <div class="grid-cell"><div class="lbl-cell">监控流 4</div></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-3" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-3" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-3" placeholder="Rel ASIN"></div>
@@ -244,7 +244,7 @@
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-3" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-3" placeholder="Rel ASIN"></div>
 
-        <div class="grid-cell"><div class="lbl-cell">閸忓疇浠 5</div></div>
+        <div class="grid-cell"><div class="lbl-cell">监控流 5</div></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-4" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-4" placeholder="Rel ASIN"></div>
         <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-4" placeholder="Rel ASIN"></div>
@@ -262,14 +262,14 @@
       <div class="filter-controls">
         <input type="text" id="searchInput" placeholder="韫囶偊鈧?喕绻冨??ASIN閵嗕焦鐖ｆ０妯诲灗閸濅胶澧..." oninput="renderTable()">
         <select id="sourceFilter" onchange="renderTable()">
-          <option value="ALL">閸忋劑鍎撮惄鎴炲付鐎电?钖 (ALL)</option>
-          <option value="ASIN">娴犲懐婀 ASIN 閻╂垶甯¶</option>
-          <option value="KW">娴犲懐婀 閸忔娊鏁?拠宥囨磧閹º?/option>
+          <option value="ALL">全部 ASIN 监控流 (ALL)</option>
+          <option value="ASIN">全部 ASIN 监控流</option>
+          <option value="KW">全部 监控流(Streams 1-5)
         </select>
         <label><input type="checkbox" id="changeFilter" onchange="renderTable()">只显示异常商品</label>
       </div>
       <div>
-        <button class="btn btn-secondary" onclick="exportToExcel()">鐎电厧鍤?惄鎴炲付閹躲儴銆</button>
+        <button class="btn btn-secondary" onclick="exportToExcel()">重置筛选</button>
       </div>
     </div>
 
@@ -278,13 +278,13 @@
       <table class="monitor-table">
         <thead>
           <tr>
-            <th>娑撹?椂</th>
-            <th>閻╂垶甯跺┃鎰?鍚庣洃鎺婀伴崯鍡楁惂娣団剝浼</th>
-            <th>閺嶇?绺鹃惄鎴炲付閹稿洦鐖£ (閻樿埖鈧?降鈧?椒绺鹃柨鈧?崣濠呭Ν閻?</th>
-            <th>閸欐ê瀵查敍鍫ｇ窛娑撳﹥顐奸敍?/th>
-            <th>閸楄櫕妞傚?鍌氱埗娴滃?娆¢</th>
-            <th>閻╂垶甯堕崗銊︽埂閹烘帒鎮曢弴鑼?殠</th>
-            <th>鐎圭偞妞傞悩鑸碘偓浣稿灲鐎¹?/th>
+            <th>时间</th>
+            <th>监控流┃较上次变化监控</th>
+            <th>按监控流筛选 (监控流┃较上次变化监控┃当前...┃最高...┃最低...)</th>
+            <th>暂无数据/th>
+            <th>监控流┃较上次变化</th>
+            <th>监控流┃评分/评论数</th>
+            <th>暂无数据/th>
             <th>閺堚偓閸氬海娲冮幒褍鎮撳?銉︽?闂?/th>
           </tr>
         </thead>
