@@ -30,21 +30,21 @@ DEFAULT_SCHEDULE = {
         "window_start": "05:00",
         "window_end": "06:00",
         "jitter_max_minutes": 30,
-        "run_probability": 0.7
+        "run_probability": 1.0
     },
     "midday": {
         "anchor": "11:00",
         "window_start": "11:00",
         "window_end": "12:00",
         "jitter_max_minutes": 30,
-        "run_probability": 0.7
+        "run_probability": 1.0
     },
     "evening": {
         "anchor": "21:00",
         "window_start": "21:00",
         "window_end": "22:00",
         "jitter_max_minutes": 30,
-        "run_probability": 0.7
+        "run_probability": 1.0
     }
 }
 
