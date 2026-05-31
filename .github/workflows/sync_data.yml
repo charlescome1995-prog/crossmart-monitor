@@ -1,9 +1,6 @@
 name: Sync Monitor Data
 
 on:
-  schedule:
-    # 每天 UTC 6:30 = 北京时间 14:30
-    - cron: '30 6 * * *'
   workflow_dispatch:
 
 permissions:
@@ -28,6 +25,5 @@ jobs:
       
       - name: Pull latest data via API
         run: |
-          # 通过API获取最新的监控数据并生成monitor-data.json
           python sync_to_frontend.py
         working-directory: backend/
