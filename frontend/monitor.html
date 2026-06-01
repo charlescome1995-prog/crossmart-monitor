@@ -306,7 +306,8 @@ function b64enc(s){return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g,f
 const POLL_INTERVAL = 5000;
 let pollTimer = null;
 
-// 显掓繂顫愰崠?window.addEventListener('DOMContentLoaded', function() {
+// 显掓繂顫愰崠
+window.addEventListener('DOMContentLoaded', function() {
   var tokenInput = document.getElementById('ghTokenInput');
   if (tokenInput) {
     var saved = sessionStorage.getItem('gh_token') || '';
