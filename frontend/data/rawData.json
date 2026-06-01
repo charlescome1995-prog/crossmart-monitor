@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-01T11:49:37",
+  "updated": "2026-06-01T21:53:23",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -12,7 +12,7 @@
       "price": 18.9,
       "chg": 0.0,
       "rating": 4.6,
-      "reviews": 24904,
+      "reviews": 24934,
       "diff": {
         "price": {
           "current": 18.9,
@@ -28,9 +28,9 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 24904,
-          "prev": 24849,
-          "change": "+55",
+          "current": 24934,
+          "prev": 24904,
+          "change": "+30",
           "direction": "up"
         },
         "bsr": {
@@ -76,6 +76,7 @@
         1,
         2,
         2,
+        1,
         1,
         1,
         1
@@ -209,7 +210,7 @@
       "price": 18.9,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 4109,
+      "reviews": 4130,
       "diff": {
         "price": {
           "current": 18.9,
@@ -225,8 +226,8 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 4109,
-          "prev": 4109,
+          "current": 4130,
+          "prev": 4130,
           "change": "+0",
           "direction": "same"
         },
@@ -263,6 +264,8 @@
         1,
         2,
         2,
+        1,
+        1,
         1,
         1,
         1,
@@ -397,7 +400,7 @@
       "price": 9.99,
       "chg": 0.0,
       "rating": 4.4,
-      "reviews": 2103,
+      "reviews": 2106,
       "diff": {
         "price": {
           "current": 9.99,
@@ -413,16 +416,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 2103,
-          "prev": 2099,
-          "change": "+4",
+          "current": 2106,
+          "prev": 2103,
+          "change": "+3",
           "direction": "up"
         },
         "bsr": {
-          "current": 6411,
-          "prev": 5769,
-          "change": "+642",
-          "direction": "dn"
+          "current": 6188,
+          "prev": 6411,
+          "change": "223",
+          "direction": "up"
         }
       },
       "listing_status": "正常",
@@ -440,16 +443,17 @@
       "prime_discount": "未开启",
       "main_cat": "",
       "expected_main_cat": "",
-      "main_bsr": 6411,
+      "main_bsr": 6188,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 6411,
+      "sub_bsr": 6188,
       "history_main_bsr": [
         5769,
         5769,
         5769,
         5769,
-        6411
+        6411,
+        6188
       ],
       "history_sub_bsr": [],
       "events": [],
@@ -542,7 +546,7 @@
       "price": 12.99,
       "chg": 0.0,
       "rating": 4.5,
-      "reviews": 11528,
+      "reviews": 11531,
       "diff": {
         "price": {
           "current": 12.99,
@@ -558,16 +562,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 11528,
-          "prev": 11526,
-          "change": "+2",
+          "current": 11531,
+          "prev": 11528,
+          "change": "+3",
           "direction": "up"
         },
         "bsr": {
-          "current": 1966,
-          "prev": 1908,
-          "change": "+58",
-          "direction": "dn"
+          "current": 1950,
+          "prev": 1966,
+          "change": "16",
+          "direction": "up"
         }
       },
       "listing_status": "正常",
@@ -585,16 +589,17 @@
       "prime_discount": "未开启",
       "main_cat": "",
       "expected_main_cat": "",
-      "main_bsr": 1966,
+      "main_bsr": 1950,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 1966,
+      "sub_bsr": 1950,
       "history_main_bsr": [
         1908,
         1908,
         1908,
         1908,
-        1966
+        1966,
+        1950
       ],
       "history_sub_bsr": [],
       "events": [],
@@ -763,7 +768,7 @@
       "price": 21.22,
       "chg": 0.0,
       "rating": 4.3,
-      "reviews": 2533,
+      "reviews": 2537,
       "diff": {
         "price": {
           "current": 21.22,
@@ -779,16 +784,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 2533,
-          "prev": 2531,
-          "change": "+2",
+          "current": 2537,
+          "prev": 2533,
+          "change": "+4",
           "direction": "up"
         },
         "bsr": {
-          "current": 1240,
-          "prev": 1294,
-          "change": "54",
-          "direction": "up"
+          "current": 1245,
+          "prev": 1240,
+          "change": "+5",
+          "direction": "dn"
         }
       },
       "listing_status": "正常",
@@ -806,16 +811,17 @@
       "prime_discount": "未开启",
       "main_cat": "",
       "expected_main_cat": "",
-      "main_bsr": 1240,
+      "main_bsr": 1245,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 1240,
+      "sub_bsr": 1245,
       "history_main_bsr": [
         1294,
         1294,
         1294,
         1294,
-        1240
+        1240,
+        1245
       ],
       "history_sub_bsr": [],
       "events": [],
@@ -908,7 +914,7 @@
       "price": 16.19,
       "chg": 0.0,
       "rating": 4.4,
-      "reviews": 3045,
+      "reviews": 3051,
       "diff": {
         "price": {
           "current": 16.19,
@@ -924,16 +930,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 3045,
-          "prev": 3039,
+          "current": 3051,
+          "prev": 3045,
           "change": "+6",
           "direction": "up"
         },
         "bsr": {
-          "current": 1257,
-          "prev": 1419,
-          "change": "162",
-          "direction": "up"
+          "current": 1291,
+          "prev": 1257,
+          "change": "+34",
+          "direction": "dn"
         }
       },
       "listing_status": "正常",
@@ -951,10 +957,10 @@
       "prime_discount": "未开启",
       "main_cat": "",
       "expected_main_cat": "",
-      "main_bsr": 1257,
+      "main_bsr": 1291,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 1257,
+      "sub_bsr": 1291,
       "history_main_bsr": [
         1419,
         1419,
@@ -962,7 +968,8 @@
         1419,
         1419,
         1419,
-        1257
+        1257,
+        1291
       ],
       "history_sub_bsr": [],
       "events": [],
@@ -1110,14 +1117,14 @@
         },
         "review_count": {
           "current": 1566,
-          "prev": 1565,
-          "change": "+1",
-          "direction": "up"
+          "prev": 1566,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
-          "current": 4701,
-          "prev": 4646,
-          "change": "+55",
+          "current": 4742,
+          "prev": 4701,
+          "change": "+41",
           "direction": "dn"
         }
       },
@@ -1136,10 +1143,10 @@
       "prime_discount": "未开启",
       "main_cat": "",
       "expected_main_cat": "",
-      "main_bsr": 4701,
+      "main_bsr": 4742,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 4701,
+      "sub_bsr": 4742,
       "history_main_bsr": [
         4646,
         4646,
@@ -1147,7 +1154,8 @@
         4646,
         4646,
         4646,
-        4701
+        4701,
+        4742
       ],
       "history_sub_bsr": [],
       "events": [],
@@ -1202,7 +1210,7 @@
       "price": 18.9,
       "chg": 0.0,
       "rating": 4.5,
-      "reviews": 1855,
+      "reviews": 1880,
       "diff": {
         "price": {
           "current": 18.9,
@@ -1218,9 +1226,9 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 1855,
-          "prev": 1835,
-          "change": "+20",
+          "current": 1880,
+          "prev": 1855,
+          "change": "+25",
           "direction": "up"
         },
         "bsr": {
@@ -1250,6 +1258,7 @@
       "expected_sub_cat": "",
       "sub_bsr": 1,
       "history_main_bsr": [
+        1,
         1,
         1,
         1,
@@ -1389,7 +1398,7 @@
       "price": 18.9,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 4109,
+      "reviews": 4130,
       "diff": {
         "price": {
           "current": 18.9,
@@ -1405,10 +1414,10 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 4109,
-          "prev": 4109,
-          "change": "+0",
-          "direction": "same"
+          "current": 4130,
+          "prev": 4120,
+          "change": "+10",
+          "direction": "up"
         },
         "bsr": {
           "current": 1,
@@ -1443,6 +1452,8 @@
         1,
         2,
         2,
+        1,
+        1,
         1,
         1,
         1,
@@ -1578,7 +1589,33 @@
       "chg": 0.0,
       "rating": 4.7,
       "reviews": 1566,
-      "diff": {},
+      "diff": {
+        "price": {
+          "current": 9.97,
+          "prev": 9.97,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.7,
+          "prev": 4.7,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 1566,
+          "prev": 1566,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 4742,
+          "prev": 4701,
+          "change": "+41",
+          "direction": "dn"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -1594,12 +1631,13 @@
       "prime_discount": "未开启",
       "main_cat": "",
       "expected_main_cat": "",
-      "main_bsr": 4701,
+      "main_bsr": 4742,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 4701,
+      "sub_bsr": 4742,
       "history_main_bsr": [
-        4701
+        4701,
+        4742
       ],
       "history_sub_bsr": [],
       "events": [],
@@ -1688,7 +1726,7 @@
       "price": 9.97,
       "chg": 0.0,
       "rating": 0,
-      "reviews": 4,
+      "reviews": 0,
       "diff": {},
       "listing_status": "正常",
       "expected_listing_status": "正常",
@@ -1751,13 +1789,13 @@
     },
     {
       "monitor_type": "KW",
-      "asin": "B0DBJBHMYC",
+      "asin": "B0D6V2M5V1",
       "is_main": false,
       "logic_type": "关键词-batana oil",
-      "title": "RAW Batana Oil for Hair Growth, Dr Sebi Organic Unrefined Batana Oil from Honduran, 100% Pure & Natural Hair Growth for Thicker & Stronger Hair - 2 FL OZ - 60Ml - 1Pack",
+      "title": "Dolahair Batana Oil for Hair Growth Organics Pure Batana Hair Oil 100% Natural Batana Oil Nourishes Damaged Hair Natural Hair Growth Oil and Conditioner Batana Hair Oil 2.02 Fl Oz",
       "brand": "",
-      "img": "https://m.media-amazon.com/images/I/71VWxDplafL._AC_UL320_.jpg",
-      "price": 6.97,
+      "img": "https://m.media-amazon.com/images/I/716eNTDl1kL._AC_UL320_.jpg",
+      "price": 9.99,
       "chg": 0.0,
       "rating": 0,
       "reviews": 2,
@@ -1815,7 +1853,7 @@
           "title": "Batana Oil for Hair Growth, 100% Natural Pure Batana Oil Paste from Dr. Sebi Honduras, Prevents Hair Loss, Enhances Thickness, Organic Raw Scalp Mask for Women & Men (4.05 Oz)",
           "price": "$9.97",
           "rating": "",
-          "reviews": "4"
+          "reviews": ""
         },
         {
           "asin": "B0DBLCYTZ6",
@@ -1827,11 +1865,11 @@
           "reviews": "4"
         },
         {
-          "asin": "B0DBJBHMYC",
+          "asin": "B0D6V2M5V1",
           "type": "unknown",
           "rank": "",
-          "title": "RAW Batana Oil for Hair Growth, Dr Sebi Organic Unrefined Batana Oil from Honduran, 100% Pure & Natural Hair Growth for Thicker & Stronger Hair - 2 FL OZ - 60Ml - 1Pack",
-          "price": "$6.97",
+          "title": "Dolahair Batana Oil for Hair Growth Organics Pure Batana Hair Oil 100% Natural Batana Oil Nourishes Damaged Hair Natural Hair Growth Oil and Conditioner Batana Hair Oil 2.02 Fl Oz",
+          "price": "$9.99",
           "rating": "",
           "reviews": "2"
         }
