@@ -523,9 +523,9 @@ function renderTable() {
     if (onlyChg && !hasActiveAnomaly) return;
 
     let activeEvents = [...item.events];
-    if (isStatusAnomaly) activeEvents.push({ class: "e-alert", text: `试樿埖鈧商品信息异常?  ${item.listing_status}` });
-    if (isInfoAnomaly) activeEvents.push({ class: "e-alert", text: "商品信息异常? });
-    if (isCatAnomaly) activeEvents.push({ class: "e-alert", t栏目异常
+    if (isStatusAnomaly) activeEvents.push({ class: "e-alert", text: `试樿埖鈧商品信息异常? ${item.listing_status}` });
+    if (isInfoAnomaly) activeEvents.push({ class: "e-alert", text: "商品信息异常?"});
+    if (isCatAnomaly) activeEvents.push({ class: "e-alert", text: "栖目异常" });
     item.badges_lost.forEach(b => activeEvents.push({ class: "e-alert", text: `婢跺崬骞 ${b}` }));
 
     const chgClass = item.chg > 0 ? 'up' : (item.chg < 0 ? 'dn' : '');
