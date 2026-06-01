@@ -482,9 +482,11 @@ async function loadGitHubConfig() {
         if (kwResp.ok) kwRelData = await kwResp.json();
       } catch(e2) {}
       applyConfig(cfg, kwRelData);
-      statusEl.textContent = '閴?闁板秶鐤嗗?鎻掓倱濮?;
+      statusEl.textContent ='配置加载成功';
+
     }
-  } catch(e) { statusEl.textContent = '单¿?显氬本顒炴径杈?Е'; }
+  } catch(e) { statusEl.textContent = '配置加载失败';
+ }
 }
 
 // 缂佹ê鍩楃搾瀣?◢显¥
