@@ -390,9 +390,8 @@ async function triggerMonitor() {
   } catch(e) {
     console.error(e);
     btn.textContent = '触发失败';
-';
-  }
-  setTimeout(function() { btn.textContent = '刷新重试'; btn.disabled = false; }, 5000);
+    }
+    setTimeout(function() { btn.textContent = '刷新重试'; btn.disabled = false; }, 5000);
 }
 
 // API 娴溿倓绨伴柅鏄忕帆
