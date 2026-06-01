@@ -285,7 +285,7 @@
             <th>监控流┃较上次变化</th>
             <th>监控流┃评分/评论数</th>
             <th>暂无数据/th>
-            <th>閺堚偓显氬海娲冮幒褍鎮撳?銉︽?闂?/th>
+            <th>閺堚偓显氬海娲冮幒褍鎮撳'銉︽?闂?/th>
           </tr>
         </thead>
         <tbody id="tableBody"></tbody>
@@ -337,7 +337,7 @@ async function loadRawData() {
   }
 }
 
-// 鏉堝懎濮?敍姘冲箯显欐牗鐓囨稉鈧?崚妞剧瑓閹碘偓閺堝?娈戦崗瀹犱粓显
+// 鏉堝懎濮'敍姘冲箯显欐牗鐓囨稉鈧'崚妞剧瑓閹碘偓閺堝'娈戦崗瀹犱粓显
 function getRelatedVals(type, streamIdx) {
   var vals = [];
   for (var r = 0; r < 5; r++) {
@@ -347,17 +347,17 @@ function getRelatedVals(type, streamIdx) {
   return vals;
 }
 
-// 鐟欙箑褰傞幎鎾冲絿 (鐠囪?褰 11 显掓?鐓╅梼鍨?殶閹¹?
+// 鐟欙箑褰傞幎鎾冲絿 (鐠囪'褰 11 显掓'鐓╅梼鍨'殶閹¹?
 async function triggerMonitor() {
   var asins = [], kws = [];
-  // 闁?秴疯» 5 娑?ASIN 濞´?(Streams 1-5)
+  // 闁'秴疯» 5 娑?ASIN 濞´?(Streams 1-5)
   for (var i = 0; i < 5; i++) {
     var mainA = document.getElementById('in-asin-' + i).value.trim();
     if (mainA) {
       asins.push({ main: mainA, related: getRelatedVals('asin', i) });
     }
   }
-  // 闁?秴宸» 5 娑擃亜鍙ч柨顔跨槤濞´?(KW Streams 1-5)
+  // 闁'秴宸» 5 娑擃亜鍙ч柨顔跨槤濞´?(KW Streams 1-5)
   for (var j = 0; j < 5; j++) {
     var mainK = document.getElementById('in-kw-' + j).value.trim();
     if (mainK) {
@@ -434,7 +434,7 @@ async function checkStatus() {
   } catch(e) {}
 }
 
-// 显旂姾娴囬柊宥囩枂显?11 显掓?鐓╅梼
+// 显旂姾娴囬柊宥囩枂显?11 显掓'鐓╅梼
 function applyConfig(cfg, kwRelData) {
   kwRelData = kwRelData || {};
   if (cfg.asins) {
@@ -458,7 +458,7 @@ function applyConfig(cfg, kwRelData) {
       if (i < 5) {
         var kwMainEl = document.getElementById('in-kw-' + i);
         if (kwMainEl) kwMainEl.value = row.main || '';
-        // 婵夘偄鍘栭崗鎶芥暛鐠囧秴鍙ч懕?ASINs閿涙矮锛  keyword_related_asins.json 仈?        var kw = row.main || '';
+        // 婵夘偄鍘栭崗鎶芥暛鐠囧秴鍙ч懕'ASINs閿涙矮锛  keyword_related_asins.json 仈?        var kw = row.main || '';
         var cachedAsins = kwRelData[kw] || [];
         for (var r = 0; r < 5; r++) {
           var relEl = document.getElementById('rel-kw-' + i + '-' + r);
@@ -489,9 +489,9 @@ async function loadGitHubConfig() {
  }
 }
 
-// 缂佹ê鍩楃搾瀣?◢显¥
+// 缂佹ê鍩楃搾瀣'◢显¥
 function drawSparkline(data, color) {
-  if (!data || data.length < 2) return '<span style="color:#999;font-size:11px;">閺冪姵鏆熼幑?/span>';
+  if (!data || data.length < 2) return '<span style="color:#999;font-size:11px;">閺冪姵鏆熼幑'/span>';
   const min = Math.min(...data), max = Math.max(...data);
   const range = max - min || 1;
   const h = 30, w = 120;
@@ -514,7 +514,7 @@ function renderTable() {
 
   let html = '';
   rawData.items.forEach(item => {
-    // 瀵?倸濮╅崚銈呯暰闁?槒绶« (鐎瑰本鏆ｆ穱婵堟殌)
+    // 瀵'倸濮╅崚銈呯暰闁'槒绶« (鐎瑰本鏆ｆ穱婵堟殌)
     const isStatusAnomaly = item.listing_status !== item.expected_listing_status;
     const isCatAnomaly = (item.main_cat !== item.expected_main_cat) || (item.sub_cat !== item.expected_sub_cat);
     const isInfoAnomaly = item.title_changed || item.img_changed || item.bullets_changed || item.description_changed;
@@ -526,8 +526,8 @@ function renderTable() {
     if (onlyChg && !hasActiveAnomaly) return;
 
     let activeEvents = [...item.events];
-    if (isStatusAnomaly) activeEvents.push({ class: "e-alert", text: `试樿埖鈧商品信息异常? ${item.listing_status}` });
-    if (isInfoAnomaly) activeEvents.push({ class: "e-alert", text: "商品信息异常?"});
+    if (isStatusAnomaly) activeEvents.push({ class: "e-alert", text: `试樿埖鈧商品信息异常' ${item.listing_status}` });
+    if (isInfoAnomaly) activeEvents.push({ class: "e-alert", text: "商品信息异常'"});
     if (isCatAnomaly) activeEvents.push({ class: "e-alert", text: "栖目异常" });
     item.badges_lost.forEach(b => activeEvents.push({ class: "e-alert", text: `婢跺崬骞 ${b}` }));
 
@@ -563,14 +563,14 @@ function renderTable() {
     if (diffLines.length > 0) {
       let tipHtml = '';
       if (diff.price) tipHtml += '<div class="tip-row"><span class="tip-label">娴犻攱鐗¸</span><span class="tip-val ' + diff.price.direction + '">$' + diff.price.prev + ' 单«?$' + diff.price.current + ' (' + diff.price.change + ')</span></div>';
-      if (diff.review_count) tipHtml += '<div class="tip-row"><span class="tip-label">鐠囧嫯顔戦弫?/span><span class="tip-val ' + diff.review_count.direction + '">' + diff.review_count.prev + ' 单«?' + diff.review_count.current + ' (' + diff.review_count.change + ')</span></div>';
+      if (diff.review_count) tipHtml += '<div class="tip-row"><span class="tip-label">鐠囧嫯顔戦弫'/span><span class="tip-val ' + diff.review_count.direction + '">' + diff.review_count.prev + ' 单«?' + diff.review_count.current + ' (' + diff.review_count.change + ')</span></div>';
       if (diff.rating) tipHtml += '<div class="tip-row"><span class="tip-label">鐠囧嫬鍨</span><span class="tip-val ' + diff.rating.direction + '">' + diff.rating.prev + ' 单«?' + diff.rating.current + ' (' + diff.rating.change + ')</span></div>';
       if (diff.bsr) { var d = diff.bsr.direction === 'up' ? 'dn' : diff.bsr.direction === 'dn' ? 'up' : 'same'; tipHtml += '<div class="tip-row"><span class="tip-label">BSR</span><span class="tip-val ' + d + '">#' + diff.bsr.prev + ' 单«?#' + diff.bsr.current + ' (' + diff.bsr.change + ')</span></div>'; }
       if (diff.variants) tipHtml += '<div class="tip-row"><span class="tip-label">显欐ü缍</span><span class="tip-val">' + (diff.variants.prev || '閺?) + ' 单«?' + (diff.variants.current || '閺?) + '</span></div>';
       if (diff.deal_activity && diff.deal_activity.direction === 'changed') tipHtml += '<div class="tip-row"><span class="tip-label">Deal</span><span class="tip-val">' + diff.deal_activity.prev + ' 单«?' + diff.deal_activity.current + '</span></div>';
       if (diff.badges && diff.badges.direction === 'changed') {
-        if (diff.badges.gained && diff.badges.gained.length) tipHtml += '<div class="tip-row"><span class="tip-label">閼惧嘲绶卞?鐣岀彿</span><span class="tip-val up">' + diff.badges.gained.join(', ') + '</span></div>';
-        if (diff.badges.lost && diff.badges.lost.length) tipHtml += '<div class="tip-row"><span class="tip-label">婢跺崬骞撳?鐣岀彿</span><span class="tip-val dn">' + diff.badges.lost.join(', ') + '</span></div>';
+        if (diff.badges.gained && diff.badges.gained.length) tipHtml += '<div class="tip-row"><span class="tip-label">閼惧嘲绶卞'鐣岀彿</span><span class="tip-val up">' + diff.badges.gained.join(', ') + '</span></div>';
+        if (diff.badges.lost && diff.badges.lost.length) tipHtml += '<div class="tip-row"><span class="tip-label">婢跺崬骞撳'鐣岀彿</span><span class="tip-val dn">' + diff.badges.lost.join(', ') + '</span></div>';
       }
       if (tipHtml) tipHtml = '<div class="tip-section">' + tipHtml + '</div>';
       diffHtml = '<div class="diff-tip">' + diffLines.slice(0, 3).join('') + '<div class="tip-box">娑撳﹥顐¼ 单«?瑜版挸澧 ' + tipHtml + '</div></div>';
@@ -591,17 +591,17 @@ html += `<tr>
           <div>BSR: <span class="cat-item">${item.main_cat}</span> <strong>#${item.main_bsr || '↓'}</strong>${item.sub_bsr ? ` / <span class="cat-item">${item.sub_cat}</span> #${item.sub_bsr}` : ''}</div>
           <div>试樿埖鈧¬? <span style="color:${isStatusAnomaly?'#dc2626':'#16a34a'};font-weight:700;">${item.listing_status}</span>${item.variant_status !== '濮濓絽鐖¶' ? ` <span style="color:#d97706;font-size:12px;">显欐ü缍:${item.variant_status}</span>` : ''}</div>
           ${item.deal_activity && item.deal_activity !== '閺? ? `<div style="color:#b45309;font-weight:600;">单¿?Deal: ${item.deal_activity}</div>` : ''}
-          ${item.coupon && item.coupon !== '閺? ? `<div style="color:#059669;font-weight:600;">棣冨斧閿?娴兼ɑ鍎?崚? ${item.coupon}</div>` : ''}
-          ${item.prime_discount && item.prime_discount !== '閺堫亜绱鏃犲? ? `<div style="color:#7c3aed;font-weight:600;">棣冩憹 Prime閹舵ɑ澧¸: ${item.prime_discount}</div>` : ''}
+          ${item.coupon && item.coupon !== '閺? ? `<div style="color:#059669;font-weight:600;">棣冨斧閿?娴兼ɑ鍎'崚' ${item.coupon}</div>` : ''}
+          ${item.prime_discount && item.prime_discount !== '閺堫亜绱鏃犲' ? `<div style="color:#7c3aed;font-weight:600;">棣冩憹 Prime閹舵ɑ澧¸: ${item.prime_discount}</div>` : ''}
           ${item.badges_current && item.badges_current.length ? `<div style="font-size:12px;">棣冨娇閿?閼惧嘲绶±: ${item.badges_current.join(', ')}</div>` : ''}
           ${item.badges_lost && item.badges_lost.length ? `<div style="font-size:12px;color:#dc2626;">棣冩尒 婢跺崬骞: ${item.badges_lost.join(', ')}</div>` : ''}
           ${item.title_changed || item.img_changed || item.bullets_changed || item.description_changed ? `<div style="font-size:12px;color:#d97706;">棣冩憫 鎺掑悕浼鍚崣妯鏃堕:${item.title_changed?' 閺嶅洭顣½':''}${item.img_changed?' 显ュ墽澧':''}${item.bullets_changed?' 娴滄梻鍋£':''}${item.description_changed?' 閹诲繗鍫ª':''}</div>` : ''}
         </div>
       </td>
-      <td><div class="events-cell">${activeEvents.length ? activeEvents.map(e => `<span class="e-tag ${e.class}">${e.text}</span>`).join('') : '<span class="e-none">閺冪姴绱撶敮?/span>'}</div></td>
+      <td><div class="events-cell">${activeEvents.length ? activeEvents.map(e => `<span class="e-tag ${e.class}">${e.text}</span>`).join('') : '<span class="e-none">閺冪姴绱撶敮'/span>'}</div></td>
       <td><div class="diff-cell">${diffHtml}</div></td>
       <td>${drawSparkline(item.history_main_bsr, '#1e3a8a')}</td>
-      <td><div class="status-indicator ${hasActiveAnomaly?'changed':'stable'}">${hasActiveAnomaly?'显欐垹骞囧?鍌氬З':'缁嬪啿鐣¾'}</div></td>
+      <td><div class="status-indicator ${hasActiveAnomaly?'changed':'stable'}">${hasActiveAnomaly?'显欐垹骞囧'鍌氬З':'缁嬪啿鐣¾'}</div></td>
       <td style="color:#64748b; font-size:12px;">${rawData.updated}</td>
     </tr>`;
   });
