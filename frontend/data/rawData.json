@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-01T21:53:23",
+  "updated": "2026-06-02T05:50:25",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -12,7 +12,7 @@
       "price": 18.9,
       "chg": 0.0,
       "rating": 4.6,
-      "reviews": 24934,
+      "reviews": 24961,
       "diff": {
         "price": {
           "current": 18.9,
@@ -28,9 +28,9 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 24934,
-          "prev": 24904,
-          "change": "+30",
+          "current": 24961,
+          "prev": 24934,
+          "change": "+27",
           "direction": "up"
         },
         "bsr": {
@@ -60,22 +60,9 @@
       "expected_sub_cat": "",
       "sub_bsr": 1,
       "history_main_bsr": [
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
         2,
         2,
+        1,
         1,
         1,
         1,
@@ -258,12 +245,10 @@
       "expected_sub_cat": "",
       "sub_bsr": 1,
       "history_main_bsr": [
-        1,
-        1,
-        1,
-        1,
         2,
         2,
+        1,
+        1,
         1,
         1,
         1,
@@ -417,15 +402,15 @@
         },
         "review_count": {
           "current": 2106,
-          "prev": 2103,
-          "change": "+3",
-          "direction": "up"
+          "prev": 2106,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
           "current": 6188,
-          "prev": 6411,
-          "change": "223",
-          "direction": "up"
+          "prev": 6188,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -453,6 +438,7 @@
         5769,
         5769,
         6411,
+        6188,
         6188
       ],
       "history_sub_bsr": [],
@@ -563,14 +549,14 @@
         },
         "review_count": {
           "current": 11531,
-          "prev": 11528,
-          "change": "+3",
-          "direction": "up"
+          "prev": 11531,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
-          "current": 1950,
-          "prev": 1966,
-          "change": "16",
+          "current": 1949,
+          "prev": 1950,
+          "change": "1",
           "direction": "up"
         }
       },
@@ -589,17 +575,18 @@
       "prime_discount": "未开启",
       "main_cat": "",
       "expected_main_cat": "",
-      "main_bsr": 1950,
+      "main_bsr": 1949,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 1950,
+      "sub_bsr": 1949,
       "history_main_bsr": [
         1908,
         1908,
         1908,
         1908,
         1966,
-        1950
+        1950,
+        1949
       ],
       "history_sub_bsr": [],
       "events": [],
@@ -785,15 +772,15 @@
         },
         "review_count": {
           "current": 2537,
-          "prev": 2533,
-          "change": "+4",
-          "direction": "up"
+          "prev": 2537,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
           "current": 1245,
-          "prev": 1240,
-          "change": "+5",
-          "direction": "dn"
+          "prev": 1245,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -821,6 +808,7 @@
         1294,
         1294,
         1240,
+        1245,
         1245
       ],
       "history_sub_bsr": [],
@@ -914,7 +902,7 @@
       "price": 16.19,
       "chg": 0.0,
       "rating": 4.4,
-      "reviews": 3051,
+      "reviews": 3050,
       "diff": {
         "price": {
           "current": 16.19,
@@ -930,16 +918,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 3051,
-          "prev": 3045,
-          "change": "+6",
-          "direction": "up"
+          "current": 3050,
+          "prev": 3051,
+          "change": "-1",
+          "direction": "dn"
         },
         "bsr": {
           "current": 1291,
-          "prev": 1257,
-          "change": "+34",
-          "direction": "dn"
+          "prev": 1291,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -969,6 +957,7 @@
         1419,
         1419,
         1257,
+        1291,
         1291
       ],
       "history_sub_bsr": [],
@@ -1100,7 +1089,7 @@
       "price": 9.97,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 1566,
+      "reviews": 1567,
       "diff": {
         "price": {
           "current": 9.97,
@@ -1116,16 +1105,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 1566,
+          "current": 1567,
           "prev": 1566,
-          "change": "+0",
-          "direction": "same"
+          "change": "+1",
+          "direction": "up"
         },
         "bsr": {
           "current": 4742,
-          "prev": 4701,
-          "change": "+41",
-          "direction": "dn"
+          "prev": 4742,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -1155,6 +1144,7 @@
         4646,
         4646,
         4701,
+        4742,
         4742
       ],
       "history_sub_bsr": [],
@@ -1210,7 +1200,7 @@
       "price": 18.9,
       "chg": 0.0,
       "rating": 4.5,
-      "reviews": 1880,
+      "reviews": 1881,
       "diff": {
         "price": {
           "current": 18.9,
@@ -1226,9 +1216,9 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 1880,
-          "prev": 1855,
-          "change": "+25",
+          "current": 1881,
+          "prev": 1880,
+          "change": "+1",
           "direction": "up"
         },
         "bsr": {
@@ -1258,9 +1248,6 @@
       "expected_sub_cat": "",
       "sub_bsr": 1,
       "history_main_bsr": [
-        1,
-        1,
-        1,
         1,
         1,
         1,
@@ -1415,9 +1402,9 @@
         },
         "review_count": {
           "current": 4130,
-          "prev": 4120,
-          "change": "+10",
-          "direction": "up"
+          "prev": 4130,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
           "current": 1,
@@ -1446,12 +1433,10 @@
       "expected_sub_cat": "",
       "sub_bsr": 1,
       "history_main_bsr": [
-        1,
-        1,
-        1,
-        1,
         2,
         2,
+        1,
+        1,
         1,
         1,
         1,
@@ -1588,7 +1573,7 @@
       "price": 9.97,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 1566,
+      "reviews": 1567,
       "diff": {
         "price": {
           "current": 9.97,
@@ -1604,16 +1589,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 1566,
+          "current": 1567,
           "prev": 1566,
-          "change": "+0",
-          "direction": "same"
+          "change": "+1",
+          "direction": "up"
         },
         "bsr": {
           "current": 4742,
-          "prev": 4701,
-          "change": "+41",
-          "direction": "dn"
+          "prev": 4742,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -1637,6 +1622,7 @@
       "sub_bsr": 4742,
       "history_main_bsr": [
         4701,
+        4742,
         4742
       ],
       "history_sub_bsr": [],
@@ -1789,13 +1775,13 @@
     },
     {
       "monitor_type": "KW",
-      "asin": "B0D6V2M5V1",
+      "asin": "B0DBJBHMYC",
       "is_main": false,
       "logic_type": "关键词-batana oil",
-      "title": "Dolahair Batana Oil for Hair Growth Organics Pure Batana Hair Oil 100% Natural Batana Oil Nourishes Damaged Hair Natural Hair Growth Oil and Conditioner Batana Hair Oil 2.02 Fl Oz",
+      "title": "RAW Batana Oil for Hair Growth, Dr Sebi Organic Unrefined Batana Oil from Honduran, 100% Pure & Natural Hair Growth for Thicker & Stronger Hair - 2 FL OZ - 60Ml - 1Pack",
       "brand": "",
-      "img": "https://m.media-amazon.com/images/I/716eNTDl1kL._AC_UL320_.jpg",
-      "price": 9.99,
+      "img": "https://m.media-amazon.com/images/I/71VWxDplafL._AC_UL320_.jpg",
+      "price": 6.97,
       "chg": 0.0,
       "rating": 0,
       "reviews": 2,
@@ -1865,11 +1851,11 @@
           "reviews": "4"
         },
         {
-          "asin": "B0D6V2M5V1",
+          "asin": "B0DBJBHMYC",
           "type": "unknown",
           "rank": "",
-          "title": "Dolahair Batana Oil for Hair Growth Organics Pure Batana Hair Oil 100% Natural Batana Oil Nourishes Damaged Hair Natural Hair Growth Oil and Conditioner Batana Hair Oil 2.02 Fl Oz",
-          "price": "$9.99",
+          "title": "RAW Batana Oil for Hair Growth, Dr Sebi Organic Unrefined Batana Oil from Honduran, 100% Pure & Natural Hair Growth for Thicker & Stronger Hair - 2 FL OZ - 60Ml - 1Pack",
+          "price": "$6.97",
           "rating": "",
           "reviews": "2"
         }
