@@ -161,7 +161,7 @@
         </div>
         <div class="ctrl-group">
           <input type="password" id="ghTokenInput" placeholder="GitHub Token" onkeydown="if(event.key==='Enter')triggerMonitor()">
-          <button id="btnTrigger" onclick="triggerMonitor()">刷重新试</button>
+          <button id="btnTrigger" onclick="triggerMonitor()">立即抓取</button>
           <span id="configStatus">正在加载...</span>
         </div>
       </div>
@@ -366,14 +366,14 @@ async function triggerMonitor() {
   }
 
   if (asins.length === 0 && kws.length === 0) {
-    alert('鐠囩柉鍤︾亸鎴ｇ翻仅显变动閺?ASIN 閹存牕鍙ч茶顔跨槤');
+    alert('请至少添加一个ASIN或关键词');
     return;
   }
 
   var cfg = { asins: asins, keywords: kws };
   var btn = document.getElementById('btnTrigger');
   btn.disabled = true;
-  btn.textContent = '单¿?鐟欙箑褰傛稉?..';
+  btn.textContent = '正在加载...';
 
   var token = sessionStorage.getItem('gh_token') || '';
   if (!token) {
@@ -385,11 +385,12 @@ async function triggerMonitor() {
   try {
     await putFile('backend/data/user_config.json', cfg);
     await putFile('backend/data/trigger.json', { triggered_at: Date.now(), status: 'pending' });
-    btn.textContent = '閴?瀹歌尪袝显?;
+    btn.textContent = '触发成功';
     startPolling();
   } catch(e) {
     console.error(e);
-    btn.textContent = '閴?鐟欙箑褰傛径杈?Е';
+    btn.textContent = '触发失败';
+';
   }
   setTimeout(function() { btn.textContent = '刷新重试'; btn.disabled = false; }, 5000);
 }
