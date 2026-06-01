@@ -476,7 +476,8 @@ async function loadGitHubConfig() {
     var resp = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/user_config.json?v=' + Date.now());
     if (resp.ok) {
       var cfg = await resp.json();
-      // 显氬本妞傞幎鎾冲絿 keyword_related_asins.json閿涘牆鍙ч柨顔跨槤试¨?top5 显忓疇浠 ASINs      try {
+      // 显氬本妞傞幎鎾冲絿 keyword_related_asins.json閿涘牆鍙ч柨顔跨槤试¨?top5 显忓疇浠 ASINs
+      try {
         var kwResp = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/keyword_related_asins.json?v=' + Date.now());
         if (kwResp.ok) kwRelData = await kwResp.json();
       } catch(e2) {}
