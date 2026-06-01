@@ -337,7 +337,8 @@ async function loadRawData() {
   }
 }
 
-// 鏉堝懎濮?敍姘冲箯显欐牗鐓囨稉鈧?崚妞剧瑓閹碘偓閺堝?娈戦崗瀹犱粓显?function getRelatedVals(type, streamIdx) {
+// 鏉堝懎濮?敍姘冲箯显欐牗鐓囨稉鈧?崚妞剧瑓閹碘偓閺堝?娈戦崗瀹犱粓显
+function getRelatedVals(type, streamIdx) {
   var vals = [];
   for (var r = 0; r < 5; r++) {
     var el = document.getElementById('rel-' + type + '-' + streamIdx + '-' + r);
@@ -433,7 +434,8 @@ async function checkStatus() {
   } catch(e) {}
 }
 
-// 显旂姾娴囬柊宥囩枂显?11 显掓?鐓╅梼?function applyConfig(cfg, kwRelData) {
+// 显旂姾娴囬柊宥囩枂显?11 显掓?鐓╅梼
+function applyConfig(cfg, kwRelData) {
   kwRelData = kwRelData || {};
   if (cfg.asins) {
     cfg.asins.forEach((row, i) => {
@@ -484,7 +486,8 @@ async function loadGitHubConfig() {
   } catch(e) { statusEl.textContent = '单¿?显氬本顒炴径杈?Е'; }
 }
 
-// 缂佹ê鍩楃搾瀣?◢显¥?function drawSparkline(data, color) {
+// 缂佹ê鍩楃搾瀣?◢显¥
+function drawSparkline(data, color) {
   if (!data || data.length < 2) return '<span style="color:#999;font-size:11px;">閺冪姵鏆熼幑?/span>';
   const min = Math.min(...data), max = Math.max(...data);
   const range = max - min || 1;
