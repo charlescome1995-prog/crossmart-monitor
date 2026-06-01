@@ -1,265 +1,312 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ASIN Monitor</title>
-  <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
-.dashboard { padding: 20px; max-width: 1400px; margin: 0 auto; }
-.topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
-.topbar h1 { font-size: 20px; font-weight: 700; color: #f1f5f9; }
-.topbar .hint { font-size: 12px; color: #64748b; }
-.config-panel { background: #1e293b; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
-.config-section { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-.config-group { display: flex; flex-direction: column; gap: 4px; }
-.config-group label { font-size: 11px; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
-.config-group input { background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0; padding: 8px 10px; font-size: 13px; outline: none; }
-.config-group input:focus { border-color: #3b82f6; }
-.config-group .row { display: flex; gap: 4px; }
-.config-group .row input { flex: 1; }
-.config-actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
-.btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all .2s; }
-.btn-primary { background: #3b82f6; color: #fff; }
-.btn-primary:hover { background: #2563eb; }
-.btn-primary:disabled { background: #1e40af; cursor: not-allowed; }
-.config-status { font-size: 12px; color: #64748b; margin-top: 4px; }
-.filter-bar { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
-.filter-bar input { flex: 1; min-width: 200px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0; padding: 8px 12px; font-size: 13px; outline: none; }
-.filter-bar input:focus { border-color: #3b82f6; }
-.filter-bar select { background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0; padding: 8px 12px; font-size: 13px; outline: none; }
-.count-badge { background: #334155; color: #94a3b8; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
-.table-wrap { overflow-x: auto; background: #1e293b; border-radius: 10px; }
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-thead tr { background: #0f172a; border-bottom: 2px solid #334155; }
-th { padding: 10px 8px; text-align: left; font-weight: 700; color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; white-space: nowrap; }
-tbody tr { border-bottom: 1px solid #1e293b; }
-tbody tr:hover { background: #1e293b; }
-td { padding: 10px 8px; vertical-align: top; }
-.col-asin { font-family: monospace; font-size: 12px; color: #60a5fa; min-width: 110px; }
-.col-monitor { font-size: 11px; white-space: nowrap; }
-.col-title { min-width: 200px; max-width: 280px; }
-.col-title a { color: #e2e8f0; text-decoration: none; }
-.col-title a:hover { color: #60a5fa; }
-.col-price, .col-reviews, .col-rating, .col-bsr { min-width: 80px; }
-.col-diff { min-width: 130px; }
-.col-events { min-width: 120px; }
-.col-status { min-width: 100px; }
-.img-thumb { width: 40px; height: 40px; object-fit: contain; border-radius: 4px; background: #0f172a; }
-.events-cell { display: flex; flex-wrap: wrap; gap: 4px; }
-.e-tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; }
-.e-alert { background: #7f1d1d; color: #fca5a5; }
-.e-warn { background: #78350f; color: #fcd34d; }
-.e-info { background: #1e3a5f; color: #93c5fd; }
-.e-none { color: #475569; font-size: 12px; }
-.status-indicator { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; text-align: center; display: inline-block; min-width: 80px; }
-.status-indicator.stable { background: #14532d; color: #86efac; }
-.status-indicator.changed { background: #7f1d1d; color: #fca5a5; }
-.source-asin { background: #1e40af; color: #bfdbfe; }
-.source-kw { background: #065f46; color: #6ee7b7; }
-.main-badge { background: #7c3aed; color: #e9d5ff; }
-.rel-badge { background: #1e293b; color: #94a3b8; }
-.up { color: #86efac; }
-.dn { color: #fca5a5; }
-.same { color: #94a3b8; }
-.diff-none { color: #475569; font-size: 12px; text-align: center; padding: 4px; }
-.diff-item { font-size: 12px; padding: 2px 0; }
-.diff-arrow { font-size: 10px; margin-right: 4px; }
-.diff-tip { font-size: 12px; color: #94a3b8; margin-top: 4px; }
-.tip-box { background: #0f172a; border-radius: 6px; padding: 8px; margin-top: 4px; text-align: left; }
-.tip-row { display: flex; gap: 8px; padding: 2px 0; font-size: 12px; }
-.tip-label { color: #64748b; min-width: 80px; }
-.tip-val { color: #e2e8f0; }
-.tip-val.up { color: #86efac; }
-.tip-val.dn { color: #fca5a5; }
-.cat-item { color: #64748b; font-size: 12px; }
-.grid-cell input { background: #0f172a; border: 1px solid #334155; border-radius: 4px; color: #e2e8f0; padding: 6px 8px; font-size: 12px; width: 100%; outline: none; }
-.grid-cell input:focus { border-color: #3b82f6; }
-.older { color: #475569; font-size: 10px; }
-.polling-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; margin-left: 8px; animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CrossMart Advanced Monitor Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Times New Roman", Times, "PingFang SC", "Microsoft YaHei", serif; }
+  body { background: #f4f7f6; color: #333; padding: 0; font-size: 13px; }
 
-  </style>
+  /* Topbar Styles */
+  .topbar { background: #131921; color: #fff; display: flex; align-items: center; justify-content: space-between; height: 44px; padding: 0 16px; position: sticky; top: 0; z-index: 100; }
+  .topbar .brand { font-weight: 700; font-size: 16px; letter-spacing: 0.5px; }
+  .topbar nav { display: flex; gap: 18px; font-size: 13px; }
+  .topbar nav a { color: rgba(255,255,255,.75); text-decoration: none; padding: 4px 0; border-bottom: 2px solid transparent; }
+  .topbar nav a:hover, .topbar nav a.active { color: #fff; border-bottom-color: #e94560; }
+
+  .container { padding: 16px; }
+
+  /* --- 11-Column Matrix Layout --- */
+  .config-matrix { background: #fff; padding: 14px; border-radius: 6px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 4px; overflow-x: auto; }
+  
+  /* 椤堕儴宸村?銉ュ徔閺嶅繗顢 */
+  .action-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed #e2e8f0; }
+  .action-row .title-group { display: flex; align-items: center; gap: 20px; }
+  .action-row .title-tag { font-size: 12px; font-weight: 700; color: #1e293b; background: #f1f5f9; padding: 4px 10px; border-radius: 4px; border: 1px solid #cbd5e1; }
+  
+  .ctrl-group { display: flex; align-items: center; gap: 8px; }
+  .ctrl-group input[type="password"] { width: 140px; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; height: 30px; }
+  .ctrl-group button { background: #e94560; color: #fff; border: none; border-radius: 4px; padding: 0 15px; font-size: 12px; font-weight: 600; cursor: pointer; height: 30px; transition: 0.2s; }
+  .ctrl-group button:hover { background: #d03d56; }
+  .ctrl-group span { font-size: 12px; padding: 4px 10px; border-radius: 20px; background: #e2e8f0; color: #64748b; white-space: nowrap; }
+
+  /* 閺嶇?绺¾ 11 显掓?缍夐弽?*/
+  .matrix-grid { display: grid; grid-template-columns: 65px repeat(5, 1fr) repeat(5, 1fr); gap: 6px; min-width: 1100px; }
+  .grid-cell { display: flex; align-items: center; }
+  
+  /* 閺嶅洨顒烽崚妤佺壉瀵®?*/
+  .lbl-cell { font-size: 11px; font-weight: 700; color: #475569; border: 1px solid #cbd5e1; border-radius: 3px; background: #f8fafc; height: 28px; justify-content: center; width: 100%; }
+  
+  /* 紡堟挸鍙嗗?鍡楃唨绾?偓閺嶅嘲绱¡ */
+  .matrix-grid input[type="text"] { width: 100%; padding: 4px 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 12px; height: 28px; outline: none; }
+  .matrix-grid input[type="text"]:focus { border-color: #e94560; box-shadow: 0 0 0 1px rgba(233, 69, 96, 0.1); }
+  .matrix-grid input[type="text"]::placeholder { color: #cbd5e1; font-weight: 400; }
+  
+  /* 试╊喗鐖ｇ悰宀澹掑▓濠冪壉瀵®?(妤傛ü瀵) */
+  .row-target input[type="text"] { font-weight: 700; border-color: #94a3b8; background: #fff; }
+  
+  /* 显忓疇浠堢悰灞剧壉瀵®?*/
+  .row-rel input[type="text"] { font-size: 11px; color: #475569; background: #fafafa; border-color: #e2e8f0; }
+
+  /* 鐞涖劌銇旈幐鍥┿仛显£?*/
+  .grid-hdr { font-size: 10px; color: #94a3b8; font-weight: 600; text-align: center; padding-bottom: 2px; text-transform: uppercase; }
+  .hdr-asin { border-bottom: 2px solid #e0e7ff; color: #4f46e5; }
+  .hdr-kw { border-bottom: 2px solid #fce7f3; color: #db2777; }
+
+  /* --- 显樼喐婀 Table & Badge 閺嶅嘲绱℃穱婵囧瘮娑撳秴褰 --- */
+  .filter-bar { background: #fff; padding: 12px; border-radius: 6px 6px 0 0; border: 1px solid #e2e8f0; border-bottom: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
+  .filter-controls { display: flex; align-items: center; gap: 12px; }
+  .filter-controls input[type="text"] { padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; width: 240px; font-size: 13px; }
+  .filter-controls select { padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 13px; background: #f8fafc; cursor: pointer; font-weight: 600; }
+  .filter-controls label { display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; font-size: 13px; font-weight: 600; }
+
+  .btn { padding: 6px 16px; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: .1s; }
+  .btn-primary { background: #ffd814; color: #0f1111; }
+  .btn-primary:hover { background: #f7ca00; }
+  .btn-secondary { background: #e2e8f0; color: #334155; }
+
+  .table-container { background: #fff; border-radius: 0 0 6px 6px; border: 1px solid #e2e8f0; overflow-x: auto; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .monitor-table { width: 100%; border-collapse: collapse; text-align: left; white-space: nowrap; }
+  .monitor-table th { background: #f8fafc; padding: 12px; font-size: 12px; font-weight: 700; color: #334155; border-bottom: 2px solid #e2e8f0; text-transform: uppercase; letter-spacing: 0.3px; }
+  .monitor-table td { padding: 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+  .monitor-table tr:hover td { background: #fcfdfe; }
+
+  .col-img { width: 75px; text-align: center; }
+  .col-img img { width: 65px; height: 85px; object-fit: contain; border-radius: 4px; border: 1px solid #e2e8f0; background: #fff; }
+
+  .info-block { display: flex; flex-direction: column; gap: 4px; }
+  .metrics-block { display: flex; flex-direction: column; gap: 5px; font-size: 12px; }
+  .cat-item { color: #475569; font-size: 11px; background: #f1f5f9; padding: 1px 6px; border-radius: 3px; display: inline-block; max-width: 220px; overflow: hidden; text-overflow: ellipsis; }
+  .cat-item.err { background: #fef2f2; color: #dc2626; border: 1px solid #fee2e2; font-weight: 700; }
+
+  .badge { font-size: 10px; padding: 2px 5px; border-radius: 3px; font-weight: bold; display: inline-block; }
+  .badge.main { background: #ffd814; color: #0f1111; }
+  .badge.rel { background: #cbd5e1; color: #334155; }
+  .badge.source-asin { background: #e0e7ff; color: #4f46e5; }
+  .badge.source-kw { background: #fce7f3; color: #db2777; }
+
+  .badge-tag { font-size: 10px; padding: 1px 4px; border-radius: 3px; font-weight: bold; display: inline-block; margin-right: 2px; }
+  .badge-tag.aplus { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+  .badge-tag.bs { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
+  .badge-tag.ac { background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; }
+  .badge-tag.nr { background: #fae8ff; color: #c026d3; border: 1px solid #f5d0fe; }
+  .badge-tag.lost { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; text-decoration: line-through; }
+
+  .asin-link { font-weight: 700; color: #007185; text-decoration: none; font-size: 13px; }
+  .title-text { max-width: 220px; overflow: hidden; text-overflow: ellipsis; color: #64748b; font-size: 12px; line-height: 1.3; }
+
+  .chg { font-weight: 700; padding: 1px 4px; border-radius: 3px; font-size: 11px; margin-left: 4px; }
+  .chg.up { color: #dc2626; background: #fef2f2; }
+  .chg.dn { color: #059669; background: #f0fdf4; }
+
+  .events-cell { display: flex; flex-direction: column; gap: 4px; max-width: 180px; white-space: normal; }
+  .e-tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid transparent; display: inline-block; width: fit-content; }
+  .e-alert { background: #fef2f2; color: #dc2626; border-color: #fca5a5; }
+  .e-promo { background: #fefce8; color: #ca8a04; border-color: #fef08a; }
+  .e-info { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
+  .e-none { color: #94a3b8; font-size: 11px; }
+
+  .trend-container { display: flex; flex-direction: column; gap: 4px; padding: 4px 0; }
+  .trend-label { font-size: 9px; color: #94a3b8; transform: scale(0.9); transform-origin: left; }
+
+  .status-indicator { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 4px; width: 85px; justify-content: center; }
+  .status-indicator.changed { background: #dc2626; color: #fff; }
+  .status-indicator.stable { background: #059669; color: #fff; }
+
+  .diff-cell { font-size: 12px; line-height: 1.6; min-width: 90px; }
+  .diff-item { display: flex; align-items: center; gap: 4px; }
+  .diff-arrow { font-size: 11px; }
+  .diff-arrow.up { color: #dc2626; }
+  .diff-arrow.dn { color: #059669; }
+  .diff-arrow.same { color: #94a3b8; }
+  .diff-val { font-weight: 700; }
+  .diff-val.up { color: #dc2626; }
+  .diff-val.dn { color: #059669; }
+  .diff-val.same { color: #64748b; }
+  .diff-none { color: #cbd5e1; font-size: 11px; }
+  .diff-tip { position: relative; cursor: help; border-bottom: 1px dashed #94a3b8; display: inline-block; }
+  .diff-tip:hover .tip-box { display: block; }
+  .tip-box { display: none; position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%); background: #1e293b; color: #f1f5f9; border-radius: 6px; padding: 8px 12px; font-size: 11px; line-height: 1.8; min-width: 160px; z-index: 50; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+  .tip-box::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: #1e293b; }
+  .tip-row { display: flex; justify-content: space-between; gap: 12px; }
+  .tip-label { color: #94a3b8; }
+  .tip-val.up { color: #f87171; }
+  .tip-val.dn { color: #34d399; }
+  .tip-val.same { color: #94a3b8; }
+  .tip-section { border-top: 1px solid #334155; margin-top: 4px; padding-top: 4px; }
+</style>
 </head>
 <body>
-<div class="dashboard">
+
   <div class="topbar">
-    <h1>ASIN Monitor</h1>
-    <span class="hint">| Data via GitHub API |</span>
-    <span id="pollingDot" class="polling-dot" style="display:none"></span>
+    <div class="brand">CrossMart Monitor Pro</div>
+    <nav>
+      <a href="/home">Home</a>
+      <a href="/selector">Selector</a>
+      <a href="/monitor" class="active">Monitor</a>
+    </nav>
   </div>
-  <div class="config-panel">
-    <div class="config-section">
-      <div class="config-group">
-        <label>ASIN 流 1 (Stream 1)</label>
-        <div class="row">
-          <input type="text" id="in-asin-0" placeholder="B0...">
-          <input type="text" id="in-kw-0" placeholder="关键词">
+
+  <div class="container">
+    
+    <!-- Configuration Area -->
+    <div class="config-matrix">
+      <!-- 妞ゅ爼鍎撮幙宥勭稊鐞?-->
+      <div class="action-row">
+        <div class="title-group">
+          <div class="title-tag">ASIN 监控流 (Streams 1-5)</div>
+          <div class="title-tag">监控流(Streams 1-5)</div>
         </div>
-        <div class="grid-cell">
-          <div style="font-size:10px;color:#64748b;margin:4px 0 2px">关联 ASIN (1-5)</div>
-          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px">
-            <input type="text" id="rel-0-0-0" placeholder="ASIN1">
-            <input type="text" id="rel-0-0-1" placeholder="ASIN2">
-            <input type="text" id="rel-0-0-2" placeholder="ASIN3">
-            <input type="text" id="rel-0-0-3" placeholder="ASIN4">
-            <input type="text" id="rel-0-0-4" placeholder="ASIN5">
-          </div>
+        <div class="ctrl-group">
+          <input type="password" id="ghTokenInput" placeholder="GitHub Token" onkeydown="if(event.key==='Enter')triggerMonitor()">
+          <button id="btnTrigger" onclick="triggerMonitor()">刷重新试</button>
+          <span id="configStatus">正在加载...</span>
         </div>
       </div>
-      <div class="config-group">
-        <label>ASIN 流 2 (Stream 2)</label>
-        <div class="row">
-          <input type="text" id="in-asin-1" placeholder="B0...">
-          <input type="text" id="in-kw-1" placeholder="关键词">
-        </div>
-        <div class="grid-cell">
-          <div style="font-size:10px;color:#64748b;margin:4px 0 2px">关联 ASIN (1-5)</div>
-          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px">
-            <input type="text" id="rel-1-0-0" placeholder="ASIN1">
-            <input type="text" id="rel-1-0-1" placeholder="ASIN2">
-            <input type="text" id="rel-1-0-2" placeholder="ASIN3">
-            <input type="text" id="rel-1-0-3" placeholder="ASIN4">
-            <input type="text" id="rel-1-0-4" placeholder="ASIN5">
-          </div>
-        </div>
-      </div>
-      <div class="config-group">
-        <label>ASIN 流 3 (Stream 3)</label>
-        <div class="row">
-          <input type="text" id="in-asin-2" placeholder="B0...">
-          <input type="text" id="in-kw-2" placeholder="关键词">
-        </div>
-        <div class="grid-cell">
-          <div style="font-size:10px;color:#64748b;margin:4px 0 2px">关联 ASIN (1-5)</div>
-          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px">
-            <input type="text" id="rel-2-0-0" placeholder="ASIN1">
-            <input type="text" id="rel-2-0-1" placeholder="ASIN2">
-            <input type="text" id="rel-2-0-2" placeholder="ASIN3">
-            <input type="text" id="rel-2-0-3" placeholder="ASIN4">
-            <input type="text" id="rel-2-0-4" placeholder="ASIN5">
-          </div>
-        </div>
-      </div>
-      <div class="config-group">
-        <label>ASIN 流 4 (Stream 4)</label>
-        <div class="row">
-          <input type="text" id="in-asin-3" placeholder="B0...">
-          <input type="text" id="in-kw-3" placeholder="关键词">
-        </div>
-        <div class="grid-cell">
-          <div style="font-size:10px;color:#64748b;margin:4px 0 2px">关联 ASIN (1-5)</div>
-          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px">
-            <input type="text" id="rel-3-0-0" placeholder="ASIN1">
-            <input type="text" id="rel-3-0-1" placeholder="ASIN2">
-            <input type="text" id="rel-3-0-2" placeholder="ASIN3">
-            <input type="text" id="rel-3-0-3" placeholder="ASIN4">
-            <input type="text" id="rel-3-0-4" placeholder="ASIN5">
-          </div>
-        </div>
-      </div>
-      <div class="config-group">
-        <label>ASIN 流 5 (Stream 5)</label>
-        <div class="row">
-          <input type="text" id="in-asin-4" placeholder="B0...">
-          <input type="text" id="in-kw-4" placeholder="关键词">
-        </div>
-        <div class="grid-cell">
-          <div style="font-size:10px;color:#64748b;margin:4px 0 2px">关联 ASIN (1-5)</div>
-          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px">
-            <input type="text" id="rel-4-0-0" placeholder="ASIN1">
-            <input type="text" id="rel-4-0-1" placeholder="ASIN2">
-            <input type="text" id="rel-4-0-2" placeholder="ASIN3">
-            <input type="text" id="rel-4-0-3" placeholder="ASIN4">
-            <input type="text" id="rel-4-0-4" placeholder="ASIN5">
-          </div>
-        </div>
+
+      <!-- 11显掓?缍夐弽闂村瘜娴£?-->
+      <div class="matrix-grid">
+        <!-- 鐞涖劌銇旈幐鍥┿仛 -->
+        <div></div>
+        <div class="grid-hdr hdr-asin">Stream 1</div>
+        <div class="grid-hdr hdr-asin">Stream 2</div>
+        <div class="grid-hdr hdr-asin">Stream 3</div>
+        <div class="grid-hdr hdr-asin">Stream 4</div>
+        <div class="grid-hdr hdr-asin">Stream 5</div>
+        <div class="grid-hdr hdr-kw">KW Stream 1</div>
+        <div class="grid-hdr hdr-kw">KW Stream 2</div>
+        <div class="grid-hdr hdr-kw">KW Stream 3</div>
+        <div class="grid-hdr hdr-kw">KW Stream 4</div>
+        <div class="grid-hdr hdr-kw">KW Stream 5</div>
+
+        <!-- 试╊喗鐖ｇ悰?(Target Row) -->
+        <div class="grid-cell"><div class="lbl-cell">确定</div></div>
+        <div class="grid-cell row-target"><input type="text" id="in-asin-0" placeholder="ASIN"></div>
+        <div class="grid-cell row-target"><input type="text" id="in-asin-1" placeholder="ASIN"></div>
+        <div class="grid-cell row-target"><input type="text" id="in-asin-2" placeholder="ASIN"></div>
+        <div class="grid-cell row-target"><input type="text" id="in-asin-3" placeholder="ASIN"></div>
+        <div class="grid-cell row-target"><input type="text" id="in-asin-4" placeholder="ASIN"></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-0" placeholder="显忔娊鏁?拠?></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-1" placeholder="显忔娊鏁?拠?></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-2" placeholder="显忔娊鏁?拠?></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-3" placeholder="显忔娊鏁?灏?></div>
+        <div class="grid-cell row-target"><input type="text" id="in-kw-4" placeholder="显忔娊鏁?拠?></div>
+
+        <!-- 显忓疇浠堢悰?1-5 (Related Rows 1-5) -->
+        <!-- JS 鐏忓棗婀?粭顑跨癌闁?劌鍨庨柅姘崇箖 buildRelRowGrid 婵夘偄鍘栧?銈咁槱试¨?ID 闁?槒绶« -->
+        <div class="grid-cell"><div class="lbl-cell">监控流 1</div></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-3-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-4-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-0-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-1-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-2-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-0" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-0" placeholder="Rel ASIN"></div>
+
+        <div class="grid-cell"><div class="lbl-cell">监控流 2</div></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-3-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-4-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-0-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-1-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-2-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-1" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-1" placeholder="Rel ASIN"></div>
+
+        <div class="grid-cell"><div class="lbl-cell">监控流 3</div></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-3-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-4-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-0-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-1-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-2-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-2" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-2" placeholder="Rel ASIN"></div>
+
+        <div class="grid-cell"><div class="lbl-cell">监控流 4</div></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-3-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-4-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-0-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-1-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-2-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-3" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-3" placeholder="Rel ASIN"></div>
+
+        <div class="grid-cell"><div class="lbl-cell">监控流 5</div></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-0-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-1-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-2-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-3-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-asin-4-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-0-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-1-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-2-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-3-4" placeholder="Rel ASIN"></div>
+        <div class="grid-cell row-rel"><input type="text" id="rel-kw-4-4" placeholder="Rel ASIN"></div>
       </div>
     </div>
-    <div class="config-actions">
-      <button class="btn btn-primary" id="btnSave" onclick="saveConfig()">保存配置</button>
-      <button class="btn btn-primary" id="btnTrigger" onclick="triggerMonitor()">保存配置并触发抓取</button>
-      <input type="text" id="ghTokenInput" placeholder="GitHub Token (可选)" style="flex:1;max-width:300px">
-      <span id="configStatus" class="config-status">正在加载...</span>
+    <!-- 鏉╁洦鎶ゅ?銉ュ徔閺?-->
+    <div class="filter-bar">
+      <div class="filter-controls">
+        <input type="text" id="searchInput" placeholder="韫囶偊鈧?喕绻冨??ASIN閵嗕焦鐖ｆ０妯诲灗显濅胶澧..." oninput="renderTable()">
+        <select id="sourceFilter" onchange="renderTable()">
+          <option value="ALL">全部 ASIN 监控流 (ALL)</option>
+          <option value="ASIN">全部 ASIN 监控流</option>
+          <option value="KW">全部 监控流(Streams 1-5)
+        </select>
+        <label><input type="checkbox" id="changeFilter" onchange="renderTable()">只显示异常商品</label>
+      </div>
+      <div>
+        <button class="btn btn-secondary" onclick="exportToExcel()">重置筛选</button>
+      </div>
     </div>
-  </div>
-  <div class="filter-bar">
-    <input type="text" id="searchInput" placeholder="搜索 ASIN / 关键词 / 标题..." oninput="renderTable()">
-    <select id="filterType" onchange="renderTable()">
-      <option value="">全部类型</option>
-      <option value="ASIN">ASIN</option>
-      <option value="Keyword">关键词</option>
-    </select>
-    <select id="filterStatus" onchange="renderTable()">
-      <option value="">全部状态</option>
-      <option value="异常">异常</option>
-      <option value="正常">正常</option>
-    </select>
-    <span id="rowCount" class="count-badge">0 条</span>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th class="col-asin">ASIN</th>
-          <th class="col-monitor">类型</th>
-          <th class="col-title">标题 / 监控关键词</th>
-          <th class="col-price">价格</th>
-          <th class="col-reviews">评价数</th>
-          <th class="col-rating">评分</th>
-          <th class="col-bsr">BSR</th>
-          <th class="col-diff">变化（较上次）</th>
-          <th class="col-events">事件</th>
-          <th class="col-status">状态</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody">
-        <tr><td colspan="10" style="text-align:center;color:#475569;padding:40px">正在加载...</td></tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+
+    <!-- 閺堣緝涓婃悰銊︾壐 -->
+    <div class="table-container">
+      <table class="monitor-table">
+        <thead>
+          <tr>
+            <th>时间</th>
+            <th>监控流┃较上次变化监控</th>
+            <th>按监控流筛选 (监控流┃较上次变化监控┃当前...┃最高...┃最低...)</th>
+            <th>暂无数据/th>
+            <th>监控流┃较上次变化</th>
+            <th>监控流┃评分/评论数</th>
+            <th>暂无数据/th>
+            <th>閺堚偓显氬海娲冮幒褍鎮撳?銉︽?闂?/th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+
+  </div> <!-- End Container -->
 
 <script>
+const CONFIG_KEY = 'crossmart_monitor_v1';
 const REPO = 'charlescome1995-prog/crossmart-monitor';
 const RAW_DATA_URL = 'https://api.github.com/repos/' + REPO + '/contents/frontend/data/rawData.json?ref=main';
-const CONFIG_URL = 'https://api.github.com/repos/' + REPO + '/contents/backend/data/user_config.json?ref=main';
-const KW_REL_URL = 'https://api.github.com/repos/' + REPO + '/contents/backend/data/keyword_related_asins.json?ref=main';
 
-let rawData = { items: [], keywords: [] };
-let kwRelData = {};
+let rawData = { updated: '', items: [], keywords: [] };
+
+// 瀹搞儱鍙块崙鑺ユ殶
+function b64enc(s){return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g,function(_,p){return String.fromCharCode(parseInt(p,16));}));}
+const POLL_INTERVAL = 5000;
 let pollTimer = null;
 
-function btoaEncode(s) {
-  return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g, function(_, p) {
-    return String.fromCharCode(parseInt(p, 16));
-  }));
-}
-
-function getRelatedVals(type, streamIdx) {
-  var vals = [];
-  for (var r = 0; r < 5; r++) {
-    var el = document.getElementById('rel-' + type + '-' + streamIdx + '-' + r);
-    if (el && el.value.trim()) vals.push(el.value.trim());
-  }
-  return vals;
-}
-
-async function putFile(path, content) {
-  var resp = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/' + path + '?v=' + Date.now());
-  var sha = resp.ok ? (await resp.json()).sha : null;
-  var token = document.getElementById('ghTokenInput').value.trim();
-  var base = btoaEncode(JSON.stringify(content));
-  var body = JSON.stringify({ message: 'Update ' + path, content: base, sha: sha });
-  var r = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + path, {
-    method: 'PUT',
-    headers: { 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json', 'Authorization': 'token ' + (token || 'invalid') },
-    body: body
-  });
-  if (!r.ok) throw new Error('HTTP ' + r.status);
-}
-
+// 显掓繂顫愰崠
 window.addEventListener('DOMContentLoaded', function() {
   var tokenInput = document.getElementById('ghTokenInput');
   if (tokenInput) {
@@ -273,48 +320,15 @@ window.addEventListener('DOMContentLoaded', function() {
   loadRawData();
 });
 
-async function loadGitHubConfig() {
-  var statusEl = document.getElementById('configStatus');
-  try {
-    var resp = await fetch(CONFIG_URL + '&t=' + Date.now(), { headers: { 'Accept': 'application/vnd.github.v3+json' } });
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    var meta = await resp.json();
-    var cfg = JSON.parse(atob(meta.content));
-    var kwResp = await fetch(KW_REL_URL + '&t=' + Date.now(), { headers: { 'Accept': 'application/vnd.github.v3+json' } });
-    var kwMeta = kwResp.ok ? await kwResp.json() : null;
-    var kwData = kwMeta ? JSON.parse(atob(kwMeta.content)) : {};
-    applyConfig(cfg, kwData);
-    statusEl.textContent = '配置已加载';
-  } catch(e) {
-    statusEl.textContent = '加载配置失败，请检查网络';
-    console.error('loadGitHubConfig failed:', e);
-  }
-}
-
-function applyConfig(cfg, kwRelData) {
-  if (!cfg) return;
-  for (var i = 0; i < 5; i++) {
-    var a = cfg['asin_' + i] || '';
-    var k = cfg['kw_' + i] || '';
-    var aEl = document.getElementById('in-asin-' + i);
-    var kEl = document.getElementById('in-kw-' + i);
-    if (aEl) aEl.value = a;
-    if (kEl) kEl.value = k;
-    var rels = cfg['related_asins_' + i] || [];
-    for (var r = 0; r < 5; r++) {
-      var relEl = document.getElementById('rel-' + i + '-0-' + r);
-      if (relEl) relEl.value = rels[r] || '';
-    }
-  }
-  if (kwRelData) window.kwRelData = kwRelData;
-}
-
+// 显旂姾娴囬崢鐔奉潗试╂垶甯堕弫鐗堝祦
 async function loadRawData() {
   try {
-    var resp = await fetch(RAW_DATA_URL + '&t=' + Date.now(), { headers: { 'Accept': 'application/vnd.github.v3+json' } });
+    const resp = await fetch(RAW_DATA_URL + '&t=' + Date.now(), {
+      headers: { 'Accept': 'application/vnd.github.v3+json' }
+    });
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    var meta = await resp.json();
-    var data = JSON.parse(atob(meta.content));
+    const meta = await resp.json();
+    const data = JSON.parse(atob(meta.content));
     rawData = data;
     renderTable();
   } catch(e) {
@@ -323,181 +337,283 @@ async function loadRawData() {
   }
 }
 
-async function saveConfig() {
-  var btn = document.getElementById('btnSave');
-  btn.textContent = '保存中...';
-  btn.disabled = true;
-  try {
-    var cfg = {};
-    for (var i = 0; i < 5; i++) {
-      cfg['asin_' + i] = (document.getElementById('in-asin-' + i).value || '').trim();
-      cfg['kw_' + i] = (document.getElementById('in-kw-' + i).value || '').trim();
-      cfg['related_asins_' + i] = getRelatedVals(i, 0);
-    }
-    await putFile('backend/data/user_config.json', cfg);
-    await putFile('backend/data/trigger.json', { triggered_at: Date.now(), status: 'pending' });
-    btn.textContent = '保存成功';
-    setTimeout(function() { btn.textContent = '保存配置'; btn.disabled = false; }, 3000);
-  } catch(e) {
-    btn.textContent = '保存失败';
-    console.error(e);
-    setTimeout(function() { btn.textContent = '保存配置'; btn.disabled = false; }, 5000);
+// 鏉堝懎濮?敍姘冲箯显欐牗鐓囨稉鈧?崚妞剧瑓閹碘偓閺堝?娈戦崗瀹犱粓显
+function getRelatedVals(type, streamIdx) {
+  var vals = [];
+  for (var r = 0; r < 5; r++) {
+    var el = document.getElementById('rel-' + type + '-' + streamIdx + '-' + r);
+    if (el && el.value.trim()) vals.push(el.value.trim());
   }
+  return vals;
 }
 
+// 鐟欙箑褰傞幎鎾冲絿 (鐠囪?褰 11 显掓?鐓╅梼鍨?殶閹¹?
 async function triggerMonitor() {
-  var btn = document.getElementById('btnTrigger');
-  var statusEl = document.getElementById('configStatus');
-  btn.disabled = true;
-  btn.textContent = '触发中...';
-  statusEl.textContent = '';
-  try {
-    var cfg = {};
-    for (var i = 0; i < 5; i++) {
-      cfg['asin_' + i] = (document.getElementById('in-asin-' + i).value || '').trim();
-      cfg['kw_' + i] = (document.getElementById('in-kw-' + i).value || '').trim();
-      cfg['related_asins_' + i] = getRelatedVals(i, 0);
+  var asins = [], kws = [];
+  // 闁?秴疯» 5 娑?ASIN 濞´?(Streams 1-5)
+  for (var i = 0; i < 5; i++) {
+    var mainA = document.getElementById('in-asin-' + i).value.trim();
+    if (mainA) {
+      asins.push({ main: mainA, related: getRelatedVals('asin', i) });
     }
+  }
+  // 闁?秴宸» 5 娑擃亜鍙ч柨顔跨槤濞´?(KW Streams 1-5)
+  for (var j = 0; j < 5; j++) {
+    var mainK = document.getElementById('in-kw-' + j).value.trim();
+    if (mainK) {
+      kws.push({ main: mainK, related: getRelatedVals('kw', j) });
+    }
+  }
+
+  if (asins.length === 0 && kws.length === 0) {
+    alert('鐠囩柉鍤︾亸鎴ｇ翻仅显变动閺?ASIN 閹存牕鍙ч茶顔跨槤');
+    return;
+  }
+
+  var cfg = { asins: asins, keywords: kws };
+  var btn = document.getElementById('btnTrigger');
+  btn.disabled = true;
+  btn.textContent = '单¿?鐟欙箑褰傛稉?..';
+
+  var token = sessionStorage.getItem('gh_token') || '';
+  if (!token) {
+    alert('正在加载... GitHub Token');
+    btn.disabled = false; btn.textContent = '刷新重试';
+    return;
+  }
+
+  try {
     await putFile('backend/data/user_config.json', cfg);
     await putFile('backend/data/trigger.json', { triggered_at: Date.now(), status: 'pending' });
-    btn.textContent = '触发成功';
+    btn.textContent = '閴?瀹歌尪袝显?;
     startPolling();
-    setTimeout(function() { btn.textContent = '保存配置并触发抓取'; btn.disabled = false; }, 5000);
   } catch(e) {
-    btn.textContent = '触发失败';
-    statusEl.textContent = '错误: ' + e.message;
     console.error(e);
-    setTimeout(function() { btn.textContent = '保存配置并触发抓取'; btn.disabled = false; }, 5000);
+    btn.textContent = '閴?鐟欙箑褰傛径杈?Е';
   }
+  setTimeout(function() { btn.textContent = '刷新重试'; btn.disabled = false; }, 5000);
+}
+
+// API 娴溿倓绨伴柅鏄忕帆
+async function putFile(path, content) {
+  const token = sessionStorage.getItem('gh_token') || '';
+  const url = 'https://api.github.com/repos/' + REPO + '/contents/' + path;
+  let sha = '';
+  try {
+    const r = await fetch(url, { headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' } });
+    if (r.ok) { const d = await r.json(); sha = d.sha || ''; }
+  } catch(_) {}
+  const enc = b64enc(JSON.stringify(content));
+  const r = await fetch(url, {
+    method: 'PUT',
+    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' },
+    body: JSON.stringify({ message: 'update config', content: enc, sha })
+  });
+  if (!r.ok) throw new Error('API Error');
 }
 
 function startPolling() {
-  document.getElementById('pollingDot').style.display = 'inline-block';
-  pollTimer = setInterval(loadRawData, 5000);
+  if (pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(checkStatus, POLL_INTERVAL);
 }
 
-function stopPolling() {
-  clearInterval(pollTimer);
-  pollTimer = null;
-  document.getElementById('pollingDot').style.display = 'none';
-}
-
-function drawSparkline(data, color) {
-  if (!data || data.length < 2) return '<span class="older">无历史数据</span>';
-  var w = 60, h = 20;
-  var min = Math.min.apply(null, data);
-  var max = Math.max.apply(null, data);
-  var range = max - min || 1;
-  var pts = data.map(function(v, i) {
-    return (i / (data.length - 1) * w).toFixed(1) + ',' + (h - (v - min) / range * h).toFixed(1);
-  }).join(' ');
-  return '<svg width="' + w + '" height="' + h + '" style="vertical-align:middle"><polyline points="' + pts + '" fill="none" stroke="' + color + '" stroke-width="1.5"/></svg>';
-}
-
-function buildDiff(prev, curr) {
-  var diff = {};
-  if (!prev || !curr) return null;
-  var numFields = ['price', 'review_count', 'rating', 'bsr'];
-  numFields.forEach(function(f) {
-    if (curr[f] !== undefined && prev[f] !== undefined && curr[f] !== prev[f]) {
-      diff[f] = { prev: prev[f], current: curr[f], change: curr[f] - prev[f], direction: curr[f] > prev[f] ? 'up' : 'dn' };
-      if (f === 'price') diff[f].pct = (((curr[f] - prev[f]) / prev[f]) * 100).toFixed(1) + '%';
+async function checkStatus() {
+  const token = sessionStorage.getItem('gh_token') || '';
+  try {
+    const resp = await fetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/trigger.json', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (!resp.ok) return;
+    const data = await resp.json();
+    const content = JSON.parse(atob(data.content));
+    if (content.status === 'done') {
+      clearInterval(pollTimer);
+      document.getElementById('btnTrigger').textContent = '閴?试╂垶甯剁瑰本鍨';
+      loadRawData();
     }
-  });
-  var pb = prev.badges_current || [], cb = curr.badges_current || [];
-  var gained = cb.filter(function(x) { return pb.indexOf(x) === -1; });
-  var lost = pb.filter(function(x) { return cb.indexOf(x) === -1; });
-  if (gained.length || lost.length) diff.badges = { gained: gained, lost: lost };
-  ['deal_activity', 'variant_status'].forEach(function(f) {
-    if (curr[f] && prev[f] !== curr[f]) diff[f] = { prev: prev[f] || '', current: curr[f] || '', direction: 'changed' };
-  });
-  ['title_changed', 'img_changed', 'bullets_changed', 'description_changed'].forEach(function(f) {
-    if (curr[f]) { if (!diff.badges) diff.badges = {}; diff.badges[f] = true; }
-  });
-  return Object.keys(diff).length ? diff : null;
+  } catch(e) {}
 }
 
-function renderTable() {
-  var search = document.getElementById('searchInput').value.trim().toLowerCase();
-  var typeFilter = document.getElementById('filterType').value;
-  var items = rawData.items || [];
-  var filtered = items.filter(function(item) {
-    if (search) {
-      var s = (item.asin + ' ' + (item.main_kw || '') + ' ' + (item.title || '') + ' ' + (item.main_cat || '')).toLowerCase();
-      if (s.indexOf(search) === -1) return false;
-    }
-    if (typeFilter && item.monitor_type !== typeFilter) return false;
-    return true;
-  });
-  document.getElementById('rowCount').textContent = filtered.length + ' 条';
-  var tbody = document.getElementById('tableBody');
-  if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:#475569;padding:40px">无数据</td></tr>';
-    return;
-  }
-  var html = '';
-  filtered.forEach(function(item) {
-    var prev = item.history && item.history.length >= 2 ? item.history[item.history.length - 2] : null;
-    var diff = prev ? buildDiff(prev, item) : null;
-    var isStatusAnomaly = item.is_status_anomaly;
-    var isInfoAnomaly = item.is_info_anomaly;
-    var isCatAnomaly = item.is_cat_anomaly;
-    var activeEvents = [];
-    if (isStatusAnomaly) activeEvents.push({ class: 'e-alert', text: item.listing_status || '状态异常' });
-    if (isInfoAnomaly) activeEvents.push({ class: 'e-alert', text: '商品信息异常' });
-    if (isCatAnomaly) activeEvents.push({ class: 'e-alert', text: '类目排名异常' });
-    if (item.title_changed) activeEvents.push({ class: 'e-warn', text: '标题变化' });
-    if (item.img_changed) activeEvents.push({ class: 'e-warn', text: '图片变化' });
-    if (item.bullets_changed) activeEvents.push({ class: 'e-warn', text: '五点变化' });
-    if (item.description_changed) activeEvents.push({ class: 'e-warn', text: '描述变化' });
-    if (item.coupon) activeEvents.push({ class: 'e-info', text: '优惠券: ' + item.coupon });
-    if (item.prime_discount) activeEvents.push({ class: 'e-info', text: 'Prime折扣: ' + item.prime_discount });
-    if (item.deal_activity) activeEvents.push({ class: 'e-info', text: '促销: ' + item.deal_activity });
-    var chgText = item.chg !== 0 ? (item.chg > 0 ? '+' : '') + item.chg : '';
-    var hasActiveAnomaly = isStatusAnomaly || isInfoAnomaly || isCatAnomaly;
-    var diffHtml = '<div class="diff-none">无变化</div>';
-    if (diff) {
-      var diffLines = [];
-      ['price', 'review_count', 'rating', 'bsr'].forEach(function(f) {
-        if (!diff[f]) return;
-        var dir = diff[f].direction;
-        var arrow = dir === 'up' ? '&#9650;' : '&#9660;';
-        var label = { price: '价格', review_count: '评价数', rating: '评分', bsr: 'BSR' }[f];
-        var val = f === 'price' ? '$' + diff[f].current : diff[f].current;
-        diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> ' + label + ': <span class="' + dir + '">' + val + '</span></div>');
-      });
-      if (diff.badges) {
-        if (diff.badges.gained && diff.badges.gained.length) diffLines.push('<div class="diff-item e-alert">+' + diff.badges.gained.join(', ') + '</div>');
-        if (diff.badges.lost && diff.badges.lost.length) diffLines.push('<div class="diff-item e-warn">-' + diff.badges.lost.join(', ') + '</div>');
+// 显旂姾娴囬柊宥囩枂显?11 显掓?鐓╅梼
+function applyConfig(cfg, kwRelData) {
+  kwRelData = kwRelData || {};
+  if (cfg.asins) {
+    cfg.asins.forEach((row, i) => {
+      if (i < 5) {
+        var mainEl = document.getElementById('in-asin-' + i);
+        if (mainEl) mainEl.value = row.main || '';
+        if (row.related) {
+          row.related.forEach((val, rIdx) => {
+            if (rIdx < 5) {
+              var relEl = document.getElementById('rel-asin-' + i + '-' + rIdx);
+              if (relEl) relEl.value = val;
+            }
+          });
+        }
       }
-      if (diff.deal_activity) diffLines.push('<div class="diff-item">Deal: ' + diff.deal_activity.current + '</div>');
-      if (diffLines.length > 0) diffHtml = diffLines.slice(0, 3).join('') + '<div class="diff-tip">较上次: ' + chgText + '</div>';
+    });
+  }
+  if (cfg.keywords) {
+    cfg.keywords.forEach((row, i) => {
+      if (i < 5) {
+        var kwMainEl = document.getElementById('in-kw-' + i);
+        if (kwMainEl) kwMainEl.value = row.main || '';
+        // 婵夘偄鍘栭崗鎶芥暛鐠囧秴鍙ч懕?ASINs閿涙矮锛  keyword_related_asins.json 仈?        var kw = row.main || '';
+        var cachedAsins = kwRelData[kw] || [];
+        for (var r = 0; r < 5; r++) {
+          var relEl = document.getElementById('rel-kw-' + i + '-' + r);
+          if (relEl) relEl.value = cachedAsins[r] ? cachedAsins[r].asin : '';
+        }
+      }
+    });
+  }
+}
+
+async function loadGitHubConfig() {
+  var statusEl = document.getElementById('configStatus');
+  var kwRelData = {};
+  try {
+    var resp = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/user_config.json?v=' + Date.now());
+    if (resp.ok) {
+      var cfg = await resp.json();
+      // 显氬本妞傞幎鎾冲絿 keyword_related_asins.json閿涘牆鍙ч柨顔跨槤试¨?top5 显忓疇浠 ASINs閿?      try {
+        var kwResp = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/keyword_related_asins.json?v=' + Date.now());
+        if (kwResp.ok) kwRelData = await kwResp.json();
+      } catch(e2) {}
+      applyConfig(cfg, kwRelData);
+      statusEl.textContent = '閴?闁板秶鐤嗗?鎻掓倱濮?;
     }
-    var eventsHtml = activeEvents.length ? activeEvents.map(function(e) {
-      return '<span class="e-tag ' + e.class + '">' + e.text + '</span>';
-    }).join('') : '<span class="e-none">无</span>';
-    var statusClass = hasActiveAnomaly ? 'changed' : 'stable';
-    var statusText = hasActiveAnomaly ? '异常' : '正常';
-    var typeBadge = '<span class="source-' + (item.monitor_type === 'ASIN' ? 'asin' : 'kw') + '">' + item.monitor_type + '</span>';
-    var logicBadge = item.is_main ? '<span class="main-badge">主</span>' : '<span class="rel-badge">关联</span>';
-    var img = item.main_image ? '<img class="img-thumb" src="' + item.main_image + '" alt="img" onerror="this.style.display='none'">' : '';
-    var titleLink = item.asin_url ? '<a href="' + item.asin_url + '" target="_blank">' + (item.title || item.main_kw || item.asin) + '</a>' : (item.title || item.main_kw || item.asin);
-    html += '<tr>' +
-      '<td class="col-asin">' + item.asin + '</td>' +
-      '<td class="col-monitor">' + typeBadge + ' ' + logicBadge + '</td>' +
-      '<td class="col-title">' + img + ' ' + titleLink + '</td>' +
-      '<td class="col-price">$' + (item.price || '-') + '</td>' +
-      '<td class="col-reviews">' + (item.reviews || 0) + '</td>' +
-      '<td class="col-rating">' + (item.rating || '-') + '</td>' +
-      '<td class="col-bsr">' + (item.main_bsr ? '#' + item.main_bsr : '-') + '</td>' +
-      '<td class="col-diff">' + diffHtml + '</td>' +
-      '<td class="col-events"><div class="events-cell">' + eventsHtml + '</div></td>' +
-      '<td><span class="status-indicator ' + statusClass + '">' + statusText + '</span></td>' +
-      '</tr>';
+  } catch(e) { statusEl.textContent = '单¿?显氬本顒炴径杈?Е'; }
+}
+
+// 缂佹ê鍩楃搾瀣?◢显¥
+function drawSparkline(data, color) {
+  if (!data || data.length < 2) return '<span style="color:#999;font-size:11px;">閺冪姵鏆熼幑?/span>';
+  const min = Math.min(...data), max = Math.max(...data);
+  const range = max - min || 1;
+  const h = 30, w = 120;
+  const pts = data.map((v, i) => {
+    const x = (i / (data.length - 1)) * w;
+    const y = h - ((v - min) / range) * h;
+    return x + ',' + y;
+  }).join(' ');
+  return `<svg width="${w}" height="${h}" style="display:block;"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5"/></svg>`;
+}
+
+// 濞撳弶鐓嬫稉缁樻殶閹诡喛銆
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  if (!tbody || !rawData.items) return;
+
+  const searchTxt = document.getElementById('searchInput').value.toLowerCase();
+  const sourceFilter = document.getElementById('sourceFilter').value;
+  const onlyChg = document.getElementById('changeFilter').checked;
+
+  let html = '';
+  rawData.items.forEach(item => {
+    // 瀵?倸濮╅崚銈呯暰闁?槒绶« (鐎瑰本鏆ｆ穱婵堟殌)
+    const isStatusAnomaly = item.listing_status !== item.expected_listing_status;
+    const isCatAnomaly = (item.main_cat !== item.expected_main_cat) || (item.sub_cat !== item.expected_sub_cat);
+    const isInfoAnomaly = item.title_changed || item.img_changed || item.bullets_changed || item.description_changed;
+    const isVariantAnomaly = item.variant_changed;
+    const hasActiveAnomaly = item.chg !== 0 || isStatusAnomaly || isCatAnomaly || isInfoAnomaly || isVariantAnomaly || (item.badges_lost.length > 0);
+
+    if (sourceFilter !== 'ALL' && item.monitor_type !== sourceFilter) return;
+    if (searchTxt && !item.asin.toLowerCase().includes(searchTxt) && !item.title.toLowerCase().includes(searchTxt)) return;
+    if (onlyChg && !hasActiveAnomaly) return;
+
+    let activeEvents = [...item.events];
+    if (isStatusAnomaly) activeEvents.push({ class: "e-alert", text: `试樿埖鈧?礁绱撻崝? ${item.listing_status}` });
+    if (isInfoAnomaly) activeEvents.push({ class: "e-alert", text: "商品信息异常? });
+    if (isCatAnomaly) activeEvents.push({ class: "e-alert", text: "缁?崵娲伴懞鍌滃仯显欐ɑ娲¿" });
+    item.badges_lost.forEach(b => activeEvents.push({ class: "e-alert", text: `婢跺崬骞 ${b}` }));
+
+    const chgClass = item.chg > 0 ? 'up' : (item.chg < 0 ? 'dn' : '');
+        const chgText = item.chg !== 0 ? `${item.chg > 0 ? String.fromCharCode(9650) : String.fromCharCode(9660)} $${Math.abs(item.chg)}` : '';
+
+    const diff = item.diff || {};
+    let diffHtml = '<div class="diff-none">↓?/div>';
+    const diffLines = [];
+    if (diff.price) {
+      const dir = diff.price.direction;
+      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> 娴犻攱鐗¸: <span class="diff-val ' + dir + '">$' + diff.price.current + (diff.price.pct ? ' (' + diff.price.pct + ')' : '') + '</span></div>');
+    }
+    if (diff.review_count) {
+      const dir = diff.review_count.direction;
+      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> 鐠囧嫯顔: <span class="diff-val ' + dir + '">' + diff.review_count.change + '</span></div>');
+    }
+    if (diff.rating) {
+      const dir = diff.rating.direction;
+      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> 鐠囧嫬鍨: <span class="diff-val ' + dir + '">' + diff.rating.change + '</span></div>');
+    }
+    if (diff.bsr) {
+      const dir = diff.bsr.direction;
+      diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑? : dir === 'dn' ? '↑? : '↓?) + '</span> BSR: <span class="diff-val ' + dir + '">' + diff.bsr.change + '</span></div>');
+    }
+    if (diff.deal_activity && diff.deal_activity.direction === 'changed') {
+      diffLines.push('<div class="diff-item"><span class="diff-arrow changed">单¿?/span> Deal: <span class="diff-val">' + (diff.deal_activity.current !== '閺? ? diff.deal_activity.current : '閺?) + '</span></div>');
+    }
+    if (diff.badges && diff.badges.direction === 'changed') {
+      if (diff.badges.gained && diff.badges.gained.length) diffLines.push('<div class="diff-item"><span class="diff-arrow up">棣冨疾</span> 閼惧嘲绶±: <span class="diff-val up">' + diff.badges.gained.join(', ') + '</span></div>');
+      if (diff.badges.lost && diff.badges.lost.length) diffLines.push('<div class="diff-item"><span class="diff-arrow dn">棣冩尒</span> 婢跺崬骞: <span class="diff-val dn">' + diff.badges.lost.join(', ') + '</span></div>');
+    }
+    if (diffLines.length > 0) {
+      let tipHtml = '';
+      if (diff.price) tipHtml += '<div class="tip-row"><span class="tip-label">娴犻攱鐗¸</span><span class="tip-val ' + diff.price.direction + '">$' + diff.price.prev + ' 单«?$' + diff.price.current + ' (' + diff.price.change + ')</span></div>';
+      if (diff.review_count) tipHtml += '<div class="tip-row"><span class="tip-label">鐠囧嫯顔戦弫?/span><span class="tip-val ' + diff.review_count.direction + '">' + diff.review_count.prev + ' 单«?' + diff.review_count.current + ' (' + diff.review_count.change + ')</span></div>';
+      if (diff.rating) tipHtml += '<div class="tip-row"><span class="tip-label">鐠囧嫬鍨</span><span class="tip-val ' + diff.rating.direction + '">' + diff.rating.prev + ' 单«?' + diff.rating.current + ' (' + diff.rating.change + ')</span></div>';
+      if (diff.bsr) { var d = diff.bsr.direction === 'up' ? 'dn' : diff.bsr.direction === 'dn' ? 'up' : 'same'; tipHtml += '<div class="tip-row"><span class="tip-label">BSR</span><span class="tip-val ' + d + '">#' + diff.bsr.prev + ' 单«?#' + diff.bsr.current + ' (' + diff.bsr.change + ')</span></div>'; }
+      if (diff.variants) tipHtml += '<div class="tip-row"><span class="tip-label">显欐ü缍</span><span class="tip-val">' + (diff.variants.prev || '閺?) + ' 单«?' + (diff.variants.current || '閺?) + '</span></div>';
+      if (diff.deal_activity && diff.deal_activity.direction === 'changed') tipHtml += '<div class="tip-row"><span class="tip-label">Deal</span><span class="tip-val">' + diff.deal_activity.prev + ' 单«?' + diff.deal_activity.current + '</span></div>';
+      if (diff.badges && diff.badges.direction === 'changed') {
+        if (diff.badges.gained && diff.badges.gained.length) tipHtml += '<div class="tip-row"><span class="tip-label">閼惧嘲绶卞?鐣岀彿</span><span class="tip-val up">' + diff.badges.gained.join(', ') + '</span></div>';
+        if (diff.badges.lost && diff.badges.lost.length) tipHtml += '<div class="tip-row"><span class="tip-label">婢跺崬骞撳?鐣岀彿</span><span class="tip-val dn">' + diff.badges.lost.join(', ') + '</span></div>';
+      }
+      if (tipHtml) tipHtml = '<div class="tip-section">' + tipHtml + '</div>';
+      diffHtml = '<div class="diff-tip">' + diffLines.slice(0, 3).join('') + '<div class="tip-box">娑撳﹥顐¼ 单«?瑜版挸澧 ' + tipHtml + '</div></div>';
+    }
+html += `<tr>
+      <td class="col-img"><img src="${item.img}"></td>
+      <td>
+        <div class="info-block">
+          <div><span class="badge ${item.monitor_type === 'ASIN' ? 'source-asin' : 'source-kw'}">${item.monitor_type}</span> <span class="badge ${item.is_main ? 'main' : 'rel'}">${item.logic_type}</span></div>
+          <div><a href="https://www.amazon.com/dp/${item.asin}" target="_blank" class="asin-link">${item.asin}</a> [${item.brand}]</div>
+          <div class="title-text" title="${item.title}">${item.title}</div>
+        </div>
+      </td>
+      <td>
+        <div class="metrics-block">
+          <div>娴犻攱鐗¸: <strong>$${item.price}</strong> <span class="chg ${chgClass}">${chgText}</span></div>
+          <div>鐠囧嫬鍨: <strong>${item.rating || '↓?}</strong> <span style="color:#64748b;font-size:12px;">鐠囧嫯顔 ${item.reviews || 0}</span></div>
+          <div>BSR: <span class="cat-item">${item.main_cat}</span> <strong>#${item.main_bsr || '↓?}</strong>${item.sub_bsr ? ` / <span class="cat-item">${item.sub_cat}</span> #${item.sub_bsr}` : ''}</div>
+          <div>试樿埖鈧¬? <span style="color:${isStatusAnomaly?'#dc2626':'#16a34a'};font-weight:700;">${item.listing_status}</span>${item.variant_status !== '濮濓絽鐖¶' ? ` <span style="color:#d97706;font-size:12px;">显欐ü缍:${item.variant_status}</span>` : ''}</div>
+          ${item.deal_activity && item.deal_activity !== '閺? ? `<div style="color:#b45309;font-weight:600;">单¿?Deal: ${item.deal_activity}</div>` : ''}
+          ${item.coupon && item.coupon !== '閺? ? `<div style="color:#059669;font-weight:600;">棣冨斧閿?娴兼ɑ鍎?崚? ${item.coupon}</div>` : ''}
+          ${item.prime_discount && item.prime_discount !== '閺堫亜绱鏃犲? ? `<div style="color:#7c3aed;font-weight:600;">棣冩憹 Prime閹舵ɑ澧¸: ${item.prime_discount}</div>` : ''}
+          ${item.badges_current && item.badges_current.length ? `<div style="font-size:12px;">棣冨娇閿?閼惧嘲绶±: ${item.badges_current.join(', ')}</div>` : ''}
+          ${item.badges_lost && item.badges_lost.length ? `<div style="font-size:12px;color:#dc2626;">棣冩尒 婢跺崬骞: ${item.badges_lost.join(', ')}</div>` : ''}
+          ${item.title_changed || item.img_changed || item.bullets_changed || item.description_changed ? `<div style="font-size:12px;color:#d97706;">棣冩憫 鎺掑悕浼鍚崣妯鏃堕:${item.title_changed?' 閺嶅洭顣½':''}${item.img_changed?' 显ュ墽澧':''}${item.bullets_changed?' 娴滄梻鍋£':''}${item.description_changed?' 閹诲繗鍫ª':''}</div>` : ''}
+        </div>
+      </td>
+      <td><div class="events-cell">${activeEvents.length ? activeEvents.map(e => `<span class="e-tag ${e.class}">${e.text}</span>`).join('') : '<span class="e-none">閺冪姴绱撶敮?/span>'}</div></td>
+      <td><div class="diff-cell">${diffHtml}</div></td>
+      <td>${drawSparkline(item.history_main_bsr, '#1e3a8a')}</td>
+      <td><div class="status-indicator ${hasActiveAnomaly?'changed':'stable'}">${hasActiveAnomaly?'显欐垹骞囧?鍌氬З':'缁嬪啿鐣¾'}</div></td>
+      <td style="color:#64748b; font-size:12px;">${rawData.updated}</td>
+    </tr>`;
   });
-  tbody.innerHTML = html;
+  
+  tbody.innerHTML = html || '<tr><td colspan="8" style="text-align:center; padding:20px;">暂无匹配数据</td></tr>';
+}
+
+function exportToExcel() {
+  const rows = [['ASIN','缁??鐎·','闁?槒绶«','试樿埖鈧¬?,'娴犻攱鐗¸','婢堆呰?閹烘帒鎮','显氬本顒為弮鍫曟？']];
+  rawData.items.forEach(m => rows.push([m.asin, m.monitor_type, m.logic_type, m.listing_status, m.price, m.main_bsr, rawData.updated]));
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "MonitorReport");
+  XLSX.writeFile(wb, `Monitor_Report_${rawData.updated.replace(/[: ]/g,'_')}.xlsx`);
 }
 </script>
-
 </body>
 </html>
