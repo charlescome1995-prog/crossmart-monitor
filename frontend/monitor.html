@@ -269,7 +269,7 @@
         <label><input type="checkbox" id="changeFilter" onchange="renderTable()">只显示异常商品</label>
       </div>
       <div>
-        <button class="btn btn-secondary" onclick="exportToExcel()">重置筛选</button>
+        <button class="btn btn-secondary" onclick="exportToExcel()">数据下载</button>
       </div>
     </div>
 
@@ -428,7 +428,7 @@ async function checkStatus() {
     const content = JSON.parse(atob(data.content));
     if (content.status === 'done') {
       clearInterval(pollTimer);
-      document.getElementById('btnTrigger').textContent = '閴?试╂垶甯剁瑰本鍨';
+      document.getElementById('btnTrigger').textContent = '触发成功';
       loadRawData();
     }
   } catch(e) {}
@@ -610,7 +610,7 @@ html += `<tr>
 }
 
 function exportToExcel() {
-  const rows = [['ASIN','缁??鐎·','闁?槒绶«','试樿埖鈧¬?,'娴犻攱鐗¸','婢堆呰?閹烘帒鎮','显氬本顒為弮鍫曟？']];
+  const rows = [['ASIN','监控流','逻辑类型','商品状态','价格','BSR','最后更新']];
   rawData.items.forEach(m => rows.push([m.asin, m.monitor_type, m.logic_type, m.listing_status, m.price, m.main_bsr, rawData.updated]));
   const ws = XLSX.utils.aoa_to_sheet(rows);
   const wb = XLSX.utils.book_new();
