@@ -3,6 +3,7 @@
 """
 run_monitor.py - 跨境电商 ASIN 监控系统入口
 支持随机化、时间窗口、概率运行、人类行为模拟。
+恢复旧逻辑：从 GitHub user_config.json 读取 asins + keywords 配置。
 """
 import os, sys, json, time, random, subprocess, urllib.request
 from datetime import datetime
@@ -20,10 +21,9 @@ DEFAULT_SCHEDULE = {
 }
 
 # ── 文件路径常量 ──
-MAIN_ASINS_FILE    = os.path.join(DATA_DIR, "main_asins.json")
 ASIN_RELATED_FILE = os.path.join(DATA_DIR, "asin_related_asins.json")
-KEYWORD_LIST_FILE  = os.path.join(DATA_DIR, "keyword_list.json")
-KW_RELATED_FILE   = os.path.join(DATA_DIR, "keyword_related_asins.json")  # 旧文件，逐步废弃
+KEYWORD_LIST_FILE = os.path.join(DATA_DIR, "keyword_list.json")
+KW_RELATED_FILE   = os.path.join(DATA_DIR, "keyword_related_asins.json")
 
 
 def gh_fetch_json(path):
@@ -40,30 +40,57 @@ def gh_fetch_json(path):
         return None
 
 
+def gh_update_json_file(path, new_content):
+    """通过 GitHub API 更新仓库中的 JSON 文件（不依赖 git push）"""
+    import base64
+    api_url = "https://api.github.com/repos/" + REPO + "/contents/" + path
+    try:
+        req = urllib.request.Request(api_url, headers={"Accept": "application/vnd.github.v3+json"})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            current = json.loads(r.read())
+        sha = current["sha"]
+        encoded = base64.b64encode(new_content.encode("utf-8")).decode("ascii")
+        payload = json.dumps({
+            "message": "auto: update " + path,
+            "content": encoded,
+            "sha": sha
+        }).encode("utf-8")
+        put_req = urllib.request.Request(api_url, data=payload,
+            headers={"Accept": "application/vnd.github.v3+json",
+                     "Content-Type": "application/json"},
+            method="PUT")
+        with urllib.request.urlopen(put_req, timeout=15) as r2:
+            return json.loads(r2.read())
+    except Exception as e:
+        print("  gh_update " + path + " error: " + str(e))
+        return None
+
+
 def load_trigger():
     return gh_fetch_json("backend/data/trigger.json")
 
 
 def load_config():
+    """从 GitHub user_config.json 加载配置（恢复旧逻辑）"""
     data = gh_fetch_json("backend/data/user_config.json")
     if data is None:
         return {"asins": [], "keywords": [], "schedule": DEFAULT_SCHEDULE}
     return data
 
 
-def load_main_asins():
-    """加载主 ASIN 列表（新增结构）"""
-    if os.path.exists(MAIN_ASINS_FILE):
+def load_keyword_list():
+    """加载本地关键词列表（作为补充）"""
+    if os.path.exists(KEYWORD_LIST_FILE):
         try:
-            with open(MAIN_ASINS_FILE, "r", encoding="utf-8") as f:
+            with open(KEYWORD_LIST_FILE, "r", encoding="utf-8") as f:
                 return json.load(f)
-        except Exception as e:
-            print("  load main_asins.json error: " + str(e))
+        except:
+            pass
     return []
 
 
 def load_asin_related():
-    """加载 ASIN → 关联 ASIN 映射（新增结构）"""
+    """加载 ASIN → 关联 ASIN 本地映射"""
     if os.path.exists(ASIN_RELATED_FILE):
         try:
             with open(ASIN_RELATED_FILE, "r", encoding="utf-8") as f:
@@ -74,20 +101,9 @@ def load_asin_related():
 
 
 def save_asin_related(data):
-    """保存 ASIN → 关联 ASIN 映射"""
+    """保存 ASIN → 关联 ASIN 本地映射"""
     with open(ASIN_RELATED_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-
-
-def load_keyword_list():
-    """加载关键词列表"""
-    if os.path.exists(KEYWORD_LIST_FILE):
-        try:
-            with open(KEYWORD_LIST_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except:
-            pass
-    return []
 
 
 def _safe_print(s):
@@ -149,6 +165,7 @@ def run_command(cmd_list, cwd=None, timeout=600):
 
 
 def sync_and_push():
+    """同步数据并推送 GitHub"""
     sync_script = os.path.join(PROJECT_ROOT, "backend", "sync_monitor_data.py")
     if not os.path.exists(sync_script):
         print("  sync_monitor_data.py not found, skip sync")
@@ -158,17 +175,20 @@ def sync_and_push():
         print("  sync failed")
         return False
     repo_dir = PROJECT_ROOT
-    subprocess.run("git config --global user.name \"CrossMart Bot\"",  shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
-    subprocess.run("git config --global user.email \"bot@crossmart.ai\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
-    result = subprocess.run("git status --porcelain", shell=True, cwd=repo_dir, capture_output=True, text=True, encoding="utf-8", errors="replace")
+    subprocess.run(["git", "config", "--global", "user.name", "CrossMart Bot"],
+        shell=False, cwd=repo_dir, encoding="utf-8", errors="replace")
+    subprocess.run(["git", "config", "--global", "user.email", "bot@crossmart.ai"],
+        shell=False, cwd=repo_dir, encoding="utf-8", errors="replace")
+    result = subprocess.run(["git", "status", "--porcelain"],
+        shell=False, cwd=repo_dir, capture_output=True, text=True, encoding="utf-8", errors="replace")
     if result.stdout.strip():
-        ts = datetime.now().strftime("%Y-%m-%d %H:%M")
         run_command(["git", "add",
             "frontend/data/rawData.json",
-            "backend/data/asin_related_asins.json",
-            "backend/data/main_asins.json"],
+            "backend/data/asin_related_asins.json"],
             cwd=repo_dir, timeout=15)
-        run_command(["git", "commit", "-m", "auto: sync " + ts], cwd=repo_dir, timeout=30)
+        ts = datetime.now().strftime("%Y-%m-%d %H:%M")
+        run_command(["git", "commit", "-m", "auto: sync " + ts],
+            cwd=repo_dir, timeout=30)
         push_ok = run_command(["git", "push"], cwd=repo_dir, timeout=60)
         if not push_ok:
             print("  push rejected, force-push...")
@@ -180,18 +200,25 @@ def sync_and_push():
 
 
 def push_trigger_done(trigger):
+    """更新 trigger.json 状态并推送"""
     os.makedirs(DATA_DIR, exist_ok=True)
     with open(TRIGGER_FILE, "w", encoding="utf-8") as f:
         json.dump(trigger, f, ensure_ascii=False, indent=2)
     repo_dir = PROJECT_ROOT
-    subprocess.run("git config --global user.name \"CrossMart Bot\"",  shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
-    subprocess.run("git config --global user.email \"bot@crossmart.ai\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
-    subprocess.run("git add " + TRIGGER_FILE, shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
-    subprocess.run("git commit -m \"auto: trigger done\"", shell=True, cwd=repo_dir, encoding="utf-8", errors="replace")
-    pr = subprocess.run("git push", shell=True, cwd=repo_dir, timeout=60, encoding="utf-8", errors="replace")
+    subprocess.run(["git", "config", "--global", "user.name", "CrossMart Bot"],
+        shell=False, cwd=repo_dir, encoding="utf-8", errors="replace")
+    subprocess.run(["git", "config", "--global", "user.email", "bot@crossmart.ai"],
+        shell=False, cwd=repo_dir, encoding="utf-8", errors="replace")
+    subprocess.run(["git", "add", TRIGGER_FILE],
+        shell=False, cwd=repo_dir, encoding="utf-8", errors="replace")
+    subprocess.run(["git", "commit", "-m", "auto: trigger done"],
+        shell=False, cwd=repo_dir, encoding="utf-8", errors="replace")
+    pr = subprocess.run(["git", "push"],
+        shell=False, cwd=repo_dir, timeout=60, encoding="utf-8", errors="replace")
     if pr.returncode != 0:
         print("  force-pushing trigger...")
-        subprocess.run("git push -f", shell=True, cwd=repo_dir, timeout=60, encoding="utf-8", errors="replace")
+        subprocess.run(["git", "push", "-f"],
+            shell=False, cwd=repo_dir, timeout=60, encoding="utf-8", errors="replace")
     print("  trigger.json 已推送")
 
 
@@ -217,7 +244,6 @@ def discover_related_asins_via_sprite(main_asin):
     )
     if result.returncode == 0 and result.stdout:
         try:
-            # 脚本输出 JSON 数组
             related = json.loads(result.stdout.strip().split("\n")[-1])
             print(f"  [关联发现] 主ASIN {main_asin} → {len(related)} 个关联ASIN")
             return related
@@ -243,16 +269,15 @@ def run_monitor():
         return
     print("检测到 pending 触发器，上次触发: " + str(trigger.get("triggered_at")))
 
-    # ── 加载新结构数据 ──
-    main_asins       = load_main_asins()
-    asin_related_map = load_asin_related()
-    keyword_list    = load_keyword_list()
+    # ── 恢复旧逻辑：从 GitHub 读取 user_config.json ──
+    config = load_config()
+    asins = config.get("asins", [])
+    keywords = config.get("keywords", [])
+    schedule = config.get("schedule", DEFAULT_SCHEDULE)
 
-    print("主ASIN: %d 个 | 关联映射: %d 个 | 关键词: %d 个"
-          % (len(main_asins), len(asin_related_map), len(keyword_list)))
+    print("配置: " + str(len(asins)) + " 个ASIN, " + str(len(keywords)) + " 个关键词")
 
     # ── 时间窗口判断 ──
-    schedule = DEFAULT_SCHEDULE
     now = datetime.now()
     current_slot = None
     for slot_name, slot_cfg in schedule.items():
@@ -275,10 +300,10 @@ def run_monitor():
     # ── Phase 0: 人类行为模拟 ──
     browse_unrelated_pages()
 
-    # ── Phase A: 关键词监控（保留，不变）──
-    kw_list = [k.get("keyword", "").strip() for k in keyword_list if k.get("keyword")]
-    random.shuffle(kw_list)
-    for kw in kw_list:
+    # ── Phase A: 关键词监控 ──
+    random.shuffle(keywords)
+    for kw_entry in keywords:
+        kw = kw_entry.get("main", "").strip()
         if not kw:
             continue
         print("\n--- 关键词监控: " + kw + " ---")
@@ -289,9 +314,10 @@ def run_monitor():
             print("  关键词 " + kw + " 执行失败，继续")
         time.sleep(random.randint(15, 40))
 
-    # ── Phase B: 主 ASIN 监控 + 自动发现关联 ASIN ──
-    for asin_entry in main_asins:
-        main_asin = asin_entry.get("asin", "").strip()
+    # ── Phase B: ASIN 监控（主ASIN + 关联ASIN）──
+    random.shuffle(asins)
+    for asin_entry in asins:
+        main_asin = asin_entry.get("main", "").strip()
         if not main_asin:
             continue
 
@@ -307,7 +333,8 @@ def run_monitor():
         print(f"\n  [关联发现] 通过卖家精灵查询主ASIN {main_asin} 的竞品...")
         new_related = discover_related_asins_via_sprite(main_asin)
 
-        # 更新 asin_related_asins.json（增量合并，不覆盖已有）
+        # 增量合并到 asin_related_asins.json
+        asin_related_map = load_asin_related()
         updated = False
         old_list = asin_related_map.get(main_asin, [])
         old_asins = set(a.get("asin", "") for a in old_list)
@@ -319,18 +346,29 @@ def run_monitor():
         if updated:
             asin_related_map[main_asin] = old_list
             save_asin_related(asin_related_map)
-            print(f"  [关联发现] 已更新 asin_related_asins.json（主ASIN {main_asin} 共 {len(old_list)} 个关联）")
+            print(f"  [关联发现] 已更新（主ASIN {main_asin} 共 {len(old_list)} 个关联）")
         else:
             print(f"  [关联发现] 无新增关联ASIN（现有 {len(old_list)} 个）")
 
-    # ── Phase C: 关联 ASIN 监控（从 asin_related_asins.json 读取）──
+        # 监控直接关联的 ASIN（user_config.json 里配置的）
+        related_list = asin_entry.get("related", [])
+        for rel_asin in related_list:
+            rel_asin = rel_asin.strip()
+            if not rel_asin:
+                continue
+            print("\n--- 关联竞品: " + rel_asin + " ---")
+            ok = run_command(
+                [sys.executable, "-m", "browser.asin_monitor", rel_asin],
+                cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
+            if not ok:
+                print("  关联ASIN " + rel_asin + " 执行失败，继续")
+            time.sleep(random.randint(20, 50))
+
+    # ── Phase C: 批量关联 ASIN 监控（asin_related_asins.json）──
+    asin_related_map = load_asin_related()
     all_related = []
-    for asin_entry in main_asins:
-        main_asin = asin_entry.get("asin", "").strip()
-        if not main_asin:
-            continue
-        related_list = asin_related_map.get(main_asin, [])
-        for rel in related_list:
+    for main_asin, rel_list in asin_related_map.items():
+        for rel in rel_list:
             rel_asin = rel.get("asin", "").strip()
             if rel_asin and rel_asin not in [a.get("asin") for a in all_related]:
                 all_related.append(rel)
