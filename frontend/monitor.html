@@ -491,7 +491,7 @@ async function loadGitHubConfig() {
 
 // 缂佹ê鍩楃搾瀣'◢显¥
 function drawSparkline(data, color) {
-  if (!data || data.length < 2) return '<span style="color:#999;font-size:11px;">閺冪姵鏆熼幑'/span>';
+  if (!data || data.length < 2) return '<span style="color:#999;font-size:11px;">閺冪姵鏆熼幑'</span>';
   const min = Math.min(...data), max = Math.max(...data);
   const range = max - min || 1;
   const h = 30, w = 120;
@@ -554,7 +554,7 @@ function renderTable() {
       diffLines.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + (dir === 'up' ? '↑': dir === 'dn' ? '↑': '↓') + '</span> BSR: <span class="diff-val ' + dir + '">' + diff.bsr.change + '</span></div>');
     }
     if (diff.deal_activity && diff.deal_activity.direction === 'changed') {
-      diffLines.push('<div class="diff-item"><span class="diff-arrow changed">单'/span> Deal: <span class="diff-val">' + (diff.deal_activity.current !== '閺傚 diff.deal_activity.current : '閺傚 + '</span></div>');
+      diffLines.push('<div class="diff-item"><span class="diff-arrow changed">单'</span> Deal: <span class="diff-val">' + (diff.deal_activity.current !== '閺傚 diff.deal_activity.current : '閺傚 + '</span></div>');
     }
     if (diff.badges && diff.badges.direction === 'changed') {
       if (diff.badges.gained && diff.badges.gained.length) diffLines.push('<div class="diff-item"><span class="diff-arrow up">棣冨疾</span> 閼惧嘲绶±: <span class="diff-val up">' + diff.badges.gained.join(', ') + '</span></div>');
@@ -563,7 +563,7 @@ function renderTable() {
     if (diffLines.length > 0) {
       let tipHtml = '';
       if (diff.price) tipHtml += '<div class="tip-row"><span class="tip-label">娴犻攱鐗¸</span><span class="tip-val ' + diff.price.direction + '">$' + diff.price.prev + ' 单'$' + diff.price.current + ' (' + diff.price.change + ')</span></div>';
-      if (diff.review_count) tipHtml += '<div class="tip-row"><span class="tip-label">鐠囧嫯顔戦弫'/span><span class="tip-val ' + diff.review_count.direction + '">' + diff.review_count.prev + ' 单'' + diff.review_count.current + ' (' + diff.review_count.change + ')</span></div>';
+      if (diff.review_count) tipHtml += '<div class="tip-row"><span class="tip-label">鐠囧嫯顔戦弫'</span><span class="tip-val ' + diff.review_count.direction + '">' + diff.review_count.prev + ' 单'' + diff.review_count.current + ' (' + diff.review_count.change + ')</span></div>';
       if (diff.rating) tipHtml += '<div class="tip-row"><span class="tip-label">鐠囧嫬鍨</span><span class="tip-val ' + diff.rating.direction + '">' + diff.rating.prev + ' 单'' + diff.rating.current + ' (' + diff.rating.change + ')</span></div>';
       if (diff.bsr) { var d = diff.bsr.direction === 'up' ? 'dn' : diff.bsr.direction === 'dn' ? 'up' : 'same'; tipHtml += '<div class="tip-row"><span class="tip-label">BSR</span><span class="tip-val ' + d + '">#' + diff.bsr.prev + ' 单'#' + diff.bsr.current + ' (' + diff.bsr.change + ')</span></div>'; }
       if (diff.variants) tipHtml += '<div class="tip-row"><span class="tip-label">显欐ü缍</span><span class="tip-val">' + (diff.variants.prev || '閺傚 + ' 单'' + (diff.variants.current || '閺傚 + '</span></div>';
@@ -598,7 +598,7 @@ html += `<tr>
           ${item.title_changed || item.img_changed || item.bullets_changed || item.description_changed ? `<div style="font-size:12px;color:#d97706;">棣冩憫 鎺掑悕浼鍚崣妯鏃堕:${item.title_changed?' 閺嶅洭顣½':''}${item.img_changed?' 显ュ墽澧':''}${item.bullets_changed?' 娴滄梻鍋£':''}${item.description_changed?' 閹诲繗鍫ª':''}</div>` : ''}
         </div>
       </td>
-      <td><div class="events-cell">${activeEvents.length ? activeEvents.map(e => `<span class="e-tag ${e.class}">${e.text}</span>`).join('') : '<span class="e-none">閺冪姴绱撶敮'/span>'}</div></td>
+      <td><div class="events-cell">${activeEvents.length ? activeEvents.map(e => `<span class="e-tag ${e.class}">${e.text}</span>`).join('') : '<span class="e-none">閺冪姴绱撶敮'</span>'}</div></td>
       <td><div class="diff-cell">${diffHtml}</div></td>
       <td>${drawSparkline(item.history_main_bsr, '#1e3a8a')}</td>
       <td><div class="status-indicator ${hasActiveAnomaly?'changed':'stable'}">${hasActiveAnomaly?'显欐垹骞囧'鍌氬З':'缁嬪啿鐣¾'}</div></td>
