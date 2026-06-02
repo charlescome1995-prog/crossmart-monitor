@@ -100,7 +100,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       </div>
       <div class="ctrl-group">
         <input type="password" id="ghTokenInput" placeholder="GitHub Token" style="width:180px">
-        <button id="btnSaveToken" onclick="saveToken()">&#20445;&#23384; Token</button>
+        <button id="btnSaveToken">&#20445;&#23384; Token</button>
         <button id="btnTrigger">&#31435;&#21363;&#25238;&#21462;</button>
         <span id="configStatus">&#35831;&#20808;&#20445;&#23384; Token</span>
       </div>
@@ -188,7 +188,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       </select>
       <label><input type="checkbox" id="changeFilter" onchange="renderTable()"> &#21482;&#26174;&#31034;&#24322;&#24120;</label>
     </div>
-    <button class="btn btn-secondary" onclick="exportToExcel()">&#25968;&#25454;&#19979;&#36733;</button>
+    <button class="btn btn-secondary" id="btnExport">&#25968;&#25454;&#19979;&#36733;</button>
   </div>
 
   <div class="table-container">
@@ -523,6 +523,8 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
   }
 
   document.getElementById('btnTrigger').addEventListener('click', triggerMonitor);
+  document.getElementById('btnSaveToken').addEventListener('click', saveToken);
+  document.getElementById('btnExport').addEventListener('click', exportToExcel);
 })();
 </script>
 </body>
