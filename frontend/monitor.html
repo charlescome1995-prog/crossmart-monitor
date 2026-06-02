@@ -315,14 +315,13 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
     return vals;
   }
 
+  
   function triggerMonitor() {
-    var t = localStorage.getItem('gh_token') || '';
-    if (!t) { alert('请先保存 Token'); return; }
     var btn = document.getElementById('btnTrigger');
     btn.disabled = true;
-    btn.textContent = '触发中...';
+    btn.textContent = '\u89e6\u53d1\u4e2d...';
     var se = document.getElementById('configStatus');
-    se.textContent = '触发云端拨取...';
+    se.textContent = '\u6b63\u5728\u542f\u52a8 Edge...';
     se.style.background = '#fef3c7';
     se.style.color = '#92400e';
     var asins = [], kws = [];
@@ -335,27 +334,65 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       if (mainK.trim()) kws.push({ main: mainK.trim(), related: getRelatedVals('kw', j) });
     }
     var cfg = { asins: asins, keywords: kws };
-    putFile('backend/data/user_config.json', cfg, t)
-      .then(function() { return putFile('backend/data/trigger.json', { triggered_at: Date.now(), status: 'pending' }, t); })
-      .then(function() {
-        btn.textContent = '触发成功';
-        se.textContent = '云端拨取已开始';
-        se.style.background = '#d1fae5';
-        se.style.color = '#065f46';
-        setTimeout(function() { btn.disabled = false; btn.textContent = '立即拨取'; }, 5000);
+
+    fetch('http://127.0.0.1:8765/api/trigger', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cfg)
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.status === 'busy') {
+        btn.textContent = '\u7a0d\u5019...';
+        se.textContent = '\u7b49\u5f85\u5f53\u524d\u4efb\u52a1\u5b8c\u6210';
+        setTimeout(function() { btn.disabled = false; btn.textContent = '\u7acb\u5373\u62e8\u53d6'; }, 5000);
+        return;
+      }
+      se.textContent = '\u8f6e\u8be2\u4e2d\uff08\u8bf7\u7a0d\u5019\uff09';
+      se.style.background = '#dbeafe';
+      se.style.color = '#1e40af';
+      btn.textContent = '\u8f6e\u8be2\u4e2d';
+      pollStatus();
+    })
+    .catch(function(e) {
+      btn.textContent = '\u89e6\u53d1\u5931\u8d25';
+      se.textContent = '\u672a\u80fd\u8fde\u63a5\u672c\u5730API\uff08' + e.message + '\uff09';
+      se.style.background = '#fee2e2';
+      se.style.color = '#991b1b';
+      setTimeout(function() { btn.disabled = false; btn.textContent = '\u7acb\u5373\u62e8\u53d6'; }, 5000);
+    });
+  }
+
+  var pollTimer = null;
+  function pollStatus() {
+    if (pollTimer) clearTimeout(pollTimer);
+    fetch('http://127.0.0.1:8765/api/status')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var se = document.getElementById('configStatus');
+        var btn = document.getElementById('btnTrigger');
+        if (data.scrape_running) {
+          se.textContent = data.progress || '\u8f6e\u8be2\u4e2d...';
+          se.style.background = '#dbeafe';
+          se.style.color = '#1e40af';
+          btn.textContent = '\u8f6e\u8be2\u4e2d';
+          pollTimer = setTimeout(pollStatus, 5000);
+        } else {
+          se.textContent = '\u6570\u636e\u5df2\u66f4\u65b0\uff0c\u5237\u65b0\u9875\u9762';
+          se.style.background = '#d1fae5';
+          se.style.color = '#065f46';
+          btn.textContent = '\u5df2\u5b8c\u6210';
+          btn.disabled = false;
+          loadRawData();
+        }
       })
-      .catch(function(e) {
-        btn.textContent = '触发失败';
-        se.textContent = '失败: ' + e.message;
-        se.style.background = '#fee2e2';
-        se.style.color = '#991b1b';
-        setTimeout(function() { btn.disabled = false; btn.textContent = '立即拨取'; }, 5000);
+      .catch(function() {
+        var se = document.getElementById('configStatus');
+        se.textContent = '\u7b49\u5f85API\u54cd\u5e94...';
+        pollTimer = setTimeout(pollStatus, 8000);
       });
   }
 
-  function b64enc(s) {
-    return btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g, function(_, p) { return String.fromCharCode(parseInt(p, 16)); }));
-  }
 
   function putFile(path, content, token) {
     var url = 'https://api.github.com/repos/' + REPO + '/contents/' + path;

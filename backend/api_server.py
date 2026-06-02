@@ -23,7 +23,8 @@ CORS_HEADERS = {
     "Access-Control-Allow-Headers": "*",
 }
 
-SCRAPE_STATUS = {"running": False, "last_result": None, "progress": ""}
+SCRAPE_STATUS = {"running": False, "last_result": None, "progress": "", "trigger_mode": False}
+MONITOR_PROCESS = None
 USER_CONFIG_PATH = os.path.join(PROJECT, 'data', 'user_config.json')
 GH_TOKEN = os.environ.get("GH_TOKEN", "")
 
@@ -224,6 +225,8 @@ class ScrapeHandler(BaseHTTPRequestHandler):
             self._handle_scrape()
         elif self.path == "/api/save-config":
             self._handle_save_config()
+        elif self.path == "/api/trigger":
+            self._handle_trigger()
         else:
             self._send_json({"error": "not found"}, 404)
 
@@ -320,6 +323,102 @@ class ScrapeHandler(BaseHTTPRequestHandler):
             finally:
                 SCRAPE_STATUS["running"] = False
                 SCRAPE_STATUS["progress"] = ""
+
+        t = threading.Thread(target=run, daemon=True)
+        t.start()
+
+    def _handle_trigger(self):
+        """触发完整监控流程（Phase A→B→B2→C→D），启动 run_monitor.py"""
+        global SCRAPE_STATUS, MONITOR_PROCESS
+
+        if SCRAPE_STATUS["running"] and SCRAPE_STATUS.get("trigger_mode"):
+            self._send_json({"status": "busy", "message": "正在采集中，请稍候"})
+            return
+
+        # 获取配置（从请求体或 GitHub）
+        content_len = int(self.headers.get("Content-Length", 0))
+        body = b""
+        if content_len > 0:
+            body = self.rfile.read(content_len)
+
+        asins, keywords = [], []
+        if body:
+            try:
+                data = json.loads(body)
+                asins = data.get("asins", [])
+                keywords = data.get("keywords", [])
+            except:
+                pass
+
+        # 如果请求体没有配置，从 GitHub 读
+        if not asins and not keywords:
+            gh = load_config_from_github()
+            if gh:
+                asins = gh.get("asins", [])
+                keywords = gh.get("keywords", [])
+
+        # 保存到本地 user_config.json（run_monitor.py 需要本地文件）
+        config = {"asins": asins, "keywords": keywords}
+        os.makedirs(os.path.dirname(USER_CONFIG_PATH), exist_ok=True)
+        with open(USER_CONFIG_PATH, 'w', encoding='utf-8') as f:
+            json.dump(config, f, ensure_ascii=False, indent=2)
+
+        self._send_json({"status": "ok", "message": "触发成功，采集线程已启动", "asins": len(asins), "keywords": len(keywords)})
+
+        SCRAPE_STATUS["running"] = True
+        SCRAPE_STATUS["trigger_mode"] = True
+        SCRAPE_STATUS["progress"] = "准备启动 Edge..."
+        SCRAPE_STATUS["last_result"] = None
+
+        def run():
+            global SCRAPE_STATUS, MONITOR_PROCESS
+            try:
+                os.chdir(PROJECT)
+                os.environ["CDP_PORT"] = "9225"
+
+                # 确保 Edge 运行（默认 profile，带缓存登录态）
+                if not ensure_edge():
+                    SCRAPE_STATUS["last_result"] = {"status": "error", "error": "Edge\u542f\u52a8\u5931\u8d25"}
+                    SCRAPE_STATUS["running"] = False
+                    return
+
+                SCRAPE_STATUS["progress"] = "\u8fd0\u884c run_monitor.py..."
+
+                # 写入本地 trigger.json（run_monitor.py 会读它）
+                trigger_path = os.path.join(PROJECT, "data", "trigger.json")
+                os.makedirs(os.path.dirname(trigger_path), exist_ok=True)
+                with open(trigger_path, 'w', encoding='utf-8') as f:
+                    json.dump({"status": "pending", "triggered_at": time.time()}, f)
+
+                # 启动 run_monitor.py（完整流程）
+                monitor_script = os.path.join(PROJECT, "run_monitor.py")
+                MONITOR_PROCESS = subprocess.Popen(
+                    [sys.executable, monitor_script],
+                    cwd=PROJECT,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    encoding="utf-8",
+                    errors="replace"
+                )
+
+                # 实时读取输出，更新 progress
+                for line in MONITOR_PROCESS.stdout:
+                    line = line.strip()
+                    if line:
+                        print("[Monitor]" + line)
+                        SCRAPE_STATUS["progress"] = line[:100]
+
+                MONITOR_PROCESS.wait()
+                SCRAPE_STATUS["last_result"] = {"status": "ok", "message": "\u91c7\u96c6\u5b8c\u6210"}
+            except Exception as e:
+                import traceback
+                traceback.print_exc()
+                SCRAPE_STATUS["last_result"] = {"status": "error", "error": str(e)}
+            finally:
+                SCRAPE_STATUS["running"] = False
+                SCRAPE_STATUS["trigger_mode"] = False
+                SCRAPE_STATUS["progress"] = ""
+                MONITOR_PROCESS = None
 
         t = threading.Thread(target=run, daemon=True)
         t.start()
