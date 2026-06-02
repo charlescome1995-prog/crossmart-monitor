@@ -288,28 +288,19 @@ def browse_unrelated_pages():
             print("  ASIN " + main_asin + " 执行失败，继续")
         time.sleep(random.randint(20, 50))
 
-        # 通过卖家精灵竞品查询自动发现关联 ASIN
-        print(f"\n  [关联发现] 通过卖家精灵查询主ASIN {main_asin} 的竞品...")
-    all_related = []
-    for main_asin, rel_list in asin_related_map.items():
-        for rel in rel_list:
-            rel_asin = rel.get("asin", "").strip()
-            if rel_asin and rel_asin not in [a.get("asin") for a in all_related]:
-                all_related.append(rel)
-
-    if all_related:
-        print(f"\n--- 关联ASIN批量监控: {len(all_related)} 个 ---")
-        for rel in all_related:
-            rel_asin = rel.get("asin", "")
-            print("\n--- 关联ASIN: " + rel_asin + " ---")
+        # 抓取用户配置的关联 ASIN
+        related_list = asin_entry.get("related", [])
+        for rel_asin in related_list:
+            rel_asin = rel_asin.strip()
+            if not rel_asin:
+                continue
+            print("\n--- 关联竞品: " + rel_asin + " ---")
             ok = run_command(
                 [sys.executable, "-m", "browser.asin_monitor", rel_asin],
                 cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
             if not ok:
                 print("  关联ASIN " + rel_asin + " 执行失败，继续")
             time.sleep(random.randint(20, 50))
-    else:
-        print("\n--- 关联ASIN: 暂无（首次运行需等 Phase B 发现）---")
 
     # ── Phase D: 同步推送 ──
     print("\n--- 同步数据 ---")
