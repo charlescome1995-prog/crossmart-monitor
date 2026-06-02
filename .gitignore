@@ -15,5 +15,4 @@ backend/data/trigger.json
 backend/data/monitor_list.json
 backend/data/keyword_list.json
 notify_config.json
-frontend/data/notify_config.json
 bos_sync.py
