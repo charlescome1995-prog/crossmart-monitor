@@ -97,14 +97,9 @@ class SpriteBrowser:
         human_pause(1, 2)
         self.click_search_btn()
         time.sleep(3)
-
-        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-        path = self.b.screenshot(f"sprite_competitor_{asin}_{ts}")
         self.b.scroll_down(times=1)
         human_pause(0.5, 1)
-        self.b.screenshot(f"sprite_competitor_{asin}_{ts}_full")
-
-        return {"asin": asin, "screenshot": path, "text": self.get_page_text()[:3000], "timestamp": datetime.now().isoformat()}
+        return {"asin": asin, "text": self.get_page_text()[:3000], "timestamp": datetime.now().isoformat()}
 
     def lookup_keywords(self, asin):
         print(f"\n  🔑 关键词反查: {asin}")
@@ -113,10 +108,7 @@ class SpriteBrowser:
         human_pause(1, 2)
         self.click_search_btn()
         time.sleep(3)
-
-        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-        path = self.b.screenshot(f"sprite_keywords_{asin}_{ts}")
-        return {"asin": asin, "screenshot": path, "text": self.get_page_text()[:3000], "timestamp": datetime.now().isoformat()}
+        return {"asin": asin, "text": self.get_page_text()[:3000], "timestamp": datetime.now().isoformat()}
 
     def lookup_ads(self, asin):
         print(f"\n  📢 广告洞察: {asin}")
@@ -125,10 +117,7 @@ class SpriteBrowser:
         human_pause(1, 2)
         self.click_search_btn()
         time.sleep(3)
-
-        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-        path = self.b.screenshot(f"sprite_ads_{asin}_{ts}")
-        return {"asin": asin, "screenshot": path, "text": self.get_page_text()[:2000], "timestamp": datetime.now().isoformat()}
+        return {"asin": asin, "text": self.get_page_text()[:2000], "timestamp": datetime.now().isoformat()}
 
     def full_asin_check(self, asin):
         print(f"\n{'='*60}")
@@ -217,5 +206,4 @@ class SpriteBrowser:
 
         ts = datetime.now().strftime("%Y%m%d_%H%M%S")
         safe_kw = re.sub(r'[^a-zA-Z0-9]', '_', keyword)[:20]
-        self.b.screenshot(f"sprite_keyword_{safe_kw}_{ts}")
         return {"keyword": keyword, "text": self.get_page_text()[:3000], "timestamp": datetime.now().isoformat()}

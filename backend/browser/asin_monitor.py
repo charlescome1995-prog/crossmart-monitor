@@ -239,7 +239,18 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
             amazon.browse_category()
         amazon.search_for_asin(asin, search_keyword)
         browser.scroll_down(times=1, min_pause=1, max_pause=2)
-        time.sleep(1)
+        # ── 等待插件加载（最长30秒）──
+        deadline = time.time() + 30
+        while time.time() < deadline:
+            ready = browser.eval("""
+                document.querySelector('#productTitle') !== null ||
+                document.querySelector('#dpContainer') !== null ||
+                document.readyState === 'complete'
+            """)
+            if ready:
+                break
+            time.sleep(1)
+        time.sleep(random.uniform(1, 3))  # 再等1-3秒让插件彻底渲染
         amazon_data = extract_asin_data(browser)
         if not amazon_data.get("bsr"):
             bsr = extract_bsr_direct(browser)
@@ -259,7 +270,6 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
         print("卖家精灵数据查询")
         print("="*50)
         try:
-            browser.open_new_tab("https://www.sellersprite.com")
             sprite = SpriteBrowser(browser)
             sprite_data = sprite.full_asin_check(asin)
             print("  卖家精灵查询完成")
