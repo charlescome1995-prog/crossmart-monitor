@@ -285,7 +285,7 @@
 <script>
 const CONFIG_KEY = 'crossmart_monitor_v1';
 const REPO = 'charlescome1995-prog/crossmart-monitor';
-const RAW_DATA_URL = 'https://api.github.com/repos/' + REPO + '/contents/frontend/data/rawData.json?ref=main';
+const RAW_DATA_URL = 'https://raw.githubusercontent.com/' + REPO + '/main/frontend/data/rawData.json';
 
 let rawData = { updated: '', items: [], keywords: [] };
 
@@ -311,20 +311,13 @@ window.addEventListener('DOMContentLoaded', function() {
 // 显旂姾娴囬崢鐔奉潗试╂垶甯堕弫鐗堝祦
 async function loadRawData() {
   try {
-    const token = localStorage.getItem('gh_token') || '';
-    const resp = await fetch(RAW_DATA_URL + '&t=' + Date.now(), {
-      headers: { 
-        'Accept': 'application/vnd.github.v3+json',
-        ...(token ? { 'Authorization': 'Bearer ' + token } : {})
-      }
-    });
+    const resp = await fetch(RAW_DATA_URL + '?t=' + Date.now());
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    const meta = await resp.json();
-    const data = JSON.parse(atob(meta.content));
+    const data = await resp.json();
     rawData = data;
     renderTable();
   } catch(e) {
-    console.warn('loadRawData failed:', e.message);
+    console.warn('loadRawData failed:', e.message, e);
     renderTable();
   }
 }
