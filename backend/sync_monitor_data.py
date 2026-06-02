@@ -221,7 +221,7 @@ def build_rawdata_item(asin, data, history, related_asins=None):
     main_bsr = bsr or 0
     title = data.get('title', data.get('product_title', ''))
     brand = data.get('brand', '')
-    main_cat = data.get('bsr_sub_category', '') or ''
+    main_cat = data.get('bsr_subcategory', '') or ''
 
     # 与上次快照的 diff
     prev_data = get_prev_snapshot_data(history)
@@ -256,8 +256,8 @@ def build_rawdata_item(asin, data, history, related_asins=None):
         "main_cat": main_cat,
         "expected_main_cat": main_cat,
         "main_bsr": main_bsr,
-        "sub_cat": main_cat,
-        "expected_sub_cat": main_cat,
+        "sub_cat": '',
+        "expected_sub_cat": '',
         "sub_bsr": main_bsr,
         "history_main_bsr": [h.get('bsr') or main_bsr for h in history] if history else [main_bsr],
         "history_sub_bsr": [],
