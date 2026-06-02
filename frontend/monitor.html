@@ -346,18 +346,30 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       putFile('backend/data/trigger.json', trigger, token)
     ])
     .then(function() {
-      se.textContent = '\u5df2\u89e6\u53d1\uff0c\u8bf7\u7a0d\u5019... (\u6b63\u5e38\u8f6e\u8be2 30s)';
+      se.textContent = '\u540c\u65f6\u547c\u54c8\u672c\u5730\u811a\u672c...';
       se.style.background = '#dbeafe';
       se.style.color = '#1e40af';
       btn.textContent = '\u8f6e\u8be2\u4e2d';
+      return fetch('http://127.0.0.1:8765/api/trigger', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(cfg)
+      });
+    })
+    .then(function(r) { return r ? r.json() : null; })
+    .then(function(data) {
+      if (data && data.status === 'busy') {
+        se.textContent = '\u672c\u5730\u6b63\u5728\u8fd0\u884c\uff0c\u8bf7\u7a0d\u5019...';
+      } else {
+        se.textContent = '\u5df2\u89e6\u53d1\uff0c\u8bf7\u7a0d\u5019... (\u6b63\u5e38\u8f6e\u8be2 30s)';
+      }
       pollStatus(token);
     })
     .catch(function(e) {
-      btn.textContent = '\u89e6\u53d1\u5931\u8d25';
-      se.textContent = '\u5199\u5165\u5931\u8d25: ' + e.message;
-      se.style.background = '#fee2e2';
-      se.style.color = '#991b1b';
-      setTimeout(function() { btn.disabled = false; btn.textContent = '\u7acb\u5373\u62e8\u53d6'; }, 5000);
+      se.textContent = '\u672c\u5730\u8054\u63a5\u5931\u8d25\uff0c\u4f46\u4e91\u7aef\u5df2\u5199\u5165';
+      se.style.background = '#fef3c7';
+      se.style.color = '#92400e';
+      pollStatus(token);
     });
   }
 
