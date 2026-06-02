@@ -20,8 +20,6 @@ DEFAULT_SCHEDULE = {
     "evening":    {"anchor": "06:40", "window_start": "06:40", "window_end": "07:40", "jitter_max_minutes": 30, "run_probability": 1.0},
 }
 
-# ── 文件路径常量 ──
-ASIN_RELATED_FILE = os.path.join(DATA_DIR, "asin_related_asins.json")
 KEYWORD_LIST_FILE = os.path.join(DATA_DIR, "keyword_list.json")
 KW_RELATED_FILE   = os.path.join(DATA_DIR, "keyword_related_asins.json")
 
@@ -87,23 +85,6 @@ def load_keyword_list():
         except:
             pass
     return []
-
-
-def load_asin_related():
-    """加载 ASIN → 关联 ASIN 本地映射"""
-    if os.path.exists(ASIN_RELATED_FILE):
-        try:
-            with open(ASIN_RELATED_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            print("  load asin_related_asins.json error: " + str(e))
-    return {}
-
-
-def save_asin_related(data):
-    """保存 ASIN → 关联 ASIN 本地映射"""
-    with open(ASIN_RELATED_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
 
 
 def _safe_print(s):
@@ -181,11 +162,6 @@ def sync_and_push():
         shell=False, cwd=repo_dir, encoding="utf-8", errors="replace")
     result = subprocess.run(["git", "status", "--porcelain"],
         shell=False, cwd=repo_dir, capture_output=True, text=True, encoding="utf-8", errors="replace")
-    if result.stdout.strip():
-        run_command(["git", "add",
-            "frontend/data/rawData.json",
-            "backend/data/asin_related_asins.json"],
-            cwd=repo_dir, timeout=15)
         ts = datetime.now().strftime("%Y-%m-%d %H:%M")
         run_command(["git", "commit", "-m", "auto: sync " + ts],
             cwd=repo_dir, timeout=30)
@@ -231,49 +207,32 @@ def browse_unrelated_pages():
         time.sleep(random.randint(3, 8))
 
 
-def discover_related_asins_via_sprite(main_asin):
-    """通过卖家精灵竞品查询，自动发现主 ASIN 的关联 ASIN 列表"""
-    script_path = os.path.join(PROJECT_ROOT, "backend", "discover_related.py")
-    if not os.path.exists(script_path):
-        print(f"  [关联发现] discover_related.py 不存在，跳过")
-        return []
-    result = subprocess.run(
-        [sys.executable, script_path, main_asin],
-        capture_output=True, text=True, encoding="utf-8", errors="replace",
-        cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=120
-    )
-    if result.returncode == 0 and result.stdout:
-        try:
-            related = json.loads(result.stdout.strip().split("\n")[-1])
-            print(f"  [关联发现] 主ASIN {main_asin} → {len(related)} 个关联ASIN")
-            return related
-        except:
-            pass
-    print(f"  [关联发现] 主ASIN {main_asin} 发现失败或无结果")
-    return []
-
-
-def run_monitor():
     sep = "=" * 60
     print("\n" + sep)
     print("CrossMart Monitor - 本地触发执行")
     print("时间: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     print(sep)
 
-    trigger = load_trigger()
-    if trigger is None:
-        print("trigger.json 读取失败，请检查网络和仓库配置")
-        return
-    if trigger.get("status") != "pending":
-        print("触发器状态: " + str(trigger.get("status")) + "，无需执行")
-        return
-    print("检测到 pending 触发器，上次触发: " + str(trigger.get("triggered_at")))
-
-    # ── 恢复旧逻辑：从 GitHub 读取 user_config.json ──
-    config = load_config()
-    asins = config.get("asins", [])
-    keywords = config.get("keywords", [])
-    schedule = config.get("schedule", DEFAULT_SCHEDULE)
+    # config_override: 直接传入配置（API 触发时用），否则从 GitHub 读
+    if config_override is not None:
+        config = config_override
+        asins = config.get("asins", [])
+        keywords = config.get("keywords", [])
+        schedule = config.get("schedule", DEFAULT_SCHEDULE)
+        print("[CONFIG] 使用 API 传入配置: " + str(len(asins)) + " 个ASIN, " + str(len(keywords)) + " 个关键词")
+    else:
+        trigger = load_trigger()
+        if trigger is None:
+            print("trigger.json 读取失败，请检查网络和仓库配置")
+            return
+        if trigger.get("status") != "pending":
+            print("触发器状态: " + str(trigger.get("status")) + "，无需执行")
+            return
+        print("检测到 pending 触发器，上次触发: " + str(trigger.get("triggered_at")))
+        config = load_config()
+        asins = config.get("asins", [])
+        keywords = config.get("keywords", [])
+        schedule = config.get("schedule", DEFAULT_SCHEDULE)
 
     print("配置: " + str(len(asins)) + " 个ASIN, " + str(len(keywords)) + " 个关键词")
 
@@ -331,41 +290,6 @@ def run_monitor():
 
         # 通过卖家精灵竞品查询自动发现关联 ASIN
         print(f"\n  [关联发现] 通过卖家精灵查询主ASIN {main_asin} 的竞品...")
-        new_related = discover_related_asins_via_sprite(main_asin)
-
-        # 增量合并到 asin_related_asins.json
-        asin_related_map = load_asin_related()
-        updated = False
-        old_list = asin_related_map.get(main_asin, [])
-        old_asins = set(a.get("asin", "") for a in old_list)
-        for a in new_related:
-            if a.get("asin") and a.get("asin") not in old_asins:
-                old_list.append(a)
-                old_asins.add(a.get("asin"))
-                updated = True
-        if updated:
-            asin_related_map[main_asin] = old_list
-            save_asin_related(asin_related_map)
-            print(f"  [关联发现] 已更新（主ASIN {main_asin} 共 {len(old_list)} 个关联）")
-        else:
-            print(f"  [关联发现] 无新增关联ASIN（现有 {len(old_list)} 个）")
-
-        # 监控直接关联的 ASIN（user_config.json 里配置的）
-        related_list = asin_entry.get("related", [])
-        for rel_asin in related_list:
-            rel_asin = rel_asin.strip()
-            if not rel_asin:
-                continue
-            print("\n--- 关联竞品: " + rel_asin + " ---")
-            ok = run_command(
-                [sys.executable, "-m", "browser.asin_monitor", rel_asin],
-                cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
-            if not ok:
-                print("  关联ASIN " + rel_asin + " 执行失败，继续")
-            time.sleep(random.randint(20, 50))
-
-    # ── Phase C: 批量关联 ASIN 监控（asin_related_asins.json）──
-    asin_related_map = load_asin_related()
     all_related = []
     for main_asin, rel_list in asin_related_map.items():
         for rel in rel_list:
@@ -400,4 +324,8 @@ def run_monitor():
 
 
 if __name__ == "__main__":
-    run_monitor()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--config', type=str, help='JSON config string (bypass GitHub read)')
+    args = parser.parse_args()
+    run_monitor(config_override=json.loads(args.config) if args.config else None)
