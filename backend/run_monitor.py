@@ -7,6 +7,7 @@ run_monitor.py - 跨境电商 ASIN 监控系统入口
 """
 import os, sys, json, time, random, subprocess, urllib.request
 from datetime import datetime
+sys.stdout.reconfigure(encoding='utf-8')
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(PROJECT_ROOT, "backend", "data")
@@ -162,16 +163,14 @@ def sync_and_push():
         shell=False, cwd=repo_dir, encoding="utf-8", errors="replace")
     result = subprocess.run(["git", "status", "--porcelain"],
         shell=False, cwd=repo_dir, capture_output=True, text=True, encoding="utf-8", errors="replace")
-        ts = datetime.now().strftime("%Y-%m-%d %H:%M")
-        run_command(["git", "commit", "-m", "auto: sync " + ts],
-            cwd=repo_dir, timeout=30)
-        push_ok = run_command(["git", "push"], cwd=repo_dir, timeout=60)
-        if not push_ok:
-            print("  push rejected, force-push...")
-            run_command(["git", "push", "-f"], cwd=repo_dir, timeout=60)
-        print("  数据已推送")
-    else:
-        print("  无数据变化")
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M")
+    run_command(["git", "commit", "-m", "auto: sync " + ts],
+        cwd=repo_dir, timeout=30)
+    push_ok = run_command(["git", "push"], cwd=repo_dir, timeout=60)
+    if not push_ok:
+        print("  push rejected, force-push...")
+        run_command(["git", "push", "-f"], cwd=repo_dir, timeout=60)
+    print("  数据已推送")
     return True
 
 
@@ -207,6 +206,8 @@ def browse_unrelated_pages():
         time.sleep(random.randint(3, 8))
 
 
+def run_monitor(config_override=None):
+    """主监控逻辑"""
     sep = "=" * 60
     print("\n" + sep)
     print("CrossMart Monitor - 本地触发执行")

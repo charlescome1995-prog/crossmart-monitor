@@ -387,29 +387,26 @@ class ScrapeHandler(BaseHTTPRequestHandler):
                 # 写入本地 trigger.json（run_monitor.py 会读它）
                 trigger_path = os.path.join(PROJECT, "data", "trigger.json")
                 os.makedirs(os.path.dirname(trigger_path), exist_ok=True)
-                with open(trigger_path, 'w', encoding='utf-8') as f:
-                    json.dump({"status": "pending", "triggered_at": time.time()}, f)
-
-                # 启动 run_monitor.py（完整流程）
+                         # 通过 --config \u547d\u4ee4\u884c\u53c2\u6570\u76f4\u63a5\u4f20\u5165\u914d\u7f6e\uff08\u4e0d\u8d70 GitHub\uff09
+                cfg_json = json.dumps(config, ensure_ascii=False)
                 monitor_script = os.path.join(PROJECT, "run_monitor.py")
-                MONITOR_PROCESS = subprocess.Popen(
-                    [sys.executable, monitor_script],
+                env = os.environ.copy()
+                env['CDP_PORT'] = '9225'
+                # GH_TOKEN 从环境变量或 user_config.json 里取
+                token = os.environ.get('GH_TOKEN', '')
+                if not token and GH_TOKEN:
+                    token = GH_TOKEN
+                if token:
+                    env['GH_TOKEN'] = token
+                MONITOR_PROCESS = subprocess.run(
+                    [sys.executable, monitor_script, '--config', cfg_json],
                     cwd=PROJECT,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT,
-                    encoding="utf-8",
-                    errors="replace"
+                    env=env,
+                    timeout=600
                 )
-
-                # 实时读取输出，更新 progress
-                for line in MONITOR_PROCESS.stdout:
-                    line = line.strip()
-                    if line:
-                        print("[Monitor]" + line)
-                        SCRAPE_STATUS["progress"] = line[:100]
-
-                MONITOR_PROCESS.wait()
                 SCRAPE_STATUS["last_result"] = {"status": "ok", "message": "\u91c7\u96c6\u5b8c\u6210"}
+            except subprocess.TimeoutExpired:
+                SCRAPE_STATUS["last_result"] = {"status": "error", "error": "\u8d85\u65f6\uff08600s\uff09"}
             except Exception as e:
                 import traceback
                 traceback.print_exc()
