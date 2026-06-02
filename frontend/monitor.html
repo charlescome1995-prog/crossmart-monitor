@@ -311,8 +311,12 @@ window.addEventListener('DOMContentLoaded', function() {
 // 显旂姾娴囬崢鐔奉潗试╂垶甯堕弫鐗堝祦
 async function loadRawData() {
   try {
+    const token = localStorage.getItem('gh_token') || '';
     const resp = await fetch(RAW_DATA_URL + '&t=' + Date.now(), {
-      headers: { 'Accept': 'application/vnd.github.v3+json' }
+      headers: { 
+        'Accept': 'application/vnd.github.v3+json',
+        ...(token ? { 'Authorization': 'Bearer ' + token } : {})
+      }
     });
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     const meta = await resp.json();
@@ -345,8 +349,20 @@ async function saveToken() {
     return;
   }
   localStorage.setItem('gh_token', token);
-  document.getElementById('configStatus').textContent = '已保存 ✓';
-  loadRawData();
+  var statusEl = document.getElementById('configStatus');
+  statusEl.textContent = '已保存，正在加载数据...';
+  statusEl.style.background = '#fef3c7';
+  statusEl.style.color = '#92400e';
+  try {
+    await loadRawData();
+    statusEl.textContent = '已保存 ✓';
+    statusEl.style.background = '#d1fae5';
+    statusEl.style.color = '#065f46';
+  } catch(e) {
+    statusEl.textContent = '保存成功，但加载数据失败';
+    statusEl.style.background = '#fee2e2';
+    statusEl.style.color = '#991b1b';
+  }
 }
 
 // 立即抓取（云端）
