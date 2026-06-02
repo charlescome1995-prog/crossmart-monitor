@@ -126,8 +126,7 @@ cd crossmart-monitor
 python reset_and_run.py
 
 # 或手动分步：
-# 1. 重置触发器
-python reset_trigger.py
+# 1. 重置触发器（直接编辑 backend/data/trigger.json，将 status 改为 pending）
 
 # 2. 运行监控抓取
 python backend/run_monitor.py
@@ -245,8 +244,7 @@ run_monitor.py → load_trigger() 读取 GitHub trigger.json
 
 | 文件 | 说明 |
 |------|------|
-| `reset_trigger.py` | 重置 trigger.json 为 pending |
-| `reset_and_run.py` | 重置 + 运行监控（一步到位） |
+| `reset_and_run.py` | 重置 trigger.json 为 pending，然后运行监控（一步到位） |
 | `backend/data/user_config.json` | 用户配置的 ASINs + 关键词 |
 | `backend/data/trigger.json` | 触发器状态（pending=done）|
 | `frontend/data/rawData.json` | 前端展示用的实时数据 |

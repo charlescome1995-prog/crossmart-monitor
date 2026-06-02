@@ -62,10 +62,8 @@ frontend/
 ```
 backend/
 ├── data/
-│   ├── user_config.json        ← 前端显示的配置
-│   ├── trigger.json             ← 触发状态（前端轮询）
-│   ├── monitor_list.json        ← 【你改这个】ASIN 列表
-│   ├── keyword_list.json        ← 【你改这个】关键词列表
+│   ├── user_config.json        ← 【你改这个】ASIN 列表和关键词列表（前端页面直接编辑保存）
+│   ├── trigger.json             ← 触发状态（pending=done）
 │   └── processed/
 │       └── asin_B09V7Z4TJG/
 │           ├── latest.json           ← 最新快照
@@ -75,7 +73,7 @@ backend/
 
 **数据流向：**
 ```
-monitor_list.json / keyword_list.json
+user_config.json（ASIN + 关键词配置）
         │
         ▼ Phase A / Phase B 抓取
 snapshot_storage.py → processed/asin_XXX/snapshot_*.json
@@ -93,19 +91,10 @@ GitHub Pages → monitor.html 读取
 
 ### 2.1 配置监控对象
 
-**ASIN 列表** — `backend/data/monitor_list.json`：
-```json
-[
-  { "asin": "B09V7Z4TJG", "keywords": "batana oil", "nickname": "" }
-]
-```
+在 GitHub Pages 前端页面上直接配置：
+https://charlescome1995-prog.github.io/crossmart-monitor/frontend/monitor.html
 
-**关键词列表** — `backend/data/keyword_list.json`：
-```json
-[
-  { "keyword": "batana oil", "note": "", "group": "main" }
-]
-```
+输入 ASIN 和关键词后点「保存配置」，数据自动写入 `backend/data/user_config.json`（通过 GitHub Actions 安全上传，无需手动编辑）。
 
 ### 2.2 运行监控
 
