@@ -101,7 +101,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       <div class="ctrl-group">
         <input type="password" id="ghTokenInput" placeholder="GitHub Token" style="width:180px">
         <button id="btnSaveToken" onclick="saveToken()">&#20445;&#23384; Token</button>
-        <button id="btnTrigger" onclick="triggerMonitor()">&#31435;&#21363;&#25238;&#21462;</button>
+        <button id="btnTrigger">&#31435;&#21363;&#25238;&#21462;</button>
         <span id="configStatus">&#35831;&#20808;&#20445;&#23384; Token</span>
       </div>
     </div>
@@ -521,6 +521,8 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
     XLSX.utils.book_append_sheet(wb, ws, 'Monitor');
     XLSX.writeFile(wb, 'Monitor_' + (rawData.updated || 'unknown').replace(/[: ]/g, '_') + '.xlsx');
   }
+
+  document.getElementById('btnTrigger').addEventListener('click', triggerMonitor);
 })();
 </script>
 </body>
