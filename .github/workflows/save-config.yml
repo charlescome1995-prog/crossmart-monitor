@@ -1,8 +1,11 @@
 name: Monitor Capture
 
 on:
-  repository_dispatch:
-    types: [trigger-capture]
+  push:
+    paths:
+      - 'backend/data/user_config.json'
+      - 'backend/data/trigger.json'
+      - 'frontend/monitor.html'
   workflow_dispatch:
 
 permissions:
@@ -37,11 +40,8 @@ jobs:
         run: |
           python - <<'PYEOF'
           import json, os
-          # Read from backend/data/user_config.json
           with open('backend/data/user_config.json', 'r', encoding='utf-8') as f:
               cfg = json.load(f)
-          print('asins:', json.dumps([r['main'] for r in cfg.get('asins', []) if r.get('main')]))
-          print('keywords:', json.dumps([r['main'] for r in cfg.get('keywords', []) if r.get('main')]))
           with open(os.environ['GITHUB_ENV'], 'a') as f:
               asins = json.dumps([r['main'] for r in cfg.get('asins', []) if r.get('main')])
               kws = json.dumps([r['main'] for r in cfg.get('keywords', []) if r.get('main')])
@@ -56,15 +56,11 @@ jobs:
           python - <<'PYEOF'
           import json, os, subprocess
           keywords = json.loads(os.environ.get('KEYWORDS', '[]'))
-          print(f'Running {len(keywords)} keywords...')
           for kw in keywords:
-              print(f'Running keyword: {kw}')
               result = subprocess.run(['python', '-m', 'browser.keyword_monitor', kw],
                   capture_output=True, text=True, cwd='backend')
-              print(result.stdout[-1000:] if result.stdout else '')
               if result.returncode != 0:
-                  print('ERROR:', result.stderr[-500:])
-          print('Keyword monitoring done')
+                  print('KW ERROR:', result.stderr[-500:])
           PYEOF
 
       - name: Run ASIN monitor
@@ -74,15 +70,11 @@ jobs:
           python - <<'PYEOF'
           import json, os, subprocess
           asins = json.loads(os.environ.get('ASINS', '[]'))
-          print(f'Running {len(asins)} ASINs...')
           for asin in asins:
-              print(f'Running ASIN: {asin}')
               result = subprocess.run(['python', '-m', 'browser.asin_monitor', asin],
                   capture_output=True, text=True, cwd='backend')
-              print(result.stdout[-1000:] if result.stdout else '')
               if result.returncode != 0:
-                  print('ERROR:', result.stderr[-500:])
-          print('ASIN monitoring done')
+                  print('ASIN ERROR:', result.stderr[-500:])
           PYEOF
 
       - name: Sync and push data
@@ -90,5 +82,22 @@ jobs:
           python backend/sync_monitor_data.py
           git config --global user.name 'CrossMart Bot'
           git config --global user.email 'bot@crossmart.ai'
-          git add frontend/data/rawData.json
-          git diff --staged --quiet || (git commit -m "auto: sync rawData $(date -u '+%Y-%m-%d %H:%M UTC')" && git push)
+          git add frontend/data/rawData.json backend/data/asin_related_asins.json
+          git diff --staged --quiet || (git commit -m "auto: sync $(date -u '+%Y-%m-%d %H:%M UTC')" && git push)
+
+      - name: Update trigger status to done
+        run: |
+          python - <<'PYEOF'
+          import json
+          trigger_path = 'backend/data/trigger.json'
+          with open(trigger_path, 'r', encoding='utf-8') as f:
+              t = json.load(f)
+          t['status'] = 'done'
+          t['completed_at'] = datetime.now().isoformat()
+          with open(trigger_path, 'w', encoding='utf-8') as f:
+              json.dump(t, f, ensure_ascii=False, indent=2)
+          PYEOF
+          git config --global user.name 'CrossMart Bot'
+          git config --global user.email 'bot@crossmart.ai'
+          git add backend/data/trigger.json
+          git commit -m "auto: trigger done" && git push

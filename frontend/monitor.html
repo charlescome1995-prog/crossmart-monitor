@@ -318,12 +318,17 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
   
   function triggerMonitor() {
     var btn = document.getElementById('btnTrigger');
+    var se = document.getElementById('configStatus');
+    var token = (document.getElementById('ghTokenInput') || {}).value.trim();
+    if (!token) {
+      alert('请先输入 GitHub Token'); return;
+    }
     btn.disabled = true;
     btn.textContent = '\u89e6\u53d1\u4e2d...';
-    var se = document.getElementById('configStatus');
-    se.textContent = '\u6b63\u5728\u542f\u52a8 Edge...';
+    se.textContent = '\u6b63\u5728\u5199\u5165\u4e91\u7aef\u914d\u7f6e...';
     se.style.background = '#fef3c7';
     se.style.color = '#92400e';
+
     var asins = [], kws = [];
     for (var i = 0; i < 5; i++) {
       var mainA = (document.getElementById('in-asin-' + i) || {}).value || '';
@@ -334,29 +339,22 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       if (mainK.trim()) kws.push({ main: mainK.trim(), related: getRelatedVals('kw', j) });
     }
     var cfg = { asins: asins, keywords: kws };
+    var trigger = { status: 'pending', triggered_at: new Date().toISOString() };
 
-    fetch('http://127.0.0.1:8765/api/trigger', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(cfg)
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      if (data.status === 'busy') {
-        btn.textContent = '\u7a0d\u5019...';
-        se.textContent = '\u7b49\u5f85\u5f53\u524d\u4efb\u52a1\u5b8c\u6210';
-        setTimeout(function() { btn.disabled = false; btn.textContent = '\u7acb\u5373\u62e8\u53d6'; }, 5000);
-        return;
-      }
-      se.textContent = '\u8f6e\u8be2\u4e2d\uff08\u8bf7\u7a0d\u5019\uff09';
+    Promise.all([
+      putFile('backend/data/user_config.json', cfg, token),
+      putFile('backend/data/trigger.json', trigger, token)
+    ])
+    .then(function() {
+      se.textContent = '\u5df2\u89e6\u53d1\uff0c\u8bf7\u7a0d\u5019... (\u6b63\u5e38\u8f6e\u8be2 30s)';
       se.style.background = '#dbeafe';
       se.style.color = '#1e40af';
       btn.textContent = '\u8f6e\u8be2\u4e2d';
-      pollStatus();
+      pollStatus(token);
     })
     .catch(function(e) {
       btn.textContent = '\u89e6\u53d1\u5931\u8d25';
-      se.textContent = '\u672a\u80fd\u8fde\u63a5\u672c\u5730API\uff08' + e.message + '\uff09';
+      se.textContent = '\u5199\u5165\u5931\u8d25: ' + e.message;
       se.style.background = '#fee2e2';
       se.style.color = '#991b1b';
       setTimeout(function() { btn.disabled = false; btn.textContent = '\u7acb\u5373\u62e8\u53d6'; }, 5000);
@@ -364,19 +362,19 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
   }
 
   var pollTimer = null;
-  function pollStatus() {
+  function pollStatus(token) {
     if (pollTimer) clearTimeout(pollTimer);
-    fetch('http://127.0.0.1:8765/api/status')
-      .then(function(r) { return r.json(); })
+    fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/trigger.json?t=' + Date.now())
+      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function(data) {
         var se = document.getElementById('configStatus');
         var btn = document.getElementById('btnTrigger');
-        if (data.scrape_running) {
-          se.textContent = data.progress || '\u8f6e\u8be2\u4e2d...';
+        if (data.status === 'pending') {
+          se.textContent = '\u8f6e\u8be2\u4e2d... ' + (data.progress || '');
           se.style.background = '#dbeafe';
           se.style.color = '#1e40af';
           btn.textContent = '\u8f6e\u8be2\u4e2d';
-          pollTimer = setTimeout(pollStatus, 5000);
+          pollTimer = setTimeout(function() { pollStatus(token); }, 30000);
         } else {
           se.textContent = '\u6570\u636e\u5df2\u66f4\u65b0\uff0c\u5237\u65b0\u9875\u9762';
           se.style.background = '#d1fae5';
@@ -388,11 +386,15 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       })
       .catch(function() {
         var se = document.getElementById('configStatus');
-        se.textContent = '\u7b49\u5f85API\u54cd\u5e94...';
-        pollTimer = setTimeout(pollStatus, 8000);
+        se.textContent = '\u7b49\u5f85\u4e91\u7aef\u54cd\u5e94... (30s)';
+        pollTimer = setTimeout(function() { pollStatus(token); }, 30000);
       });
   }
 
+
+  function b64enc(str) {
+    return btoa(unescape(encodeURIComponent(str)));
+  }
 
   function putFile(path, content, token) {
     var url = 'https://api.github.com/repos/' + REPO + '/contents/' + path;
@@ -402,7 +404,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
         return fetch(url, {
           method: 'PUT',
           headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: 'update', content: b64enc(JSON.stringify(content)), sha: d.sha || '' })
+          body: JSON.stringify({ message: 'user: trigger capture', content: b64enc(JSON.stringify(content)), sha: d.sha || '' })
         });
       })
       .then(function(r) { if (!r.ok) throw new Error('API ' + r.status); });
