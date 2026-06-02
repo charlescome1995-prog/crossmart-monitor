@@ -349,20 +349,12 @@ async function saveToken() {
     return;
   }
   localStorage.setItem('gh_token', token);
-  var statusEl = document.getElementById('configStatus');
-  statusEl.textContent = '已保存，正在加载数据...';
-  statusEl.style.background = '#fef3c7';
-  statusEl.style.color = '#92400e';
-  try {
-    await loadRawData();
-    statusEl.textContent = '已保存 ✓';
-    statusEl.style.background = '#d1fae5';
-    statusEl.style.color = '#065f46';
-  } catch(e) {
-    statusEl.textContent = '保存成功，但加载数据失败';
-    statusEl.style.background = '#fee2e2';
-    statusEl.style.color = '#991b1b';
-  }
+  alert('Token 已保存！开始加载数据...');
+  loadRawData().then(function() {
+    alert('数据加载成功！请查看下方表格');
+  }).catch(function(e) {
+    alert('数据加载失败: ' + e.message);
+  });
 }
 
 // 立即抓取（云端）
