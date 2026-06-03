@@ -101,7 +101,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       <div class="ctrl-group">
         <input type="password" id="ghTokenInput" placeholder="GitHub Token" style="width:180px">
         <button id="btnSaveToken">&#20445;&#23384; Token</button>
-        <button id="btnTrigger">&#31435;&#21363;&#25238;&#21462;</button>
+        <button id="btnTrigger">立即抓取</button>
         <span id="configStatus">&#35831;&#20808;&#20445;&#23384; Token</span>
       </div>
     </div>
@@ -316,12 +316,6 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
   }
 
   
-  function checkLocalAPI() {
-    return fetch('http://127.0.0.1:8765/api/status', { method: 'GET', signal: AbortSignal.timeout(3000) })
-      .then(function(r) { return r.ok ? true : false; })
-      .catch(function() { return false; });
-  }
-
   function triggerMonitor() {
     var btn = document.getElementById('btnTrigger');
     var se = document.getElementById('configStatus');
@@ -331,63 +325,39 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
     }
     btn.disabled = true;
     btn.textContent = '\u89e6\u53d1\u4e2d...';
-    se.textContent = '\u68c0\u67e5\u672c\u5730\u8fde\u63a5...';
+    se.textContent = '\u6b63\u5728\u5199\u5165\u914d\u7f6e...';
     se.style.background = '#fef3c7';
     se.style.color = '#92400e';
 
-    checkLocalAPI().then(function(localOk) {
-      if (!localOk) {
-        btn.disabled = false;
-        btn.textContent = '\u7acb\u5373\u62e8\u53d6';
-        se.textContent = '\u672c\u5730\u811a\u672c\u672a\u542f\u52a8\uff0c\u8bf7\u5148\u6253\u5f00 api_server.py';
-        se.style.background = '#fee2e2';
-        se.style.color = '#991b1b';
-        alert('本地采集脚本未运行！\n\n请在闫旭电脑上打开命令行，运行：\npython backend\\api_server.py\n\n然后刷新此页面再试。');
-        return;
-      }
+    var asins = [], kws = [];
+    for (var i = 0; i < 5; i++) {
+      var mainA = (document.getElementById('in-asin-' + i) || {}).value || '';
+      if (mainA.trim()) asins.push({ main: mainA.trim(), related: getRelatedVals('asin', i) });
+    }
+    for (var j = 0; j < 5; j++) {
+      var mainK = (document.getElementById('in-kw-' + j) || {}).value || '';
+      if (mainK.trim()) kws.push({ main: mainK.trim(), related: getRelatedVals('kw', j) });
+    }
+    var cfg = { asins: asins, keywords: kws };
+    var trigger = { status: 'pending', triggered_at: new Date().toISOString(), progress: '' };
 
-      var asins = [], kws = [];
-      for (var i = 0; i < 5; i++) {
-        var mainA = (document.getElementById('in-asin-' + i) || {}).value || '';
-        if (mainA.trim()) asins.push({ main: mainA.trim(), related: getRelatedVals('asin', i) });
-      }
-      for (var j = 0; j < 5; j++) {
-        var mainK = (document.getElementById('in-kw-' + j) || {}).value || '';
-        if (mainK.trim()) kws.push({ main: mainK.trim(), related: getRelatedVals('kw', j) });
-      }
-      var cfg = { asins: asins, keywords: kws };
-      var trigger = { status: 'pending', triggered_at: new Date().toISOString() };
-
-      Promise.all([
-        putFile('backend/data/user_config.json', cfg, token),
-        putFile('backend/data/trigger.json', trigger, token)
-      ])
-      .then(function() {
-        se.textContent = '\u540c\u65f6\u547c\u54c8\u672c\u5730\u811a\u672c...';
-        se.style.background = '#dbeafe';
-        se.style.color = '#1e40af';
-        btn.textContent = '\u8f6e\u8be2\u4e2d';
-        return fetch('http://127.0.0.1:8765/api/trigger', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(cfg)
-        });
-      })
-      .then(function(r) { return r ? r.json() : null; })
-      .then(function(data) {
-        if (data && data.status === 'busy') {
-          se.textContent = '\u672c\u5730\u6b63\u5728\u8fd0\u884c\uff0c\u8bf7\u7a0d\u5019...';
-        } else {
-          se.textContent = '\u5df2\u89e6\u53d1\uff0c\u8bf7\u7a0d\u5019... (\u6b63\u5e38\u8f6e\u8be2 30s)';
-        }
-        pollStatus(token);
-      })
-      .catch(function(e) {
-        se.textContent = '\u672c\u5730\u8054\u63a5\u5931\u8d25\uff0c\u4f46\u4e91\u7aef\u5df2\u5199\u5165';
-        se.style.background = '#fef3c7';
-        se.style.color = '#92400e';
-        pollStatus(token);
-      });
+    Promise.all([
+      putFile('backend/data/user_config.json', cfg, token),
+      putFile('backend/data/trigger.json', trigger, token)
+    ])
+    .then(function() {
+      se.textContent = '\u5df2\u5199\u5165 GitHub\uff0c\u7b49\u5f85\u672c\u5730\u811a\u672c\u54cd\u5e94...';
+      se.style.background = '#dbeafe';
+      se.style.color = '#1e40af';
+      btn.textContent = '\u8f6e\u8be2\u4e2d';
+      pollStatus(token);
+    })
+    .catch(function(e) {
+      se.textContent = 'GitHub \u5199\u5165\u5931\u8d25: ' + e;
+      se.style.background = '#fee2e2';
+      se.style.color = '#991b1b';
+      btn.disabled = false;
+      btn.textContent = '\u7acb\u5373\u62e8\u53d6';
     });
   }
 
