@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-03T11:14:39",
+  "updated": "2026-06-03T11:40:52",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -60,6 +60,7 @@
       "expected_sub_cat": "",
       "sub_bsr": 1155,
       "history_main_bsr": [
+        1155,
         1155,
         1155,
         1155
