@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-03T21:09:46",
+  "updated": "2026-06-03T22:15:09",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -12,7 +12,7 @@
       "price": 44.0,
       "chg": 0.0,
       "rating": 4.0,
-      "reviews": 2014,
+      "reviews": 2021,
       "diff": {
         "price": {
           "current": 44.0,
@@ -28,10 +28,10 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 2014,
+          "current": 2021,
           "prev": 2014,
-          "change": "+0",
-          "direction": "same"
+          "change": "+7",
+          "direction": "up"
         },
         "bsr": {
           "current": 1149,
@@ -69,6 +69,7 @@
         1150,
         1148,
         1148,
+        1149,
         1149,
         1149,
         1149
@@ -121,7 +122,7 @@
       "title": "VALITIC Kojic Acid Dark Spot Remover Soap Bars with Vitamin C, Retinol, Collagen, Turmeric - Original Japanese Complex Infused with Hyaluronic Acid, Vitamin E, Shea Butter, Castile Olive Oil (2 Pack)",
       "brand": "",
       "img": "https://m.media-amazon.com/images/I/71FF60ZljPL._AC_UL320_.jpg",
-      "price": 14.98,
+      "price": 11.99,
       "chg": 0.0,
       "rating": 0,
       "reviews": 0,
@@ -276,7 +277,7 @@
           "type": "natural",
           "rank": "自然位：第1页第2位",
           "title": "VALITIC Kojic Acid Dark Spot Remover Soap Bars with Vitamin C, Retinol, Collagen, Turmeric - Original Japanese Complex Infused with Hyaluronic Acid, Vitamin E, Shea Butter, Castile Olive Oil (2 Pack)",
-          "price": "$14.98",
+          "price": "$11.99",
           "rating": "",
           "reviews": ""
         },
