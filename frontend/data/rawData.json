@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-03T18:12:48",
+  "updated": "2026-06-03T18:30:02",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -34,10 +34,10 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 1150,
+          "current": 1148,
           "prev": 1150,
-          "change": "+0",
-          "direction": "same"
+          "change": "2",
+          "direction": "up"
         }
       },
       "listing_status": "正常",
@@ -55,10 +55,10 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
       "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 1150,
+      "main_bsr": 1148,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 1150,
+      "sub_bsr": 1148,
       "history_main_bsr": [
         1155,
         1155,
@@ -66,7 +66,8 @@
         1155,
         1150,
         1150,
-        1150
+        1150,
+        1148
       ],
       "history_sub_bsr": [],
       "events": [],
