@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-03T10:47:24",
+  "updated": "2026-06-03T11:10:04",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -13,7 +13,33 @@
       "chg": 0.0,
       "rating": 4.1,
       "reviews": 2007,
-      "diff": {},
+      "diff": {
+        "price": {
+          "current": 44.0,
+          "prev": 44.0,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.1,
+          "prev": 4.1,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 2007,
+          "prev": 2007,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 1155,
+          "prev": 1155,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -34,6 +60,7 @@
       "expected_sub_cat": "",
       "sub_bsr": 1155,
       "history_main_bsr": [
+        1155,
         1155
       ],
       "history_sub_bsr": [],
