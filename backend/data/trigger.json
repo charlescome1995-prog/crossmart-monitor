@@ -1,1 +1,5 @@
-{"status":"pending","triggered_at":"2026-06-03T00:47:49.277Z","progress":""}
+{
+  "status": "pending",
+  "triggered_at": "2026-06-03T11:00:02.057455",
+  "author": "local-scheduler"
+}
