@@ -341,10 +341,8 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
     var cfg = { asins: asins, keywords: kws };
     var trigger = { status: 'pending', triggered_at: new Date().toISOString(), progress: '' };
 
-    Promise.all([
-      putFile('backend/data/user_config.json', cfg, token),
-      putFile('backend/data/trigger.json', trigger, token)
-    ])
+    putFile('backend/data/user_config.json', cfg, token)
+      .then(function() { return putFile('backend/data/trigger.json', trigger, token); })
     .then(function() {
       se.textContent = '\u5df2\u5199\u5165 GitHub\uff0c\u7b49\u5f85\u672c\u5730\u811a\u672c\u54cd\u5e94...';
       se.style.background = '#dbeafe';
@@ -396,7 +394,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
     return btoa(unescape(encodeURIComponent(str)));
   }
 
-  function putFile(path, content, token) {
+  function putFile(path, content, token, retryCount) {
     var url = 'https://api.github.com/repos/' + REPO + '/contents/' + path;
     return fetch(url, { headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' } })
       .then(function(r) { return r.ok ? r.json() : {}; })
@@ -407,7 +405,14 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
           body: JSON.stringify({ message: 'user: trigger capture', content: b64enc(JSON.stringify(content)), sha: d.sha || '' })
         });
       })
-      .then(function(r) { if (!r.ok) throw new Error('API ' + r.status); });
+      .then(function(r) {
+        if (!r.ok) {
+          if (r.status === 409 && (!retryCount || retryCount < 1)) {
+            return putFile(path, content, token, 1);
+          }
+          throw new Error('API ' + r.status);
+        }
+      });
   }
 
   function renderTable() {
