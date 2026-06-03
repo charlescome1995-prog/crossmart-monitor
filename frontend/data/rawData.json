@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-03T18:33:52",
+  "updated": "2026-06-03T21:05:02",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -11,8 +11,8 @@
       "img": "https://m.media-amazon.com/images/I/51YPCekMSSL._SX466_.jpg",
       "price": 44.0,
       "chg": 0.0,
-      "rating": 4.1,
-      "reviews": 2013,
+      "rating": 4.0,
+      "reviews": 2014,
       "diff": {
         "price": {
           "current": 44.0,
@@ -22,22 +22,22 @@
           "direction": "same"
         },
         "rating": {
-          "current": 4.1,
+          "current": 4.0,
           "prev": 4.1,
-          "change": "+0.0",
-          "direction": "same"
+          "change": "-0.1",
+          "direction": "dn"
         },
         "review_count": {
-          "current": 2013,
-          "prev": 2011,
-          "change": "+2",
+          "current": 2014,
+          "prev": 2013,
+          "change": "+1",
           "direction": "up"
         },
         "bsr": {
-          "current": 1148,
+          "current": 1149,
           "prev": 1148,
-          "change": "+0",
-          "direction": "same"
+          "change": "+1",
+          "direction": "dn"
         }
       },
       "listing_status": "正常",
@@ -55,10 +55,10 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
       "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 1148,
+      "main_bsr": 1149,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 1148,
+      "sub_bsr": 1149,
       "history_main_bsr": [
         1155,
         1155,
@@ -68,7 +68,8 @@
         1150,
         1150,
         1148,
-        1148
+        1148,
+        1149
       ],
       "history_sub_bsr": [],
       "events": [],
