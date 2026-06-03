@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-03T17:42:09",
+  "updated": "2026-06-03T17:46:47",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -29,15 +29,15 @@
         },
         "review_count": {
           "current": 2011,
-          "prev": 2007,
-          "change": "+4",
-          "direction": "up"
+          "prev": 2011,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
           "current": 1150,
-          "prev": 1155,
-          "change": "5",
-          "direction": "up"
+          "prev": 1150,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -64,6 +64,7 @@
         1155,
         1155,
         1155,
+        1150,
         1150
       ],
       "history_sub_bsr": [],
