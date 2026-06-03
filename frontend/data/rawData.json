@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-03T22:15:09",
+  "updated": "2026-06-03T22:18:57",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -29,9 +29,9 @@
         },
         "review_count": {
           "current": 2021,
-          "prev": 2014,
-          "change": "+7",
-          "direction": "up"
+          "prev": 2021,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
           "current": 1149,
@@ -69,6 +69,7 @@
         1150,
         1148,
         1148,
+        1149,
         1149,
         1149,
         1149,
