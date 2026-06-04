@@ -10,6 +10,11 @@ api_server.py - CrossMart Monitor 本地API服务
 3. 组合成 主ASIN + 关联ASIN = 5个一组
 4. 逐个抓取亚马逊数据（asin_monitor）
 5. 同步到前端
+
+新架构（2026-06-02）：纯本地轮询
+- 前端写入 trigger.json 到 GitHub
+- api_server.py 轮询 GitHub trigger.json，检测到 pending 则执行 run_monitor.py
+- 不再依赖 127.0.0.1:8765（远程访问不可达的问题）
 """
 import sys, os, json, subprocess, threading, time, urllib.request
 sys.stdout.reconfigure(encoding='utf-8')
@@ -23,27 +28,51 @@ CORS_HEADERS = {
     "Access-Control-Allow-Headers": "*",
 }
 
+REPO = "charlescome1995-prog/crossmart-monitor"
+RAW_BASE = f"https://raw.githubusercontent.com/{REPO}/main"
+API_BASE = f"https://api.github.com/repos/{REPO}"
+
 SCRAPE_STATUS = {"running": False, "last_result": None, "progress": "", "trigger_mode": False}
 MONITOR_PROCESS = None
 USER_CONFIG_PATH = os.path.join(PROJECT, 'data', 'user_config.json')
+GH_TOKEN_PATH = os.path.join(PROJECT, 'data', 'gh_token.txt')
 GH_TOKEN = os.environ.get("GH_TOKEN", "")
+
+# 从本地文件读取 token（由前端写入）
+def load_gh_token():
+    global GH_TOKEN
+    if GH_TOKEN:
+        return GH_TOKEN
+    if os.path.exists(GH_TOKEN_PATH):
+        with open(GH_TOKEN_PATH, 'r', encoding='utf-8') as f:
+            GH_TOKEN = f.read().strip()
+    return GH_TOKEN
+
+def save_gh_token(token):
+    global GH_TOKEN
+    GH_TOKEN = token
+    os.makedirs(os.path.dirname(GH_TOKEN_PATH), exist_ok=True)
+    with open(GH_TOKEN_PATH, 'w', encoding='utf-8') as f:
+        f.write(token)
+    print(f"[Token] 已保存到本地 ({len(token)} chars)")
 
 def load_config_from_github():
     """从GitHub加载用户配置（云端加载）"""
-    if not GH_TOKEN:
+    token = load_gh_token()
+    if not token:
         print("[配置] GH_TOKEN 未设置，尝试本地文件")
         if os.path.exists(USER_CONFIG_PATH):
             with open(USER_CONFIG_PATH, 'r', encoding='utf-8') as f:
                 return json.load(f)
         return None
     try:
-        url = "https://raw.githubusercontent.com/charlescome1995-prog/crossmart-monitor/main/backend/data/user_config.json"
+        url = f"{RAW_BASE}/backend/data/user_config.json"
         req = urllib.request.Request(url, headers={
-            "Authorization": f"token {GH_TOKEN}",
+            "Authorization": f"token {token}",
             "Accept": "application/vnd.github.v3.raw",
             "User-Agent": "crossmart-monitor/1.0"
         })
-        with urllib.request.urlopen(req, timeout=15) as r:
+        with urllib.request.urlopen(req, timeout=30) as r:
             content = r.read().decode("utf-8")
             print(f"[配置] 从GitHub加载: {content[:100]}")
             return json.loads(content)
@@ -54,9 +83,67 @@ def load_config_from_github():
                 return json.load(f)
         return None
 
+def fetch_github_json(url):
+    """从GitHub获取JSON（带token认证）"""
+    token = load_gh_token()
+    if not token:
+        return None
+    try:
+        req = urllib.request.Request(url, headers={
+            "Authorization": f"token {token}",
+            "Accept": "application/vnd.github.v3+json",
+            "User-Agent": "crossmart-monitor/1.0"
+        })
+        with urllib.request.urlopen(req, timeout=15) as r:
+            return json.loads(r.read().decode("utf-8"))
+    except Exception as e:
+        print(f"[GitHub] 请求失败 {url}: {e}")
+        return None
+
+def update_trigger_on_github(status, progress=""):
+    """更新GitHub上的trigger.json状态"""
+    token = load_gh_token()
+    if not token:
+        return
+    import base64
+    try:
+        url = f"{API_BASE}/contents/backend/data/trigger.json"
+        req = urllib.request.Request(url, headers={
+            "Authorization": f"token {token}",
+            "Accept": "application/vnd.github.v3+json",
+            "User-Agent": "crossmart-monitor/1.0"
+        })
+        with urllib.request.urlopen(req, timeout=10) as r:
+            current = json.loads(r.read().decode("utf-8"))
+            sha = current.get("sha", "")
+
+        content = json.dumps({
+            "status": status,
+            "triggered_at": current.get("triggered_at", ""),
+            "progress": progress,
+            "updated_at": time.strftime("%Y-%m-%dT%H:%M:%S")
+        }, ensure_ascii=False)
+        encoded = base64.b64encode(content.encode("utf-8")).decode("ascii")
+
+        put_req = urllib.request.Request(url, method="PUT", headers={
+            "Authorization": f"token {token}",
+            "Accept": "application/vnd.github.v3+json",
+            "Content-Type": "application/json",
+            "User-Agent": "crossmart-monitor/1.0"
+        })
+        body = json.dumps({
+            "message": "update trigger status",
+            "content": encoded,
+            "sha": sha
+        }).encode("utf-8")
+        put_req.data = body
+        with urllib.request.urlopen(put_req, timeout=10) as r:
+            print(f"[Trigger] GitHub trigger.json 更新为 {status}")
+    except Exception as e:
+        print(f"[Trigger] 更新失败: {e}")
+
 def ensure_edge():
     """确保Edge在9225端口运行"""
-    import urllib.request
     try:
         r = urllib.request.urlopen("http://127.0.0.1:9225/json", timeout=3)
         tabs = json.loads(r.read())
@@ -186,6 +273,111 @@ def run_full_scrape(main_asins):
     }
     print("\n[完成] 采集 %d 个ASIN" % len(results))
 
+# =============================================================================
+# 轮询线程：从 GitHub 读取 trigger.json，检测到 pending 则执行抓取
+# =============================================================================
+POLL_INTERVAL = 10  # 每 10 秒检查一次
+
+def polling_worker():
+    """后台轮询线程：检查 GitHub trigger.json，发现 pending 则执行"""
+    global SCRAPE_STATUS, MONITOR_PROCESS
+    print(f"[轮询] 启动，每 {POLL_INTERVAL} 秒检查 GitHub trigger.json")
+    
+    while True:
+        time.sleep(POLL_INTERVAL)
+        
+        if SCRAPE_STATUS["running"]:
+            continue
+        
+        token = load_gh_token()
+        if not token:
+            continue
+        
+        try:
+            url = f"{RAW_BASE}/backend/data/trigger.json?t={time.time()}"
+            req = urllib.request.Request(url, headers={
+                "Authorization": f"token {token}",
+                "Accept": "application/vnd.github.v3.raw",
+                "User-Agent": "crossmart-monitor/1.0"
+            })
+            with urllib.request.urlopen(req, timeout=15) as r:
+                trigger_data = json.loads(r.read().decode("utf-8"))
+            
+            if trigger_data.get("status") == "pending":
+                print("\n[轮询] 检测到 trigger.json pending，开始执行抓取...")
+                SCRAPE_STATUS["running"] = True
+                SCRAPE_STATUS["progress"] = "正在从 GitHub 加载配置..."
+                
+                # 加载配置
+                config = load_config_from_github()
+                if not config:
+                    print("[轮询] 无法加载配置，停止")
+                    update_trigger_on_github("error", "配置加载失败")
+                    SCRAPE_STATUS["running"] = False
+                    continue
+                
+                asins = config.get("asins", [])
+                keywords = config.get("keywords", [])
+                
+                # 保存到本地
+                os.makedirs(os.path.dirname(USER_CONFIG_PATH), exist_ok=True)
+                with open(USER_CONFIG_PATH, 'w', encoding='utf-8') as f:
+                    json.dump(config, f, ensure_ascii=False, indent=2)
+                
+                try:
+                    os.chdir(PROJECT)
+                    os.environ["CDP_PORT"] = "9225"
+                    
+                    if not ensure_edge():
+                        update_trigger_on_github("error", "Edge 启动失败")
+                        SCRAPE_STATUS["running"] = False
+                        continue
+                    
+                    update_trigger_on_github("running", "开始抓取...")
+                    SCRAPE_STATUS["progress"] = "运行 run_monitor.py..."
+                    
+                    # 执行 run_monitor.py
+                    monitor_script = os.path.join(PROJECT, "run_monitor.py")
+                    env = os.environ.copy()
+                    env['CDP_PORT'] = '9225'
+                    env['GH_TOKEN'] = token
+                    
+                    proc = subprocess.Popen(
+                        [sys.executable, monitor_script, '--config', json.dumps(config, ensure_ascii=False)],
+                        cwd=PROJECT,
+                        env=env,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.STDOUT,
+                        text=True,
+                        encoding='utf-8',
+                        errors='replace'
+                    )
+                    for line in proc.stdout:
+                        print(f"[run] {line}", end='')
+                    proc.wait()
+                    returncode = proc.returncode
+                    
+                    if returncode == 0:
+                        update_trigger_on_github("done", "抓取完成")
+                        print("[轮询] run_monitor.py 执行完成")
+                    else:
+                        update_trigger_on_github("error", f"执行失败: {returncode}")
+                        print(f"[轮询] run_monitor.py 失败 (exit {returncode})")
+                    
+                except subprocess.TimeoutExpired:
+                    update_trigger_on_github("error", "执行超时（600秒）")
+                except Exception as e:
+                    import traceback
+                    traceback.print_exc()
+                    update_trigger_on_github("error", str(e))
+                finally:
+                    SCRAPE_STATUS["running"] = False
+                    SCRAPE_STATUS["progress"] = ""
+        
+        except Exception as e:
+            # 网络错误不打印，避免刷屏
+            pass
+
 class ScrapeHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         print("[API] %s - %s" % (self.client_address[0], format % args))
@@ -214,7 +406,6 @@ class ScrapeHandler(BaseHTTPRequestHandler):
                 "last_result": SCRAPE_STATUS["last_result"]
             })
         elif self.path == "/api/config":
-            # 返回当前配置（来自GitHub或本地）
             cfg = load_config_from_github()
             self._send_json(cfg or {})
         else:
@@ -227,10 +418,66 @@ class ScrapeHandler(BaseHTTPRequestHandler):
             self._handle_save_config()
         elif self.path == "/api/trigger":
             self._handle_trigger()
+        elif self.path == "/api/token":
+            self._handle_token()
         else:
             self._send_json({"error": "not found"}, 404)
 
-    def _handle_save_config(self):
+    def _handle_token(self):
+        """前端写入 GitHub Token（保存到本地文件，供轮询线程使用）"""
+        content_len = int(self.headers.get("Content-Length", 0))
+        body = b""
+        if content_len > 0:
+            body = self.rfile.read(content_len)
+        if not body:
+            self._send_json({"status": "error"}, 400)
+            return
+        try:
+            data = json.loads(body)
+            token = data.get("token", "")
+            if token:
+                save_gh_token(token)
+                self._send_json({"status": "ok"})
+            else:
+                self._send_json({"status": "error"}, 400)
+        except:
+            self._send_json({"status": "error"}, 400)
+
+    def push_user_config_to_github(config_obj):
+    """将 user_config.json 同步推送到 GitHub 仓库"""
+    token = load_gh_token()
+    if not token:
+        print("[GitHub推送] 未配置 token，跳过")
+        return False
+    import base64
+    content = json.dumps(config_obj, ensure_ascii=False, indent=2)
+    encoded = base64.b64encode(content.encode('utf-8')).decode('ascii')
+    path = 'backend/data/user_config.json'
+    api_url = f"{API_BASE}/contents/{path}"
+    # 先获取当前 SHA
+    req = urllib.request.Request(api_url, headers={'Authorization': f'token {token}', 'Accept': 'application/vnd.github.v3+json'})
+    sha = None
+    try:
+        with urllib.request.urlopen(req, timeout=10) as r:
+            sha = json.loads(r.read()).get('sha')
+    except Exception:
+        pass  # 文件不存在则 sha 为 None
+    payload = json.dumps({
+        'message': 'chore: sync user_config.json from local',
+        'content': encoded,
+        'sha': sha
+    }).encode('utf-8')
+    req = urllib.request.Request(api_url, data=payload, headers={'Authorization': f'token {token}', 'Accept': 'application/vnd.github.v3+json'}, method='PUT')
+    try:
+        with urllib.request.urlopen(req, timeout=15) as r:
+            print("[GitHub推送] 成功")
+            return True
+    except Exception as e:
+        print(f"[GitHub推送] 失败: {e}")
+        return False
+
+
+def _handle_save_config(self):
         """保存用户输入的ASIN和关键词到本地文件"""
         content_len = int(self.headers.get("Content-Length", 0))
         body = b""
@@ -257,6 +504,8 @@ class ScrapeHandler(BaseHTTPRequestHandler):
                 json.dump(config, f, ensure_ascii=False, indent=2)
 
             print("[保存] ASINs=%d, KWs=%d -> %s" % (len(asins), len(keywords), USER_CONFIG_PATH))
+            # 同步推送到 GitHub
+            push_user_config_to_github(config)
             self._send_json({
                 "status": "ok",
                 "message": "配置已保存到本地",
@@ -274,14 +523,12 @@ class ScrapeHandler(BaseHTTPRequestHandler):
             self._send_json({"status": "busy", "message": "正在采集中，请稍候"})
             return
 
-        # 优先从GitHub读取配置（云端配置优先）
         main_asins = []
         gh_config = load_config_from_github()
         if gh_config:
             main_asins = [a.strip() for a in gh_config.get("asins", []) if a.strip()]
             print(f"[配置] 使用GitHub配置，共 {len(main_asins)} 个ASIN: {main_asins}")
 
-        # 回退：从请求体读取
         if not main_asins:
             content_len = int(self.headers.get("Content-Length", 0))
             body = b""
@@ -335,7 +582,6 @@ class ScrapeHandler(BaseHTTPRequestHandler):
             self._send_json({"status": "busy", "message": "正在采集中，请稍候"})
             return
 
-        # 获取配置（从请求体或 GitHub）
         content_len = int(self.headers.get("Content-Length", 0))
         body = b""
         if content_len > 0:
@@ -350,14 +596,12 @@ class ScrapeHandler(BaseHTTPRequestHandler):
             except:
                 pass
 
-        # 如果请求体没有配置，从 GitHub 读
         if not asins and not keywords:
             gh = load_config_from_github()
             if gh:
                 asins = gh.get("asins", [])
                 keywords = gh.get("keywords", [])
 
-        # 保存到本地 user_config.json（run_monitor.py 需要本地文件）
         config = {"asins": asins, "keywords": keywords}
         os.makedirs(os.path.dirname(USER_CONFIG_PATH), exist_ok=True)
         with open(USER_CONFIG_PATH, 'w', encoding='utf-8') as f:
@@ -376,26 +620,18 @@ class ScrapeHandler(BaseHTTPRequestHandler):
                 os.chdir(PROJECT)
                 os.environ["CDP_PORT"] = "9225"
 
-                # 确保 Edge 运行（默认 profile，带缓存登录态）
                 if not ensure_edge():
-                    SCRAPE_STATUS["last_result"] = {"status": "error", "error": "Edge\u542f\u52a8\u5931\u8d25"}
+                    SCRAPE_STATUS["last_result"] = {"status": "error", "error": "Edge启动失败"}
                     SCRAPE_STATUS["running"] = False
                     return
 
-                SCRAPE_STATUS["progress"] = "\u8fd0\u884c run_monitor.py..."
+                SCRAPE_STATUS["progress"] = "运行 run_monitor.py..."
 
-                # 写入本地 trigger.json（run_monitor.py 会读它）
-                trigger_path = os.path.join(PROJECT, "data", "trigger.json")
-                os.makedirs(os.path.dirname(trigger_path), exist_ok=True)
-                         # 通过 --config \u547d\u4ee4\u884c\u53c2\u6570\u76f4\u63a5\u4f20\u5165\u914d\u7f6e\uff08\u4e0d\u8d70 GitHub\uff09
                 cfg_json = json.dumps(config, ensure_ascii=False)
                 monitor_script = os.path.join(PROJECT, "run_monitor.py")
                 env = os.environ.copy()
                 env['CDP_PORT'] = '9225'
-                # GH_TOKEN 从环境变量或 user_config.json 里取
-                token = os.environ.get('GH_TOKEN', '')
-                if not token and GH_TOKEN:
-                    token = GH_TOKEN
+                token = load_gh_token()
                 if token:
                     env['GH_TOKEN'] = token
                 MONITOR_PROCESS = subprocess.run(
@@ -404,9 +640,9 @@ class ScrapeHandler(BaseHTTPRequestHandler):
                     env=env,
                     timeout=600
                 )
-                SCRAPE_STATUS["last_result"] = {"status": "ok", "message": "\u91c7\u96c6\u5b8c\u6210"}
+                SCRAPE_STATUS["last_result"] = {"status": "ok", "message": "采集完成"}
             except subprocess.TimeoutExpired:
-                SCRAPE_STATUS["last_result"] = {"status": "error", "error": "\u8d85\u65f6\uff08600s\uff09"}
+                SCRAPE_STATUS["last_result"] = {"status": "error", "error": "超时（600s）"}
             except Exception as e:
                 import traceback
                 traceback.print_exc()
@@ -421,12 +657,18 @@ class ScrapeHandler(BaseHTTPRequestHandler):
         t.start()
 
 def main():
+    # 启动轮询线程
+    poll_thread = threading.Thread(target=polling_worker, daemon=True)
+    poll_thread.start()
+    
     port = 8765
     server = HTTPServer(("127.0.0.1", port), ScrapeHandler)
     print("=" * 60)
     print("CrossMart Monitor API Server")
     print("  URL: http://127.0.0.1:%d" % port)
-    print("  流程: 主ASIN -> 卖家精灵找关联 -> 批量抓取 -> 同步前端")
+    print("  架构: GitHub trigger.json 轮询触发")
+    print("  Token: 在前端输入 GitHub Token（自动保存到本地）")
+    print("  轮询间隔: %d 秒" % POLL_INTERVAL)
     print("=" * 60)
     try:
         server.serve_forever()
