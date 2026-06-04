@@ -350,10 +350,23 @@ def _load_asin_history(asin):
 def build_keyword_item(kw, a):
     """构建关键词找到的 ASIN 的独立 items"""
     asin_key = a.get('asin', '')
-    price = safe_float(a.get('price', '')) or 0
-    rating = safe_float(a.get('rating', '')) or 0
-    reviews = safe_int(a.get('reviews', '')) or 0
-    # 尝试加载该 ASIN 的独立历史快照
+    # 尝试从 ASIN 独立目录加载完整数据（Phase A2 抓取后才有）
+    asin_dir = os.path.join(DATA_DIR, f'asin_{asin_key}')
+    asin_latest_path = os.path.join(asin_dir, 'latest.json')
+    sd = None
+    if os.path.exists(asin_latest_path):
+        with open(asin_latest_path, 'r', encoding='utf-8') as f:
+            sd = json.load(f).get('data', {})
+    # 优先用快照数据，回退到关键词搜索结果
+    snap_price = safe_float(sd.get('price', '') if sd else '')
+    snap_rating = safe_float(sd.get('rating', '') if sd else '')
+    snap_reviews = safe_int(sd.get('review_count', sd.get('reviews', '') if sd else '') if sd else '')
+    price = snap_price if snap_price is not None else (safe_float(a.get('price', '')) or 0)
+    rating = snap_rating if snap_rating is not None else (safe_float(a.get('rating', '')) or 0)
+    reviews = snap_reviews if snap_reviews is not None else (safe_int(a.get('reviews', '')) or 0)
+    main_bsr = extract_bsr(sd) if sd else None
+    main_cat = sd.get('bsr_subcategory', '') if sd else ''
+    # 历史快照
     history = _load_asin_history(asin_key)
     history_main_bsr = [h['bsr'] for h in history] if history else []
     history_price = [h['price'] for h in history] if history else []
@@ -364,8 +377,8 @@ def build_keyword_item(kw, a):
         "is_main": False,
         "logic_type": f"关键词-{kw}",
         "title": a.get('title', '')[:200],
-        "brand": a.get('brand', '')[:60] if a.get('brand') else '',
-        "img": a.get('main_image', a.get('img', '')),
+        "brand": (sd.get('brand', '') if sd else '')[:60] or a.get('brand', '')[:60] if a.get('brand') else '',
+        "img": (sd.get('main_image', '') if sd else '') or a.get('main_image', a.get('img', '')),
         "price": price,
         "chg": 0.0,
         "rating": rating,
@@ -384,12 +397,12 @@ def build_keyword_item(kw, a):
         "badges_lost": [],
         "coupon": "无",
         "prime_discount": "未开启",
-        "main_cat": '',
-        "expected_main_cat": '',
-        "main_bsr": 0,
+        "main_cat": main_cat,
+        "expected_main_cat": main_cat,
+        "main_bsr": main_bsr or 0,
         "sub_cat": '',
         "expected_sub_cat": '',
-        "sub_bsr": 0,
+        "sub_bsr": main_bsr or 0,
         "history_main_bsr": history_main_bsr,
         "history_sub_bsr": [],
         "history_price": history_price,
