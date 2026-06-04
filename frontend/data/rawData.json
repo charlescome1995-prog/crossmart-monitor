@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-04T21:14:21",
+  "updated": "2026-06-04T21:26:08",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -87,7 +87,33 @@
       "chg": 0.0,
       "rating": 4.2,
       "reviews": 11030,
-      "diff": {},
+      "diff": {
+        "price": {
+          "current": 14.0,
+          "prev": 14.0,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.2,
+          "prev": 4.2,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 11030,
+          "prev": 11030,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 3951,
+          "prev": 3951,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -108,13 +134,16 @@
       "expected_sub_cat": "",
       "sub_bsr": 3951,
       "history_main_bsr": [
+        3951,
         3951
       ],
       "history_sub_bsr": [],
       "history_price": [
+        14.0,
         14.0
       ],
       "history_rating": [
+        4.2,
         4.2
       ],
       "events": [],
@@ -132,7 +161,33 @@
       "chg": 0.0,
       "rating": 4.3,
       "reviews": 69869,
-      "diff": {},
+      "diff": {
+        "price": {
+          "current": 14.98,
+          "prev": 14.98,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.3,
+          "prev": 4.3,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 69869,
+          "prev": 69869,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 64,
+          "prev": 64,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -153,13 +208,16 @@
       "expected_sub_cat": "",
       "sub_bsr": 64,
       "history_main_bsr": [
+        64,
         64
       ],
       "history_sub_bsr": [],
       "history_price": [
+        14.98,
         14.98
       ],
       "history_rating": [
+        4.3,
         4.3
       ],
       "events": [],
@@ -177,7 +235,33 @@
       "chg": 0.0,
       "rating": 4.0,
       "reviews": 1898,
-      "diff": {},
+      "diff": {
+        "price": {
+          "current": 10.97,
+          "prev": 10.97,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.0,
+          "prev": 4.0,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 1898,
+          "prev": 1898,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 3744,
+          "prev": 3744,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -198,13 +282,16 @@
       "expected_sub_cat": "",
       "sub_bsr": 3744,
       "history_main_bsr": [
+        3744,
         3744
       ],
       "history_sub_bsr": [],
       "history_price": [
+        10.97,
         10.97
       ],
       "history_rating": [
+        4.0,
         4.0
       ],
       "events": [],
@@ -222,7 +309,33 @@
       "chg": 0.0,
       "rating": 4.1,
       "reviews": 26768,
-      "diff": {},
+      "diff": {
+        "price": {
+          "current": 21.99,
+          "prev": 21.99,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.1,
+          "prev": 4.1,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 26768,
+          "prev": 26768,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 4921,
+          "prev": 4921,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -243,13 +356,16 @@
       "expected_sub_cat": "",
       "sub_bsr": 4921,
       "history_main_bsr": [
+        4921,
         4921
       ],
       "history_sub_bsr": [],
       "history_price": [
+        21.99,
         21.99
       ],
       "history_rating": [
+        4.1,
         4.1
       ],
       "events": [],
@@ -283,15 +399,15 @@
         },
         "review_count": {
           "current": 2030,
-          "prev": 2021,
-          "change": "+9",
-          "direction": "up"
+          "prev": 2030,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
           "current": 1163,
-          "prev": 1149,
-          "change": "+14",
-          "direction": "dn"
+          "prev": 1163,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -328,10 +444,12 @@
         1149,
         1149,
         1149,
+        1163,
         1163
       ],
       "history_sub_bsr": [],
       "history_price": [
+        44.0,
         44.0,
         44.0,
         44.0,
@@ -358,6 +476,7 @@
         4.1,
         4.1,
         4.1,
+        4.0,
         4.0,
         4.0,
         4.0,
@@ -448,13 +567,16 @@
       "expected_sub_cat": "",
       "sub_bsr": 3951,
       "history_main_bsr": [
+        3951,
         3951
       ],
       "history_sub_bsr": [],
       "history_price": [
+        14.0,
         14.0
       ],
       "history_rating": [
+        4.2,
         4.2
       ],
       "events": []
@@ -492,13 +614,16 @@
       "expected_sub_cat": "",
       "sub_bsr": 64,
       "history_main_bsr": [
+        64,
         64
       ],
       "history_sub_bsr": [],
       "history_price": [
+        14.98,
         14.98
       ],
       "history_rating": [
+        4.3,
         4.3
       ],
       "events": []
@@ -536,13 +661,16 @@
       "expected_sub_cat": "",
       "sub_bsr": 4921,
       "history_main_bsr": [
+        4921,
         4921
       ],
       "history_sub_bsr": [],
       "history_price": [
+        21.99,
         21.99
       ],
       "history_rating": [
+        4.1,
         4.1
       ],
       "events": []
@@ -580,13 +708,16 @@
       "expected_sub_cat": "",
       "sub_bsr": 3744,
       "history_main_bsr": [
+        3744,
         3744
       ],
       "history_sub_bsr": [],
       "history_price": [
+        10.97,
         10.97
       ],
       "history_rating": [
+        4.0,
         4.0
       ],
       "events": []
