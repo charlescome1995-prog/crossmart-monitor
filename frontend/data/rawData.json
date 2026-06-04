@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-04T21:26:08",
+  "updated": "2026-06-05T05:17:24",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -8,11 +8,11 @@
       "logic_type": "主监控",
       "title": "The Ordinary Alpha Arbutin 2% + Hyaluronic Acid, Brightens Skin and Targets Dark Spots, 1 Fl Oz",
       "brand": "",
-      "img": "https://m.media-amazon.com/images/I/31d8ZzOlkZL._SX342_SY445_QL70_FMwebp_.jpg",
+      "img": "https://m.media-amazon.com/images/I/61fGiuO3+mL._SX522_.jpg",
       "price": 11.5,
       "chg": 0.0,
       "rating": 4.5,
-      "reviews": 6967,
+      "reviews": 6971,
       "diff": {
         "price": {
           "current": 11.5,
@@ -28,8 +28,8 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 6967,
-          "prev": 6967,
+          "current": 6971,
+          "prev": 6971,
           "change": "+0",
           "direction": "same"
         },
@@ -61,14 +61,20 @@
       "sub_bsr": 1135,
       "history_main_bsr": [
         1135,
+        1135,
+        1135,
         1135
       ],
       "history_sub_bsr": [],
       "history_price": [
         11.5,
+        11.5,
+        11.5,
         11.5
       ],
       "history_rating": [
+        4.5,
+        4.5,
         4.5,
         4.5
       ],
@@ -83,14 +89,14 @@
       "title": "AXIS-Y Dark Spot Correcting Glow Serum - 5% Niacinamide Dark Spot Remover For Face - Vegan Korean Skin Care Niacinamide Serum for All Skin Types (1.69 fl. oz.)",
       "brand": "AXIS-Y",
       "img": "https://m.media-amazon.com/images/I/61s0TewHtDL._SX466_.jpg",
-      "price": 14.0,
+      "price": 15.15,
       "chg": 0.0,
       "rating": 4.2,
-      "reviews": 11030,
+      "reviews": 11037,
       "diff": {
         "price": {
-          "current": 14.0,
-          "prev": 14.0,
+          "current": 15.15,
+          "prev": 15.15,
           "change": "+0.0",
           "pct": "+0.0%",
           "direction": "same"
@@ -102,14 +108,14 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 11030,
-          "prev": 11030,
+          "current": 11037,
+          "prev": 11037,
           "change": "+0",
           "direction": "same"
         },
         "bsr": {
-          "current": 3951,
-          "prev": 3951,
+          "current": 3949,
+          "prev": 3949,
           "change": "+0",
           "direction": "same"
         }
@@ -129,20 +135,26 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
       "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 3951,
+      "main_bsr": 3949,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 3951,
+      "sub_bsr": 3949,
       "history_main_bsr": [
         3951,
-        3951
+        3951,
+        3949,
+        3949
       ],
       "history_sub_bsr": [],
       "history_price": [
         14.0,
-        14.0
+        14.0,
+        15.15,
+        15.15
       ],
       "history_rating": [
+        4.2,
+        4.2,
         4.2,
         4.2
       ],
@@ -160,7 +172,7 @@
       "price": 14.98,
       "chg": 0.0,
       "rating": 4.3,
-      "reviews": 69869,
+      "reviews": 69901,
       "diff": {
         "price": {
           "current": 14.98,
@@ -176,8 +188,8 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 69869,
-          "prev": 69869,
+          "current": 69901,
+          "prev": 69901,
           "change": "+0",
           "direction": "same"
         },
@@ -209,14 +221,20 @@
       "sub_bsr": 64,
       "history_main_bsr": [
         64,
+        64,
+        64,
         64
       ],
       "history_sub_bsr": [],
       "history_price": [
         14.98,
+        14.98,
+        14.98,
         14.98
       ],
       "history_rating": [
+        4.3,
+        4.3,
         4.3,
         4.3
       ],
@@ -256,10 +274,10 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 3744,
+          "current": 3742,
           "prev": 3744,
-          "change": "+0",
-          "direction": "same"
+          "change": "2",
+          "direction": "up"
         }
       },
       "listing_status": "正常",
@@ -277,20 +295,23 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
       "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 3744,
+      "main_bsr": 3742,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 3744,
+      "sub_bsr": 3742,
       "history_main_bsr": [
         3744,
-        3744
+        3744,
+        3742
       ],
       "history_sub_bsr": [],
       "history_price": [
         10.97,
+        10.97,
         10.97
       ],
       "history_rating": [
+        4.0,
         4.0,
         4.0
       ],
@@ -308,7 +329,7 @@
       "price": 21.99,
       "chg": 0.0,
       "rating": 4.1,
-      "reviews": 26768,
+      "reviews": 26774,
       "diff": {
         "price": {
           "current": 21.99,
@@ -324,14 +345,14 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 26768,
-          "prev": 26768,
+          "current": 26774,
+          "prev": 26774,
           "change": "+0",
           "direction": "same"
         },
         "bsr": {
-          "current": 4921,
-          "prev": 4921,
+          "current": 4919,
+          "prev": 4919,
           "change": "+0",
           "direction": "same"
         }
@@ -351,20 +372,26 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
       "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 4921,
+      "main_bsr": 4919,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 4921,
+      "sub_bsr": 4919,
       "history_main_bsr": [
         4921,
-        4921
+        4921,
+        4919,
+        4919
       ],
       "history_sub_bsr": [],
       "history_price": [
         21.99,
+        21.99,
+        21.99,
         21.99
       ],
       "history_rating": [
+        4.1,
+        4.1,
         4.1,
         4.1
       ],
@@ -382,7 +409,7 @@
       "price": 44.0,
       "chg": 0.0,
       "rating": 4.0,
-      "reviews": 2030,
+      "reviews": 2038,
       "diff": {
         "price": {
           "current": 44.0,
@@ -398,10 +425,10 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 2030,
+          "current": 2038,
           "prev": 2030,
-          "change": "+0",
-          "direction": "same"
+          "change": "+8",
+          "direction": "up"
         },
         "bsr": {
           "current": 1163,
@@ -445,10 +472,12 @@
         1149,
         1149,
         1163,
+        1163,
         1163
       ],
       "history_sub_bsr": [],
       "history_price": [
+        44.0,
         44.0,
         44.0,
         44.0,
@@ -482,6 +511,7 @@
         4.0,
         4.0,
         4.0,
+        4.0,
         4.0
       ],
       "events": [],
@@ -494,11 +524,11 @@
       "logic_type": "关键词-dark spot",
       "title": "The Ordinary Alpha Arbutin 2% + Hyaluronic Acid, Brightens Skin and Targets Dark Spots, 1 Fl Oz",
       "brand": "",
-      "img": "https://m.media-amazon.com/images/I/31d8ZzOlkZL._SX342_SY445_QL70_FMwebp_.jpg",
+      "img": "https://m.media-amazon.com/images/I/61fGiuO3+mL._SX522_.jpg",
       "price": 11.5,
       "chg": 0.0,
       "rating": 4.5,
-      "reviews": 6967,
+      "reviews": 6971,
       "diff": {},
       "listing_status": "正常",
       "expected_listing_status": "正常",
@@ -521,63 +551,22 @@
       "sub_bsr": 1135,
       "history_main_bsr": [
         1135,
+        1135,
+        1135,
         1135
       ],
       "history_sub_bsr": [],
       "history_price": [
         11.5,
+        11.5,
+        11.5,
         11.5
       ],
       "history_rating": [
         4.5,
+        4.5,
+        4.5,
         4.5
-      ],
-      "events": []
-    },
-    {
-      "monitor_type": "KW",
-      "asin": "B091238V7N",
-      "is_main": false,
-      "logic_type": "关键词-dark spot",
-      "title": "AXIS-Y Dark Spot Correcting Glow Serum - 5% Niacinamide Dark Spot Remover For Face - Vegan Korean Skin Care Niacinamide Serum for All Skin Types (1.69 fl. oz.)",
-      "brand": "",
-      "img": "https://m.media-amazon.com/images/I/61s0TewHtDL._SX466_.jpg",
-      "price": 14.0,
-      "chg": 0.0,
-      "rating": 4.2,
-      "reviews": 11030,
-      "diff": {},
-      "listing_status": "正常",
-      "expected_listing_status": "正常",
-      "title_changed": false,
-      "img_changed": false,
-      "bullets_changed": false,
-      "description_changed": false,
-      "variant_status": "正常",
-      "variant_changed": false,
-      "deal_activity": "无",
-      "badges_current": [],
-      "badges_lost": [],
-      "coupon": "无",
-      "prime_discount": "未开启",
-      "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 3951,
-      "sub_cat": "",
-      "expected_sub_cat": "",
-      "sub_bsr": 3951,
-      "history_main_bsr": [
-        3951,
-        3951
-      ],
-      "history_sub_bsr": [],
-      "history_price": [
-        14.0,
-        14.0
-      ],
-      "history_rating": [
-        4.2,
-        4.2
       ],
       "events": []
     },
@@ -592,7 +581,7 @@
       "price": 14.98,
       "chg": 0.0,
       "rating": 4.3,
-      "reviews": 69869,
+      "reviews": 69901,
       "diff": {},
       "listing_status": "正常",
       "expected_listing_status": "正常",
@@ -615,14 +604,20 @@
       "sub_bsr": 64,
       "history_main_bsr": [
         64,
+        64,
+        64,
         64
       ],
       "history_sub_bsr": [],
       "history_price": [
         14.98,
+        14.98,
+        14.98,
         14.98
       ],
       "history_rating": [
+        4.3,
+        4.3,
         4.3,
         4.3
       ],
@@ -630,16 +625,16 @@
     },
     {
       "monitor_type": "KW",
-      "asin": "B0D8JTPVMN",
+      "asin": "B091238V7N",
       "is_main": false,
       "logic_type": "关键词-dark spot",
-      "title": "EnaSkin Dark Spot Remover Face & Body Serum: Age Spot Sun Spot Freckles Melasma Brown Spot - Advanced Formula with Niacinamide for Women and Men (1.0 Fl Oz)",
+      "title": "AXIS-Y Dark Spot Correcting Glow Serum - 5% Niacinamide Dark Spot Remover For Face - Vegan Korean Skin Care Niacinamide Serum for All Skin Types (1.69 fl. oz.)",
       "brand": "",
-      "img": "https://m.media-amazon.com/images/I/71a4W64tZtL._SX466_.jpg",
-      "price": 21.99,
+      "img": "https://m.media-amazon.com/images/I/61s0TewHtDL._SX466_.jpg",
+      "price": 15.15,
       "chg": 0.0,
-      "rating": 4.1,
-      "reviews": 26768,
+      "rating": 4.2,
+      "reviews": 11037,
       "diff": {},
       "listing_status": "正常",
       "expected_listing_status": "正常",
@@ -656,20 +651,79 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
       "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 4921,
+      "main_bsr": 3949,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 4921,
+      "sub_bsr": 3949,
+      "history_main_bsr": [
+        3951,
+        3951,
+        3949,
+        3949
+      ],
+      "history_sub_bsr": [],
+      "history_price": [
+        14.0,
+        14.0,
+        15.15,
+        15.15
+      ],
+      "history_rating": [
+        4.2,
+        4.2,
+        4.2,
+        4.2
+      ],
+      "events": []
+    },
+    {
+      "monitor_type": "KW",
+      "asin": "B0D8JTPVMN",
+      "is_main": false,
+      "logic_type": "关键词-dark spot",
+      "title": "EnaSkin Dark Spot Remover Face & Body Serum: Age Spot Sun Spot Freckles Melasma Brown Spot - Advanced Formula with Niacinamide for Women and Men (1.0 Fl Oz)",
+      "brand": "",
+      "img": "https://m.media-amazon.com/images/I/71a4W64tZtL._SX466_.jpg",
+      "price": 21.99,
+      "chg": 0.0,
+      "rating": 4.1,
+      "reviews": 26774,
+      "diff": {},
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "无",
+      "badges_current": [],
+      "badges_lost": [],
+      "coupon": "无",
+      "prime_discount": "未开启",
+      "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
+      "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
+      "main_bsr": 4919,
+      "sub_cat": "",
+      "expected_sub_cat": "",
+      "sub_bsr": 4919,
       "history_main_bsr": [
         4921,
-        4921
+        4921,
+        4919,
+        4919
       ],
       "history_sub_bsr": [],
       "history_price": [
         21.99,
+        21.99,
+        21.99,
         21.99
       ],
       "history_rating": [
+        4.1,
+        4.1,
         4.1,
         4.1
       ],
@@ -703,20 +757,23 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
       "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 3744,
+      "main_bsr": 3742,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 3744,
+      "sub_bsr": 3742,
       "history_main_bsr": [
         3744,
-        3744
+        3744,
+        3742
       ],
       "history_sub_bsr": [],
       "history_price": [
         10.97,
+        10.97,
         10.97
       ],
       "history_rating": [
+        4.0,
         4.0,
         4.0
       ],
@@ -737,15 +794,6 @@
           "reviews": "1"
         },
         {
-          "asin": "B091238V7N",
-          "type": "unknown",
-          "rank": "",
-          "title": "AXIS-Y Dark Spot Correcting Glow Serum - 5% Niacinamide Dark Spot Remover For Face - Vegan Korean Skin Care Niacinamide Serum for All Skin Types (1.69 fl. oz.)",
-          "price": "",
-          "rating": "",
-          "reviews": "1"
-        },
-        {
           "asin": "B09MFMCTRK",
           "type": "unknown",
           "rank": "",
@@ -753,6 +801,15 @@
           "price": "$14.98",
           "rating": "",
           "reviews": ""
+        },
+        {
+          "asin": "B091238V7N",
+          "type": "unknown",
+          "rank": "",
+          "title": "AXIS-Y Dark Spot Correcting Glow Serum - 5% Niacinamide Dark Spot Remover For Face - Vegan Korean Skin Care Niacinamide Serum for All Skin Types (1.69 fl. oz.)",
+          "price": "$15.15",
+          "rating": "",
+          "reviews": "1"
         },
         {
           "asin": "B0D8JTPVMN",
