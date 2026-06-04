@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-03T22:18:57",
+  "updated": "2026-06-04T09:59:32",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -76,6 +76,38 @@
         1149
       ],
       "history_sub_bsr": [],
+      "history_price": [
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0
+      ],
+      "history_rating": [
+        4.1,
+        4.1,
+        4.1,
+        4.1,
+        4.1,
+        4.1,
+        4.1,
+        4.1,
+        4.1,
+        4.0,
+        4.0,
+        4.0,
+        4.0,
+        4.0
+      ],
       "events": [],
       "related_asins": []
     },
@@ -113,6 +145,8 @@
       "sub_bsr": 0,
       "history_main_bsr": [],
       "history_sub_bsr": [],
+      "history_price": [],
+      "history_rating": [],
       "events": []
     },
     {
@@ -149,6 +183,8 @@
       "sub_bsr": 0,
       "history_main_bsr": [],
       "history_sub_bsr": [],
+      "history_price": [],
+      "history_rating": [],
       "events": []
     },
     {
@@ -185,6 +221,8 @@
       "sub_bsr": 0,
       "history_main_bsr": [],
       "history_sub_bsr": [],
+      "history_price": [],
+      "history_rating": [],
       "events": []
     },
     {
@@ -221,6 +259,8 @@
       "sub_bsr": 0,
       "history_main_bsr": [],
       "history_sub_bsr": [],
+      "history_price": [],
+      "history_rating": [],
       "events": []
     },
     {
@@ -257,6 +297,8 @@
       "sub_bsr": 0,
       "history_main_bsr": [],
       "history_sub_bsr": [],
+      "history_price": [],
+      "history_rating": [],
       "events": []
     }
   ],
