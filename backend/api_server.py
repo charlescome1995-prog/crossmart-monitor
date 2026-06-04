@@ -143,7 +143,7 @@ def update_trigger_on_github(status, progress=""):
         print(f"[Trigger] 更新失败: {e}")
 
 def ensure_edge():
-    """确保Edge在9225端口运行"""
+    """确保Edge在9225端口运行（polling worker用，不重复启动已有实例）"""
     try:
         r = urllib.request.urlopen("http://127.0.0.1:9225/json", timeout=3)
         tabs = json.loads(r.read())
@@ -151,31 +151,9 @@ def ensure_edge():
         return True
     except:
         pass
-    # 自动启动Edge
-    exe = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-    if not os.path.exists(exe):
-        exe = r"C:\Program Files\Microsoft\Edge\Application\msedge.exe"
-    print("[Edge] 启动中...")
-    subprocess.Popen([
-        exe,
-        "--remote-debugging-port=9225",
-        "--remote-allow-origins=*",
-        "--no-first-run",
-        "--no-default-browser-check",
-        "--new-window",
-        "about:blank",
-    ])
-    deadline = time.time() + 20
-    while time.time() < deadline:
-        try:
-            r = urllib.request.urlopen("http://127.0.0.1:9225/json", timeout=3)
-            json.loads(r.read())
-            print("[Edge] 启动成功")
-            return True
-        except:
-            time.sleep(2)
-    print("[Edge] 启动失败")
-    return False
+    # Edge未响应，不再重复启动（保持用户已有窗口）
+    print("[Edge] 端口9225无响应，跳过启动（保持已有窗口）")
+    return True  # 不卡住轮询线程
 
 def find_related_asins(main_asin, max_count=4):
     """
@@ -504,10 +482,11 @@ class ScrapeHandler(BaseHTTPRequestHandler):
 
             print("[保存] ASINs=%d, KWs=%d -> %s" % (len(asins), len(keywords), USER_CONFIG_PATH))
             # 同步推送到 GitHub
-            push_user_config_to_github(config)
+            cloud_ok = push_user_config_to_github(config)
             self._send_json({
                 "status": "ok",
-                "message": "配置已保存到本地",
+                "message": "配置已保存到本地" + ("" if cloud_ok else "（云端同步失败）"),
+                "cloud_sync": cloud_ok,
                 "path": USER_CONFIG_PATH,
                 "count": {"asins": len(asins), "keywords": len(keywords)}
             })
