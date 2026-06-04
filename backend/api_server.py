@@ -444,40 +444,39 @@ class ScrapeHandler(BaseHTTPRequestHandler):
             self._send_json({"status": "error"}, 400)
 
     def push_user_config_to_github(config_obj):
-    """将 user_config.json 同步推送到 GitHub 仓库"""
-    token = load_gh_token()
-    if not token:
-        print("[GitHub推送] 未配置 token，跳过")
-        return False
-    import base64
-    content = json.dumps(config_obj, ensure_ascii=False, indent=2)
-    encoded = base64.b64encode(content.encode('utf-8')).decode('ascii')
-    path = 'backend/data/user_config.json'
-    api_url = f"{API_BASE}/contents/{path}"
-    # 先获取当前 SHA
-    req = urllib.request.Request(api_url, headers={'Authorization': f'token {token}', 'Accept': 'application/vnd.github.v3+json'})
-    sha = None
-    try:
-        with urllib.request.urlopen(req, timeout=10) as r:
-            sha = json.loads(r.read()).get('sha')
-    except Exception:
-        pass  # 文件不存在则 sha 为 None
-    payload = json.dumps({
-        'message': 'chore: sync user_config.json from local',
-        'content': encoded,
-        'sha': sha
-    }).encode('utf-8')
-    req = urllib.request.Request(api_url, data=payload, headers={'Authorization': f'token {token}', 'Accept': 'application/vnd.github.v3+json'}, method='PUT')
-    try:
-        with urllib.request.urlopen(req, timeout=15) as r:
-            print("[GitHub推送] 成功")
-            return True
-    except Exception as e:
-        print(f"[GitHub推送] 失败: {e}")
-        return False
+        """将 user_config.json 同步推送到 GitHub 仓库"""
+        token = load_gh_token()
+        if not token:
+            print("[GitHub推送] 未配置 token，跳过")
+            return False
+        import base64
+        content = json.dumps(config_obj, ensure_ascii=False, indent=2)
+        encoded = base64.b64encode(content.encode('utf-8')).decode('ascii')
+        path = 'backend/data/user_config.json'
+        api_url = f"{API_BASE}/contents/{path}"
+        # 先获取当前 SHA
+        req = urllib.request.Request(api_url, headers={'Authorization': f'token {token}', 'Accept': 'application/vnd.github.v3+json'})
+        sha = None
+        try:
+            with urllib.request.urlopen(req, timeout=10) as r:
+                sha = json.loads(r.read()).get('sha')
+        except Exception:
+            pass  # 文件不存在则 sha 为 None
+        payload = json.dumps({
+            'message': 'chore: sync user_config.json from local',
+            'content': encoded,
+            'sha': sha
+        }).encode('utf-8')
+        req = urllib.request.Request(api_url, data=payload, headers={'Authorization': f'token {token}', 'Accept': 'application/vnd.github.v3+json'}, method='PUT')
+        try:
+            with urllib.request.urlopen(req, timeout=15) as r:
+                print("[GitHub推送] 成功")
+                return True
+        except Exception as e:
+            print(f"[GitHub推送] 失败: {e}")
+            return False
 
-
-def _handle_save_config(self):
+    def _handle_save_config(self):
         """保存用户输入的ASIN和关键词到本地文件"""
         content_len = int(self.headers.get("Content-Length", 0))
         body = b""
