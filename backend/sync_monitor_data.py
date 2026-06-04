@@ -327,14 +327,40 @@ def build_related_item(asin, rel_data, main_asin=None):
     }
 
 
+def _load_asin_history(asin):
+    """加载 ASIN 的历史快照（如果存在 asin_ 目录）"""
+    d = os.path.join(DATA_DIR, f'asin_{asin}')
+    if not os.path.isdir(d):
+        return []
+    snaps = sorted(glob.glob(os.path.join(d, 'snapshot_*.json')))
+    history = []
+    for sp in snaps:
+        with open(sp, 'r', encoding='utf-8') as f:
+            s = json.load(f)
+        sd = s.get('data', s)
+        history.append({
+            'price': safe_float(sd.get('price', '')),
+            'bsr': extract_bsr(sd),
+            'rating': safe_float(sd.get('rating', '')),
+            'timestamp': s.get('timestamp', '')
+        })
+    return history
+
+
 def build_keyword_item(kw, a):
     """构建关键词找到的 ASIN 的独立 items"""
+    asin_key = a.get('asin', '')
     price = safe_float(a.get('price', '')) or 0
     rating = safe_float(a.get('rating', '')) or 0
     reviews = safe_int(a.get('reviews', '')) or 0
+    # 尝试加载该 ASIN 的独立历史快照
+    history = _load_asin_history(asin_key)
+    history_main_bsr = [h['bsr'] for h in history] if history else []
+    history_price = [h['price'] for h in history] if history else []
+    history_rating = [h['rating'] for h in history] if history else []
     return {
         "monitor_type": "KW",
-        "asin": a.get('asin', ''),
+        "asin": asin_key,
         "is_main": False,
         "logic_type": f"关键词-{kw}",
         "title": a.get('title', '')[:200],
@@ -364,8 +390,10 @@ def build_keyword_item(kw, a):
         "sub_cat": '',
         "expected_sub_cat": '',
         "sub_bsr": 0,
-        "history_main_bsr": [],
+        "history_main_bsr": history_main_bsr,
         "history_sub_bsr": [],
+        "history_price": history_price,
+        "history_rating": history_rating,
         "events": []
     }
 
