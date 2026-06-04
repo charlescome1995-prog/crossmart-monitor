@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-05T05:17:24",
+  "updated": "2026-06-05T05:22:37",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -275,9 +275,9 @@
         },
         "bsr": {
           "current": 3742,
-          "prev": 3744,
-          "change": "2",
-          "direction": "up"
+          "prev": 3742,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -302,15 +302,18 @@
       "history_main_bsr": [
         3744,
         3744,
+        3742,
         3742
       ],
       "history_sub_bsr": [],
       "history_price": [
         10.97,
         10.97,
+        10.97,
         10.97
       ],
       "history_rating": [
+        4.0,
         4.0,
         4.0,
         4.0
@@ -426,9 +429,9 @@
         },
         "review_count": {
           "current": 2038,
-          "prev": 2030,
-          "change": "+8",
-          "direction": "up"
+          "prev": 2038,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
           "current": 1163,
@@ -473,10 +476,12 @@
         1149,
         1163,
         1163,
+        1163,
         1163
       ],
       "history_sub_bsr": [],
       "history_price": [
+        44.0,
         44.0,
         44.0,
         44.0,
@@ -505,6 +510,7 @@
         4.1,
         4.1,
         4.1,
+        4.0,
         4.0,
         4.0,
         4.0,
@@ -764,15 +770,18 @@
       "history_main_bsr": [
         3744,
         3744,
+        3742,
         3742
       ],
       "history_sub_bsr": [],
       "history_price": [
         10.97,
         10.97,
+        10.97,
         10.97
       ],
       "history_rating": [
+        4.0,
         4.0,
         4.0,
         4.0
