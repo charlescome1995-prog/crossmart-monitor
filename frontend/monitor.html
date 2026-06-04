@@ -105,7 +105,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       <div class="ctrl-group">
         <input type="password" id="ghTokenInput" placeholder="GitHub Token" style="width:180px">
         <button id="btnSaveToken">&#20445;&#23384; Token</button>
-         <button id="btnTrigger">立即抓取</button>
+        <button id="btnSaveConfig">保存配置</button>
         <span id="configStatus">&#35831;&#20808;&#20445;&#23384; Token</span>
       </div>
     </div>
@@ -363,6 +363,45 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
     });
   }
 
+  function saveConfig() {
+    var btn = document.getElementById('btnSaveConfig');
+    var se = document.getElementById('configStatus');
+    var token = (document.getElementById('ghTokenInput') || {}).value.trim();
+    if (!token) { alert('请先输入 GitHub Token'); return; }
+    btn.disabled = true;
+    se.textContent = '\u6b63\u5728\u4fdd\u5b58...';
+    se.style.background = '#fef3c7';
+    se.style.color = '#92400e';
+
+    var asins = [], kws = [];
+    for (var i = 0; i < 5; i++) {
+      var mainA = (document.getElementById('in-asin-' + i) || {}).value || '';
+      if (mainA.trim()) asins.push({ main: mainA.trim(), related: getRelatedVals('asin', i) });
+    }
+    for (var j = 0; j < 5; j++) {
+      var mainK = (document.getElementById('in-kw-' + j) || {}).value || '';
+      if (mainK.trim()) kws.push({ main: mainK.trim(), related: getRelatedVals('kw', j) });
+    }
+    var cfg = { asins: asins, keywords: kws };
+    var trigger = { status: 'pending', action: 'save', data: cfg, triggered_at: new Date().toISOString(), progress: '' };
+
+    putFile('backend/data/user_config.json', cfg, token)
+      .then(function() { return putFile('backend/data/trigger.json', trigger, token); })
+      .then(function() {
+        se.textContent = '\u5df2\u4fdd\u5b58\u5e76\u63a8\u9001\u5230\u4e91\u7aef\uff0c\u7b49\u5f85\u672c\u5730\u811a\u672c\u54cd\u5e94...';
+        se.style.background = '#dbeafe';
+        se.style.color = '#1e40af';
+        btn.disabled = false;
+        pollStatus(token);
+      })
+      .catch(function(e) {
+        se.textContent = '\u4fdd\u5b58\u5931\u8d25: ' + e;
+        se.style.background = '#fee2e2';
+        se.style.color = '#991b1b';
+        btn.disabled = false;
+      });
+  }
+
   var pollTimer = null;
   function pollStatus(token) {
     if (pollTimer) clearTimeout(pollTimer);
@@ -535,6 +574,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
   }
 
   document.getElementById('btnTrigger').addEventListener('click', triggerMonitor);
+  document.getElementById('btnSaveConfig').addEventListener('click', saveConfig);
   document.getElementById('btnSaveToken').addEventListener('click', saveToken);
   document.getElementById('btnExport').addEventListener('click', exportToExcel);
 })();

@@ -282,18 +282,34 @@ def polling_worker():
                 trigger_data = json.loads(r.read().decode("utf-8"))
             
             if trigger_data.get("status") == "pending":
-                print("\n[轮询] 检测到 trigger.json pending，开始执行抓取...")
+                action = trigger_data.get("action", "scrape")
+                print(f"\n[轮询] 检测到 trigger.json pending (action={action})")
                 SCRAPE_STATUS["running"] = True
+
+                if action == "save":
+                    # 保存配置：直接从 trigger.data 取配置，写入 user_config.json 并推送 GitHub
+                    cfg_data = trigger_data.get("data", {})
+                    asins = cfg_data.get("asins", [])
+                    keywords = cfg_data.get("keywords", [])
+                    config = {"asins": asins, "keywords": keywords}
+                    os.makedirs(os.path.dirname(USER_CONFIG_PATH), exist_ok=True)
+                    with open(USER_CONFIG_PATH, 'w', encoding='utf-8') as f:
+                        json.dump(config, f, ensure_ascii=False, indent=2)
+                    push_user_config_to_github(config)
+                    update_trigger_on_github("done", "配置已保存")
+                    SCRAPE_STATUS["running"] = False
+                    print("[轮询] 配置保存完成")
+                    continue
+
+                # action == "scrape" 或其他：执行抓取
                 SCRAPE_STATUS["progress"] = "正在从 GitHub 加载配置..."
-                
-                # 加载配置
                 config = load_config_from_github()
                 if not config:
                     print("[轮询] 无法加载配置，停止")
                     update_trigger_on_github("error", "配置加载失败")
                     SCRAPE_STATUS["running"] = False
                     continue
-                
+
                 asins = config.get("asins", [])
                 keywords = config.get("keywords", [])
                 
