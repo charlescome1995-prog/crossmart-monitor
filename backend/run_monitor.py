@@ -16,9 +16,9 @@ CONFIG_FILE = os.path.join(DATA_DIR, "user_config.json")
 REPO = "charlescome1995-prog/crossmart-monitor"
 
 DEFAULT_SCHEDULE = {
-    "morning":   {"anchor": "06:20", "window_start": "06:20", "window_end": "07:20", "jitter_max_minutes": 30, "run_probability": 1.0},
-    "midday":     {"anchor": "06:30", "window_start": "06:30", "window_end": "07:30", "jitter_max_minutes": 30, "run_probability": 1.0},
-    "evening":    {"anchor": "06:40", "window_start": "06:40", "window_end": "07:40", "jitter_max_minutes": 30, "run_probability": 1.0},
+    "morning":   {"anchor": "06:20", "window_start": "06:20", "window_end": "07:20", "jitter_max_minutes": 1, "run_probability": 1.0},
+    "midday":     {"anchor": "06:30", "window_start": "06:30", "window_end": "07:30", "jitter_max_minutes": 1, "run_probability": 1.0},
+    "evening":    {"anchor": "06:40", "window_start": "06:40", "window_end": "07:40", "jitter_max_minutes": 1, "run_probability": 1.0},
 }
 
 KEYWORD_LIST_FILE = os.path.join(DATA_DIR, "keyword_list.json")
@@ -220,6 +220,7 @@ def run_monitor(config_override=None):
         asins = config.get("asins", [])
         keywords = config.get("keywords", [])
         schedule = config.get("schedule", DEFAULT_SCHEDULE)
+        trigger = {}  # API 模式：trigger 由 api_server.py 管理本地文件无需写入
         print("[CONFIG] 使用 API 传入配置: " + str(len(asins)) + " 个ASIN, " + str(len(keywords)) + " 个关键词")
     else:
         trigger = load_trigger()
@@ -274,6 +275,25 @@ def run_monitor(config_override=None):
             print("  关键词 " + kw + " 执行失败，继续")
         time.sleep(random.randint(15, 40))
 
+        # ── Phase A2: 抓取关键词 Top5 ASIN 的完整详情 ──
+        kw_safe = kw.replace(" ", "_").replace("/", "_")
+        kw_latest = os.path.join(DATA_DIR, "processed", f"kw_{kw_safe}", "latest.json")
+        if os.path.exists(kw_latest):
+            with open(kw_latest, "r", encoding="utf-8") as f:
+                kw_data = json.load(f)
+            top5 = kw_data.get("top_asins", [])
+            for a in top5:
+                aasin = a.get("asin", "").strip()
+                if not aasin:
+                    continue
+                print(f"\n--- 关键词ASIN详情: {aasin} (来源: {kw}) ---")
+                ok = run_command(
+                    [sys.executable, "-m", "browser.asin_monitor", aasin],
+                    cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
+                if not ok:
+                    print(f"  关键词ASIN {aasin} 执行失败，继续")
+                time.sleep(random.randint(20, 50))
+
     # ── Phase B: ASIN 监控（主ASIN + 关联ASIN）──
     random.shuffle(asins)
     for asin_entry in asins:
@@ -320,4 +340,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', type=str, help='JSON config string (bypass GitHub read)')
     args = parser.parse_args()
-    run_monitor(config_override=json.loads(args.config) if args.config else None)
+    _cfg = None
+    if args.config and args.config.strip():
+        _cfg = json.loads(args.config)
+    run_monitor(config_override=_cfg)
