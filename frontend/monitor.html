@@ -384,28 +384,15 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       if (mainK.trim()) kws.push({ main: mainK.trim(), related: getRelatedVals('kw', j) });
     }
     var cfg = { asins: asins, keywords: kws };
-
-    // 1. 写入本地（立即生效）
-    fetch('http://localhost:8765/api/save-config', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(cfg)
-    })
-      .then(function(r) { return r.json(); })
-      .then(function(res) {
-        if (res.status === 'ok') {
-          se.textContent = '\u672c\u5730\u5df2\u4fdd\u5b58' + (res.cloud_sync ? ' \u4e91\u7aef\u540c\u6b65\u6210' : ' \u4e91\u7aef\u540c\u6b65\u5931\u8d25');
-          se.style.background = res.cloud_sync ? '#d1fae5' : '#fef3c7';
-          se.style.color = res.cloud_sync ? '#065f46' : '#92400e';
-        } else {
-          se.textContent = '\u672c\u5730\u4fdd\u5b58\u5931\u8d25: ' + (res.message || '');
-          se.style.background = '#fee2e2';
-          se.style.color = '#991b1b';
-        }
+    putFile('backend/data/user_config.json', cfg, token)
+      .then(function() {
+        se.textContent = '\u5df2\u4fdd\u5b58\u5e76\u63a8\u9001\u5230\u4e91\u7aef';
+        se.style.background = '#d1fae5';
+        se.style.color = '#065f46';
         btn.disabled = false;
       })
       .catch(function(e) {
-        se.textContent = '\u8bf7\u6c42\u5931\u8d25: ' + e;
+        se.textContent = '\u4fdd\u5b58\u5931\u8d25: ' + e;
         se.style.background = '#fee2e2';
         se.style.color = '#991b1b';
         btn.disabled = false;
