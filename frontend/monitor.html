@@ -386,7 +386,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
     var cfg = { asins: asins, keywords: kws };
 
     // 1. 写入本地（立即生效）
-    fetch('/_save_config', {
+    fetch('http://localhost:8765/api/save-config', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(cfg)
