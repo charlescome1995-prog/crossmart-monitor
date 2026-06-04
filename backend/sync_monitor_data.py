@@ -261,6 +261,8 @@ def build_rawdata_item(asin, data, history, related_asins=None):
         "sub_bsr": main_bsr,
         "history_main_bsr": [h.get('bsr') or main_bsr for h in history] if history else [main_bsr],
         "history_sub_bsr": [],
+        "history_price": [h.get('price') for h in history] if history else [price],
+        "history_rating": [h.get('rating') for h in history] if history else [rating],
         "events": [],
         "related_asins": related_asins if related_asins else []
     }

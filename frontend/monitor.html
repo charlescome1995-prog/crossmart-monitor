@@ -48,6 +48,10 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
 .monitor-table tr:hover td{background:#fcfdfe}
 .col-img{width:75px;text-align:center}
 .col-img img{width:65px;height:85px;object-fit:contain;border-radius:4px;border:1px solid #e2e8f0;background:#fff}
+/* Sparklines */
+.metrics-block{position:relative}
+.sparkline-wrap{display:inline-block;vertical-align:middle;margin-left:4px}
+.sparkline-wrap canvas{display:block}
 .info-block{display:flex;flex-direction:column;gap:4px}
 .metrics-block{display:flex;flex-direction:column;gap:5px;font-size:12px}
 .cat-item{color:#475569;font-size:11px;background:#f1f5f9;padding:1px 6px;border-radius:3px;display:inline-block;max-width:220px;overflow:hidden;text-overflow:ellipsis}
@@ -462,9 +466,9 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
           '<div class="title-text" title="' + (item.title || '') + '">' + (item.title || '') + '</div>' +
         '</div></td>' +
         '<td><div class="metrics-block">' +
-          '<div>价格: <strong>' + priceStr + '</strong>' + (diff.price ? ' <span class="diff-arrow ' + diff.price.direction + '">' + (diff.price.direction === 'up' ? '\u2191' : (diff.price.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.price.direction + '">' + diff.price.change + '</span>' : '') + '</div>' +
+          '<div>价格: <strong>' + priceStr + '</strong>' + (diff.price ? ' <span class="diff-arrow ' + diff.price.direction + '">' + (diff.price.direction === 'up' ? '\u2191' : (diff.price.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.price.direction + '">' + diff.price.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_price"></canvas></span></div>' +
           '<div>评分: <strong>' + ratingStr + '</strong>' + (diff.rating ? ' <span class="diff-arrow ' + diff.rating.direction + '">' + (diff.rating.direction === 'up' ? '\u2191' : (diff.rating.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.rating.direction + '">' + diff.rating.change + '</span>' : '') + ' <span style="color:#64748b;font-size:12px;">评论 ' + reviewsStr + '</span></div>' +
-          '<div>BSR: <span class="cat-item">' + (item.main_cat || '-') + '</span> <strong>' + mainBsrStr + '</strong>' + subBsrStr + (diff.bsr ? ' <span class="diff-arrow ' + diff.bsr.direction + '">' + (diff.bsr.direction === 'up' ? '\u2191' : (diff.bsr.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.bsr.direction + '">' + diff.bsr.change + '</span>' : '') + '</div>' +
+          '<div>BSR: <span class="cat-item">' + (item.main_cat || '-') + '</span> <strong>' + mainBsrStr + '</strong>' + subBsrStr + (diff.bsr ? ' <span class="diff-arrow ' + diff.bsr.direction + '">' + (diff.bsr.direction === 'up' ? '\u2191' : (diff.bsr.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.bsr.direction + '">' + diff.bsr.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_bsr"></canvas></span></div>' +
           '<div>状态: <span style="color:' + (isStatusAnomaly ? '#dc2626' : '#16a34a') + ';font-weight:700;">' + (item.listing_status || '-') + '</span>' + variantHtml + '</div>' +
           badgeHtml + dealHtml + couponHtml + primeHtml +
         '</div></td>' +
@@ -476,6 +480,39 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       '</tr>';
     });
     tb.innerHTML = html || '<tr><td colspan="8" style="text-align:center;padding:20px;">没有匹配数据</td></tr>';
+    // Draw sparklines for each item with history data
+    rawData.items.forEach(function(item) {
+      if (item.history_price && item.history_price.length > 1) {
+        var c = document.getElementById('sp_' + item.asin + '_price');
+        if (c) drawSparkline(c, item.history_price, item.diff && item.diff.price && item.diff.price.direction === 'dn' ? '#dc2626' : '#059669');
+      }
+      if (item.history_main_bsr && item.history_main_bsr.length > 1) {
+        var c = document.getElementById('sp_' + item.asin + '_bsr');
+        if (c) drawSparkline(c, item.history_main_bsr, item.diff && item.diff.bsr && item.diff.bsr.direction === 'dn' ? '#dc2626' : '#e94560');
+      }
+    });
+  }
+
+  function drawSparkline(canvas, data, color) {
+    if (!canvas || !data || data.length < 2) return;
+    var ctx = canvas.getContext('2d');
+    var w = canvas.width = 60;
+    var h = canvas.height = 28;
+    var min = Math.min.apply(null, data);
+    var max = Math.max.apply(null, data);
+    var range = max - min || 1;
+    var stepX = (w - 4) / (data.length - 1);
+    ctx.clearRect(0, 0, w, h);
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.5;
+    data.forEach(function(v, i) {
+      var x = 2 + i * stepX;
+      var y = h - 2 - ((v - min) / range) * (h - 4);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
   }
 
   function buildDiffHtml(diff) {
