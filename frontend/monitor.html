@@ -462,9 +462,9 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
           '<div class="title-text" title="' + (item.title || '') + '">' + (item.title || '') + '</div>' +
         '</div></td>' +
         '<td><div class="metrics-block">' +
-          '<div>价格: <strong>' + priceStr + '</strong> <span class="chg ' + chgClass + '">' + chgText + '</span></div>' +
-          '<div>评分: <strong>' + ratingStr + '</strong> <span style="color:#64748b;font-size:12px;">评论 ' + reviewsStr + '</span></div>' +
-          '<div>BSR: <span class="cat-item">' + (item.main_cat || '-') + '</span> <strong>' + mainBsrStr + '</strong>' + subBsrStr + '</div>' +
+          '<div>价格: <strong>' + priceStr + '</strong>' + (diff.price ? ' <span class="diff-arrow ' + diff.price.direction + '">' + (diff.price.direction === 'up' ? '\u2191' : (diff.price.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.price.direction + '">' + diff.price.change + '</span>' : '') + '</div>' +
+          '<div>评分: <strong>' + ratingStr + '</strong>' + (diff.rating ? ' <span class="diff-arrow ' + diff.rating.direction + '">' + (diff.rating.direction === 'up' ? '\u2191' : (diff.rating.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.rating.direction + '">' + diff.rating.change + '</span>' : '') + ' <span style="color:#64748b;font-size:12px;">评论 ' + reviewsStr + '</span></div>' +
+          '<div>BSR: <span class="cat-item">' + (item.main_cat || '-') + '</span> <strong>' + mainBsrStr + '</strong>' + subBsrStr + (diff.bsr ? ' <span class="diff-arrow ' + diff.bsr.direction + '">' + (diff.bsr.direction === 'up' ? '\u2191' : (diff.bsr.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.bsr.direction + '">' + diff.bsr.change + '</span>' : '') + '</div>' +
           '<div>状态: <span style="color:' + (isStatusAnomaly ? '#dc2626' : '#16a34a') + ';font-weight:700;">' + (item.listing_status || '-') + '</span>' + variantHtml + '</div>' +
           badgeHtml + dealHtml + couponHtml + primeHtml +
         '</div></td>' +
