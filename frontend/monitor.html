@@ -185,13 +185,13 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
 
   <div class="filter-bar">
     <div class="filter-controls">
-      <input type="text" id="searchInput" placeholder="&#36755;&#20837; ASIN/&#20851;&#38190;&#35789;&#31579;&#36873;..." oninput="renderTable()">
-      <select id="sourceFilter" onchange="renderTable()">
+      <input type="text" id="searchInput" placeholder="&#36755;&#20837; ASIN/&#20851;&#38190;&#35789;&#31579;&#36873;...">
+      <select id="sourceFilter">
         <option value="ALL">&#20840;&#37096;</option>
         <option value="ASIN">ASIN &#30417;&#25511;</option>
         <option value="KW">&#20851;&#38190;&#35789;&#30417;&#25511;</option>
       </select>
-      <label><input type="checkbox" id="changeFilter" onchange="renderTable()"> &#21482;&#26174;&#31034;&#24322;&#24120;</label>
+      <label><input type="checkbox" id="changeFilter"> &#21482;&#26174;&#31034;&#24322;&#24120;</label>
     </div>
     <button class="btn btn-secondary" id="btnExport">&#25968;&#25454;&#19979;&#36733;</button>
   </div>
@@ -575,6 +575,9 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
     XLSX.writeFile(wb, 'Monitor_' + (rawData.updated || 'unknown').replace(/[: ]/g, '_') + '.xlsx');
   }
 
+  document.getElementById('searchInput').addEventListener('input', renderTable);
+  document.getElementById('sourceFilter').addEventListener('change', renderTable);
+  document.getElementById('changeFilter').addEventListener('change', renderTable);
   document.getElementById('btnTrigger').addEventListener('click', triggerMonitor);
   document.getElementById('btnSaveConfig').addEventListener('click', saveConfig);
   document.getElementById('btnSaveToken').addEventListener('click', saveToken);
