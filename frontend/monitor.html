@@ -469,7 +469,8 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       var isInfoAnomaly = item.title_changed || item.img_changed || item.bullets_changed || item.description_changed;
       var isVariantAnomaly = item.variant_changed;
       var hasActiveAnomaly = item.chg !== 0 || isStatusAnomaly || isCatAnomaly || isInfoAnomaly || isVariantAnomaly || (item.badges_lost && item.badges_lost.length > 0);
-      if (sourceFilter !== 'ALL' && item.monitor_type !== sourceFilter) return;
+      if (sourceFilter === 'ASIN' && item.source_keyword) return;
+      if (sourceFilter === 'KW' && !item.source_keyword) return;
       if (searchTxt && !item.asin.toLowerCase().includes(searchTxt) && !(item.title && item.title.toLowerCase().includes(searchTxt))) return;
       if (onlyChg && !hasActiveAnomaly) return;
       // 跳过 KW 来源的 items（重复且无历史曲线）
