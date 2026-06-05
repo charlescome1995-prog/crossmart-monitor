@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-05T16:26:03",
+  "updated": "2026-06-05T16:27:28",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -322,8 +322,7 @@
         4.0
       ],
       "events": [],
-      "related_asins": [],
-      "source_keyword": "dark spot"
+      "related_asins": []
     },
     {
       "monitor_type": "ASIN",
@@ -534,49 +533,49 @@
       "keyword": "dark spot",
       "top_asins": [
         {
-          "asin": "B06XCZFCFZ",
-          "type": "unknown",
-          "rank": "",
-          "title": "The Ordinary Alpha Arbutin 2% + Hyaluronic Acid, Brightens Skin and Targets Dark Spots, 1 Fl Oz",
-          "price": "$11.50",
-          "rating": "",
-          "reviews": "1"
-        },
-        {
           "asin": "B09MFMCTRK",
-          "type": "unknown",
-          "rank": "",
+          "type": "natural",
+          "rank": "自然位：第1页第1位",
           "title": "VALITIC Kojic Acid Dark Spot Remover Soap Bars with Vitamin C, Retinol, Collagen, Turmeric - Original Japanese Complex Infused with Hyaluronic Acid, Vitamin E, Shea Butter, Castile Olive Oil (2 Pack)",
           "price": "$14.98",
           "rating": "",
           "reviews": ""
         },
         {
+          "asin": "B06XCZFCFZ",
+          "type": "natural",
+          "rank": "自然位：第1页第2位",
+          "title": "The Ordinary Alpha Arbutin 2% + Hyaluronic Acid, Brightens Skin and Targets Dark Spots, 1 Fl Oz",
+          "price": "$11.50",
+          "rating": "",
+          "reviews": "1"
+        },
+        {
           "asin": "B091238V7N",
-          "type": "unknown",
-          "rank": "",
+          "type": "natural",
+          "rank": "自然位：第1页第3位",
           "title": "AXIS-Y Dark Spot Correcting Glow Serum - 5% Niacinamide Dark Spot Remover For Face - Vegan Korean Skin Care Niacinamide Serum for All Skin Types (1.69 fl. oz.)",
-          "price": "$15.15",
+          "price": "",
+          "rating": "",
+          "reviews": "1"
+        },
+        {
+          "asin": "B08RJ4ZHXJ",
+          "type": "natural",
+          "rank": "自然位：第1页第4位",
+          "title": "Good Molecules Discoloration Correcting Serum - Serum to Target Dark Spots and Hyperpigmentation - Skin Care for Face 1 FL",
+          "price": "$11.94",
           "rating": "",
           "reviews": "1"
         },
         {
           "asin": "B0D8JTPVMN",
-          "type": "unknown",
-          "rank": "",
+          "type": "natural",
+          "rank": "自然位：第1页第5位",
           "title": "EnaSkin Dark Spot Remover Face & Body Serum: Age Spot Sun Spot Freckles Melasma Brown Spot - Advanced Formula with Niacinamide for Women and Men (1.0 Fl Oz)",
           "price": "$21.99",
           "rating": "",
           "reviews": "1"
-        },
-        {
-          "asin": "B0BS49YW8Z",
-          "type": "unknown",
-          "rank": "",
-          "title": "Mighty Patch Hero Cosmetics Micropoint™ for Dark Spots - Post-Blemish Dark Spot Patch with 395 Micropoints, Dermatologist Tested and Non-irritating (8 Count)",
-          "price": "$10.97",
-          "rating": "",
-          "reviews": "8"
         }
       ]
     }
