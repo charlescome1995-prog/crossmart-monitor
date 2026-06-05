@@ -373,7 +373,6 @@ def build_keyword_item(kw, a):
     history_rating = [h['rating'] for h in history] if history else []
     return {
         "monitor_type": "KW",
-        "source_keyword": kw,
         "asin": asin_key,
         "is_main": False,
         "logic_type": f"关键词-{kw}",
