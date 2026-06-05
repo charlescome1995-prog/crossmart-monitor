@@ -16,47 +16,61 @@
 crossmart-monitor/
 ├── backend/
 │   ├── data/
-│   │   ├── processed/      # 抓取数据（asin_* 和 kw_* 子目录）
-│   │   ├── user_config.json   # 用户配置（asins + keywords）
-│   │   ├── trigger.json       # 触发器（action: run）
-│   │   └── keyword_list.json  # 关键词列表
+│   │   ├── processed/          # 抓取数据（asin_* 和 kw_* 子目录）
+│   │   ├── user_config.json     # 用户配置（asins + keywords）
+│   │   ├── trigger.json         # 触发器（action: run）
+│   │   └── keyword_list.json    # 关键词列表
 │   ├── browser/
-│   │   ├── asin_monitor.py       # ASIN 详情抓取
-│   │   ├── keyword_monitor.py    # 关键词搜索结果抓取
-│   │   ├── cdp_bridge.py         # 浏览器控制桥接
-│   │   ├── init_browsers.py      # 双浏览器初始化
-│   │   └── sprite_bridge.py      # 卖家精灵通信（暂不使用）
-│   ├── run_monitor.py          # 主入口：定时调度
-│   └── sync_monitor_data.py    # 数据合并脚本
+│   │   ├── asin_monitor.py      # ASIN 详情抓取
+│   │   ├── keyword_monitor.py   # 关键词搜索结果抓取
+│   │   ├── cdp_bridge.py        # 浏览器控制桥接
+│   │   ├── init_browsers.py     # 双浏览器初始化
+│   │   └── sprite_bridge.py     # 卖家精灵通信（暂不使用）
+│   ├── run_monitor.py           # 一次性抓取任务脚本
+│   ├── sync_monitor_data.py     # 数据合并脚本
+│   └── api_server.py            # 常驻 API 服务（端口 8765）
 ├── frontend/
-│   ├── monitor.html           # 前端页面（GitHub Pages 托管）
-│   └── data/rawData.json      # 合并数据（GitHub Pages 读取）
+│   ├── monitor.html             # 前端页面（GitHub Pages 托管）
+│   └── data/rawData.json        # 合并数据（GitHub Pages 读取）
 ```
 
 ---
 
 ## 三、启动服务器
 
-### 方式 A：手动触发一次抓取
+### 1. 启动 Edge 浏览器
 
-1. 关闭所有 Edge 窗口
-2. 启动 Edge（默认 profile，端口 9225）：
-   ```
-   msedge --remote-debugging-port=9225 --remote-allow-origins=* --new-window about:blank
-   ```
-3. 运行调度器：
-   ```
-   cd crossmart-monitor/backend
-   python run_monitor.py
-   ```
+关闭所有 Edge 窗口，然后运行：
 
-### 方式 B：通过 GitHub Actions（推荐）
+```
+msedge --remote-debugging-port=9225 --remote-allow-origins=* --new-window about:blank
+```
 
-1. 编辑 `backend/data/trigger.json`，推送：
-   ```json
-   {"action": "run", "status": "pending"}
-   ```
-2. GitHub Actions 自动执行 `run_monitor.py`
+使用 Edge 默认 profile（包含你的亚马逊账户登录态和卖家精灵插件登录态）。
+
+### 2. 启动 api_server.py（常驻服务）
+
+```
+cd crossmart-monitor/backend
+python api_server.py
+```
+
+**重要**：`api_server.py` 是常驻服务，设计为一直在后台运行，包含两个线程：
+
+- **API 服务线程**：监听端口 8765，响应本地请求（如 Yan Xu 的配置页面）
+- **轮询线程**：每 30 秒检查一次 GitHub `trigger.json`，发现 `status: pending` 则自动触发 `run_monitor.py` 执行抓取
+
+**服务器应保持 `api_server.py` 在后台运行**，不需要手动运行 `run_monitor.py`。
+
+### 3. 触发一次抓取
+
+编辑 `backend/data/trigger.json`，推送：
+
+```json
+{"action": "run", "status": "pending"}
+```
+
+api_server.py 检测到后会立即启动 `run_monitor.py`，完成后自动同步数据到 GitHub。
 
 ---
 
@@ -65,7 +79,7 @@ crossmart-monitor/
 - **位置**：卖家精灵插件安装在 Edge 浏览器，登录 sellersprite.com
 - **作用**：关键词抓取时，插件标记 Amazon 搜索结果页上的 ASIN 位置和排名
 - **如果插件未登录**：关键词抓取仍可进行，但无法获取自然排名数据（rank 字段为空）
-- **Edge B**：独立的 Edge profile，专用于打开 sellersprite.com 网站
+- **Edge B**：独立的 Edge profile（`sellersprite`），专用于打开 sellersprite.com 网站
 
 ---
 
@@ -77,15 +91,15 @@ crossmart-monitor/
 
 ### 2. 页面显示"没有匹配数据"
 **原因**：`rawData.json` 为空或不存在。
-**解决**：运行 `python sync_monitor_data.py` 本地生成数据，或确认 `run_monitor.py` 已成功执行并推送。
+**解决**：运行 `python sync_monitor_data.py` 本地生成数据，或确认 `api_server.py` 已成功触发抓取。
 
 ### 3. 关键词 rank 数据为空
 **原因**：抓取时卖家精灵插件未加载或未登录，导致 rank 字段为空。
 **解决**：确保 Edge A 打开 Amazon 时卖家精灵插件已激活且登录。
 
-### 4. 推送数据到 GitHub 失败
-**原因**：网络问题或 RabbitPro 干扰。
-**解决**：关闭 RabbitPro 后重试。
+### 4. api_server.py 启动失败
+**原因**：端口 8765 已被占用。
+**解决**：检查是否有其他进程占用了该端口，关闭后再启动。
 
 ---
 
@@ -93,21 +107,27 @@ crossmart-monitor/
 
 | 文件 | 作用 |
 |------|------|
+| `api_server.py` | 常驻服务，监控 trigger.json 并触发任务（服务器一直运行这个） |
+| `run_monitor.py` | 一次性抓取任务脚本（由 api_server.py 调用，不需要手动运行） |
 | `user_config.json` | 配置要监控的 ASIN 和关键词 |
-| `trigger.json` | 触发 GitHub Actions 执行的开关 |
+| `trigger.json` | 触发抓取执行的开关 |
 | `asin_monitor.py` | 抓取单个 ASIN 的详情（价格/BSR/评分等） |
 | `keyword_monitor.py` | 抓取关键词搜索结果页的 ASIN 列表 |
 | `sync_monitor_data.py` | 合并本地数据到 `rawData.json` |
-| `run_monitor.py` | 定时调度主脚本 |
 
 ---
 
 ## 七、数据维护
 
 ### 删除旧数据（重新开始）
+
 1. 删除 `backend/data/processed/` 下的所有子目录
 2. 删除 `frontend/data/rawData.json`
-3. `git rm frontend/data/rawData.json && git commit -m "clean" && git push`
+3. 推送删除：
+   ```
+   git rm frontend/data/rawData.json && git commit -m "clean" && git push
+   ```
 
 ### 查看抓取日志
+
 `crossmart-monitor/logs/` 目录下有每次运行的日志文件。
