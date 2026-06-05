@@ -494,7 +494,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       var dealHtml = item.deal_activity && item.deal_activity !== '\u65e0' ? '<div style="color:#d97706;font-size:12px;">Deal: ' + item.deal_activity + '</div>' : '';
       var couponHtml = item.coupon && item.coupon !== '\u65e0' ? '<div style="color:#059669;font-size:12px;">代金券: ' + item.coupon + '</div>' : '';
       var primeHtml = item.prime_discount && item.prime_discount !== '\u672a\u5f00\u542f' ? '<div style="color:#7c3aed;font-size:12px;">Prime: ' + item.prime_discount + '</div>' : '';
-      var badge1Text = item.monitor_type === 'KW' ? ('KW-' + (item.source_keyword || '')) : 'ASIN';
+      var badge1Text = item.monitor_type === 'KW' ? ('KW-' + ((item.logic_type || '').replace('关键词-', ''))) : 'ASIN';
       html += '<tr>' +
         '<td class="col-img"><img src="' + (item.img || '') + '"></td>' +
         '<td><div class="info-block">' +
