@@ -495,8 +495,14 @@ def main():
             print(f'  related={len(related_asins)}', end='')
         print()
 
+    # Mark ASIN items that appeared in keyword searches
+    for item in items:
+        if item.get('asin') in kw_asins:
+            item['source_keyword'] = kw_asins[item['asin']]
+
     # ── 关键词数据 ──────────────────────────────────────────────
     keywords_data = []
+    kw_asins = {}  # {asin: keyword} for ASINs found via keyword search
     kw_dirs = sorted(glob.glob(os.path.join(DATA_DIR, 'kw_*')))
     print(f'[SYNC] Found {len(kw_dirs)} keyword directories')
 
@@ -527,7 +533,9 @@ def main():
             ]
         })
         for a in top_asins:
-            items.append(build_keyword_item(kw, a))
+            asin_key = a.get('asin', '')
+            if asin_key:
+                kw_asins[asin_key] = kw
         print(f'  kw [{kw}]: {len(top_asins)} top ASINs')
 
     output = {
