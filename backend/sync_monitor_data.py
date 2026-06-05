@@ -530,13 +530,14 @@ def main():
         for a in top_asins:
             asin_key = a.get('asin', '')
             if asin_key:
-                kw_asins[asin_key] = kw
+                kw_asins[asin_key] = {'keyword': kw, 'rank': a.get('rank', '')}
         print(f'  kw [{kw}]: {len(top_asins)} top ASINs')
 
     # Mark ASIN items that appeared in keyword searches
     for item in items:
         if item.get('asin') in kw_asins:
-            item['source_keyword'] = kw_asins[item['asin']]
+            item['source_keyword'] = kw_asins[item['asin']]['keyword']
+            item['source_keyword_rank'] = kw_asins[item['asin']]['rank']
 
     output = {
         'updated': datetime.now().isoformat()[:19],

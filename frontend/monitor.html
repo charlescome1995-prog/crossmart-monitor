@@ -497,10 +497,11 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       var couponHtml = item.coupon && item.coupon !== '\u65e0' ? '<div style="color:#059669;font-size:12px;">代金券: ' + item.coupon + '</div>' : '';
       var primeHtml = item.prime_discount && item.prime_discount !== '\u672a\u5f00\u542f' ? '<div style="color:#7c3aed;font-size:12px;">Prime: ' + item.prime_discount + '</div>' : '';
       var badge1Text = item.source_keyword ? ('KW-' + item.source_keyword) : 'ASIN';
+      var badge2Text = item.source_keyword ? (item.source_keyword_rank || '自然位') : (item.logic_type || '');
       html += '<tr>' +
         '<td class="col-img"><img src="' + (item.img || '') + '"></td>' +
         '<td><div class="info-block">' +
-          '<div><span class="badge ' + (item.monitor_type === 'ASIN' ? 'source-asin' : 'source-kw') + '">' + badge1Text + '</span> <span class="badge ' + (item.is_main ? 'main' : 'rel') + '">' + (item.logic_type || '') + '</span></div>' +
+          '<div><span class="badge ' + (item.monitor_type === 'ASIN' ? 'source-asin' : 'source-kw') + '">' + badge1Text + '</span> <span class="badge ' + (item.is_main ? 'main' : 'rel') + '">' + badge2Text + '</span></div>' +
           '<div><a href="https://www.amazon.com/dp/' + (item.asin || '') + '" target="_blank" class="asin-link">' + (item.asin || '') + '</a> [' + (item.brand || '') + ']</div>' +
           '<div class="title-text" title="' + (item.title || '') + '">' + (item.title || '') + '</div>' +
         '</div></td>' +
