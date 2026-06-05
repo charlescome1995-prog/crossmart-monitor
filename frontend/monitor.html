@@ -472,6 +472,8 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       if (sourceFilter !== 'ALL' && item.monitor_type !== sourceFilter) return;
       if (searchTxt && !item.asin.toLowerCase().includes(searchTxt) && !(item.title && item.title.toLowerCase().includes(searchTxt))) return;
       if (onlyChg && !hasActiveAnomaly) return;
+      // 跳过 KW 来源的 items（重复且无历史曲线）
+      if (item.monitor_type === 'KW') return;
       var activeEvents = (item.events || []).slice();
       if (isStatusAnomaly) activeEvents.push({ cls: 'e-alert', txt: '商品状态异常' });
       if (isInfoAnomaly) activeEvents.push({ cls: 'e-alert', txt: '商品信息变化' });
@@ -494,7 +496,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       var dealHtml = item.deal_activity && item.deal_activity !== '\u65e0' ? '<div style="color:#d97706;font-size:12px;">Deal: ' + item.deal_activity + '</div>' : '';
       var couponHtml = item.coupon && item.coupon !== '\u65e0' ? '<div style="color:#059669;font-size:12px;">代金券: ' + item.coupon + '</div>' : '';
       var primeHtml = item.prime_discount && item.prime_discount !== '\u672a\u5f00\u542f' ? '<div style="color:#7c3aed;font-size:12px;">Prime: ' + item.prime_discount + '</div>' : '';
-      var badge1Text = item.monitor_type === 'KW' ? ('KW-' + (item.source_keyword || (item.logic_type || '').replace('\u5173\u952e\u8bcd-', ''))) : 'ASIN';
+      var badge1Text = item.monitor_type === 'KW' ? ('KW-' + ((item.logic_type || '').replace('\u5173\u952e\u8bcd-', ''))) : 'ASIN';
       html += '<tr>' +
         '<td class="col-img"><img src="' + (item.img || '') + '"></td>' +
         '<td><div class="info-block">' +
