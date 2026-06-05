@@ -501,7 +501,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       html += '<tr>' +
         '<td class="col-img"><img src="' + (item.img || '') + '"></td>' +
         '<td><div class="info-block">' +
-          '<div><span class="badge ' + (item.monitor_type === 'ASIN' ? 'source-asin' : 'source-kw') + '">' + badge1Text + '</span> <span class="badge ' + (item.is_main ? 'main' : 'rel') + '">' + badge2Text + '</span></div>' +
+          '<div><span class="badge ' + (item.source_keyword ? 'source-kw' : 'source-asin') + '">' + badge1Text + '</span> <span class="badge ' + (item.is_main ? 'main' : 'rel') + '">' + badge2Text + '</span></div>' +
           '<div><a href="https://www.amazon.com/dp/' + (item.asin || '') + '" target="_blank" class="asin-link">' + (item.asin || '') + '</a> [' + (item.brand || '') + ']</div>' +
           '<div class="title-text" title="' + (item.title || '') + '">' + (item.title || '') + '</div>' +
         '</div></td>' +
