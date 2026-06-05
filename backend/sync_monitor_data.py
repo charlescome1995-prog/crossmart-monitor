@@ -495,12 +495,7 @@ def main():
             print(f'  related={len(related_asins)}', end='')
         print()
 
-    # Mark ASIN items that appeared in keyword searches
-    for item in items:
-        if item.get('asin') in kw_asins:
-            item['source_keyword'] = kw_asins[item['asin']]
-
-    # ── 关键词数据 ──────────────────────────────────────────────
+    # ── 关键词数据（先收集 kw_asins，再标记到 ASIN items） ────
     keywords_data = []
     kw_asins = {}  # {asin: keyword} for ASINs found via keyword search
     kw_dirs = sorted(glob.glob(os.path.join(DATA_DIR, 'kw_*')))
@@ -537,6 +532,11 @@ def main():
             if asin_key:
                 kw_asins[asin_key] = kw
         print(f'  kw [{kw}]: {len(top_asins)} top ASINs')
+
+    # Mark ASIN items that appeared in keyword searches
+    for item in items:
+        if item.get('asin') in kw_asins:
+            item['source_keyword'] = kw_asins[item['asin']]
 
     output = {
         'updated': datetime.now().isoformat()[:19],
