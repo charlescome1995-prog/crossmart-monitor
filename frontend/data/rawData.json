@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-06T11:16:34",
+  "updated": "2026-06-07T11:17:25",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -12,7 +12,7 @@
       "price": 11.5,
       "chg": 0.0,
       "rating": 4.5,
-      "reviews": 6980,
+      "reviews": 6994,
       "diff": {
         "price": {
           "current": 11.5,
@@ -28,15 +28,15 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 6980,
-          "prev": 6979,
-          "change": "+1",
+          "current": 6994,
+          "prev": 6980,
+          "change": "+14",
           "direction": "up"
         },
         "bsr": {
-          "current": 1140,
-          "prev": 1153,
-          "change": "13",
+          "current": 1139,
+          "prev": 1140,
+          "change": "1",
           "direction": "up"
         }
       },
@@ -55,20 +55,23 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
       "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 1140,
+      "main_bsr": 1139,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 1140,
+      "sub_bsr": 1139,
       "history_main_bsr": [
         1153,
-        1140
+        1140,
+        1139
       ],
       "history_sub_bsr": [],
       "history_price": [
         11.5,
+        11.5,
         11.5
       ],
       "history_rating": [
+        4.5,
         4.5,
         4.5
       ],
@@ -88,8 +91,34 @@
       "price": 11.94,
       "chg": 0.0,
       "rating": 4.4,
-      "reviews": 15002,
-      "diff": {},
+      "reviews": 15015,
+      "diff": {
+        "price": {
+          "current": 11.94,
+          "prev": 11.94,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.4,
+          "prev": 4.4,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 15015,
+          "prev": 15002,
+          "change": "+13",
+          "direction": "up"
+        },
+        "bsr": {
+          "current": 388,
+          "prev": 396,
+          "change": "8",
+          "direction": "up"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -105,21 +134,24 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
       "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 396,
+      "main_bsr": 388,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 396,
+      "sub_bsr": 388,
       "history_main_bsr": [
+        388,
         396,
-        396
+        388
       ],
       "history_sub_bsr": [],
       "history_price": [
         null,
+        11.94,
         11.94
       ],
       "history_rating": [
         null,
+        4.4,
         4.4
       ],
       "events": [],
@@ -138,7 +170,7 @@
       "price": 14.0,
       "chg": 0.0,
       "rating": 4.2,
-      "reviews": 11054,
+      "reviews": 11072,
       "diff": {
         "price": {
           "current": 14.0,
@@ -154,16 +186,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 11054,
-          "prev": 11047,
-          "change": "+7",
+          "current": 11072,
+          "prev": 11054,
+          "change": "+18",
           "direction": "up"
         },
         "bsr": {
-          "current": 4245,
-          "prev": 3917,
-          "change": "+328",
-          "direction": "dn"
+          "current": 4105,
+          "prev": 4245,
+          "change": "140",
+          "direction": "up"
         }
       },
       "listing_status": "正常",
@@ -181,20 +213,23 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
       "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 4245,
+      "main_bsr": 4105,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 4245,
+      "sub_bsr": 4105,
       "history_main_bsr": [
         3917,
-        4245
+        4245,
+        4105
       ],
       "history_sub_bsr": [],
       "history_price": [
         14.0,
+        14.0,
         14.0
       ],
       "history_rating": [
+        4.2,
         4.2,
         4.2
       ],
@@ -214,7 +249,7 @@
       "price": 14.98,
       "chg": 0.0,
       "rating": 4.3,
-      "reviews": 69960,
+      "reviews": 70000,
       "diff": {
         "price": {
           "current": 14.98,
@@ -230,16 +265,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 69960,
-          "prev": 69935,
-          "change": "+25",
+          "current": 70000,
+          "prev": 69960,
+          "change": "+40",
           "direction": "up"
         },
         "bsr": {
-          "current": 61,
-          "prev": 57,
-          "change": "+4",
-          "direction": "dn"
+          "current": 59,
+          "prev": 61,
+          "change": "2",
+          "direction": "up"
         }
       },
       "listing_status": "正常",
@@ -257,20 +292,23 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
       "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 61,
+      "main_bsr": 59,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 61,
+      "sub_bsr": 59,
       "history_main_bsr": [
         57,
-        61
+        61,
+        59
       ],
       "history_sub_bsr": [],
       "history_price": [
         14.98,
+        14.98,
         14.98
       ],
       "history_rating": [
+        4.3,
         4.3,
         4.3
       ],
@@ -320,6 +358,51 @@
       ],
       "history_rating": [
         4.0
+      ],
+      "events": [],
+      "related_asins": []
+    },
+    {
+      "monitor_type": "ASIN",
+      "asin": "B0CM4B43DZ",
+      "is_main": true,
+      "logic_type": "主监控",
+      "title": "La Roche-Posay Mela B3 Serum, Dark Spot Corrector With Anti-Aging Melasyl + 10% Niacinamide, Discoloration Correcting Serum for Sun Spots, Age Spots & Post-Acne Marks",
+      "brand": "",
+      "img": "https://m.media-amazon.com/images/I/61ej5a-GzNL._SX522_.jpg",
+      "price": 44.99,
+      "chg": 0.0,
+      "rating": 4.4,
+      "reviews": 13714,
+      "diff": {},
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "无",
+      "badges_current": [],
+      "badges_lost": [],
+      "coupon": "无",
+      "prime_discount": "未开启",
+      "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
+      "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
+      "main_bsr": 1206,
+      "sub_cat": "",
+      "expected_sub_cat": "",
+      "sub_bsr": 1206,
+      "history_main_bsr": [
+        1206
+      ],
+      "history_sub_bsr": [],
+      "history_price": [
+        44.99
+      ],
+      "history_rating": [
+        4.4
       ],
       "events": [],
       "related_asins": [],
@@ -382,8 +465,34 @@
       "price": 44.0,
       "chg": 0.0,
       "rating": 4.0,
-      "reviews": 2055,
-      "diff": {},
+      "reviews": 2060,
+      "diff": {
+        "price": {
+          "current": 44.0,
+          "prev": 44.0,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.0,
+          "prev": 4.0,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 2060,
+          "prev": 2055,
+          "change": "+5",
+          "direction": "up"
+        },
+        "bsr": {
+          "current": 1094,
+          "prev": 1113,
+          "change": "19",
+          "direction": "up"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -399,21 +508,24 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
       "expected_main_cat": "Beauty & Personal Care (See Top 100 in Beauty & Personal Care)",
-      "main_bsr": 1113,
+      "main_bsr": 1094,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 1113,
+      "sub_bsr": 1094,
       "history_main_bsr": [
+        1094,
         1113,
-        1113
+        1094
       ],
       "history_sub_bsr": [],
       "history_price": [
         null,
+        44.0,
         44.0
       ],
       "history_rating": [
         null,
+        4.0,
         4.0
       ],
       "events": [],
@@ -425,20 +537,20 @@
       "keyword": "dark spot",
       "top_asins": [
         {
-          "asin": "B091238V7N",
-          "type": "unknown",
-          "rank": "",
-          "title": "AXIS-Y Dark Spot Correcting Glow Serum - 5% Niacinamide Dark Spot Remover For Face - Vegan Korean Skin Care Niacinamide Serum for All Skin Types (1.69 fl. oz.)",
-          "price": "",
-          "rating": "",
-          "reviews": "1"
-        },
-        {
           "asin": "B06XCZFCFZ",
           "type": "unknown",
           "rank": "",
           "title": "The Ordinary Alpha Arbutin 2% + Hyaluronic Acid, Brightens Skin and Targets Dark Spots, 1 Fl Oz",
           "price": "$11.50",
+          "rating": "",
+          "reviews": "1"
+        },
+        {
+          "asin": "B091238V7N",
+          "type": "unknown",
+          "rank": "",
+          "title": "AXIS-Y Dark Spot Correcting Glow Serum - 5% Niacinamide Dark Spot Remover For Face - Vegan Korean Skin Care Niacinamide Serum for All Skin Types (1.69 fl. oz.)",
+          "price": "",
           "rating": "",
           "reviews": "1"
         },
@@ -461,13 +573,13 @@
           "reviews": "1"
         },
         {
-          "asin": "B0BS49YW8Z",
+          "asin": "B0CM4B43DZ",
           "type": "unknown",
           "rank": "",
-          "title": "Mighty Patch Hero Cosmetics Micropoint™ for Dark Spots - Post-Blemish Dark Spot Patch with 395 Micropoints, Dermatologist Tested and Non-irritating (8 Count)",
-          "price": "$10.97",
+          "title": "La Roche-Posay Mela B3 Serum, Dark Spot Corrector With Anti-Aging Melasyl + 10% Niacinamide, Discoloration Correcting Serum for Sun Spots, Age Spots & Post-Acne Marks",
+          "price": "$44.99",
           "rating": "",
-          "reviews": "8"
+          "reviews": "1"
         }
       ]
     }
