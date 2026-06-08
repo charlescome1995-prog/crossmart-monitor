@@ -200,17 +200,18 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
     <table class="monitor-table">
       <thead>
         <tr>
-          <th>&#22270;&#29255;</th>
+          <th>&#22260;&#29255;</th>
           <th>&#21830;&#21697;&#20449;&#24687;</th>
           <th>&#26680;&#24515;&#25351;&#26631;</th>
           <th>&#20107;&#20214;</th>
           <th>&#21464;&#21270;&#35814;&#24773;</th>
+          <th>&#31258;&#21152;&#25968;&#25454;</th>
           <th>&#36235;&#21183;</th>
           <th>&#29366;&#24535;</th>
           <th>&#26356;&#26032;&#26102;&#38388;</th>
         </tr>
       </thead>
-      <tbody id="tableBody"><tr><td colspan="8" style="text-align:center;padding:40px;color:#94a3b8;">&#21152;&#36733;&#20013;...</td></tr></tbody>
+      <tbody id="tableBody"><tr><td colspan="14" style="text-align:center;padding:40px;color:#94a3b8;">&#21152;&#36733;&#20013;...</td></tr></tbody>
     </table>
   </div>
 </div>
@@ -478,7 +479,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
 
   function renderTable() {
     var tb = document.getElementById('tableBody');
-    if (!tb || !rawData.items) { tb.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px;">暂无数据</td></tr>'; return; }
+    if (!tb || !rawData.items) { tb.innerHTML = '<tr><td colspan="14" style="text-align:center;padding:20px;">暂无数据</td></tr>'; return; }
     var searchTxt = (document.getElementById('searchInput') || {}).value || '';
     var sourceFilter = (document.getElementById('sourceFilter') || {}).value || 'ALL';
     var onlyChg = (document.getElementById('changeFilter') || {}).checked || false;
@@ -536,12 +537,19 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
         '</div></td>' +
         '<td><div class="events-cell">' + eventsHtml + '</div></td>' +
         '<td><div class="diff-cell">' + diffHtml + '</div></td>' +
-        '<td><div style="color:#94a3b8;font-size:11px;">-</div></td>' +
+        '<td>' +
+          '<div style="font-size:12px;">' + (item.jike_sales != null ? '$' + item.jike_sales.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '-') + '</div>' +
+          '<div style="font-size:11px;color:#64748b;margin-top:2px;">订单 ' + (item.jike_orders != null ? item.jike_orders.toLocaleString() : '-') + '</div>' +
+          '<div style="font-size:11px;color:#64748b;">访客 ' + (item.jike_session != null ? item.jike_session.toLocaleString() : '-') + '</div>' +
+          '<div style="font-size:11px;color:#64748b;">浏览 ' + (item.jike_page_views != null ? item.jike_page_views.toLocaleString() : '-') + '</div>' +
+          '<div style="font-size:11px;color:#64748b;">转化 ' + (item.jike_conversion_rate != null ? (item.jike_conversion_rate * 100).toFixed(2) + '%' : '-') + '</div>' +
+          '<div style="font-size:11px;">状态 ' + (item.jike_listing_state != null ? item.jike_listing_state : '-') + '</div>' +
+        '</td>' +
         '<td><div class="status-indicator ' + statusClass + '">' + statusText + '</div></td>' +
         '<td style="color:#64748b;font-size:12px;">' + (rawData.updated || '-') + '</td>' +
       '</tr>';
     });
-    tb.innerHTML = html || '<tr><td colspan="8" style="text-align:center;padding:20px;">没有匹配数据</td></tr>';
+    tb.innerHTML = html || '<tr><td colspan="14" style="text-align:center;padding:20px;">没有匹配数据</td></tr>';
     // Draw sparklines for each item with history data
     rawData.items.forEach(function(item) {
       if (item.history_price && item.history_price.length > 1) {
@@ -588,8 +596,16 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
   }
 
   function exportToExcel() {
-    var rows = [['监控类型', '逻辑类型', '商品状态', '价格', 'BSR', '评分', '评论数', '最后更新']];
-    rawData.items.forEach(function(m) { rows.push([m.asin, m.monitor_type, m.logic_type, m.listing_status, m.price, m.main_bsr, m.rating, m.reviews, rawData.updated]); });
+    var rows = [['ASIN', '类型', '品牌', '监控类型', '逻辑类型', '商品状态', '价格', 'BSR', '评分', '评论数', '销售额(积加)', '订单数(积加)', '访客数(积加)', '浏览量(积加)', '转化率(积加)', '上架状态(积加)', '最后更新']];
+    rawData.items.forEach(function(m) {
+      var jikeSales = m.jike_sales != null ? m.jike_sales : '-';
+      var jikeOrders = m.jike_orders != null ? m.jike_orders : '-';
+      var jikeSession = m.jike_session != null ? m.jike_session : '-';
+      var jikePageViews = m.jike_page_views != null ? m.jike_page_views : '-';
+      var jikeConv = m.jike_conversion_rate != null ? (m.jike_conversion_rate * 100).toFixed(2) + '%' : '-';
+      var jikeState = m.jike_listing_state != null ? m.jike_listing_state : '-';
+      rows.push([m.asin, m.monitor_type, m.brand || '', m.monitor_type, m.logic_type, m.listing_status, m.price, m.main_bsr, m.rating, m.reviews, jikeSales, jikeOrders, jikeSession, jikePageViews, jikeConv, jikeState, rawData.updated]);
+    });
     var ws = XLSX.utils.aoa_to_sheet(rows);
     var wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Monitor');
