@@ -352,16 +352,16 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
     var cfg = { asins: asins, keywords: kws };
     var trigger = { status: 'pending', triggered_at: new Date().toISOString(), progress: '' };
 
-    putFile('backend/data/user_config.json', cfg, token)
-      .then(function() { return putFile('backend/data/trigger.json', trigger, token); })
-    .then(function() {
+    putFiles([
+      { path: 'backend/data/user_config.json', content: cfg },
+      { path: 'backend/data/trigger.json', content: trigger }
+    ], token).then(function() {
       se.textContent = '\u5df2\u5199\u5165 GitHub\uff0c\u7b49\u5f85\u672c\u5730\u811a\u672c\u54cd\u5e94...';
       se.style.background = '#dbeafe';
       se.style.color = '#1e40af';
       btn.textContent = '\u8f6e\u8be2\u4e2d';
       pollStatus(token);
-    })
-    .catch(function(e) {
+    }).catch(function(e) {
       se.textContent = 'GitHub \u5199\u5165\u5931\u8d25: ' + e;
       se.style.background = '#fee2e2';
       se.style.color = '#991b1b';
@@ -459,6 +459,49 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
           throw new Error('API ' + r.status);
         }
       });
+  }
+
+  function putFiles(files, token) {
+    // files: [{path, content}, ...]
+    // 用 GitHub Tree API 一次性创建多个文件变更，单次 commit
+    var API = 'https://api.github.com/repos/' + REPO;
+    var refUrl = API + '/git/refs/heads/main';
+
+    return fetch(refUrl, { headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' } })
+      .then(function(r) { if (!r.ok) throw new Error('Ref fetch ' + r.status); return r.json(); })
+      .then(function(refData) {
+        var baseTreeSha = refData.object.sha;
+        var tree = files.map(function(f) {
+          return {
+            path: f.path,
+            mode: '100644',
+            type: 'blob',
+            content: JSON.stringify(f.content)
+          };
+        });
+        return fetch(API + '/git/trees', {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ base_tree: baseTreeSha, tree: tree })
+        });
+      })
+      .then(function(r) { if (!r.ok) throw new Error('Tree API ' + r.status); return r.json(); })
+      .then(function(treeData) {
+        return fetch(API + '/git/commits', {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: 'user: trigger capture', tree: treeData.sha })
+        });
+      })
+      .then(function(r) { if (!r.ok) throw new Error('Commit API ' + r.status); return r.json(); })
+      .then(function(commitData) {
+        return fetch(refUrl, {
+          method: 'PATCH',
+          headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sha: commitData.sha })
+        });
+      })
+      .then(function(r) { if (!r.ok) throw new Error('Ref update ' + r.status); });
   }
 
   function renderTable() {
