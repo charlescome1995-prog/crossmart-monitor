@@ -7,6 +7,14 @@ run_monitor.py - 跨境电商 ASIN 监控系统入口
 """
 import os, sys, json, time, random, subprocess, urllib.request, glob
 from datetime import datetime
+
+# 积加 API 客户端
+try:
+    from jike_client import get_jike_data_for_asins
+    JIKE_AVAILABLE = True
+except Exception:
+    JIKE_AVAILABLE = False
+    print("[WARNING] 积加 API 模块加载失败，监控将跳过积加数据抓取")
 sys.stdout.reconfigure(encoding='utf-8')
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -332,6 +340,21 @@ def run_monitor(config_override=None):
             cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
         if not ok:
             print("  ASIN " + main_asin + " 执行失败，继续")
+        else:
+            # 主ASIN抓取成功后，调用积加API
+            if JIKE_AVAILABLE:
+                try:
+                    print("  调用积加 API... ")
+                    jike_data = get_jike_data_for_asins([main_asin])
+                    # 保存积加数据到 processed 目录
+                    asin_dir = os.path.join(PROJECT_ROOT, "backend", "data", "processed", f"asin_{main_asin}")
+                    os.makedirs(asin_dir, exist_ok=True)
+                    jike_path = os.path.join(asin_dir, "jike_latest.json")
+                    with open(jike_path, "w", encoding="utf-8") as f:
+                        json.dump({"data": jike_data, "fetched_at": datetime.now().isoformat()}, f)
+                    print(f"  积加数据已保存: {jike_path}")
+                except Exception as e:
+                    print(f"  积加API调用失败: {e}")
         time.sleep(random.randint(20, 50))
 
         # 抓取用户配置的关联 ASIN

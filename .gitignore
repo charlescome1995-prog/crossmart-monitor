@@ -13,6 +13,9 @@ backend/data/cache/
 backend/data/user_config.json
 backend/data/trigger.json
 backend/data/gh_token.txt
+backend/data/jike_config.json
+backend/data/jike_token_cache.json
+backend/data/keyword_related_asins.json
 backend/data/monitor_list.json
 backend/data/keyword_list.json
 notify_config.json

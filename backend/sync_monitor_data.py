@@ -8,6 +8,20 @@ sync_monitor_data.py - 从本地快照生成前端可用的 rawData JSON
 import json, os, glob, sys, re, subprocess
 from datetime import datetime
 
+
+def load_jike_data(asin):
+    """从 processed/ashin_ASIN/jike_latest.json 加载积加数据"""
+    path = os.path.join(DATA_DIR, f'asin_{asin}', 'jike_latest.json')
+    if not os.path.exists(path):
+        return {}
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            content = json.load(f)
+        return content.get('data', {})
+    except Exception:
+        return {}
+
+
 sys.stdout.reconfigure(encoding='utf-8')
 
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -212,7 +226,7 @@ def load_asin_meta(asin):
         return json.load(f)
 
 
-def build_rawdata_item(asin, data, history, related_asins=None):
+def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
     """构建前端 rawData.items 格式（主ASIN或关联ASIN）"""
     price = safe_float(data.get('price', '')) or 0
     rating = safe_float(data.get('rating', '')) or 0
@@ -226,6 +240,9 @@ def build_rawdata_item(asin, data, history, related_asins=None):
     # 与上次快照的 diff
     prev_data = get_prev_snapshot_data(history)
     diff = build_diff(data, prev_data)
+
+    # 积加数据（主ASIN有，关联ASIN无）
+    jk = jike_data.get(asin, {}) if jike_data else {}
 
     return {
         "monitor_type": "ASIN",
@@ -264,7 +281,14 @@ def build_rawdata_item(asin, data, history, related_asins=None):
         "history_price": [h.get('price') for h in history] if history else [price],
         "history_rating": [h.get('rating') for h in history] if history else [rating],
         "events": [],
-        "related_asins": related_asins if related_asins else []
+        "related_asins": related_asins if related_asins else [],
+        # 积加数据字段（独有，不与亚马逊重复）
+        "jike_sales": jk.get('salesAmount'),
+        "jike_orders": jk.get('orders'),
+        "jike_session": jk.get('session'),
+        "jike_page_views": jk.get('pageViews'),
+        "jike_conversion_rate": jk.get('conversionRate'),
+        "jike_listing_state": jk.get('listingState'),
     }
 
 
@@ -323,7 +347,14 @@ def build_related_item(asin, rel_data, main_asin=None):
         "sub_bsr": main_bsr,
         "history_main_bsr": [main_bsr],
         "history_sub_bsr": [],
-        "events": []
+        "events": [],
+        # 积加数据（关联ASIN无）
+        "jike_sales": None,
+        "jike_orders": None,
+        "jike_session": None,
+        "jike_page_views": None,
+        "jike_conversion_rate": None,
+        "jike_listing_state": None,
     }
 
 
@@ -407,7 +438,14 @@ def build_keyword_item(kw, a):
         "history_sub_bsr": [],
         "history_price": history_price,
         "history_rating": history_rating,
-        "events": []
+        "events": [],
+        # 积加数据（关键词ASIN无）
+        "jike_sales": None,
+        "jike_orders": None,
+        "jike_session": None,
+        "jike_page_views": None,
+        "jike_conversion_rate": None,
+        "jike_listing_state": None,
     }
 
 
@@ -490,7 +528,10 @@ def main():
                 rel_item = build_related_item(asin_key, rt)
                 items.append(rel_item)
 
-        print(f'  {asin}: price=${item["price"]} bsr=#{item["main_bsr"]} snaps={len(all_snaps)}', end='')
+        # 加载积加数据（仅主ASIN有，关联ASIN无）
+        jike_data = load_jike_data(asin)
+
+        item = build_rawdata_item(asin, data, all_snaps, jike_data=jike_data)
         if related_asins:
             print(f'  related={len(related_asins)}', end='')
         print()
