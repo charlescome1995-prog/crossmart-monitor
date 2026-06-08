@@ -5,7 +5,7 @@ run_monitor.py - 跨境电商 ASIN 监控系统入口
 支持随机化、时间窗口、概率运行、人类行为模拟。
 恢复旧逻辑：从 GitHub user_config.json 读取 asins + keywords 配置。
 """
-import os, sys, json, time, random, subprocess, urllib.request
+import os, sys, json, time, random, subprocess, urllib.request, glob
 from datetime import datetime
 sys.stdout.reconfigure(encoding='utf-8')
 
