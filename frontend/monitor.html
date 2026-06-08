@@ -221,6 +221,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
   var REPO = 'charlescome1995-prog/crossmart-monitor';
   var RAW_DATA_URL = 'https://raw.githubusercontent.com/' + REPO + '/main/frontend/data/rawData.json';
   var rawData = { updated: '', items: [], keywords: [] };
+  var userConfiguredAsins = new Set();
 
   window.addEventListener('DOMContentLoaded', function() {
     var saved = localStorage.getItem('gh_token') || '';
@@ -250,12 +251,18 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       cfg.asins.forEach(function(row, i) {
         if (i < 5) {
           var mainEl = document.getElementById('in-asin-' + i);
-          if (mainEl && row.main) mainEl.value = row.main;
+          if (mainEl && row.main) {
+            mainEl.value = row.main;
+            userConfiguredAsins.add(row.main);
+          }
           if (row.related) {
             row.related.forEach(function(val, ri) {
               if (ri < 5) {
                 var relEl = document.getElementById('rel-asin-' + i + '-' + ri);
-                if (relEl) relEl.value = val;
+                if (relEl) {
+                  relEl.value = val;
+                  userConfiguredAsins.add(val);
+                }
               }
             });
           }
@@ -486,6 +493,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
     searchTxt = searchTxt.toLowerCase();
     var html = '';
     rawData.items.forEach(function(item) {
+      if (userConfiguredAsins.size > 0 && !userConfiguredAsins.has(item.asin)) return;
       var isStatusAnomaly = item.listing_status !== item.expected_listing_status;
       var isCatAnomaly = item.main_cat !== item.expected_main_cat || item.sub_cat !== item.expected_sub_cat;
       var isInfoAnomaly = item.title_changed || item.img_changed || item.bullets_changed || item.description_changed;
