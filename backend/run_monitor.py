@@ -288,7 +288,7 @@ def run_monitor(config_override=None):
                     continue
                 print(f"\n--- 关键词ASIN详情: {aasin} (来源: {kw}) ---")
                 ok = run_command(
-                    [sys.executable, "-m", "browser.asin_monitor", aasin],
+                    [sys.executable, "-m", "browser.asin_monitor", aasin, "--amazon"],
                     cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
                 if not ok:
                     print(f"  关键词ASIN {aasin} 执行失败，继续")
@@ -311,7 +311,7 @@ def run_monitor(config_override=None):
                 continue
             print(f"\n--- 关键词ASIN详情（每次运行）: {aasin} (来源: {kw_name}) ---")
             ok = run_command(
-                [sys.executable, "-m", "browser.asin_monitor", aasin],
+                [sys.executable, "-m", "browser.asin_monitor", aasin, "--amazon"],
                 cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
             if not ok:
                 print(f"  关键词ASIN {aasin} 执行失败，继续")
@@ -328,7 +328,7 @@ def run_monitor(config_override=None):
 
         print("\n--- 主ASIN监控: " + main_asin + " ---")
         ok = run_command(
-            [sys.executable, "-m", "browser.asin_monitor", main_asin],
+            [sys.executable, "-m", "browser.asin_monitor", main_asin, "--amazon"],
             cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
         if not ok:
             print("  ASIN " + main_asin + " 执行失败，继续")
@@ -342,7 +342,7 @@ def run_monitor(config_override=None):
                 continue
             print("\n--- 关联竞品: " + rel_asin + " ---")
             ok = run_command(
-                [sys.executable, "-m", "browser.asin_monitor", rel_asin],
+                [sys.executable, "-m", "browser.asin_monitor", rel_asin, "--amazon"],
                 cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
             if not ok:
                 print("  关联ASIN " + rel_asin + " 执行失败，继续")
