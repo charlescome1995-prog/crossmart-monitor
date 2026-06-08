@@ -12,6 +12,7 @@ backend/data/processed/
 backend/data/cache/
 backend/data/user_config.json
 backend/data/trigger.json
+backend/data/gh_token.txt
 backend/data/monitor_list.json
 backend/data/keyword_list.json
 notify_config.json
