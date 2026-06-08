@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-08T19:05:39",
+  "updated": "2026-06-08T20:14:09",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -61,14 +61,20 @@
       "sub_bsr": 834,
       "history_main_bsr": [
         834,
+        834,
+        834,
         834
       ],
       "history_sub_bsr": [],
       "history_price": [
         18.97,
+        18.97,
+        18.97,
         18.97
       ],
       "history_rating": [
+        4.6,
+        4.6,
         4.6,
         4.6
       ],
@@ -143,14 +149,20 @@
       "sub_bsr": 389,
       "history_main_bsr": [
         389,
+        389,
+        389,
         389
       ],
       "history_sub_bsr": [],
       "history_price": [
         4.85,
+        4.85,
+        4.85,
         4.85
       ],
       "history_rating": [
+        4.6,
+        4.6,
         4.6,
         4.6
       ],
@@ -225,14 +237,20 @@
       "sub_bsr": 2127,
       "history_main_bsr": [
         2127,
+        2127,
+        2127,
         2127
       ],
       "history_sub_bsr": [],
       "history_price": [
         6.49,
+        6.49,
+        6.49,
         6.49
       ],
       "history_rating": [
+        4.6,
+        4.6,
         4.6,
         4.6
       ],
@@ -259,7 +277,33 @@
       "chg": 0.0,
       "rating": 4.3,
       "reviews": 1020,
-      "diff": {},
+      "diff": {
+        "price": {
+          "current": 27.97,
+          "prev": 27.97,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.3,
+          "prev": 4.3,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 1020,
+          "prev": 1020,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 3461,
+          "prev": 3458,
+          "change": "+3",
+          "direction": "dn"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -275,18 +319,21 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household (See Top 100 in Health & Household)",
       "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 3458,
+      "main_bsr": 3461,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 3458,
+      "sub_bsr": 3461,
       "history_main_bsr": [
-        3458
+        3458,
+        3461
       ],
       "history_sub_bsr": [],
       "history_price": [
+        27.97,
         27.97
       ],
       "history_rating": [
+        4.3,
         4.3
       ],
       "events": [],
@@ -358,14 +405,20 @@
       "sub_bsr": 1508,
       "history_main_bsr": [
         1508,
+        1508,
+        1508,
         1508
       ],
       "history_sub_bsr": [],
       "history_price": [
         4.97,
+        4.97,
+        4.97,
         4.97
       ],
       "history_rating": [
+        4.5,
+        4.5,
         4.5,
         4.5
       ],
@@ -413,8 +466,8 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 5038,
-          "prev": 5038,
+          "current": 5037,
+          "prev": 5037,
           "change": "+0",
           "direction": "same"
         }
@@ -434,20 +487,26 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household (See Top 100 in Health & Household)",
       "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 5038,
+      "main_bsr": 5037,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 5038,
+      "sub_bsr": 5037,
       "history_main_bsr": [
         5038,
-        5038
+        5038,
+        5037,
+        5037
       ],
       "history_sub_bsr": [],
       "history_price": [
         9.99,
+        9.99,
+        9.99,
         9.99
       ],
       "history_rating": [
+        4.6,
+        4.6,
         4.6,
         4.6
       ],
@@ -474,7 +533,33 @@
       "chg": 0.0,
       "rating": 4.0,
       "reviews": 26,
-      "diff": {},
+      "diff": {
+        "price": {
+          "current": 18.99,
+          "prev": 18.99,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.0,
+          "prev": 4.0,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 26,
+          "prev": 26,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 116098,
+          "prev": 116118,
+          "change": "20",
+          "direction": "up"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -490,18 +575,21 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household (See Top 100 in Health & Household)",
       "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 116118,
+      "main_bsr": 116098,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 116118,
+      "sub_bsr": 116098,
       "history_main_bsr": [
-        116118
+        116118,
+        116098
       ],
       "history_sub_bsr": [],
       "history_price": [
+        18.99,
         18.99
       ],
       "history_rating": [
+        4.0,
         4.0
       ],
       "events": [],
@@ -525,7 +613,33 @@
       "chg": 0.0,
       "rating": 4.8,
       "reviews": 37,
-      "diff": {},
+      "diff": {
+        "price": {
+          "current": 21.99,
+          "prev": 21.99,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.8,
+          "prev": 4.8,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 37,
+          "prev": 37,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 42767,
+          "prev": 42767,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -546,13 +660,16 @@
       "expected_sub_cat": "",
       "sub_bsr": 42767,
       "history_main_bsr": [
+        42767,
         42767
       ],
       "history_sub_bsr": [],
       "history_price": [
+        21.99,
         21.99
       ],
       "history_rating": [
+        4.8,
         4.8
       ],
       "events": [],
