@@ -65,6 +65,7 @@ def get_access_token(app_id: str, app_key: str) -> str:
     resp = requests.post(url, json=payload, headers=headers, timeout=30)
     resp.raise_for_status()
     result = resp.json()
+    print(f"  [积加] token响应: code={result.get('code')}, data={str(result.get('data'))[:100]}")
 
     # 积加返回格式: { code: 0, data: { access_token: "...", expires_in: 3600 } }
     if result.get("code") != 0:
@@ -109,6 +110,7 @@ def get_listing_analyze(asin_list: list, app_id: str, app_key: str,
         market_list = [1]
 
     token = get_access_token(app_id, app_key)
+    time.sleep(1.5)  # 避免频次限制
 
     url = f"{BASE_URL}/operation/sts/listingAnalyzeMultiIndex/page"
     headers = {
@@ -129,7 +131,9 @@ def get_listing_analyze(asin_list: list, app_id: str, app_key: str,
 
     resp = requests.post(url, json=payload, headers=headers, timeout=30)
     resp.raise_for_status()
-    return resp.json()
+    result_json = resp.json()
+    print(f"  [积加] 数据响应: code={result_json.get('code')}, rows={len(result_json.get('data',{}).get('rows',[]))}")
+    return result_json
 
 
 def get_jike_data_for_asins(asin_list: list, config_path: str = None):
@@ -153,10 +157,12 @@ def get_jike_data_for_asins(asin_list: list, config_path: str = None):
     if not app_id or not app_key:
         raise Exception("积加配置缺少 appId 或 appKey")
 
+    time.sleep(2)  # 批次间隔，避免频次限制
     result = get_listing_analyze(asin_list, app_id, app_key)
     code = result.get("code")
     if code != 0:
-        raise Exception(f"积加 API 返回错误: code={code}, 请检查凭证是否有效")
+        rows = result.get("data", {}).get("rows", [])
+        raise Exception(f"积加 API 返回错误: code={code}, message={result.get('message','')}, rows={len(rows)}, 请检查凭证/权限/ASIN是否在积加系统注册")
 
     rows = result.get("data", {}).get("rows", [])
 

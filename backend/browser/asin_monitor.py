@@ -145,8 +145,8 @@ def _fetch_related_asin_data(browser, related_list):
         try:
             amazon = AmazonBrowser(browser)
             amazon.search_for_asin(asin)
-            browser.scroll_down(times=1, min_pause=1, max_pause=2)
-            time.sleep(1)
+            browser.scroll_down(times=1, min_pause=0.3, max_pause=0.8)
+            time.sleep(0.5)
             data = extract_asin_data(browser)
             results.append({
                 "asin": asin, "source": source,
@@ -235,10 +235,10 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
     try:
         amazon = AmazonBrowser(browser)
         amazon.browse_homepage()
-        if random.random() < 0.5:
+        if random.random() < 0.15:
             amazon.browse_category()
         amazon.search_for_asin(asin, search_keyword)
-        browser.scroll_down(times=1, min_pause=1, max_pause=2)
+        browser.scroll_down(times=1, min_pause=0.3, max_pause=0.8)
         # ── 等待插件加载（最长30秒）──
         deadline = time.time() + 30
         while time.time() < deadline:
@@ -250,14 +250,14 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
             if ready:
                 break
             time.sleep(1)
-        time.sleep(random.uniform(1, 3))  # 再等1-3秒让插件彻底渲染
+        time.sleep(random.uniform(0.3, 0.8))  # 再等1-3秒让插件彻底渲染
         amazon_data = extract_asin_data(browser)
         if not amazon_data.get("bsr"):
             bsr = extract_bsr_direct(browser)
             if bsr:
                 amazon_data["bsr"] = bsr
         print_card(amazon_data)
-        if random.random() < 0.5:
+        if random.random() < 0.15:
             amazon.view_reviews()
         print("  亚马逊检查完成")
     except Exception as e:

@@ -23,8 +23,8 @@ from browser.human_timer import human_pause, read_pause, think_pause
 
 # --- Tool Functions ---
 
-def random_scroll(browser, times=None, min_pause=1.0, max_pause=2.0):
-    t = times if times is not None else random.randint(1, 3)
+def random_scroll(browser, times=None, min_pause=0.3, max_pause=0.8):
+    t = times if times is not None else random.randint(1, 2)
     for _ in range(t):
         amt = random.randint(300, 700)
         browser.eval("window.scrollBy(0, " + str(amt) + ")")
@@ -32,7 +32,7 @@ def random_scroll(browser, times=None, min_pause=1.0, max_pause=2.0):
 
 
 def random_hovers(browser, count=None):
-    n = count if count is not None else random.randint(1, 3)
+    n = count if count is not None else random.randint(1, 2)
     browser.eval(
         "((n) => {"
         "const els = document.querySelectorAll('.s-result-item[data-component-type=\"s-search-result\"]');"
@@ -68,7 +68,7 @@ def wait_for_plugin_markers(browser, timeout=15):
         if result and result > 0:
             print("  [plugin] Detected " + str(result) + " marked products (appeared after " + str(round(time.time() - start, 1)) + "s)")
             return True
-        time.sleep(2)
+        time.sleep(1)
     print("  [plugin] Timeout, using pure DOM results")
     return False
 
@@ -292,12 +292,12 @@ def do_keyword_search(browser, keyword):
 
     # 3.5 Wait extra 10s for page to fully stabilize after plugin markers appear
     print("  等待10秒页面稳定...")
-    time.sleep(10)
+    time.sleep(5)
 
     # 4. Human behavior simulation
     random_scroll(browser, times=random.randint(1, 2))
     human_pause(2, 5)
-    random_hovers(browser, count=random.randint(1, 3))
+    random_hovers(browser, count=random.randint(1, 2))
 
     # 5. Extract data
     print("  Extracting search result data...")
