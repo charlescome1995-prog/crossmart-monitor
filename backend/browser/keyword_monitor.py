@@ -290,6 +290,10 @@ def do_keyword_search(browser, keyword):
     print("  Waiting for Seller Sprite plugin markers...")
     plugin_found = wait_for_plugin_markers(browser, timeout=15)
 
+    # 3.5 Wait extra 10s for page to fully stabilize after plugin markers appear
+    print("  等待10秒页面稳定...")
+    time.sleep(10)
+
     # 4. Human behavior simulation
     random_scroll(browser, times=random.randint(1, 2))
     human_pause(2, 5)
