@@ -1,0 +1,22 @@
+name: Cleanup old workflow runs
+
+on:
+  schedule:
+    - cron: '0 2 1 * *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cleanup old workflow runs
+        run: |
+          gh run list --limit 500 --json databaseId --jq '.[].databaseId' | \
+            while read id; do
+              gh api --silent -X DELETE /repos/${{ github.repository }}/actions/runs/$id
+            done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
