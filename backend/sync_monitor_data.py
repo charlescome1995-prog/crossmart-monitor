@@ -250,6 +250,9 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "asin": asin,
         "is_main": True,
         "logic_type": "主监控",
+        "source_keyword": "",
+        "source_keyword": "",
+        "source_keyword": "",
         "title": title[:200],
         "brand": brand[:60] if brand else '',
         "img": data.get('main_image', data.get('img', '')),
@@ -486,6 +489,30 @@ def build_keyword_item(kw, a):
 def main():
     items = []
 
+    # ── 加载关键词竞品映射（ASIN → keyword）───────────────────────────────
+    kw_related_file = os.path.join(os.path.dirname(DATA_DIR), 'keyword_related_asins.json')
+    kw_asins = {}  # {asin: keyword}
+    if os.path.exists(kw_related_file):
+        with open(kw_related_file, 'r', encoding='utf-8') as f:
+            kw_raw = json.load(f)
+        for kw_name, asin_list in kw_raw.items():
+            for a in asin_list:
+                aasin = a.get('asin', '') if isinstance(a, dict) else (a if isinstance(a, str) else '')
+                if aasin:
+                    kw_asins[aasin] = kw_name
+
+    # ── 加载 user_config related ASIN 集合（优先级高于关键词）────────────
+    user_cfg_file = os.path.join(os.path.dirname(DATA_DIR), 'user_config.json')
+    user_related = set()
+    if os.path.exists(user_cfg_file):
+        with open(user_cfg_file, 'r', encoding='utf-8') as f:
+            cfg = json.load(f)
+        for entry in cfg.get('asins', []):
+            for ra in entry.get('related', []):
+                user_related.add(ra.strip())
+
+    print(f'[SYNC] Keyword related ASINs: {len(kw_asins)}, User related: {len(user_related)}')
+
     asin_dirs = sorted(glob.glob(os.path.join(DATA_DIR, 'asin_*')))
     print(f'[SYNC] Found {len(asin_dirs)} ASIN directories')
 
@@ -553,6 +580,17 @@ def main():
         jike_data = load_jike_data(asin)
 
         item = build_rawdata_item(asin, data, all_snaps, jike_data=jike_data)
+        # 判断 ASIN 来源：user_related > keyword > 主ASIN
+        if asin in user_related:
+            item['monitor_type'] = 'ASIN'
+            item['logic_type'] = '关联竞品'
+            item['is_main'] = False
+        elif asin in kw_asins:
+            item['monitor_type'] = 'KW'
+            item['logic_type'] = '关键词-' + kw_asins[asin]
+            item['source_keyword'] = kw_asins[asin]
+            item['is_main'] = False
+        # 否则保持 build_rawdata_item 默认值（主监控）
         items.append(item)
 
         # 每个关联ASIN也作为独立行输出

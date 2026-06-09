@@ -372,6 +372,17 @@ def run_monitor(config_override=None):
                 print("  关联ASIN " + rel_asin + " 执行失败，继续")
             time.sleep(random.randint(20, 50))
 
+        # ── 写入 _meta.json（记录关联ASIN，供 sync_monitor_data.py 判断 logic_type）─────────
+        try:
+            from browser.snapshot_storage import save_asin_meta
+            meta_related = [{"asin": ra.strip(), "source": "user_related"}
+                           for ra in related_list if ra.strip()]
+            if meta_related:
+                save_asin_meta(main_asin, meta_related)
+                print(f"  [_meta] 已写入 {len(meta_related)} 个关联ASIN")
+        except Exception as e:
+            print(f"  [_meta] 写入失败: {e}")
+
     # ── Phase D: 同步推送 ──
     print("\n--- 同步数据 ---")
     sync_and_push()
