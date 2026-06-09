@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-09T17:46:27",
+  "updated": "2026-06-09T17:49:14",
   "items": [
     {
       "monitor_type": "KW",
@@ -373,8 +373,8 @@
     {
       "monitor_type": "ASIN",
       "asin": "B0C7VP8SFV",
-      "is_main": true,
-      "logic_type": "主监控",
+      "is_main": false,
+      "logic_type": "关联竞品",
       "source_keyword": "antifungal cream",
       "title": "SimplyVital 1% Clotrimazole Antifungal Cream - Treats Most Athlete's Foot, Jock Itch, Ringworm - Athletes Foot Treatment Anti Fungal Cream for Skin, Ring Worm Medication for Humans, 2oz",
       "brand": "SimplyVital",
@@ -827,8 +827,8 @@
     {
       "monitor_type": "ASIN",
       "asin": "B0GPGR4JDF",
-      "is_main": true,
-      "logic_type": "主监控",
+      "is_main": false,
+      "logic_type": "关联竞品",
       "source_keyword": "",
       "title": "Antifungal Cream for Athlete’s Foot, Jock Itch & Ringworm – 1% Clotrimazole Antifungal Cream, Ringworm Treatment for Humans, Relieves Burning, Itching, Scaling & Cracking (3.5 Ounce)",
       "brand": "Brand: Kerova",
