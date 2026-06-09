@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-09T11:23:37",
+  "updated": "2026-06-09T12:19:21",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -34,8 +34,8 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 820,
-          "prev": 820,
+          "current": 818,
+          "prev": 818,
           "change": "+0",
           "direction": "same"
         }
@@ -55,20 +55,24 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household (See Top 100 in Health & Household)",
       "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 820,
+      "main_bsr": 818,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 820,
+      "sub_bsr": 818,
       "history_main_bsr": [
         834,
         834,
         834,
         834,
         820,
-        820
+        820,
+        818,
+        818
       ],
       "history_sub_bsr": [],
       "history_price": [
+        18.97,
+        18.97,
         18.97,
         18.97,
         18.97,
@@ -82,18 +86,26 @@
         4.6,
         4.6,
         4.6,
+        4.6,
+        4.6,
         4.6
       ],
       "events": [],
       "related_asins": [],
       "jike_sales": null,
       "jike_orders": null,
+      "jike_units": null,
       "jike_session": null,
       "jike_page_views": null,
       "jike_conversion_rate": null,
+      "jike_rating": null,
+      "jike_reviews": null,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
       "jike_listing_state": null,
+      "jike_product_name": null,
       "source_keyword": "antifungal cream",
-      "source_keyword_rank": ""
+      "source_keyword_rank": "自然位：第1页第5位"
     },
     {
       "monitor_type": "ASIN",
@@ -108,6 +120,13 @@
       "rating": 4.6,
       "reviews": 16134,
       "diff": {
+        "price": {
+          "current": 4.85,
+          "prev": 4.85,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
         "rating": {
           "current": 4.6,
           "prev": 4.6,
@@ -152,6 +171,8 @@
         389,
         389,
         392,
+        392,
+        392,
         392
       ],
       "history_sub_bsr": [],
@@ -161,9 +182,13 @@
         4.85,
         4.85,
         null,
+        4.85,
+        4.85,
         4.85
       ],
       "history_rating": [
+        4.6,
+        4.6,
         4.6,
         4.6,
         4.6,
@@ -175,12 +200,18 @@
       "related_asins": [],
       "jike_sales": null,
       "jike_orders": null,
+      "jike_units": null,
       "jike_session": null,
       "jike_page_views": null,
       "jike_conversion_rate": null,
+      "jike_rating": null,
+      "jike_reviews": null,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
       "jike_listing_state": null,
+      "jike_product_name": null,
       "source_keyword": "antifungal cream",
-      "source_keyword_rank": ""
+      "source_keyword_rank": "自然位：第1页第1位"
     },
     {
       "monitor_type": "ASIN",
@@ -215,8 +246,8 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 2085,
-          "prev": 2085,
+          "current": 2084,
+          "prev": 2084,
           "change": "+0",
           "direction": "same"
         }
@@ -236,20 +267,24 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household (See Top 100 in Health & Household)",
       "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 2085,
+      "main_bsr": 2084,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 2085,
+      "sub_bsr": 2084,
       "history_main_bsr": [
         2127,
         2127,
         2127,
         2127,
         2085,
-        2085
+        2085,
+        2084,
+        2084
       ],
       "history_sub_bsr": [],
       "history_price": [
+        6.49,
+        6.49,
         6.49,
         6.49,
         6.49,
@@ -263,18 +298,26 @@
         4.6,
         4.6,
         4.6,
+        4.6,
+        4.6,
         4.6
       ],
       "events": [],
       "related_asins": [],
       "jike_sales": null,
       "jike_orders": null,
+      "jike_units": null,
       "jike_session": null,
       "jike_page_views": null,
       "jike_conversion_rate": null,
+      "jike_rating": null,
+      "jike_reviews": null,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
       "jike_listing_state": null,
+      "jike_product_name": null,
       "source_keyword": "antifungal cream",
-      "source_keyword_rank": ""
+      "source_keyword_rank": "自然位：第1页第4位"
     },
     {
       "monitor_type": "ASIN",
@@ -309,8 +352,8 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 3190,
-          "prev": 3190,
+          "current": 3226,
+          "prev": 3226,
           "change": "+0",
           "direction": "same"
         }
@@ -330,19 +373,25 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household (See Top 100 in Health & Household)",
       "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 3190,
+      "main_bsr": 3226,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 3190,
+      "sub_bsr": 3226,
       "history_main_bsr": [
         3458,
         3461,
         3190,
         3190,
-        3190
+        3190,
+        3226,
+        3226,
+        3226
       ],
       "history_sub_bsr": [],
       "history_price": [
+        27.97,
+        27.97,
+        27.97,
         27.97,
         27.97,
         27.97,
@@ -354,18 +403,27 @@
         4.3,
         4.3,
         4.3,
+        4.3,
+        4.3,
+        4.3,
         4.3
       ],
       "events": [],
       "related_asins": [],
       "jike_sales": null,
       "jike_orders": null,
+      "jike_units": null,
       "jike_session": null,
       "jike_page_views": null,
       "jike_conversion_rate": null,
+      "jike_rating": null,
+      "jike_reviews": null,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
       "jike_listing_state": null,
+      "jike_product_name": null,
       "source_keyword": "antifungal cream",
-      "source_keyword_rank": ""
+      "source_keyword_rank": "自然位：第1页第3位"
     },
     {
       "monitor_type": "ASIN",
@@ -448,10 +506,16 @@
       "related_asins": [],
       "jike_sales": null,
       "jike_orders": null,
+      "jike_units": null,
       "jike_session": null,
       "jike_page_views": null,
       "jike_conversion_rate": null,
-      "jike_listing_state": null
+      "jike_rating": null,
+      "jike_reviews": null,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
+      "jike_listing_state": null,
+      "jike_product_name": null
     },
     {
       "monitor_type": "ASIN",
@@ -486,8 +550,8 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 5355,
-          "prev": 5355,
+          "current": 5373,
+          "prev": 5373,
           "change": "+0",
           "direction": "same"
         }
@@ -507,20 +571,24 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household (See Top 100 in Health & Household)",
       "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 5355,
+      "main_bsr": 5373,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 5355,
+      "sub_bsr": 5373,
       "history_main_bsr": [
         5038,
         5038,
         5037,
         5037,
         5355,
-        5355
+        5355,
+        5373,
+        5373
       ],
       "history_sub_bsr": [],
       "history_price": [
+        9.99,
+        9.99,
         9.99,
         9.99,
         9.99,
@@ -534,18 +602,26 @@
         4.6,
         4.6,
         4.6,
+        4.6,
+        4.6,
         4.6
       ],
       "events": [],
       "related_asins": [],
       "jike_sales": null,
       "jike_orders": null,
+      "jike_units": null,
       "jike_session": null,
       "jike_page_views": null,
       "jike_conversion_rate": null,
+      "jike_rating": null,
+      "jike_reviews": null,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
       "jike_listing_state": null,
+      "jike_product_name": null,
       "source_keyword": "antifungal cream",
-      "source_keyword_rank": ""
+      "source_keyword_rank": "自然位：第1页第2位"
     },
     {
       "monitor_type": "ASIN",
@@ -581,9 +657,9 @@
         },
         "bsr": {
           "current": 114352,
-          "prev": 116098,
-          "change": "1746",
-          "direction": "up"
+          "prev": 114352,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -608,15 +684,18 @@
       "history_main_bsr": [
         116118,
         116098,
+        114352,
         114352
       ],
       "history_sub_bsr": [],
       "history_price": [
         18.99,
         18.99,
+        18.99,
         18.99
       ],
       "history_rating": [
+        4.0,
         4.0,
         4.0,
         4.0
@@ -625,10 +704,16 @@
       "related_asins": [],
       "jike_sales": null,
       "jike_orders": null,
+      "jike_units": null,
       "jike_session": null,
       "jike_page_views": null,
       "jike_conversion_rate": null,
-      "jike_listing_state": null
+      "jike_rating": null,
+      "jike_reviews": null,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
+      "jike_listing_state": null,
+      "jike_product_name": null
     },
     {
       "monitor_type": "ASIN",
@@ -652,9 +737,9 @@
         },
         "rating": {
           "current": 4.7,
-          "prev": 4.8,
-          "change": "-0.1",
-          "direction": "dn"
+          "prev": 4.7,
+          "change": "+0.0",
+          "direction": "same"
         },
         "review_count": {
           "current": 37,
@@ -663,10 +748,10 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 32788,
-          "prev": 42767,
-          "change": "9979",
-          "direction": "up"
+          "current": 34313,
+          "prev": 32788,
+          "change": "+1525",
+          "direction": "dn"
         }
       },
       "listing_status": "正常",
@@ -684,17 +769,19 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household (See Top 100 in Health & Household)",
       "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 32788,
+      "main_bsr": 34313,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 32788,
+      "sub_bsr": 34313,
       "history_main_bsr": [
         42767,
         42767,
-        32788
+        32788,
+        34313
       ],
       "history_sub_bsr": [],
       "history_price": [
+        21.99,
         21.99,
         21.99,
         21.99
@@ -702,16 +789,23 @@
       "history_rating": [
         4.8,
         4.8,
+        4.7,
         4.7
       ],
       "events": [],
       "related_asins": [],
       "jike_sales": null,
       "jike_orders": null,
+      "jike_units": null,
       "jike_session": null,
       "jike_page_views": null,
       "jike_conversion_rate": null,
-      "jike_listing_state": null
+      "jike_rating": null,
+      "jike_reviews": null,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
+      "jike_listing_state": null,
+      "jike_product_name": null
     }
   ],
   "keywords": [
@@ -720,8 +814,8 @@
       "top_asins": [
         {
           "asin": "B013PGADAW",
-          "type": "unknown",
-          "rank": "",
+          "type": "natural",
+          "rank": "自然位：第1页第1位",
           "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More",
           "price": "$4.85",
           "rating": "",
@@ -729,35 +823,35 @@
         },
         {
           "asin": "B0D98XM5C9",
-          "type": "unknown",
-          "rank": "",
+          "type": "natural",
+          "rank": "自然位：第1页第2位",
           "title": "Miconazole Antifungal Cream for Skin - 4 oz of Miconazole Nitrate for Jock Itch, Athlete's Foot, Itching, and Ringworm",
           "price": "$9.99",
           "rating": "",
           "reviews": "4"
         },
         {
-          "asin": "B015HNGLJS",
-          "type": "unknown",
-          "rank": "",
-          "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More (Pack of 5)",
-          "price": "$6.49",
-          "rating": "",
-          "reviews": "1"
-        },
-        {
           "asin": "B0C7VP8SFV",
-          "type": "unknown",
-          "rank": "",
+          "type": "natural",
+          "rank": "自然位：第1页第3位",
           "title": "SimplyVital 1% Clotrimazole Antifungal Cream - Treats Most Athlete's Foot, Jock Itch, Ringworm - Athletes Foot Treatment Anti Fungal Cream for Skin, Ring Worm Medication for Humans, 2oz",
           "price": "$27.97",
           "rating": "",
           "reviews": "2"
         },
         {
+          "asin": "B015HNGLJS",
+          "type": "natural",
+          "rank": "自然位：第1页第4位",
+          "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More (Pack of 5)",
+          "price": "$6.49",
+          "rating": "",
+          "reviews": "1"
+        },
+        {
           "asin": "B00O302HNQ",
-          "type": "unknown",
-          "rank": "",
+          "type": "natural",
+          "rank": "自然位：第1页第5位",
           "title": "Lotrimin Ultra 1 Week Athlete's Foot Treatment, Prescription Strength Butenafine Hydrochloride 1%, Cures Most Athlete’s Foot Between Toes, Cream, 1.1 Oz",
           "price": "$18.97",
           "rating": "",
