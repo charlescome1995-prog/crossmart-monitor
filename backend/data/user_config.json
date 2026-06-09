@@ -13,5 +13,6 @@
       "main": "antifungal cream",
       "related": []
     }
-  ]
+  ],
+  "dingtalk_webhook_url": "https://oapi.dingtalk.com/robot/send?access_token=8e7ef4bd43e1ff5c02045874287ad40ec04ba713f299d619dc191b9bab5a3eb4"
 }

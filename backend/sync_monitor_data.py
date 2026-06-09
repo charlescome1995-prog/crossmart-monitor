@@ -683,6 +683,13 @@ def main():
     except Exception as e:
         print(f'⚠️ Git 推送异常: {e}')
 
+    # ── 钉钉预警检查 ─────────────────────────────────────────────
+    try:
+        from dingtalk_notifier import check_and_notify
+        check_and_notify()
+    except Exception as e:
+        print(f'⚠️ 钉钉预警异常: {e}')
+
 
 if __name__ == '__main__':
     main()
