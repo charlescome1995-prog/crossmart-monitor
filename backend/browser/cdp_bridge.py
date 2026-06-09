@@ -362,6 +362,88 @@ class CDPBrowser:
             pass
 
 
+def get_tab_count(port=None):
+    """返回当前 Edge 标签页数量"""
+    if port is None:
+        port = EDGE_PORT
+    try:
+        req = urllib.request.urlopen(f"http://127.0.0.1:{port}/json", timeout=5)
+        return len(json.loads(req.read()))
+    except:
+        return 0
+
+
+def cleanup_excess_tabs(port=None, threshold=15):
+    """
+    清理多余的临时标签页，避免 Edge 卡顿。
+    - threshold: 标签页数量上限，超过此数才清理
+    - 保留包含 amazon.com / sellersprite 的标签页（正在工作的）
+    - 关闭其余所有标签页（临时/废弃的）
+    返回关闭的数量。
+    """
+    if port is None:
+        port = EDGE_PORT
+
+    try:
+        req = urllib.request.urlopen(f"http://127.0.0.1:{port}/json", timeout=5)
+        raw_tabs = json.loads(req.read())
+    except Exception as e:
+        print(f"  [TabCleanup] 无法连接 Edge CDP: {e}")
+        return 0
+
+    total = len(raw_tabs)
+    if total <= threshold:
+        print(f"  [TabCleanup] 标签页 {total}/{threshold}，无需清理")
+        return 0
+
+    to_close = []
+    for t in raw_tabs:
+        url = t.get("url", "")
+        tid = t.get("id", "")
+        if not tid:
+            continue
+        # 跳过 about:blank 和 devtools（devtools 无法关闭）
+        if url in ("", "about:blank") or "devtools" in url:
+            continue
+        # 保留正在工作的重要标签页
+        if "amazon.com" in url or "sellersprite" in url or "sellerprite" in url:
+            continue
+        to_close.append(tid)
+
+    # 超过阈值时，强制关闭最老的非重要标签页
+    if total - len(to_close) > threshold:
+        # 所有不重要的都关掉
+        to_close = [t["id"] for t in raw_tabs
+                    if t.get("id") and t.get("url", "") not in ("", "about:blank")
+                    and "devtools" not in t.get("url", "")
+                    and "amazon.com" not in t.get("url", "")
+                    and "sellersprite" not in t.get("url", "")
+                    and "sellerprite" not in t.get("url", "")]
+
+    closed = 0
+    for tid in to_close:
+        try:
+            # 通过 CDP WebSocket 发送关闭命令（复用全局连接方式）
+            ws_url = None
+            for t in raw_tabs:
+                if t.get("id") == tid:
+                    ws_url = t.get("webSocketDebuggerUrl")
+                    break
+            if not ws_url:
+                continue
+            ws = websocket.create_connection(ws_url, timeout=5)
+            msg_id = 1
+            ws.send(json.dumps({"method": "Target.closeTarget", "id": msg_id, "params": {"targetId": tid}}))
+            ws.recv()
+            ws.close()
+            closed += 1
+        except Exception:
+            pass
+
+    print(f"  [TabCleanup] 关闭 {closed}/{total} 个标签页，剩余 {total - closed}")
+    return closed
+
+
 def start_default_edge():
     """启动闫旭的默认Edge（带缓存/收藏/卖家精灵插件）"""
     return ensure_edge_running()

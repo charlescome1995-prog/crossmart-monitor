@@ -186,6 +186,15 @@ def run_full_scrape(main_asins):
     all_asins = []      # 最终要抓的所有ASIN
     related_map = {}    # 主ASIN -> 关联ASIN列表
 
+    # 抓取前清理多余标签页（避免 Edge 卡顿）
+    try:
+        from browser.cdp_bridge import cleanup_excess_tabs, get_tab_count
+        before = get_tab_count()
+        cleanup_excess_tabs(threshold=15)
+        print(f"[TabCleanup] 抓取前标签页: {before}")
+    except Exception as e:
+        print(f"[TabCleanup] 跳过: {e}")
+
     # Step 1: 对每个主ASIN查找关联
     for idx, main_asin in enumerate(main_asins):
         main_asin = main_asin.strip()
@@ -243,6 +252,16 @@ def run_full_scrape(main_asins):
     except Exception as e:
         print("[同步] 失败: %s" % e)
 
+
+    # 抓取后清理多余标签页（收尾）
+    try:
+        from browser.cdp_bridge import cleanup_excess_tabs, get_tab_count
+        before = get_tab_count()
+        cleanup_excess_tabs(threshold=15)
+        print(f"[TabCleanup] 抓取后标签页: {before}")
+    except Exception:
+        pass
+
     SCRAPE_STATUS["last_result"] = {
         "status": "ok",
         "count": len(results),
@@ -269,6 +288,7 @@ def polling_worker():
         
         token = load_gh_token()
         if not token:
+            print("[轮询] GH_TOKEN 未设置，跳过")
             continue
         
         try:
@@ -280,7 +300,9 @@ def polling_worker():
             })
             with urllib.request.urlopen(req, timeout=15) as r:
                 trigger_data = json.loads(r.read().decode("utf-8"))
-            
+
+            print(f"[轮询] 检查 trigger.json: status={trigger_data.get('status')}")
+
             if trigger_data.get("status") == "pending":
                 print("\n[轮询] 检测到 trigger.json pending，开始执行抓取...")
                 SCRAPE_STATUS["running"] = True
@@ -353,7 +375,7 @@ def polling_worker():
                     SCRAPE_STATUS["progress"] = ""
         
         except Exception as e:
-            # 网络错误不打印，避免刷屏
+            print(f"[轮询] 网络异常: {e}")
             pass
 
 class ScrapeHandler(BaseHTTPRequestHandler):
