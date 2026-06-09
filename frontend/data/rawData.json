@@ -1,11 +1,11 @@
 {
-  "updated": "2026-06-09T17:40:10",
+  "updated": "2026-06-09T17:44:59",
   "items": [
     {
-      "monitor_type": "ASIN",
+      "monitor_type": "KW",
       "asin": "B00O302HNQ",
-      "is_main": true,
-      "logic_type": "主监控",
+      "is_main": false,
+      "logic_type": "关键词-antifungal cream",
       "source_keyword": "antifungal cream",
       "title": "Lotrimin Ultra 1 Week Athlete's Foot Treatment, Prescription Strength Butenafine Hydrochloride 1%, Cures Most Athlete’s Foot Between Toes, Cream, 1.1 Oz",
       "brand": "Lotrimin",
@@ -125,10 +125,10 @@
       "source_keyword_rank": "自然位：第1页第5位"
     },
     {
-      "monitor_type": "ASIN",
+      "monitor_type": "KW",
       "asin": "B013PGADAW",
-      "is_main": true,
-      "logic_type": "主监控",
+      "is_main": false,
+      "logic_type": "关键词-antifungal cream",
       "source_keyword": "antifungal cream",
       "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More",
       "brand": "Globe Pharmacy",
@@ -248,10 +248,10 @@
       "source_keyword_rank": "自然位：第1页第1位"
     },
     {
-      "monitor_type": "ASIN",
+      "monitor_type": "KW",
       "asin": "B015HNGLJS",
-      "is_main": true,
-      "logic_type": "主监控",
+      "is_main": false,
+      "logic_type": "关键词-antifungal cream",
       "source_keyword": "antifungal cream",
       "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More (Pack of 5)",
       "brand": "Globe",
@@ -494,11 +494,11 @@
       "source_keyword_rank": "自然位：第1页第4位"
     },
     {
-      "monitor_type": "ASIN",
+      "monitor_type": "KW",
       "asin": "B0CX9J4FV3",
-      "is_main": true,
-      "logic_type": "主监控",
-      "source_keyword": "",
+      "is_main": false,
+      "logic_type": "关键词-antifungal cream",
+      "source_keyword": "antifungal cream",
       "title": "MED PRIDE 1% Clotrimazole Antifungal Cream 1oz- Fungus Skin Care Treatment with - Jock Itch Body Ointment - Fights Infection, Sweat Rash, Athletes Foot, Ringworm & Relieves Itching, Burning",
       "brand": "MED PRIDE",
       "img": "https://m.media-amazon.com/images/I/71Uk-kNakSL._AC_SL1500_.jpg",
@@ -598,10 +598,10 @@
       "jike_gross_profit_rate": null
     },
     {
-      "monitor_type": "ASIN",
+      "monitor_type": "KW",
       "asin": "B0D98XM5C9",
-      "is_main": true,
-      "logic_type": "主监控",
+      "is_main": false,
+      "logic_type": "关键词-antifungal cream",
       "source_keyword": "antifungal cream",
       "title": "Miconazole Antifungal Cream for Skin - 4 oz of Miconazole Nitrate for Jock Itch, Athlete's Foot, Itching, and Ringworm",
       "brand": "TenderGentle",
