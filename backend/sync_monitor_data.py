@@ -10,14 +10,15 @@ from datetime import datetime
 
 
 def load_jike_data(asin):
-    """从 processed/ashin_ASIN/jike_latest.json 加载积加数据"""
+    """从 processed/asin_ASIN/jike_latest.json 加载积加数据"""
     path = os.path.join(DATA_DIR, f'asin_{asin}', 'jike_latest.json')
     if not os.path.exists(path):
         return {}
     try:
         with open(path, 'r', encoding='utf-8') as f:
             content = json.load(f)
-        return content.get('data', {})
+        # 直接返回 dict（key 是 ASIN），不需要包装层
+        return content if isinstance(content, dict) else {}
     except Exception:
         return {}
 
@@ -282,13 +283,24 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "history_rating": [h.get('rating') for h in history] if history else [rating],
         "events": [],
         "related_asins": related_asins if related_asins else [],
-        # 积加数据字段（独有，不与亚马逊重复）
-        "jike_sales": jk.get('salesAmount'),
+        # 积加数据字段（来自 get_jike_data_for_asins 返回的字段）
+        "jike_sales": jk.get('orderProductSales'),
         "jike_orders": jk.get('orders'),
-        "jike_session": jk.get('session'),
+        "jike_units": jk.get('unitsOrdered'),
+        "jike_session": jk.get('sessions'),
         "jike_page_views": jk.get('pageViews'),
-        "jike_conversion_rate": jk.get('conversionRate'),
+        "jike_conversion_rate": jk.get('cvr'),
+        "jike_rating": jk.get('star'),
+        "jike_reviews": jk.get('reviewQuantity'),
+        "jike_main_seller_rank": jk.get('mainSellerRank'),
+        "jike_seller_rank": jk.get('sellerRank'),
         "jike_listing_state": jk.get('listingState'),
+        "jike_product_name": jk.get('productName'),
+        "jike_acos": jk.get('acos'),
+        "jike_ads_spend": jk.get('adsSpend'),
+        "jike_fba_quantity": jk.get('fbaQuantity'),
+        "jike_fba_turnover": jk.get('fbaTurnover'),
+        "jike_gross_profit_rate": jk.get('salesGrossProfitRate'),
     }
 
 
@@ -351,10 +363,21 @@ def build_related_item(asin, rel_data, main_asin=None):
         # 积加数据（关联ASIN无）
         "jike_sales": None,
         "jike_orders": None,
+        "jike_units": None,
         "jike_session": None,
         "jike_page_views": None,
         "jike_conversion_rate": None,
+        "jike_rating": None,
+        "jike_reviews": None,
+        "jike_main_seller_rank": None,
+        "jike_seller_rank": None,
         "jike_listing_state": None,
+        "jike_product_name": None,
+        "jike_acos": None,
+        "jike_ads_spend": None,
+        "jike_fba_quantity": None,
+        "jike_fba_turnover": None,
+        "jike_gross_profit_rate": None,
     }
 
 
@@ -442,10 +465,21 @@ def build_keyword_item(kw, a):
         # 积加数据（关键词ASIN无）
         "jike_sales": None,
         "jike_orders": None,
+        "jike_units": None,
         "jike_session": None,
         "jike_page_views": None,
         "jike_conversion_rate": None,
+        "jike_rating": None,
+        "jike_reviews": None,
+        "jike_main_seller_rank": None,
+        "jike_seller_rank": None,
         "jike_listing_state": None,
+        "jike_product_name": None,
+        "jike_acos": None,
+        "jike_ads_spend": None,
+        "jike_fba_quantity": None,
+        "jike_fba_turnover": None,
+        "jike_gross_profit_rate": None,
     }
 
 
@@ -515,7 +549,10 @@ def main():
         add_snap(latest, None)
         all_snaps.sort(key=lambda x: x['timestamp'])
 
-        item = build_rawdata_item(asin, data, all_snaps)
+        # 加载积加数据（仅主ASIN有积加数据文件）
+        jike_data = load_jike_data(asin)
+
+        item = build_rawdata_item(asin, data, all_snaps, jike_data=jike_data)
         items.append(item)
 
         # 每个关联ASIN也作为独立行输出

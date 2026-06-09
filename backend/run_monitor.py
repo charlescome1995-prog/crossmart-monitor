@@ -351,10 +351,11 @@ def run_monitor(config_override=None):
                     os.makedirs(asin_dir, exist_ok=True)
                     jike_path = os.path.join(asin_dir, "jike_latest.json")
                     with open(jike_path, "w", encoding="utf-8") as f:
-                        json.dump({"data": jike_data, "fetched_at": datetime.now().isoformat()}, f)
+                        json.dump(jike_data, f)
                     print(f"  积加数据已保存: {jike_path}")
                 except Exception as e:
                     print(f"  积加API调用失败: {e}")
+        time.sleep(5)  # 积加 API 限流：每 5 秒最多 1 次请求
         time.sleep(random.randint(20, 50))
 
         # 抓取用户配置的关联 ASIN

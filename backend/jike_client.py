@@ -1,12 +1,13 @@
 """
 积加 ERP API 客户端
 API 文档: https://open.gerpgo.com/api/open
+
+限流规则：每 5 秒 1 次请求
+白名单 IP：121.35.1.52（本地网络）
 """
 
 import json
 import time
-import socket
-import subprocess
 import requests
 from pathlib import Path
 
@@ -14,74 +15,6 @@ CONFIG_PATH = Path(__file__).parent / "data" / "jike_config.json"
 TOKEN_CACHE_PATH = Path(__file__).parent / "data" / "jike_token_cache.json"
 
 BASE_URL = "https://open.gerpgo.com/api/open"
-
-
-# ─────────────────────────── VPN 切换 ───────────────────────────
-
-def _wait_internet(timeout=20):
-    """等待本地网络（VPN断开后）恢复正常"""
-    for _ in range(timeout):
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(3)
-            sock.connect(("8.8.8.8", 53))
-            sock.close()
-            return True
-        except Exception:
-            time.sleep(1)
-    return False
-
-
-def _kill_rabbitpro():
-    """强制终止 RabbitPro"""
-    try:
-        subprocess.run(
-            ["taskkill", "/F", "/IM", "RabbitPro.exe"],
-            capture_output=True
-        )
-        time.sleep(3)
-    except Exception as e:
-        print(f"[VPN] taskkill 失败: {e}")
-
-
-def _start_rabbitpro():
-    """启动 RabbitPro（后台最小化）"""
-    try:
-        subprocess.Popen(
-            [r"C:\Users\OPENPC\AppData\Local\Programs\RabbitPro\RabbitPro.exe",
-             "--minimize"],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL
-        )
-        time.sleep(2)
-    except Exception as e:
-        print(f"[VPN] 启动 RabbitPro 失败: {e}")
-
-
-class VPNSwitcher:
-    """
-    积加 API 调用期间自动切换到本地网络（关闭 VPN）。
-
-    积加服务器要求请求来自白名单 IP 121.35.1.52，
-    全局 VPN 会导致出口 IP 变化，需要在调用积加期间断开 VPN。
-
-    用法：
-        with VPNSwitcher():
-            data = get_jike_data_for_asins(["B0FVSS8SR1"])
-    """
-
-    def __enter__(self):
-        print("[VPN] 断开 VPN（积加需要白名单IP）...")
-        _kill_rabbitpro()
-        if not _wait_internet():
-            raise Exception("[VPN] 断开后网络未恢复，请检查本地网络")
-        print("[VPN] 已切换到本地网络")
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        print("[VPN] 重启 VPN 服务...")
-        _start_rabbitpro()
-        print("[VPN] 请在 RabbitPro 界面手动点击连接")
 
 
 # ─────────────────────────── 凭证 & Token ───────────────────────────
@@ -129,37 +62,49 @@ def get_access_token(app_id: str, app_key: str) -> str:
     if cached:
         return cached
 
-    url = f"{BASE_URL}/oauth/token"
+    url = f"{BASE_URL}/api_token"
     payload = {
         "appId": app_id,
         "appKey": app_key,
-        "grant_type": "client_credentials"
     }
     headers = {"Content-Type": "application/json"}
 
     resp = requests.post(url, json=payload, headers=headers, timeout=30)
     resp.raise_for_status()
     result = resp.json()
-    print(f"  [积加] token响应: code={result.get('code')}, data={str(result.get('data'))[:100]}")
 
-    if result.get("code") != 0:
+    if result.get("code") != 200:
         raise Exception(f"获取 access_token 失败: {result}")
 
     data = result.get("data", {})
-    token = data.get("access_token")
-    expires_in = data.get("expires_in", 3600)
+    token = data.get("accessToken")
+    expires_in = data.get("expiresIn", 3600)
 
     save_token_cache(token, time.time() + expires_in)
     return token
 
 
-# ─────────────────────────── 商品表现 API ───────────────────────────
+# ─────────────────────────── 销售表现 API ───────────────────────────
 
-def get_listing_analyze(asin_list: list, app_id: str, app_key: str,
-                        market_list: list = None,
+def fetch_sales_by_asin(token: str, asin: str,
                         begin_date: str = None,
-                        end_date: str = None):
-    """调用商品表现接口（ASIN维度）"""
+                        end_date: str = None) -> dict:
+    """
+    查询单个 ASIN 的销售表现数据。
+
+    请求体（来自积加 OpenAPI 文档）：
+    {
+        "beginDate": "2026-06-02",
+        "endDate": "2026-06-09",
+        "groupByType": "asin",
+        "pageSize": 20,
+        "asin": "B0FVSS8SR1",
+        "showCurrencyType": "USD",
+        "page": 1
+    }
+
+    注意：限流每 5 秒 1 次，调用方需控制频率。
+    """
     import datetime
 
     today = datetime.date.today()
@@ -168,49 +113,69 @@ def get_listing_analyze(asin_list: list, app_id: str, app_key: str,
     if not begin_date:
         begin_date = (today - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
 
-    if market_list is None:
-        market_list = [1]
-
-    token = get_access_token(app_id, app_key)
-    time.sleep(1.5)
-
-    url = f"{BASE_URL}/operation/sts/listingAnalyzeMultiIndex/page"
+    url = f"{BASE_URL}/operation/sts/salesAnalysis/page"
     headers = {
         "Content-Type": "application/json",
         "accessToken": token
     }
     payload = {
-        "groupByType": "asin",
-        "showCurrencyType": "USD",
         "beginDate": begin_date,
         "endDate": end_date,
-        "isShowTotal": False,
-        "page": 1,
+        "groupByType": "asin",
         "pagesize": 20,
-        "marketList": market_list,
-        "asinList": asin_list
+        "asin": asin,
+        "showCurrencyType": "USD",
+        "page": 1
     }
 
     resp = requests.post(url, json=payload, headers=headers, timeout=30)
     resp.raise_for_status()
-    result_json = resp.json()
-    print(f"  [积加] 数据响应: code={result_json.get('code')}, rows={len(result_json.get('data',{}).get('rows',[]))}")
-    return result_json
+    result = resp.json()
+
+    data_obj = result.get("data")
+    if data_obj is None:
+        return result, []
+    rows = data_obj.get("rows") if isinstance(data_obj, dict) else []
+    return result, rows
 
 
 # ─────────────────────────── 主入口 ───────────────────────────
 
-def get_jike_data_for_asins(asin_list: list, config_path: str = None):
+def get_jike_data_for_asins(asin_list: list,
+                             begin_date: str = None,
+                             end_date: str = None) -> dict:
     """
-    对外主入口：给定 ASIN 列表，返回积加数据字典
-    格式: { asin: { salesAmount, orders, session, pageViews, conversionRate, listingState } }
+    对外主入口：给定 ASIN 列表，返回积加数据字典。
+
+    限流：每 5 秒发一次请求，自动 sleep 控制频率。
+
+    返回格式:
+        {
+            "ASIN": {
+                "orderProductSales": float,   # 销售额（USD）
+                "unitsOrdered": int,           # 销量
+                "orders": int,                 # 订单量
+                "sessions": int,              # Sessions
+                "pageViews": int,              # 页面浏览量
+                "cvr": float,                  # 转化率（%）
+                "mainSellerRank": int,        # 大类排名
+                "sellerRank": int,             # 小类排名
+                "star": float,                 # 评分
+                "reviewQuantity": int,         # 评论数
+                "listingState": str,           # 商品运营状态
+                "productName": str,             # 产品名称
+                "marketName": str,              # 站点名称
+                "_raw": dict                   # 原始数据
+            }
+        }
 
     Args:
-        asin_list: ASIN 列表
-        config_path: 配置文件路径，默认使用 jike_config.json
+        asin_list: ASIN 列表（单个也会包装成列表）
+        begin_date: 开始日期，默认最近7天
+        end_date: 结束日期，默认今天
 
     Returns:
-        dict: 每个 ASIN 的积加数据，ASIN 不在返回数据中则该 ASIN 值为 None
+        dict: 每个 ASIN 的积加数据
     """
     config = load_config()
     if not config:
@@ -221,42 +186,78 @@ def get_jike_data_for_asins(asin_list: list, config_path: str = None):
     if not app_id or not app_key:
         raise Exception("积加配置缺少 appId 或 appKey")
 
-    # ── 积加 API 需要白名单 IP，调用期间关闭 VPN ──
-    with VPNSwitcher():
-        time.sleep(2)  # 批次间隔
-        result = get_listing_analyze(asin_list, app_id, app_key)
+    token = get_access_token(app_id, app_key)
 
-        code = result.get("code")
-        if code != 0:
-            # 401 时清除缓存，下次重试可重新获取 token
+    out = {}
+
+    for i, asin in enumerate(asin_list):
+        asin = asin.strip()
+        if not asin:
+            continue
+
+        # 限流：每 5 秒 1 次，最后一次不需要等
+        if i > 0:
+            print(f"  [积加] 限流等待 5s...")
+            time.sleep(5)
+
+        print(f"  [积加] 查询 ASIN: {asin}")
+
+        # 509 时最多重试 3 次，每次等 6 秒
+        for retry in range(3):
+            result, rows = fetch_sales_by_asin(token, asin, begin_date, end_date)
+            code = result.get("code")
+            if code == 200:
+                break
             if code == 401 or code == 40005:
                 invalidate_token_cache()
-            rows = result.get("data", {}).get("rows", [])
-            raise Exception(
-                f"积加 API 返回错误: code={code}, "
-                f"message={result.get('message','')}, rows={len(rows)}, "
-                f"请检查凭证/权限/ASIN是否在积加系统注册"
-            )
-
-        rows = result.get("data", {}).get("rows", [])
-
-        out = {}
-        for row in rows:
-            asin = row.get("asin", "")
-            if not asin:
+            if code == 509:
+                print(f"  [积加] ASIN {asin} 限流(509)，等待 6s 后重试...")
+                time.sleep(6)
                 continue
-            sales_obj = row.get("salesAmount", {}) or {}
-            out[asin] = {
-                "salesAmount": sales_obj.get("currencyAmount") if isinstance(sales_obj, dict) else None,
+            # 其他错误不重试
+            print(f"  [积加] ASIN {asin} 查询失败: code={code}, message={result.get('message','')}")
+            rows = []
+            break
+        else:
+            # 3 次重试都失败了
+            print(f"  [积加] ASIN {asin} 重试 3 次后仍失败")
+            rows = []
+
+        # 同一 ASIN 可能返回多条（父ASIN + 子ASIN），全部收录
+        for row in rows:
+            a = row.get("asin", "")
+            if not a or a == "-":
+                continue
+
+            sales_obj = row.get("orderProductSalesAmount") or {}
+            if isinstance(sales_obj, dict):
+                sales_amount = sales_obj.get("currencyAmount")
+            else:
+                sales_amount = row.get("orderProductSales")
+
+            out[a] = {
+                "orderProductSales": sales_amount,
+                "unitsOrdered": row.get("unitsOrdered"),
                 "orders": row.get("orders"),
-                "session": row.get("session"),
+                "sessions": row.get("sessions"),
                 "pageViews": row.get("pageViews"),
-                "conversionRate": row.get("conversionRate"),
+                "cvr": row.get("cvr"),
+                "mainSellerRank": row.get("mainSellerRank"),
+                "sellerRank": row.get("sellerRank"),
+                "star": row.get("star"),
+                "reviewQuantity": row.get("reviewQuantity"),
                 "listingState": row.get("listingState"),
+                "productName": row.get("productName"),
+                "marketName": row.get("marketName"),
+                "acos": row.get("acos"),
+                "adsSpend": row.get("adsSpend"),
+                "fbaQuantity": row.get("fbaQuantity"),
+                "fbaTurnover": row.get("fbaTurnover"),
+                "salesGrossProfitRate": row.get("salesGrossProfitRate"),
                 "_raw": row
             }
 
-        return out
+    return out
 
 
 if __name__ == "__main__":
@@ -266,8 +267,16 @@ if __name__ == "__main__":
     else:
         print("已配置 appId:", config.get("appId"))
         try:
-            with VPNSwitcher():
-                token = get_access_token(config["appId"], config["appKey"])
-                print("access_token 获取成功:", token[:20] + "...")
+            token = get_access_token(config["appId"], config["appKey"])
+            print("access_token 获取成功:", token[:20] + "...")
+
+            # 测试查询
+            result = get_jike_data_for_asins(["B09VYQRRHF"])
+            for asin, data in result.items():
+                print(f"\n{asin}:")
+                print(f"  销售额={data['orderProductSales']}, 销量={data['unitsOrdered']}, "
+                      f"订单={data['orders']}, sessions={data['sessions']}, "
+                      f"pageViews={data['pageViews']}, CVR={data['cvr']}, "
+                      f"评分={data['star']}, 评论={data['reviewQuantity']}")
         except Exception as e:
             print("access_token 获取失败:", e)

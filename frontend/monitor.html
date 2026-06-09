@@ -551,6 +551,10 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
           '<div style="font-size:11px;color:#64748b;">访客 ' + (item.jike_session != null ? item.jike_session.toLocaleString() : '-') + '</div>' +
           '<div style="font-size:11px;color:#64748b;">浏览 ' + (item.jike_page_views != null ? item.jike_page_views.toLocaleString() : '-') + '</div>' +
           '<div style="font-size:11px;color:#64748b;">转化 ' + (item.jike_conversion_rate != null ? (item.jike_conversion_rate * 100).toFixed(2) + '%' : '-') + '</div>' +
+          '<div style="font-size:11px;">ACOS ' + (item.jike_acos != null ? item.jike_acos + '%' : '-') + '</div>' +
+          '<div style="font-size:11px;color:#64748b;">广告费 ' + (item.jike_ads_spend != null ? '$' + item.jike_ads_spend.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '-') + '</div>' +
+          '<div style="font-size:11px;">FBA库存 ' + (item.jike_fba_quantity != null ? item.jike_fba_quantity.toLocaleString() : '-') + '</div>' +
+          '<div style="font-size:11px;color:#64748b;">库存周转 ' + (item.jike_fba_turnover != null ? item.jike_fba_turnover.toFixed(1) : '-') + '</div>' +
           '<div style="font-size:11px;">状态 ' + (item.jike_listing_state != null ? item.jike_listing_state : '-') + '</div>' +
         '</td>' +
         '<td><div class="status-indicator ' + statusClass + '">' + statusText + '</div></td>' +
@@ -604,15 +608,20 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
   }
 
   function exportToExcel() {
-    var rows = [['ASIN', '类型', '品牌', '监控类型', '逻辑类型', '商品状态', '价格', 'BSR', '评分', '评论数', '销售额(积加)', '订单数(积加)', '访客数(积加)', '浏览量(积加)', '转化率(积加)', '上架状态(积加)', '最后更新']];
+    var rows = [['ASIN', '类型', '品牌', '监控类型', '逻辑类型', '商品状态', '价格', 'BSR', '评分', '评论数', '销售额(积加)', '订单数(积加)', '访客数(积加)', '浏览量(积加)', '转化率(积加)', 'ACOS(积加)', '广告费(积加)', 'FBA库存(积加)', '库存周转(积加)', '毛利率(积加)', '上架状态(积加)', '最后更新']];
     rawData.items.forEach(function(m) {
       var jikeSales = m.jike_sales != null ? m.jike_sales : '-';
       var jikeOrders = m.jike_orders != null ? m.jike_orders : '-';
       var jikeSession = m.jike_session != null ? m.jike_session : '-';
       var jikePageViews = m.jike_page_views != null ? m.jike_page_views : '-';
       var jikeConv = m.jike_conversion_rate != null ? (m.jike_conversion_rate * 100).toFixed(2) + '%' : '-';
+      var jikeAcos = m.jike_acos != null ? m.jike_acos + '%' : '-';
+      var jikeAdsSpend = m.jike_ads_spend != null ? m.jike_ads_spend : '-';
+      var jikeFbaQty = m.jike_fba_quantity != null ? m.jike_fba_quantity : '-';
+      var jikeFbaTurnover = m.jike_fba_turnover != null ? m.jike_fba_turnover : '-';
+      var jikeGrossProfit = m.jike_gross_profit_rate != null ? m.jike_gross_profit_rate + '%' : '-';
       var jikeState = m.jike_listing_state != null ? m.jike_listing_state : '-';
-      rows.push([m.asin, m.monitor_type, m.brand || '', m.monitor_type, m.logic_type, m.listing_status, m.price, m.main_bsr, m.rating, m.reviews, jikeSales, jikeOrders, jikeSession, jikePageViews, jikeConv, jikeState, rawData.updated]);
+      rows.push([m.asin, m.monitor_type, m.brand || '', m.monitor_type, m.logic_type, m.listing_status, m.price, m.main_bsr, m.rating, m.reviews, jikeSales, jikeOrders, jikeSession, jikePageViews, jikeConv, jikeAcos, jikeAdsSpend, jikeFbaQty, jikeFbaTurnover, jikeGrossProfit, jikeState, rawData.updated]);
     });
     var ws = XLSX.utils.aoa_to_sheet(rows);
     var wb = XLSX.utils.book_new();
