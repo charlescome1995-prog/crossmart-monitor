@@ -15,23 +15,40 @@ permissions:
   id-token: write
 
 jobs:
-  deploy:
+  # ── Step 1: 将 frontend/ 打包上传 ──────────────────────────────
+  prepare:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 完整 clone，方便后续 sync
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+      - name: Sync rawData.json from repo root to frontend/
+        run: |
+          # sync_monitor_data.py 可能已把 rawData.json 写到 repo 根目录
+          # 将其复制到 frontend/data/，确保 deploy 时包含最新数据
+          if [ -f "rawData.json" ]; then
+            mkdir -p frontend/data
+            cp rawData.json frontend/data/rawData.json
+            echo "✓ Synced rawData.json to frontend/data/"
+          else
+            echo "⚠ rawData.json not found in repo root (sync may not have run yet)"
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'frontend'
 
+  # ── Step 2: 等待 sync 完成后再部署（时序保证） ─────────────────
+  deploy:
+    needs: prepare
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
