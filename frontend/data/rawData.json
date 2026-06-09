@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-09T12:19:21",
+  "updated": "2026-06-09T16:06:00",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -635,33 +635,7 @@
       "chg": 0.0,
       "rating": 4.0,
       "reviews": 26,
-      "diff": {
-        "price": {
-          "current": 18.99,
-          "prev": 18.99,
-          "change": "+0.0",
-          "pct": "+0.0%",
-          "direction": "same"
-        },
-        "rating": {
-          "current": 4.0,
-          "prev": 4.0,
-          "change": "+0.0",
-          "direction": "same"
-        },
-        "review_count": {
-          "current": 26,
-          "prev": 26,
-          "change": "+0",
-          "direction": "same"
-        },
-        "bsr": {
-          "current": 114352,
-          "prev": 114352,
-          "change": "+0",
-          "direction": "same"
-        }
-      },
+      "diff": {},
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -675,45 +649,41 @@
       "badges_lost": [],
       "coupon": "无",
       "prime_discount": "未开启",
-      "main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 114352,
+      "main_cat": "",
+      "expected_main_cat": "",
+      "main_bsr": 0,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 114352,
+      "sub_bsr": 0,
       "history_main_bsr": [
-        116118,
-        116098,
-        114352,
-        114352
+        0
       ],
       "history_sub_bsr": [],
       "history_price": [
-        18.99,
-        18.99,
-        18.99,
         18.99
       ],
       "history_rating": [
-        4.0,
-        4.0,
-        4.0,
         4.0
       ],
       "events": [],
       "related_asins": [],
-      "jike_sales": null,
-      "jike_orders": null,
-      "jike_units": null,
-      "jike_session": null,
-      "jike_page_views": null,
-      "jike_conversion_rate": null,
-      "jike_rating": null,
-      "jike_reviews": null,
+      "jike_sales": 476.75,
+      "jike_orders": 24,
+      "jike_units": 25,
+      "jike_session": 92,
+      "jike_page_views": 117,
+      "jike_conversion_rate": 27.17,
+      "jike_rating": 4.0,
+      "jike_reviews": 7,
       "jike_main_seller_rank": null,
       "jike_seller_rank": null,
-      "jike_listing_state": null,
-      "jike_product_name": null
+      "jike_listing_state": "-",
+      "jike_product_name": "60g瓶装止痒膏",
+      "jike_acos": 0.0,
+      "jike_ads_spend": 0.0,
+      "jike_fba_quantity": 1916,
+      "jike_fba_turnover": 536.6947,
+      "jike_gross_profit_rate": 44.74
     },
     {
       "monitor_type": "ASIN",
