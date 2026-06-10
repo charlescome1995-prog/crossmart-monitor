@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-10T13:04:13",
+  "updated": "2026-06-10T13:09:51",
   "items": [
     {
       "monitor_type": "KW",
@@ -646,40 +646,14 @@
       "is_main": false,
       "logic_type": "关联竞品",
       "source_keyword": "",
-      "title": "MED PRIDE 1% Clotrimazole Antifungal Cream 1oz- Fungus Skin Care Treatment with - Jock Itch Body Ointment - Fights Infection, Sweat Rash, Athletes Foot, Ringworm & Relieves Itching, Burning",
-      "brand": "MED PRIDE",
-      "img": "https://m.media-amazon.com/images/I/71Uk-kNakSL._AC_SL1500_.jpg",
-      "price": 4.97,
+      "title": "",
+      "brand": "",
+      "img": "",
+      "price": 0,
       "chg": 0.0,
-      "rating": 4.5,
-      "reviews": 3801,
-      "diff": {
-        "price": {
-          "current": 4.97,
-          "prev": 27.97,
-          "change": "-23.0",
-          "pct": "-82.2%",
-          "direction": "dn"
-        },
-        "rating": {
-          "current": 4.5,
-          "prev": 4.3,
-          "change": "+0.2",
-          "direction": "up"
-        },
-        "review_count": {
-          "current": 3801,
-          "prev": 1026,
-          "change": "+2775",
-          "direction": "up"
-        },
-        "bsr": {
-          "current": 1568,
-          "prev": 3378,
-          "change": "1810",
-          "direction": "up"
-        }
-      },
+      "rating": 0,
+      "reviews": 0,
+      "diff": {},
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -693,12 +667,12 @@
       "badges_lost": [],
       "coupon": "无",
       "prime_discount": "未开启",
-      "main_cat": "Health & Household",
-      "expected_main_cat": "Health & Household",
-      "main_bsr": 1568,
-      "sub_cat": "Jock Itch Treatments",
-      "expected_sub_cat": "Jock Itch Treatments",
-      "sub_bsr": 1,
+      "main_cat": "",
+      "expected_main_cat": "",
+      "main_bsr": 0,
+      "sub_cat": "",
+      "expected_sub_cat": "",
+      "sub_bsr": 0,
       "history_main_bsr": [
         3458,
         3461,
@@ -722,32 +696,34 @@
         3378,
         3378,
         3378,
-        1568
+        1568,
+        null
       ],
       "history_sub_bsr": [
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
       ],
       "history_price": [
         27.97,
@@ -772,7 +748,8 @@
         27.97,
         27.97,
         27.97,
-        4.97
+        4.97,
+        null
       ],
       "history_rating": [
         4.3,
@@ -797,7 +774,8 @@
         4.3,
         4.3,
         4.3,
-        4.5
+        4.5,
+        null
       ],
       "events": [],
       "related_asins": [],
@@ -1373,9 +1351,11 @@
         106568,
         2176,
         106568,
+        106568,
         106568
       ],
       "history_sub_bsr": [
+        207,
         207,
         207,
         207,
@@ -1403,6 +1383,7 @@
         18.99,
         6.49,
         18.99,
+        18.99,
         18.99
       ],
       "history_rating": [
@@ -1417,6 +1398,7 @@
         4.0,
         4.0,
         4.6,
+        4.0,
         4.0,
         4.0
       ],
@@ -1658,7 +1640,7 @@
       "source_keyword": "",
       "title": "Antifungal Cream for Athlete’s Foot, Jock Itch & Ringworm – 1% Clotrimazole Antifungal Cream, Ringworm Treatment for Humans, Relieves Burning, Itching, Scaling & Cracking (3.5 Ounce)",
       "brand": "Brand: Kerova",
-      "img": "https://m.media-amazon.com/images/I/71d5TpA9XbL._AC_SL1500_.jpg",
+      "img": "https://m.media-amazon.com/images/I/71d5TpA9XbL._AC_SY300_SX300_QL70_FMwebp_.jpg",
       "price": 21.99,
       "chg": 0.0,
       "rating": 4.7,
@@ -1722,9 +1704,11 @@
         33318,
         33318,
         33318,
+        33318,
         33318
       ],
       "history_sub_bsr": [
+        89,
         89,
         89,
         89,
@@ -1752,11 +1736,13 @@
         21.99,
         21.99,
         21.99,
+        21.99,
         21.99
       ],
       "history_rating": [
         4.8,
         4.8,
+        4.7,
         4.7,
         4.7,
         4.7,
