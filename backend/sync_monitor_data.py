@@ -228,6 +228,16 @@ def get_prev_snapshot_data(history):
     return None
 
 
+def _calc_badges_lost(current_badges, prev_badges):
+    """计算本次相比上次丢失的标识"""
+    if not prev_badges:
+        return []
+    curr = set(current_badges) if isinstance(current_badges, list) else set()
+    prev = set(prev_badges) if isinstance(prev_badges, list) else set()
+    lost = list(prev - curr)
+    return lost
+
+
 # ── 构建函数 ────────────────────────────────────────────────────
 
 def load_asin_meta(asin):
@@ -286,8 +296,6 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "is_main": True,
         "logic_type": "主监控",
         "source_keyword": "",
-        "source_keyword": "",
-        "source_keyword": "",
         "title": title[:200],
         "brand": brand[:60] if brand else '',
         "img": data.get('main_image', data.get('img', '')),
@@ -306,7 +314,7 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "variant_changed": False,
         "deal_activity": data.get('deal_activity', '无') or '无',
         "badges_current": data.get('badges', []) or [],
-        "badges_lost": [],
+        "badges_lost": _calc_badges_lost(data.get('badges', []), prev_data.get('badges', []) if prev_data else []),
         "coupon": data.get('coupon', '无') or '无',
         "prime_discount": data.get('prime_discount', '未开启') or '未开启',
         "main_cat": main_cat,
@@ -502,17 +510,23 @@ def main():
     # ── 加载 user_config related ASIN 集合（优先级高于关键词）────────────
     user_cfg_file = os.path.join(os.path.dirname(DATA_DIR), 'user_config.json')
     user_related = set()
+    user_mains = set()
     if os.path.exists(user_cfg_file):
         with open(user_cfg_file, 'r', encoding='utf-8') as f:
             cfg = json.load(f)
         for entry in cfg.get('asins', []):
+            if entry.get('main'):
+                user_mains.add(entry['main'].strip())
             for ra in entry.get('related', []):
-                user_related.add(ra.strip())
-
-    print(f'[SYNC] Keyword related ASINs: {len(kw_asins)}, User related: {len(user_related)}')
+                if ra.strip():
+                    user_related.add(ra.strip())
+    # valid_asins = 主ASIN + 关联ASIN + keyword 竞品（只处理 config 中出现的）
+    kw_only_asins = set(kw_asins.keys())
+    valid_asins = user_mains | user_related | kw_only_asins
+    print(f'[SYNC] Valid ASINs: {len(valid_asins)} (mains={len(user_mains)}, related={len(user_related)}, keyword={len(kw_only_asins)})')
 
     asin_dirs = sorted(glob.glob(os.path.join(DATA_DIR, 'asin_*')))
-    print(f'[SYNC] Found {len(asin_dirs)} ASIN directories')
+    print(f'[SYNC] Found {len(asin_dirs)} ASIN directories, filtering to config...')
 
     for d in asin_dirs:
         asin = os.path.basename(d).replace('asin_', '')
@@ -577,6 +591,10 @@ def main():
         # 加载积加数据（仅主ASIN有积加数据文件）
         jike_data = load_jike_data(asin)
 
+        # 跳过不在 config 中的 ASIN
+        if asin not in valid_asins:
+            continue
+
         item = build_rawdata_item(asin, data, all_snaps, jike_data=jike_data)
         # 判断 ASIN 来源：user_related > keyword > 主ASIN
         if asin in user_related:
@@ -591,20 +609,17 @@ def main():
         # 否则保持 build_rawdata_item 默认值（主监控）
         items.append(item)
 
-        # 每个关联ASIN也作为独立行输出
+        # 每个关联ASIN也作为独立行输出（仅输出 config 中指定的关联ASIN）
         if related_asins:
             rt_data = data.get('_related_asins', [])
             rt_map = {r.get('asin', ''): r for r in rt_data}
             for ra in meta['related_asins']:
                 asin_key = ra.get('asin', '')
-                rt = rt_map.get(asin_key, {})
-                rel_item = build_related_item(asin_key, rt)
-                items.append(rel_item)
+                if asin_key in user_related:
+                    rt = rt_map.get(asin_key, {})
+                    rel_item = build_related_item(asin_key, rt)
+                    items.append(rel_item)
 
-        # 加载积加数据（仅主ASIN有，关联ASIN无）
-        jike_data = load_jike_data(asin)
-
-        item = build_rawdata_item(asin, data, all_snaps, jike_data=jike_data)
         if related_asins:
             print(f'  related={len(related_asins)}', end='')
         print()
@@ -647,11 +662,7 @@ def main():
                 kw_asins[asin_key] = {'keyword': kw, 'rank': a.get('rank', '')}
         print(f'  kw [{kw}]: {len(top_asins)} top ASINs')
 
-    # Mark ASIN items that appeared in keyword searches
-    for item in items:
-        if item.get('asin') in kw_asins:
-            item['source_keyword'] = kw_asins[item['asin']]['keyword']
-            item['source_keyword_rank'] = kw_asins[item['asin']]['rank']
+    # keyword 来源已在主循环中标记完毕
 
     output = {
         'updated': datetime.now().isoformat()[:19],

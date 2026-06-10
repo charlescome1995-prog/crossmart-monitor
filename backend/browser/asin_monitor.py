@@ -30,66 +30,115 @@ def extract_asin_data(browser: CDPBrowser):
 
     js_bundle = r"""
 (() => {
-    const $ = (sel) => { const e = document.querySelector(sel); return e ? e.textContent.trim() : ''; };
+    const $ = (sel) => document.querySelector(sel) ? document.querySelector(sel).textContent.trim() : '';
+    const body = document.body.innerText || '';
 
-    const title = ($('#productTitle') || $('h1')).substring(0,200);
+    const title = ($('#productTitle') || $('h1')).substring(0, 200);
 
     const corePrice = $('#corePrice_feature_div .a-offscreen') ||
-                     ($('#corePrice_feature_div .a-price-whole') ?
-                      '$' + $('#corePrice_feature_div .a-price-whole') : '');
+                     ($('#corePrice_feature_div .a-price-whole') ? '$' + $('#corePrice_feature_div .a-price-whole') : '');
     const price = corePrice || $('.a-price .a-offscreen') || '';
 
-    const ratingRaw = $('.a-icon-alt') || '';
-    const ratingM = ratingRaw.match(/([\d.]+)/);
-    const rating = ratingM ? ratingM[1] : ratingRaw;
+    const ratingM = ($('.a-icon-alt') || '').match(/([\d.]+)/);
+    const rating = ratingM ? ratingM[1] : '';
 
-    const reviewRaw = $('#acrCustomerReviewText') || '';
-    const reviewM = reviewRaw.match(/([\d,]+)/);
-    const review_count = reviewM ? reviewM[1].replace(/,/g,'') : reviewRaw;
+    const reviewM = ($('#acrCustomerReviewText') || '').match(/([\d,]+)/);
+    const review_count = reviewM ? reviewM[1].replace(/,/g, '') : '';
 
-    let brand = ($('#bylineInfo') || '').replace(/^Visit the /,'').replace(/ Store$/,'').replace(/^访问/,'').replace(/品牌旗舰店$/,'').trim();
-    if (brand.length > 60) brand = brand.substring(0,60);
+    let brand = ($('#bylineInfo') || '').replace(/^Visit the /, '').replace(/ Store$/, '').replace(/^访问/, '').replace(/品牌旗舰店$/, '').trim();
+    if (brand.length > 60) brand = brand.substring(0, 60);
 
-    const soldBy = $('#merchantInfoFeature_feature_div .a-link-normal') ||
-                   $('#merchant-info') || '';
+    const soldBy = $('#merchantInfoFeature_feature_div .a-link-normal') || $('#merchant-info') || '';
 
     let mainImg = (document.querySelector('#landingImage') ||
                    document.querySelector('#imgTagWrapperId img') ||
                    document.querySelector('#main-image'))?.getAttribute('src') || '';
     mainImg = mainImg.replace(/\._AC_SX\d+_\.jpg/, '._AC_SL1500_.jpg');
 
-    const listPriceRaw = $('#corePrice_feature_div .a-text-price .a-offscreen') || '';
-
+    // ── BSR ──
     let bsr = '', bsrSubCategory = '', bsrSubRank = '';
-    const bodyText = document.body.innerText || '';
-    const bsrSection = bodyText.match(/Best Sellers Rank[\s\S]{0,500}/);
+    const bsrSection = body.match(/Best Sellers Rank[\s\S]{0,500}/);
     if (bsrSection) {
         bsr = bsrSection[0].substring(0, 300);
         const topM = bsr.match(/#([\d,]+)\s+in\s+([^#\n\r]+)/);
-        if (topM) {
-            bsrSubRank = topM[1].replace(/,/g,'');
-            bsrSubCategory = topM[2].trim().substring(0, 100);
-        }
+        if (topM) { bsrSubRank = topM[1].replace(/,/g, ''); bsrSubCategory = topM[2].trim().substring(0, 100); }
     }
 
-    const rawVariationData = $('#rawVariationData') || '';
-    let variantData = {};
-    try { variantData = rawVariationData ? JSON.parse(rawVariationData) : {}; } catch(e) {}
-
+    // ── Badges (多个来源) ──
+    const badges = [];
+    const lowerBody = body.toLowerCase();
+    if (lowerBody.includes("bestseller") || document.querySelector('[class*="bestseller"], #detailBulletsWrapper_feature_div [class*="bestseller"]')) badges.push('BS');
+    if (lowerBody.includes("amazon's choice") || document.querySelector('[class*="choices"], #acBadge')) badges.push('AC');
+    if (lowerBody.includes("new release") || document.querySelector('[class*="new-releases"]')) badges.push('NR');
+    if (document.querySelector('#aplusBrandLogo, #aplus_feature_div iframe, #aplus3pFeatureText')) badges.push('A+');
     const badgeEl = document.querySelector('.a-badge-container');
-    let badgeType = '';
     if (badgeEl) {
-        const text = badgeEl.innerText || '';
-        if (text.includes(' Bestseller')) badgeType = 'bestseller';
-        else if (text.includes(' New ')) badgeType = 'new';
-        else badgeType = 'special';
+        const bt = badgeEl.innerText || '';
+        if (bt.includes('Bestseller')) badges.push('BS');
+        if (bt.includes('New')) badges.push('NR');
+    }
+    // A+ badge
+    if (badges.indexOf('A+') === -1 && document.querySelector('#aplus_feature_div')) badges.push('A+');
+
+    // ── Deal 活动 ──
+    let deal_activity = '无';
+    const dealEl = document.querySelector('#dealBadge_feature_div, #dealsLabel_feature_div, .deal-sash, [class*="deal-badge"]');
+    if (dealEl) {
+        const dt = dealEl.innerText || '';
+        if (dt.includes('Lightning Deal')) deal_activity = 'Lightning Deal';
+        else if (dt.includes('Deal of the Day') || dt.includes('DOTD')) deal_activity = 'Deal of the Day';
+        else if (dt.includes('Best Deal')) deal_activity = 'Best Deal';
+        else if (dt.includes('Deal')) deal_activity = 'Deal';
+        else deal_activity = dt.trim() || 'Deal';
+    }
+    // 从 body 文本二次确认
+    if (deal_activity === '无') {
+        if (lowerBody.includes('lightning deal')) deal_activity = 'Lightning Deal';
+        else if (lowerBody.includes('deal of the day')) deal_activity = 'Deal of the Day';
+        else if (lowerBody.includes('best deal')) deal_activity = 'Best Deal';
+    }
+
+    // ── 优惠券 ──
+    let coupon = '无';
+    const couponEl = document.querySelector('#couponPopoverFeature, [data-coupon], .coupon-badge, #sidesheet看到她 .coupon');
+    if (couponEl) {
+        const ct = couponEl.innerText || '';
+        const pctM = ct.match(/(\d+)%/);
+        const amtM = ct.match(/\$(\d+\.?\d*)/);
+        if (pctM) coupon = pctM[1] + '% off';
+        else if (amtM) coupon = '$' + amtM[1] + ' off';
+        else if (ct.trim()) coupon = ct.trim();
+        else coupon = '有优惠券';
+    }
+    if (coupon === '无' && lowerBody.includes('coupon')) {
+        const cM = body.match(/(\d+)%\s*off.*coupon|save\s*\$(\d+\.?\d*)/i);
+        if (cM) coupon = cM[1] ? cM[1] + '% off' : '$' + cM[2] + ' off';
+    }
+
+    // ── Prime 专享折扣 ──
+    let prime_discount = '未开启';
+    const primeEl = document.querySelector('#primeExclusiveExtraContent, #primeBenefits, .prime-benefits, #prime-ingress-features');
+    if (primeEl) {
+        const pt = primeEl.innerText || '';
+        const discM = pt.match((\d+)%/);
+        if (discM) prime_discount = discM[1] + '%';
+        else if (pt.includes('Prime')) prime_discount = pt.trim().substring(0, 30);
+    }
+    if (prime_discount === '未开启') {
+        if (lowerBody.includes('prime member') && lowerBody.includes('%')) {
+            const pdM = body.match(/prime.*?(\d+)%/i);
+            if (pdM) prime_discount = pdM[1] + '%';
+        }
     }
 
     const result = {
         title, price, rating, review_count, brand, soldBy,
-        main_image: mainImg, list_price: listPriceRaw,
+        main_image: mainImg,
         bsr: bsr, bsr_subcategory: bsrSubCategory, bsr_subrank: bsrSubRank,
-        badge: badgeType,
+        badges: badges,
+        deal_activity: deal_activity,
+        coupon: coupon,
+        prime_discount: prime_discount,
         snapshot_time: new Date().toISOString(),
     };
     return JSON.stringify(result);
