@@ -34,13 +34,27 @@ def extract_asin_data(browser: CDPBrowser):
     const body = document.body.innerText || '';
 
     const title = ($('#productTitle') || $('h1')).substring(0, 200);
+    // title 备选：从 meta og:title 或 JSON-LD
+    if (!title) {
+        const ogT = document.querySelector('meta[property="og:title"]');
+        if (ogT) title = ogT.content.substring(0, 200);
+    }
+    if (!title) {
+        const ld = document.querySelector('script[type="application/ld+json"]');
+        if (ld) { try { const d = JSON.parse(ld.textContent); if (d && d.name) title = d.name.substring(0, 200); } catch(e){} }
+    }
 
     const corePrice = $('#corePrice_feature_div .a-offscreen') ||
                      ($('#corePrice_feature_div .a-price-whole') ? '$' + $('#corePrice_feature_div .a-price-whole') : '');
-    const price = corePrice || $('.a-price .a-offscreen') || '';
+    let price = corePrice || $('.a-price .a-offscreen') || '';
+    // price 备选：从页面 body 文本匹配 $xx.xx 或 $xx
+    if (!price) { const pm = body.match(/\$\d+\.\d{2}/); if (pm) price = pm[0]; }
+    if (!price) { const pm2 = body.match(/\$\d+(?:\.\d+)?/); if (pm2) price = pm2[0]; }
 
     const ratingM = ($('.a-icon-alt') || '').match(/([\d.]+)/);
-    const rating = ratingM ? ratingM[1] : '';
+    let rating = ratingM ? ratingM[1] : '';
+    // rating 备选：从 body 文本匹配 "X.X out of 5 stars"
+    if (!rating) { const rm = body.match(/([\d.]+)\s*out\s*of\s*5\s*stars?/i); if (rm) rating = rm[1]; }
 
     const reviewM = ($('#acrCustomerReviewText') || '').match(/([\d,]+)/);
     const review_count = reviewM ? reviewM[1].replace(/,/g, '') : '';
@@ -91,6 +105,22 @@ def extract_asin_data(browser: CDPBrowser):
         mainImg = mainImg.replace(/\._SX\d+_\.jpg/, '._AC_SL1500_.jpg');
         // 去掉尺寸后缀参数
         mainImg = mainImg.replace(/\?.*$/, '');
+    }
+    // main_image 备选：从 meta og:image
+    if (!mainImg) {
+        const ogI = document.querySelector('meta[property="og:image"]');
+        if (ogI && ogI.content) mainImg = ogI.content;
+    }
+    // main_image 备选：从 JSON-LD product image
+    if (!mainImg) {
+        const ldI = document.querySelector('script[type="application/ld+json"]');
+        if (ldI) {
+            try {
+                const d = JSON.parse(ldI.textContent);
+                if (d && d.image) mainImg = Array.isArray(d.image) ? d.image[0] : d.image;
+                else if (d && d.@graph) { const g = d.@graph.find(x => x['@type'] === 'Product'); if (g && g.image) mainImg = Array.isArray(g.image) ? g.image[0] : g.image; }
+            } catch(e){}
+        }
     }
 
     // ── BSR ──
