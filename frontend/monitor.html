@@ -608,6 +608,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
     if (diff.review_count) { var dir = diff.review_count.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '-'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> 评论: <span class="diff-val ' + dir + '">' + diff.review_count.change + '</span></div>'); }
     if (diff.rating) { var dir = diff.rating.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '-'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> 评分: <span class="diff-val ' + dir + '">' + diff.rating.change + '</span></div>'); }
     if (diff.bsr) { var dir = diff.bsr.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '-'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> BSR: <span class="diff-val ' + dir + '">' + diff.bsr.change + '</span></div>'); }
+    if (diff.sub_bsr) { var dir = diff.sub_bsr.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '-'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> 小类: <span class="diff-val ' + dir + '">' + diff.sub_bsr.change + '</span></div>'); }
     return rows.join('') || '<span class="diff-none">-</span>';
   }
 

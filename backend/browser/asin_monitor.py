@@ -94,12 +94,21 @@ def extract_asin_data(browser: CDPBrowser):
     }
 
     // ── BSR ──
-    let bsr = '', bsrSubCategory = '', bsrSubRank = '';
+    let bsr = '', bsrSubCategory = '', bsrSubRank = '', bsrAllSubRanks = [];
     const bsrSection = body.match(/Best Sellers Rank[\s\S]{0,500}/);
     if (bsrSection) {
         bsr = bsrSection[0].substring(0, 300);
         const topM = bsr.match(/#([\d,]+)\s+in\s+([^#\n\r]+)/);
         if (topM) { bsrSubRank = topM[1].replace(/,/g, ''); bsrSubCategory = topM[2].trim().substring(0, 100); }
+        // 提取所有 #数字（第一个是大类，其余是小类/子分类排名）
+        const allMatches = bsr.matchAll(/#([\d,]+)\s+in\s+([^\n\r]+)/g);
+        let idx = 0;
+        for (const m of allMatches) {
+            if (idx === 0) { idx++; continue; } // 跳过第一个（已作为大类）
+            bsrAllSubRanks.push(m[1].replace(/,/g, ''));
+            idx++;
+            if (bsrAllSubRanks.length >= 5) break; // 最多取5个
+        }
     }
 
     // ── Badges (多个来源) ──
@@ -172,7 +181,7 @@ def extract_asin_data(browser: CDPBrowser):
     const result = {
         title, price, rating, review_count, brand, soldBy,
         main_image: mainImg,
-        bsr: bsr, bsr_subcategory: bsrSubCategory, bsr_subrank: bsrSubRank,
+        bsr: bsr, bsr_subcategory: bsrSubCategory, bsr_subrank: bsrSubRank, bsr_all_subranks: bsrAllSubRanks,
         badges: badges,
         deal_activity: deal_activity,
         coupon: coupon,

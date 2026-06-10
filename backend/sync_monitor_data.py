@@ -92,11 +92,15 @@ def extract_bsr(data):
 
 
 def extract_sub_bsr(data):
-    """从 bsr 字符串中提取小类排名（如 #213 in Antifungal Remedies）"""
+    """从 bsr 字符串或 bsr_all_subranks 中提取小类排名（如 #213 in Antifungal Remedies）"""
+    # 优先取 JS 新增的 bsr_all_subranks（第2项起为小类）
+    all_sub = data.get('bsr_all_subranks', [])
+    if isinstance(all_sub, list) and len(all_sub) >= 1:
+        return safe_int(all_sub[0])  # 第一个小类排名
+    # 回退：从 bsr 字符串解析第二个 #数字
     bsr_raw = data.get('bsr', '')
     if not bsr_raw:
         return None
-    # 匹配第二个 #数字（小类排名，格式：#213 in xxx）
     matches = re.findall(r'#(\d[\d,]*)', str(bsr_raw))
     if len(matches) >= 2:
         return safe_int(matches[1])
@@ -184,6 +188,18 @@ def build_diff(curr_data, prev_data):
         diff['bsr'] = {
             'current': b_c,
             'prev': b_p,
+            'change': ('+' if chg >= 0 else '') + str(abs(chg)),
+            'direction': 'up' if chg < 0 else ('dn' if chg > 0 else 'same')
+        }
+
+    # BSR 小类排名（子分类）
+    sb_c = extract_sub_bsr(curr_data)
+    sb_p = extract_sub_bsr(prev_data)
+    if sb_c is not None and sb_p is not None:
+        chg = sb_c - sb_p
+        diff['sub_bsr'] = {
+            'current': sb_c,
+            'prev': sb_p,
             'change': ('+' if chg >= 0 else '') + str(abs(chg)),
             'direction': 'up' if chg < 0 else ('dn' if chg > 0 else 'same')
         }
