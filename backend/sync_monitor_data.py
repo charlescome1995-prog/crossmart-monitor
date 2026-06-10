@@ -8,6 +8,15 @@ sync_monitor_data.py - 从本地快照生成前端可用的 rawData JSON
 import json, os, glob, sys, re, subprocess
 from datetime import datetime
 
+# 积加数据字段列表（用于清理关联竞品/关键词ASIN的积加字段）
+JIKE_FIELDS = [
+    'jike_sales', 'jike_orders', 'jike_units', 'jike_session',
+    'jike_page_views', 'jike_conversion_rate', 'jike_rating', 'jike_reviews',
+    'jike_main_seller_rank', 'jike_seller_rank', 'jike_listing_state',
+    'jike_product_name', 'jike_acos', 'jike_ads_spend',
+    'jike_fba_quantity', 'jike_fba_turnover', 'jike_gross_profit_rate',
+]
+
 
 def load_jike_data(asin):
     """从 processed/asin_ASIN/jike_latest.json 加载积加数据"""
@@ -329,7 +338,7 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "history_rating": [h.get('rating') for h in history] if history else [rating],
         "events": [],
         "related_asins": related_asins if related_asins else [],
-        # 积加数据字段（来自 get_jike_data_for_asins 返回的字段）
+                # 积加数据字段（仅主ASIN有，关联竞品/关键词ASIN不含此字段）
         "jike_sales": jk.get('orderProductSales'),
         "jike_orders": jk.get('orders'),
         "jike_units": jk.get('unitsOrdered'),
@@ -588,12 +597,12 @@ def main():
         add_snap(latest, None)
         all_snaps.sort(key=lambda x: x['timestamp'])
 
-        # 加载积加数据（仅主ASIN有积加数据文件）
-        jike_data = load_jike_data(asin)
-
         # 跳过不在 config 中的 ASIN
         if asin not in valid_asins:
             continue
+
+        # 加载积加数据（仅主ASIN有积加数据文件）
+        jike_data = load_jike_data(asin)
 
         item = build_rawdata_item(asin, data, all_snaps, jike_data=jike_data)
         # 判断 ASIN 来源：user_related > keyword > 主ASIN
@@ -601,12 +610,18 @@ def main():
             item['monitor_type'] = 'ASIN'
             item['logic_type'] = '关联竞品'
             item['is_main'] = False
+            # 关联竞品无积加数据，清理字段
+            for jf in JIKE_FIELDS:
+                item.pop(jf, None)
         elif asin in kw_asins:
             item['monitor_type'] = 'KW'
             item['logic_type'] = '关键词-' + kw_asins[asin]
             item['source_keyword'] = kw_asins[asin]
             item['is_main'] = False
-        # 否则保持 build_rawdata_item 默认值（主监控）
+            # 关键词 ASIN 无积加数据，清理字段
+            for jf in JIKE_FIELDS:
+                item.pop(jf, None)
+        # 否则保持 build_rawdata_item 默认值（主监控），保留积加数据
         items.append(item)
 
         # 每个关联ASIN也作为独立行输出（仅输出 config 中指定的关联ASIN）
