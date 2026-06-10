@@ -545,7 +545,6 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
           '<div>小类: <span class="cat-item">' + (item.sub_cat || '-') + '</span> <strong>' + (item.sub_bsr != null ? '#' + item.sub_bsr : '-') + '</strong>' + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_sub_bsr"></canvas></span></div>' +
           badgeHtml + dealHtml + couponHtml + primeHtml +
         '</div></td>' +
-        '<td class="col-events"><div class="events-cell">' + eventsHtml + '</div></td>' +
         '<td class="col-diff"><div class="diff-cell">' + diffHtml + '</div></td>' +
         '<td class="col-jike">' +
           (item.is_main ? (
@@ -558,7 +557,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
             '<div style="font-size:11px;color:#64748b;line-height:1.4;">周转 ' + (item.jike_fba_turnover != null ? item.jike_fba_turnover.toFixed(1) : '-') + '</div>'
           ) : '<span style="color:#cbd5e1;font-size:11px;">-</span>') +
         '</td>' +
-        '<td class="col-time" style="color:#64748b;font-size:12px;">' + (rawData.updated || '-') + '</td>' +
+        '<td class="col-time"><div style="color:#64748b;font-size:12px;line-height:1.5;">' + (rawData.updated || '-') + '</div>' + (eventsHtml && eventsHtml.indexOf('e-none') === -1 ? '<div style="margin-top:4px;">' + eventsHtml + '</div>' : '') + '</td>' +
       '</tr>';
     });
     tb.innerHTML = html || '<tr><td colspan="14" style="text-align:center;padding:20px;">没有匹配数据</td></tr>';
