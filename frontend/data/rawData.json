@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-10T11:00:33",
+  "updated": "2026-06-10T11:20:44",
   "items": [
     {
       "monitor_type": "KW",
@@ -35,8 +35,8 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 796,
-          "prev": 796,
+          "current": 794,
+          "prev": 794,
           "change": "+0",
           "direction": "same"
         }
@@ -56,7 +56,7 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 796,
+      "main_bsr": 794,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 2,
@@ -74,9 +74,13 @@
         818,
         818,
         796,
-        796
+        796,
+        794,
+        794
       ],
       "history_sub_bsr": [
+        2,
+        2,
         2,
         2,
         2,
@@ -106,9 +110,13 @@
         15.0,
         15.0,
         15.0,
+        15.0,
+        15.0,
         15.0
       ],
       "history_rating": [
+        4.6,
+        4.6,
         4.6,
         4.6,
         4.6,
@@ -218,9 +226,13 @@
         393,
         393,
         383,
+        383,
+        383,
         383
       ],
       "history_sub_bsr": [
+        1,
+        1,
         1,
         1,
         1,
@@ -250,9 +262,13 @@
         4.85,
         4.85,
         4.85,
+        4.85,
+        4.85,
         4.85
       ],
       "history_rating": [
+        4.6,
+        4.6,
         4.6,
         4.6,
         4.6,
@@ -323,8 +339,8 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 2177,
-          "prev": 2177,
+          "current": 2175,
+          "prev": 2175,
           "change": "+0",
           "direction": "same"
         }
@@ -344,7 +360,7 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 2177,
+      "main_bsr": 2175,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 6,
@@ -362,9 +378,13 @@
         2087,
         2087,
         2177,
-        2177
+        2177,
+        2175,
+        2175
       ],
       "history_sub_bsr": [
+        6,
+        6,
         6,
         6,
         6,
@@ -394,9 +414,13 @@
         6.49,
         6.49,
         6.49,
+        6.49,
+        6.49,
         6.49
       ],
       "history_rating": [
+        4.6,
+        4.6,
         4.6,
         4.6,
         4.6,
@@ -431,7 +455,7 @@
       "jike_fba_quantity": null,
       "jike_fba_turnover": null,
       "jike_gross_profit_rate": null,
-      "source_keyword_rank": "自然位：第1页第4位"
+      "source_keyword_rank": "自然位：第1页第3位"
     },
     {
       "monitor_type": "ASIN",
@@ -441,7 +465,7 @@
       "source_keyword": "antifungal cream",
       "title": "SimplyVital 1% Clotrimazole Antifungal Cream - Treats Most Athlete's Foot, Jock Itch, Ringworm - Athletes Foot Treatment Anti Fungal Cream for Skin, Ring Worm Medication for Humans, 2oz",
       "brand": "SimplyVital",
-      "img": "https://m.media-amazon.com/images/I/71pVr1gTu9L._AC_SL1500_.jpg",
+      "img": "https://m.media-amazon.com/images/I/71pVr1gTu9L._AC_SY300_SX300_QL70_FMwebp_.jpg",
       "price": 27.97,
       "chg": 0.0,
       "rating": 4.3,
@@ -467,10 +491,10 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 3378,
+          "current": 3376,
           "prev": 3378,
-          "change": "+0",
-          "direction": "same"
+          "change": "2",
+          "direction": "up"
         }
       },
       "listing_status": "正常",
@@ -488,7 +512,7 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 3378,
+      "main_bsr": 3376,
       "sub_cat": "Ayurvedic Balms & Ointments",
       "expected_sub_cat": "Ayurvedic Balms & Ointments",
       "sub_bsr": 1,
@@ -507,9 +531,15 @@
         3231,
         3378,
         3378,
-        3378
+        3378,
+        3378,
+        3378,
+        3376
       ],
       "history_sub_bsr": [
+        1,
+        1,
+        1,
         1,
         1,
         1,
@@ -541,9 +571,15 @@
         27.97,
         27.97,
         27.97,
+        27.97,
+        27.97,
+        27.97,
         27.97
       ],
       "history_rating": [
+        4.3,
+        4.3,
+        4.3,
         4.3,
         4.3,
         4.3,
@@ -579,7 +615,7 @@
       "jike_fba_quantity": null,
       "jike_fba_turnover": null,
       "jike_gross_profit_rate": null,
-      "source_keyword_rank": "自然位：第1页第3位"
+      "source_keyword_rank": "自然位：第1页第4位"
     },
     {
       "monitor_type": "KW",
@@ -726,8 +762,8 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 5263,
-          "prev": 5263,
+          "current": 5267,
+          "prev": 5267,
           "change": "+0",
           "direction": "same"
         }
@@ -747,7 +783,7 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 5263,
+      "main_bsr": 5267,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 21,
@@ -765,9 +801,13 @@
         5378,
         5379,
         5263,
-        5263
+        5263,
+        5267,
+        5267
       ],
       "history_sub_bsr": [
+        21,
+        21,
         21,
         21,
         21,
@@ -797,9 +837,13 @@
         9.99,
         9.99,
         9.99,
+        9.99,
+        9.99,
         9.99
       ],
       "history_rating": [
+        4.6,
+        4.6,
         4.6,
         4.6,
         4.6,
@@ -870,10 +914,10 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 107521,
-          "prev": 111951,
-          "change": "4430",
-          "direction": "up"
+          "current": 107528,
+          "prev": 107521,
+          "change": "+7",
+          "direction": "dn"
         }
       },
       "listing_status": "正常",
@@ -891,7 +935,7 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 107521,
+      "main_bsr": 107528,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 207,
@@ -902,9 +946,11 @@
         114352,
         111980,
         111951,
-        107521
+        107521,
+        107528
       ],
       "history_sub_bsr": [
+        207,
         207,
         207,
         207,
@@ -920,9 +966,11 @@
         18.99,
         18.99,
         18.99,
+        18.99,
         18.99
       ],
       "history_rating": [
+        4.0,
         4.0,
         4.0,
         4.0,
@@ -1031,7 +1079,7 @@
       ],
       "events": [],
       "source_keyword": "antifungal cream",
-      "source_keyword_rank": "自然位：第1页第3位"
+      "source_keyword_rank": "自然位：第1页第4位"
     },
     {
       "monitor_type": "ASIN",
@@ -1045,7 +1093,7 @@
       "price": 21.99,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 37,
+      "reviews": 38,
       "diff": {
         "price": {
           "current": 21.99,
@@ -1061,15 +1109,15 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 37,
+          "current": 38,
           "prev": 37,
-          "change": "+0",
-          "direction": "same"
+          "change": "+1",
+          "direction": "up"
         },
         "bsr": {
-          "current": 33318,
-          "prev": 34319,
-          "change": "1001",
+          "current": 33305,
+          "prev": 33318,
+          "change": "13",
           "direction": "up"
         }
       },
@@ -1088,7 +1136,7 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 33318,
+      "main_bsr": 33305,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 89,
@@ -1099,9 +1147,11 @@
         34313,
         34321,
         34319,
-        33318
+        33318,
+        33305
       ],
       "history_sub_bsr": [
+        89,
         89,
         89,
         89,
@@ -1117,11 +1167,13 @@
         21.99,
         21.99,
         21.99,
+        21.99,
         21.99
       ],
       "history_rating": [
         4.8,
         4.8,
+        4.7,
         4.7,
         4.7,
         4.7,
@@ -1172,22 +1224,22 @@
           "reviews": "4"
         },
         {
-          "asin": "B0C7VP8SFV",
-          "type": "natural",
-          "rank": "自然位：第1页第3位",
-          "title": "SimplyVital 1% Clotrimazole Antifungal Cream - Treats Most Athlete's Foot, Jock Itch, Ringworm - Athletes Foot Treatment Anti Fungal Cream for Skin, Ring Worm Medication for Humans, 2oz",
-          "price": "$27.97",
-          "rating": "",
-          "reviews": "2"
-        },
-        {
           "asin": "B015HNGLJS",
           "type": "natural",
-          "rank": "自然位：第1页第4位",
+          "rank": "自然位：第1页第3位",
           "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More (Pack of 5)",
           "price": "$6.49",
           "rating": "",
           "reviews": "1"
+        },
+        {
+          "asin": "B0C7VP8SFV",
+          "type": "natural",
+          "rank": "自然位：第1页第4位",
+          "title": "SimplyVital 1% Clotrimazole Antifungal Cream - Treats Most Athlete's Foot, Jock Itch, Ringworm - Athletes Foot Treatment Anti Fungal Cream for Skin, Ring Worm Medication for Humans, 2oz",
+          "price": "$27.97",
+          "rating": "",
+          "reviews": "2"
         },
         {
           "asin": "B00O302HNQ",
