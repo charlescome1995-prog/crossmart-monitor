@@ -545,7 +545,6 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
           '<div>小类: <span class="cat-item">' + (item.sub_cat || '-') + '</span> <strong>' + (item.sub_bsr != null ? '#' + item.sub_bsr : '-') + '</strong>' + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_sub_bsr"></canvas></span></div>' +
           badgeHtml + dealHtml + couponHtml + primeHtml +
         '</div></td>' +
-        '<td class="col-diff"><div class="diff-cell">' + diffHtml + '</div></td>' +
         '<td class="col-jike">' +
           (item.is_main ? (
             '<div style="font-size:12px;line-height:1.4;">销量 <strong>' + (item.jike_units != null ? item.jike_units.toLocaleString() : '-') + '</strong></div>' +
