@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-10T21:19:03",
+  "updated": "2026-06-11T05:14:25",
   "items": [
     {
       "monitor_type": "KW",
@@ -16,16 +16,16 @@
       "reviews": 0,
       "diff": {
         "bsr": {
-          "current": 34817,
-          "prev": 795,
-          "change": "+34022",
-          "direction": "dn"
+          "current": 797,
+          "prev": 797,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
-          "current": 92,
+          "current": 2,
           "prev": 2,
-          "change": "+90",
-          "direction": "dn"
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -43,10 +43,10 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 34817,
+      "main_bsr": 797,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
-      "sub_bsr": 92,
+      "sub_bsr": 2,
       "history_main_bsr": [
         820,
         820,
@@ -75,37 +75,41 @@
         796,
         795,
         795,
-        34817
+        34817,
+        797,
+        797
       ],
       "history_sub_bsr": [
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92,
-        92
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
       ],
       "history_price": [
         18.97,
@@ -131,6 +135,8 @@
         15.0,
         15.0,
         15.0,
+        null,
+        null,
         null,
         null,
         null,
@@ -161,6 +167,8 @@
         4.6,
         4.6,
         4.6,
+        null,
+        null,
         null,
         null,
         null,
@@ -245,9 +253,13 @@
         390,
         390,
         387,
+        387,
+        387,
         387
       ],
       "history_sub_bsr": [
+        1,
+        1,
         1,
         1,
         1,
@@ -307,6 +319,8 @@
         null,
         null,
         null,
+        null,
+        null,
         null
       ],
       "history_rating": [
@@ -338,6 +352,8 @@
         null,
         null,
         null,
+        null,
+        null,
         null
       ],
       "events": [],
@@ -358,8 +374,8 @@
       "reviews": 0,
       "diff": {
         "bsr": {
-          "current": 2164,
-          "prev": 2164,
+          "current": 2160,
+          "prev": 2160,
           "change": "+0",
           "direction": "same"
         },
@@ -385,7 +401,7 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 2164,
+      "main_bsr": 2160,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 6,
@@ -408,18 +424,22 @@
         2176,
         2176,
         2176,
-        2164,
+        2160,
         2176,
         2176,
         2176,
-        2164,
+        2160,
         2160,
         2160,
         2158,
         2164,
-        2164
+        2164,
+        2160,
+        2160
       ],
       "history_sub_bsr": [
+        6,
+        6,
         6,
         6,
         6,
@@ -477,6 +497,8 @@
         null,
         null,
         null,
+        null,
+        null,
         null
       ],
       "history_rating": [
@@ -507,6 +529,8 @@
         null,
         null,
         null,
+        null,
+        null,
         null
       ],
       "events": [],
@@ -527,10 +551,10 @@
       "reviews": 0,
       "diff": {
         "bsr": {
-          "current": 3415,
+          "current": 3407,
           "prev": 3415,
-          "change": "+0",
-          "direction": "same"
+          "change": "8",
+          "direction": "up"
         },
         "sub_bsr": {
           "current": 1,
@@ -554,7 +578,7 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 3415,
+      "main_bsr": 3407,
       "sub_cat": "Ayurvedic Balms & Ointments",
       "expected_sub_cat": "Ayurvedic Balms & Ointments",
       "sub_bsr": 1,
@@ -580,16 +604,18 @@
         3378,
         3378,
         1568,
-        3415,
+        3407,
         3413,
         3407,
         3415,
         3415,
         3415,
         3415,
-        3415
+        3415,
+        3407
       ],
       "history_sub_bsr": [
+        1,
         1,
         1,
         1,
@@ -649,6 +675,7 @@
         null,
         null,
         null,
+        null,
         null
       ],
       "history_rating": [
@@ -673,6 +700,7 @@
         4.3,
         4.3,
         4.5,
+        null,
         null,
         null,
         null,
@@ -700,10 +728,10 @@
       "reviews": 0,
       "diff": {
         "bsr": {
-          "current": 1586,
-          "prev": 1587,
-          "change": "1",
-          "direction": "up"
+          "current": 1588,
+          "prev": 1588,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
           "current": 1,
@@ -727,35 +755,31 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 1586,
+      "main_bsr": 1588,
       "sub_cat": "Jock Itch Treatments",
       "expected_sub_cat": "Jock Itch Treatments",
       "sub_bsr": 1,
       "history_main_bsr": [
-        1508,
-        1508,
-        1508,
-        1508,
         1549,
         1549,
         1568,
         1568,
+        1588,
+        1568,
+        1568,
+        1568,
+        1568,
+        1568,
+        1568,
+        1568,
+        1568,
+        1587,
+        1587,
         1586,
-        1568,
-        1568,
-        1568,
-        1568,
-        1568,
-        1568,
-        1568,
-        1568,
-        1587,
-        1587,
-        1586
+        1588,
+        1588
       ],
       "history_sub_bsr": [
-        1,
-        1,
         1,
         1,
         1,
@@ -780,10 +804,6 @@
         4.97,
         4.97,
         4.97,
-        4.97,
-        4.97,
-        4.97,
-        4.97,
         null,
         4.97,
         4.97,
@@ -793,6 +813,8 @@
         4.97,
         4.97,
         4.97,
+        null,
+        null,
         null,
         null,
         null
@@ -802,10 +824,6 @@
         4.5,
         4.5,
         4.5,
-        4.5,
-        4.5,
-        4.5,
-        4.5,
         null,
         4.5,
         4.5,
@@ -815,6 +833,8 @@
         4.5,
         4.5,
         4.5,
+        null,
+        null,
         null,
         null,
         null
@@ -837,8 +857,8 @@
       "reviews": 0,
       "diff": {
         "bsr": {
-          "current": 5301,
-          "prev": 5301,
+          "current": 5288,
+          "prev": 5288,
           "change": "+0",
           "direction": "same"
         },
@@ -864,7 +884,7 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 5301,
+      "main_bsr": 5288,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 21,
@@ -896,9 +916,13 @@
         5301,
         5303,
         5301,
-        5301
+        5301,
+        5288,
+        5288
       ],
       "history_sub_bsr": [
+        21,
+        21,
         21,
         21,
         21,
@@ -956,6 +980,8 @@
         null,
         null,
         null,
+        null,
+        null,
         null
       ],
       "history_rating": [
@@ -986,6 +1012,8 @@
         null,
         null,
         null,
+        null,
+        null,
         null
       ],
       "events": [],
@@ -1006,8 +1034,8 @@
       "reviews": 0,
       "diff": {
         "bsr": {
-          "current": 106774,
-          "prev": 106774,
+          "current": 106723,
+          "prev": 106723,
           "change": "+0",
           "direction": "same"
         },
@@ -1033,7 +1061,7 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 106774,
+      "main_bsr": 106723,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 207,
@@ -1054,9 +1082,13 @@
         106489,
         106489,
         106774,
-        106774
+        106774,
+        106723,
+        106723
       ],
       "history_sub_bsr": [
+        207,
+        207,
         207,
         207,
         207,
@@ -1092,6 +1124,8 @@
         null,
         null,
         null,
+        null,
+        null,
         null
       ],
       "history_rating": [
@@ -1107,6 +1141,8 @@
         4.0,
         4.0,
         4.0,
+        null,
+        null,
         null,
         null,
         null,
@@ -1226,7 +1262,20 @@
       "chg": 0.0,
       "rating": 0,
       "reviews": 0,
-      "diff": {},
+      "diff": {
+        "bsr": {
+          "current": 34777,
+          "prev": 34817,
+          "change": "40",
+          "direction": "up"
+        },
+        "sub_bsr": {
+          "current": 92,
+          "prev": 92,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -1242,7 +1291,7 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 34817,
+      "main_bsr": 34777,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 92,
@@ -1261,11 +1310,13 @@
         33318,
         34739,
         34689,
+        34777,
+        34777,
         34817,
-        34817,
-        34817
+        34777
       ],
       "history_sub_bsr": [
+        92,
         92,
         92,
         92,
@@ -1301,6 +1352,7 @@
         null,
         null,
         null,
+        null,
         null
       ],
       "history_rating": [
@@ -1316,6 +1368,7 @@
         4.7,
         4.7,
         4.7,
+        null,
         null,
         null,
         null,
@@ -1349,31 +1402,31 @@
           "reviews": "4"
         },
         {
-          "asin": "B00O302HNQ",
-          "type": "natural",
-          "rank": "自然位：第1页第3位",
-          "title": "Lotrimin Ultra 1 Week Athlete's Foot Treatment, Prescription Strength Butenafine Hydrochloride 1%, Cures Most Athlete’s Foot Between Toes, Cream, 1.1 Oz",
-          "price": "$18.97",
-          "rating": "",
-          "reviews": "4"
-        },
-        {
           "asin": "B015HNGLJS",
           "type": "natural",
-          "rank": "自然位：第1页第4位",
+          "rank": "自然位：第1页第3位",
           "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More (Pack of 5)",
           "price": "$6.49",
           "rating": "",
           "reviews": "1"
         },
         {
-          "asin": "B0C7VP8SFV",
+          "asin": "B0CX9J4FV3",
+          "type": "natural",
+          "rank": "自然位：第1页第4位",
+          "title": "MED PRIDE 1% Clotrimazole Antifungal Cream 1oz- Fungus Skin Care Treatment with - Jock Itch Body Ointment - Fights Infection, Sweat Rash, Athletes Foot, Ringworm & Relieves Itching, Burning",
+          "price": "$4.97",
+          "rating": "",
+          "reviews": "4"
+        },
+        {
+          "asin": "B00O302HNQ",
           "type": "natural",
           "rank": "自然位：第1页第5位",
-          "title": "SimplyVital 1% Clotrimazole Antifungal Cream - Treats Most Athlete's Foot, Jock Itch, Ringworm - Athletes Foot Treatment Anti Fungal Cream for Skin, Ring Worm Medication for Humans, 2oz",
-          "price": "$27.97",
+          "title": "Lotrimin Ultra 1 Week Athlete's Foot Treatment, Prescription Strength Butenafine Hydrochloride 1%, Cures Most Athlete’s Foot Between Toes, Cream, 1.1 Oz",
+          "price": "$18.97",
           "rating": "",
-          "reviews": "2"
+          "reviews": "4"
         }
       ]
     }
