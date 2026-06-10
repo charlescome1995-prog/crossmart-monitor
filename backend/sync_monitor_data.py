@@ -363,24 +363,6 @@ def build_related_item(asin, rel_data, main_asin=None):
         "history_main_bsr": [main_bsr],
         "history_sub_bsr": [],
         "events": [],
-        # 积加数据（关联ASIN无）
-        "jike_sales": None,
-        "jike_orders": None,
-        "jike_units": None,
-        "jike_session": None,
-        "jike_page_views": None,
-        "jike_conversion_rate": None,
-        "jike_rating": None,
-        "jike_reviews": None,
-        "jike_main_seller_rank": None,
-        "jike_seller_rank": None,
-        "jike_listing_state": None,
-        "jike_product_name": None,
-        "jike_acos": None,
-        "jike_ads_spend": None,
-        "jike_fba_quantity": None,
-        "jike_fba_turnover": None,
-        "jike_gross_profit_rate": None,
     }
 
 
@@ -465,24 +447,6 @@ def build_keyword_item(kw, a):
         "history_price": history_price,
         "history_rating": history_rating,
         "events": [],
-        # 积加数据（关键词ASIN无）
-        "jike_sales": None,
-        "jike_orders": None,
-        "jike_units": None,
-        "jike_session": None,
-        "jike_page_views": None,
-        "jike_conversion_rate": None,
-        "jike_rating": None,
-        "jike_reviews": None,
-        "jike_main_seller_rank": None,
-        "jike_seller_rank": None,
-        "jike_listing_state": None,
-        "jike_product_name": None,
-        "jike_acos": None,
-        "jike_ads_spend": None,
-        "jike_fba_quantity": None,
-        "jike_fba_turnover": None,
-        "jike_gross_profit_rate": None,
     }
 
 
