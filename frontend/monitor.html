@@ -547,13 +547,15 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
         '<td class="col-events"><div class="events-cell">' + eventsHtml + '</div></td>' +
         '<td class="col-diff"><div class="diff-cell">' + diffHtml + '</div></td>' +
         '<td class="col-jike">' +
-          '<div style="font-size:12px;line-height:1.4;">销量 <strong>' + (item.jike_units != null ? item.jike_units.toLocaleString() : '-') + '</strong></div>' +
-          '<div style="font-size:11px;color:#64748b;line-height:1.4;">销售额 $' + (item.jike_sales != null ? item.jike_sales.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
-          '<div style="font-size:11px;color:#64748b;line-height:1.4;">毛利率 ' + (item.jike_gross_profit_rate != null ? item.jike_gross_profit_rate + '%' : '-') + '</div>' +
-          '<div style="font-size:11px;line-height:1.4;">ACOS ' + (item.jike_acos != null ? item.jike_acos + '%' : '-') + '</div>' +
-          '<div style="font-size:11px;color:#64748b;line-height:1.4;">广告费 $' + (item.jike_ads_spend != null ? item.jike_ads_spend.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
-          '<div style="font-size:11px;line-height:1.4;">FBA库存 ' + (item.jike_fba_quantity != null ? item.jike_fba_quantity.toLocaleString() : '-') + '</div>' +
-          '<div style="font-size:11px;color:#64748b;line-height:1.4;">周转 ' + (item.jike_fba_turnover != null ? item.jike_fba_turnover.toFixed(1) : '-') + '</div>' +
+          (item.is_main ? (
+            '<div style="font-size:12px;line-height:1.4;">销量 <strong>' + (item.jike_units != null ? item.jike_units.toLocaleString() : '-') + '</strong></div>' +
+            '<div style="font-size:11px;color:#64748b;line-height:1.4;">销售额 $' + (item.jike_sales != null ? item.jike_sales.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
+            '<div style="font-size:11px;color:#64748b;line-height:1.4;">毛利率 ' + (item.jike_gross_profit_rate != null ? item.jike_gross_profit_rate + '%' : '-') + '</div>' +
+            '<div style="font-size:11px;line-height:1.4;">ACOS ' + (item.jike_acos != null ? item.jike_acos + '%' : '-') + '</div>' +
+            '<div style="font-size:11px;color:#64748b;line-height:1.4;">广告费 $' + (item.jike_ads_spend != null ? item.jike_ads_spend.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
+            '<div style="font-size:11px;line-height:1.4;">FBA库存 ' + (item.jike_fba_quantity != null ? item.jike_fba_quantity.toLocaleString() : '-') + '</div>' +
+            '<div style="font-size:11px;color:#64748b;line-height:1.4;">周转 ' + (item.jike_fba_turnover != null ? item.jike_fba_turnover.toFixed(1) : '-') + '</div>'
+          ) : '<span style="color:#cbd5e1;font-size:11px;">-</span>') +
         '</td>' +
         '<td class="col-time" style="color:#64748b;font-size:12px;">' + (rawData.updated || '-') + '</td>' +
       '</tr>';
