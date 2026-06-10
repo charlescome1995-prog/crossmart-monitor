@@ -292,8 +292,43 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
     bsr_raw = data.get('bsr', '')
     main_cat, sub_cat = parse_bsr_categories(bsr_raw)
 
-    # 与上次快照的 diff
+    # ── 与上轮快照的变更检测 ──────────────────────────────────────
     prev_data = get_prev_snapshot_data(history)
+
+    # 商品上下架状态（来自页面实际数据）
+    listing_status = data.get('availability', data.get('listing_status', '正常'))
+
+    # 标题变化
+    title_changed = False
+    if prev_data:
+        prev_title = prev_data.get('title', '') or prev_data.get('product_title', '')
+        curr_title = data.get('title', '') or data.get('product_title', '')
+        title_changed = bool(prev_title and curr_title and prev_title != curr_title)
+
+    # 主图变化
+    img_changed = False
+    if prev_data:
+        prev_img = prev_data.get('main_image', '') or prev_data.get('img', '')
+        curr_img = data.get('main_image', '') or data.get('img', '')
+        img_changed = bool(prev_img and curr_img and prev_img != curr_img)
+
+    # bullets / description 变化
+    bullets_changed = False
+    description_changed = False
+    if prev_data:
+        bullets_changed = bool(prev_data.get('bullets', []) != data.get('bullets', []))
+        description_changed = bool(prev_data.get('description', '') != data.get('description', ''))
+
+    # 变体关系变化
+    variant_changed = False
+    variant_status = "正常"
+    if prev_data:
+        prev_var = prev_data.get('variants', '')
+        curr_var = data.get('variants', '')
+        if curr_var != prev_var:
+            variant_changed = True
+            variant_status = "已变更"
+
     diff = build_diff(data, prev_data)
 
     # 积加数据（主ASIN有，关联ASIN无）
@@ -313,14 +348,14 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "rating": rating,
         "reviews": review_count,
         "diff": diff,
-        "listing_status": "正常",
+        "listing_status": listing_status,
         "expected_listing_status": "正常",
-        "title_changed": False,
-        "img_changed": False,
-        "bullets_changed": False,
-        "description_changed": False,
-        "variant_status": "正常",
-        "variant_changed": False,
+        "title_changed": title_changed,
+        "img_changed": img_changed,
+        "bullets_changed": bullets_changed,
+        "description_changed": description_changed,
+        "variant_status": variant_status,
+        "variant_changed": variant_changed,
         "deal_activity": data.get('deal_activity', '无') or '无',
         "badges_current": data.get('badges', []) or [],
         "badges_lost": _calc_badges_lost(data.get('badges', []), prev_data.get('badges', []) if prev_data else []),
