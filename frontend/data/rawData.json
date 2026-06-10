@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-10T12:53:14",
+  "updated": "2026-06-10T12:55:30",
   "items": [
     {
       "monitor_type": "KW",
@@ -85,9 +85,11 @@
         794,
         796,
         796,
+        796,
         796
       ],
       "history_sub_bsr": [
+        2,
         2,
         2,
         2,
@@ -139,9 +141,11 @@
         15.0,
         15.0,
         15.0,
+        15.0,
         15.0
       ],
       "history_rating": [
+        4.6,
         4.6,
         4.6,
         4.6,
@@ -195,20 +199,20 @@
       "is_main": false,
       "logic_type": "关键词-antifungal cream",
       "source_keyword": "antifungal cream",
-      "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More",
-      "brand": "Globe Pharmacy",
-      "img": "https://m.media-amazon.com/images/I/71WPcC4gG9L._AC_SL1500_.jpg",
-      "price": 4.85,
+      "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More (Pack of 5)",
+      "brand": "Globe",
+      "img": "https://m.media-amazon.com/images/I/719DSRQP3YL._AC_SX679_PIbundle-5,TopRight,0,0_SH20_.jpg",
+      "price": 6.49,
       "chg": 0.0,
       "rating": 4.6,
-      "reviews": 16143,
+      "reviews": 28524,
       "diff": {
         "price": {
-          "current": 4.85,
+          "current": 6.49,
           "prev": 4.85,
-          "change": "+0.0",
-          "pct": "+0.0%",
-          "direction": "same"
+          "change": "+1.64",
+          "pct": "+33.8%",
+          "direction": "up"
         },
         "rating": {
           "current": 4.6,
@@ -217,16 +221,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 16143,
+          "current": 28524,
           "prev": 16143,
-          "change": "+0",
-          "direction": "same"
+          "change": "+12381",
+          "direction": "up"
         },
         "bsr": {
-          "current": 383,
+          "current": 2176,
           "prev": 383,
-          "change": "+0",
-          "direction": "same"
+          "change": "+1793",
+          "direction": "dn"
         }
       },
       "listing_status": "正常",
@@ -244,10 +248,10 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 383,
+      "main_bsr": 2176,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
-      "sub_bsr": 1,
+      "sub_bsr": 6,
       "history_main_bsr": [
         389,
         389,
@@ -275,36 +279,38 @@
         383,
         383,
         383,
-        383
+        383,
+        2176
       ],
       "history_sub_bsr": [
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
       ],
       "history_price": [
         4.85,
@@ -333,9 +339,11 @@
         4.85,
         4.85,
         4.85,
-        4.85
+        4.85,
+        6.49
       ],
       "history_rating": [
+        4.6,
         4.6,
         4.6,
         4.6,
@@ -393,7 +401,7 @@
       "source_keyword": "antifungal cream",
       "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More (Pack of 5)",
       "brand": "Globe",
-      "img": "https://m.media-amazon.com/images/I/719DSRQP3YL._AC_SX300_SY300_QL70_FMwebp_.jpg",
+      "img": "https://m.media-amazon.com/images/I/719DSRQP3YL._AC_SX679_PIbundle-5,TopRight,0,0_SH20_.jpg",
       "price": 6.49,
       "chg": 0.0,
       "rating": 4.6,
@@ -401,22 +409,28 @@
       "diff": {
         "price": {
           "current": 6.49,
-          "prev": 14.99,
-          "change": "-8.5",
-          "pct": "-56.7%",
-          "direction": "dn"
+          "prev": 6.49,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
         },
         "rating": {
           "current": 4.6,
-          "prev": 4.3,
-          "change": "+0.3",
-          "direction": "up"
+          "prev": 4.6,
+          "change": "+0.0",
+          "direction": "same"
         },
         "review_count": {
           "current": 28524,
-          "prev": 40791,
-          "change": "-12267",
-          "direction": "dn"
+          "prev": 28524,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 2176,
+          "prev": 2176,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -462,9 +476,13 @@
         2176,
         2176,
         2176,
+        2176,
+        2176,
         2176
       ],
       "history_sub_bsr": [
+        6,
+        6,
         6,
         6,
         6,
@@ -514,6 +532,8 @@
         6.49,
         6.49,
         14.99,
+        6.49,
+        6.49,
         6.49
       ],
       "history_rating": [
@@ -540,6 +560,8 @@
         4.6,
         4.6,
         4.3,
+        4.6,
+        4.6,
         4.6
       ],
       "events": [],
@@ -707,9 +729,11 @@
         3378,
         3376,
         3378,
+        3378,
         3378
       ],
       "history_sub_bsr": [
+        1,
         1,
         1,
         1,
@@ -751,9 +775,11 @@
         27.97,
         27.97,
         27.97,
+        27.97,
         27.97
       ],
       "history_rating": [
+        4.3,
         4.3,
         4.3,
         4.3,
@@ -803,7 +829,7 @@
       "source_keyword": "antifungal cream",
       "title": "MED PRIDE 1% Clotrimazole Antifungal Cream 1oz- Fungus Skin Care Treatment with - Jock Itch Body Ointment - Fights Infection, Sweat Rash, Athletes Foot, Ringworm & Relieves Itching, Burning",
       "brand": "MED PRIDE",
-      "img": "https://m.media-amazon.com/images/I/71Uk-kNakSL._AC_SL1500_.jpg",
+      "img": "https://m.media-amazon.com/images/I/71Uk-kNakSL._AC_SY300_SX300_QL70_FMwebp_.jpg",
       "price": 4.97,
       "chg": 0.0,
       "rating": 4.5,
@@ -867,9 +893,13 @@
         1568,
         1568,
         1568,
+        1568,
+        1568,
         1568
       ],
       "history_sub_bsr": [
+        1,
+        1,
         1,
         1,
         1,
@@ -897,6 +927,8 @@
         4.97,
         4.97,
         4.97,
+        4.97,
+        4.97,
         4.97
       ],
       "history_rating": [
@@ -909,6 +941,8 @@
         4.5,
         4.5,
         null,
+        4.5,
+        4.5,
         4.5,
         4.5,
         4.5,
