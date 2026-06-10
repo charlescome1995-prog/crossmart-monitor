@@ -302,31 +302,6 @@ def run_monitor(config_override=None):
                     print(f"  关键词ASIN {aasin} 执行失败，继续")
                 time.sleep(random.randint(20, 50))
 
-    # ── Phase A2（每次运行都执行）: 重新抓取所有关键词 Top5 ASIN 详情 ──
-    already_fetched = set()
-    kw_dirs = sorted(glob.glob(os.path.join(DATA_DIR, 'processed', 'kw_*')))
-    for kw_dir in kw_dirs:
-        kw_name = os.path.basename(kw_dir).replace('kw_', '').replace('_', ' ')
-        kw_latest = os.path.join(kw_dir, "latest.json")
-        if not os.path.exists(kw_latest):
-            continue
-        with open(kw_latest, 'r', encoding='utf-8') as f:
-            kw_data = json.load(f)
-        top5 = kw_data.get('top_asins', [])
-        for a in top5:
-            aasin = a.get('asin', '').strip()
-            if not aasin or aasin in already_fetched:
-                continue
-            print(f"\n--- 关键词ASIN详情（每次运行）: {aasin} (来源: {kw_name}) ---")
-            ok = run_command(
-                [sys.executable, "-m", "browser.asin_monitor", aasin, "--amazon"],
-                cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
-            if not ok:
-                print(f"  关键词ASIN {aasin} 执行失败，继续")
-            else:
-                already_fetched.add(aasin)
-            time.sleep(random.randint(20, 50))
-
     # ── Phase B: ASIN 监控（主ASIN + 关联ASIN）──
     random.shuffle(asins)
     for asin_entry in asins:
