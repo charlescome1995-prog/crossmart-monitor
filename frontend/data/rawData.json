@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-09T17:49:14",
+  "updated": "2026-06-10T08:59:12",
   "items": [
     {
       "monitor_type": "KW",
@@ -13,7 +13,7 @@
       "price": 15.0,
       "chg": 0.0,
       "rating": 4.6,
-      "reviews": 29935,
+      "reviews": 29941,
       "diff": {
         "price": {
           "current": 15.0,
@@ -29,14 +29,14 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 29935,
-          "prev": 29935,
+          "current": 29941,
+          "prev": 29941,
           "change": "+0",
           "direction": "same"
         },
         "bsr": {
-          "current": 818,
-          "prev": 818,
+          "current": 796,
+          "prev": 796,
           "change": "+0",
           "direction": "same"
         }
@@ -56,10 +56,10 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household (See Top 100 in Health & Household)",
       "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 818,
+      "main_bsr": 796,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 818,
+      "sub_bsr": 796,
       "history_main_bsr": [
         834,
         834,
@@ -72,7 +72,9 @@
         818,
         818,
         818,
-        818
+        818,
+        796,
+        796
       ],
       "history_sub_bsr": [],
       "history_price": [
@@ -87,9 +89,13 @@
         18.97,
         18.97,
         15.0,
+        15.0,
+        15.0,
         15.0
       ],
       "history_rating": [
+        4.6,
+        4.6,
         4.6,
         4.6,
         4.6,
@@ -136,7 +142,7 @@
       "price": 4.85,
       "chg": 0.0,
       "rating": 4.6,
-      "reviews": 16133,
+      "reviews": 16143,
       "diff": {
         "price": {
           "current": 4.85,
@@ -152,14 +158,14 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 16133,
-          "prev": 16133,
+          "current": 16143,
+          "prev": 16143,
           "change": "+0",
           "direction": "same"
         },
         "bsr": {
-          "current": 393,
-          "prev": 393,
+          "current": 383,
+          "prev": 383,
           "change": "+0",
           "direction": "same"
         }
@@ -179,10 +185,10 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household (See Top 100 in Health & Household)",
       "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 393,
+      "main_bsr": 383,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 393,
+      "sub_bsr": 383,
       "history_main_bsr": [
         389,
         389,
@@ -195,7 +201,9 @@
         393,
         393,
         393,
-        393
+        393,
+        383,
+        383
       ],
       "history_sub_bsr": [],
       "history_price": [
@@ -210,9 +218,13 @@
         4.85,
         4.85,
         4.85,
+        4.85,
+        4.85,
         4.85
       ],
       "history_rating": [
+        4.6,
+        4.6,
         4.6,
         4.6,
         4.6,
@@ -259,7 +271,7 @@
       "price": 6.49,
       "chg": 0.0,
       "rating": 4.6,
-      "reviews": 28517,
+      "reviews": 28524,
       "diff": {
         "price": {
           "current": 6.49,
@@ -275,14 +287,14 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 28517,
-          "prev": 28517,
+          "current": 28524,
+          "prev": 28524,
           "change": "+0",
           "direction": "same"
         },
         "bsr": {
-          "current": 2087,
-          "prev": 2087,
+          "current": 2177,
+          "prev": 2177,
           "change": "+0",
           "direction": "same"
         }
@@ -302,10 +314,10 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household (See Top 100 in Health & Household)",
       "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 2087,
+      "main_bsr": 2177,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 2087,
+      "sub_bsr": 2177,
       "history_main_bsr": [
         2127,
         2127,
@@ -318,7 +330,9 @@
         2087,
         2087,
         2087,
-        2087
+        2087,
+        2177,
+        2177
       ],
       "history_sub_bsr": [],
       "history_price": [
@@ -333,9 +347,13 @@
         6.49,
         6.49,
         6.49,
+        6.49,
+        6.49,
         6.49
       ],
       "history_rating": [
+        4.6,
+        4.6,
         4.6,
         4.6,
         4.6,
@@ -368,7 +386,7 @@
       "jike_fba_quantity": null,
       "jike_fba_turnover": null,
       "jike_gross_profit_rate": null,
-      "source_keyword_rank": "自然位：第1页第3位"
+      "source_keyword_rank": "自然位：第1页第4位"
     },
     {
       "monitor_type": "ASIN",
@@ -382,7 +400,7 @@
       "price": 27.97,
       "chg": 0.0,
       "rating": 4.3,
-      "reviews": 1021,
+      "reviews": 1026,
       "diff": {
         "price": {
           "current": 27.97,
@@ -398,14 +416,14 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 1021,
-          "prev": 1021,
+          "current": 1026,
+          "prev": 1026,
           "change": "+0",
           "direction": "same"
         },
         "bsr": {
-          "current": 3231,
-          "prev": 3231,
+          "current": 3378,
+          "prev": 3378,
           "change": "+0",
           "direction": "same"
         }
@@ -425,10 +443,10 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household (See Top 100 in Health & Household)",
       "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 3231,
+      "main_bsr": 3378,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 3231,
+      "sub_bsr": 3378,
       "history_main_bsr": [
         3458,
         3461,
@@ -441,7 +459,10 @@
         3229,
         3231,
         3231,
-        3231
+        3231,
+        3378,
+        3378,
+        3378
       ],
       "history_sub_bsr": [],
       "history_price": [
@@ -456,9 +477,15 @@
         27.97,
         27.97,
         27.97,
+        27.97,
+        27.97,
+        27.97,
         27.97
       ],
       "history_rating": [
+        4.3,
+        4.3,
+        4.3,
         4.3,
         4.3,
         4.3,
@@ -491,7 +518,7 @@
       "jike_fba_quantity": null,
       "jike_fba_turnover": null,
       "jike_gross_profit_rate": null,
-      "source_keyword_rank": "自然位：第1页第4位"
+      "source_keyword_rank": "自然位：第1页第3位"
     },
     {
       "monitor_type": "KW",
@@ -609,7 +636,7 @@
       "price": 9.99,
       "chg": 0.0,
       "rating": 4.6,
-      "reviews": 829,
+      "reviews": 832,
       "diff": {
         "price": {
           "current": 9.99,
@@ -625,16 +652,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 829,
-          "prev": 829,
+          "current": 832,
+          "prev": 832,
           "change": "+0",
           "direction": "same"
         },
         "bsr": {
-          "current": 5379,
-          "prev": 5378,
-          "change": "+1",
-          "direction": "dn"
+          "current": 5263,
+          "prev": 5263,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -652,10 +679,10 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household (See Top 100 in Health & Household)",
       "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 5379,
+      "main_bsr": 5263,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 5379,
+      "sub_bsr": 5263,
       "history_main_bsr": [
         5038,
         5038,
@@ -668,7 +695,9 @@
         5376,
         5376,
         5378,
-        5379
+        5379,
+        5263,
+        5263
       ],
       "history_sub_bsr": [],
       "history_price": [
@@ -683,9 +712,13 @@
         9.99,
         9.99,
         9.99,
+        9.99,
+        9.99,
         9.99
       ],
       "history_rating": [
+        4.6,
+        4.6,
         4.6,
         4.6,
         4.6,
@@ -754,9 +787,9 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 111951,
-          "prev": 111980,
-          "change": "29",
+          "current": 107521,
+          "prev": 111951,
+          "change": "4430",
           "direction": "up"
         }
       },
@@ -775,17 +808,18 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household (See Top 100 in Health & Household)",
       "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 111951,
+      "main_bsr": 107521,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 111951,
+      "sub_bsr": 107521,
       "history_main_bsr": [
         116118,
         116098,
         114352,
         114352,
         111980,
-        111951
+        111951,
+        107521
       ],
       "history_sub_bsr": [],
       "history_price": [
@@ -794,9 +828,11 @@
         18.99,
         18.99,
         18.99,
+        18.99,
         18.99
       ],
       "history_rating": [
+        4.0,
         4.0,
         4.0,
         4.0,
@@ -823,6 +859,118 @@
       "jike_fba_quantity": 1916,
       "jike_fba_turnover": 558.6006,
       "jike_gross_profit_rate": 44.81
+    },
+    {
+      "monitor_type": "ASIN",
+      "asin": "B0GPGR4JDF",
+      "is_main": false,
+      "logic_type": "关联竞品",
+      "title": "",
+      "brand": "",
+      "img": "",
+      "price": 0,
+      "chg": 0.0,
+      "rating": 0,
+      "reviews": 0,
+      "diff": {},
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "无",
+      "badges_current": [],
+      "badges_lost": [],
+      "coupon": "无",
+      "prime_discount": "未开启",
+      "main_cat": "",
+      "expected_main_cat": "",
+      "main_bsr": 0,
+      "sub_cat": "",
+      "expected_sub_cat": "",
+      "sub_bsr": 0,
+      "history_main_bsr": [
+        0
+      ],
+      "history_sub_bsr": [],
+      "events": [],
+      "jike_sales": null,
+      "jike_orders": null,
+      "jike_units": null,
+      "jike_session": null,
+      "jike_page_views": null,
+      "jike_conversion_rate": null,
+      "jike_rating": null,
+      "jike_reviews": null,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
+      "jike_listing_state": null,
+      "jike_product_name": null,
+      "jike_acos": null,
+      "jike_ads_spend": null,
+      "jike_fba_quantity": null,
+      "jike_fba_turnover": null,
+      "jike_gross_profit_rate": null
+    },
+    {
+      "monitor_type": "ASIN",
+      "asin": "B0C7VP8SFV",
+      "is_main": false,
+      "logic_type": "关联竞品",
+      "title": "",
+      "brand": "",
+      "img": "",
+      "price": 0,
+      "chg": 0.0,
+      "rating": 0,
+      "reviews": 0,
+      "diff": {},
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "无",
+      "badges_current": [],
+      "badges_lost": [],
+      "coupon": "无",
+      "prime_discount": "未开启",
+      "main_cat": "",
+      "expected_main_cat": "",
+      "main_bsr": 0,
+      "sub_cat": "",
+      "expected_sub_cat": "",
+      "sub_bsr": 0,
+      "history_main_bsr": [
+        0
+      ],
+      "history_sub_bsr": [],
+      "events": [],
+      "jike_sales": null,
+      "jike_orders": null,
+      "jike_units": null,
+      "jike_session": null,
+      "jike_page_views": null,
+      "jike_conversion_rate": null,
+      "jike_rating": null,
+      "jike_reviews": null,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
+      "jike_listing_state": null,
+      "jike_product_name": null,
+      "jike_acos": null,
+      "jike_ads_spend": null,
+      "jike_fba_quantity": null,
+      "jike_fba_turnover": null,
+      "jike_gross_profit_rate": null,
+      "source_keyword": "antifungal cream",
+      "source_keyword_rank": "自然位：第1页第3位"
     },
     {
       "monitor_type": "ASIN",
@@ -858,9 +1006,9 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 34319,
-          "prev": 34321,
-          "change": "2",
+          "current": 33318,
+          "prev": 34319,
+          "change": "1001",
           "direction": "up"
         }
       },
@@ -879,20 +1027,22 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household (See Top 100 in Health & Household)",
       "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "main_bsr": 34319,
+      "main_bsr": 33318,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 34319,
+      "sub_bsr": 33318,
       "history_main_bsr": [
         42767,
         42767,
         32788,
         34313,
         34321,
-        34319
+        34319,
+        33318
       ],
       "history_sub_bsr": [],
       "history_price": [
+        21.99,
         21.99,
         21.99,
         21.99,
@@ -903,6 +1053,7 @@
       "history_rating": [
         4.8,
         4.8,
+        4.7,
         4.7,
         4.7,
         4.7,
@@ -952,22 +1103,22 @@
           "reviews": "4"
         },
         {
-          "asin": "B015HNGLJS",
-          "type": "natural",
-          "rank": "自然位：第1页第3位",
-          "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More (Pack of 5)",
-          "price": "$6.49",
-          "rating": "",
-          "reviews": "1"
-        },
-        {
           "asin": "B0C7VP8SFV",
           "type": "natural",
-          "rank": "自然位：第1页第4位",
+          "rank": "自然位：第1页第3位",
           "title": "SimplyVital 1% Clotrimazole Antifungal Cream - Treats Most Athlete's Foot, Jock Itch, Ringworm - Athletes Foot Treatment Anti Fungal Cream for Skin, Ring Worm Medication for Humans, 2oz",
           "price": "$27.97",
           "rating": "",
           "reviews": "2"
+        },
+        {
+          "asin": "B015HNGLJS",
+          "type": "natural",
+          "rank": "自然位：第1页第4位",
+          "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More (Pack of 5)",
+          "price": "$6.49",
+          "rating": "",
+          "reviews": "1"
         },
         {
           "asin": "B00O302HNQ",
