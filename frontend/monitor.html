@@ -41,45 +41,42 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
 .filter-controls label{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;font-weight:600}
 .btn{padding:6px 16px;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:.1s}
 .btn-secondary{background:#e2e8f0;color:#334155}
-.table-container{background:#fff;border-radius:0 0 6px 6px;border:1px solid #e2e8f0;overflow-x:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-.monitor-table{width:100%;border-collapse:collapse;text-align:left;white-space:nowrap}
-.monitor-table th{background:#f8fafc;padding:12px;font-size:12px;font-weight:700;color:#334155;border-bottom:2px solid #e2e8f0;text-transform:uppercase}
-.monitor-table td:first-child{height:100px;overflow:hidden;vertical-align:middle}
-.monitor-table td:nth-child(2){height:100px;overflow:hidden;vertical-align:top}
-.monitor-table td:nth-child(3){height:100px;overflow:hidden;vertical-align:top}
-.monitor-table td:nth-child(4){height:100px;overflow:hidden;vertical-align:top}
-.monitor-table td:nth-child(5){height:100px;overflow:hidden;vertical-align:top}
-.monitor-table td:nth-child(6){height:100px;overflow:hidden;vertical-align:top}
-.monitor-table td:nth-child(7){height:100px;overflow:hidden;vertical-align:middle}
-.monitor-table td:nth-child(8){height:100px;overflow:hidden;vertical-align:middle}
-.monitor-table tr{height:100px;overflow:hidden}
-.col-img{width:75px;text-align:center}
+.table-container{background:#fff;border-radius:0 0 6px 6px;border:1px solid #e2e8f0;overflow-x:auto;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.monitor-table{width:100%;table-layout:fixed;border-collapse:collapse;text-align:left;overflow:hidden}
+.monitor-table th{background:#f8fafc;padding:10px 8px;font-size:11px;font-weight:700;color:#334155;border-bottom:2px solid #e2e8f0;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.col-img{width:75px;min-width:75px;text-align:center;vertical-align:middle;overflow:hidden}
 .col-img img{width:65px;height:85px;object-fit:contain;border-radius:4px;border:1px solid #e2e8f0;background:#fff}
+.col-info{width:auto;min-width:180px;vertical-align:top;padding:8px 6px}
+.col-metrics{width:auto;min-width:200px;vertical-align:top;padding:8px 6px}
+.col-events{width:140px;min-width:140px;vertical-align:top;padding:8px 6px}
+.col-diff{width:110px;min-width:110px;vertical-align:top;padding:8px 6px}
+.col-jike{width:130px;min-width:130px;vertical-align:top;padding:8px 6px}
+.col-time{width:130px;min-width:130px;vertical-align:middle;padding:8px 6px}
 /* Sparklines */
 .metrics-block{position:relative}
 .sparkline-wrap{display:inline-block;vertical-align:middle;margin-left:4px}
 .sparkline-wrap canvas{display:block}
 .info-block{display:flex;flex-direction:column;gap:4px}
 .metrics-block{display:flex;flex-direction:column;gap:5px;font-size:12px}
-.cat-item{color:#475569;font-size:11px;background:#f1f5f9;padding:1px 6px;border-radius:3px;display:inline-block;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.cat-item{color:#475569;font-size:11px;background:#f1f5f9;padding:1px 6px;border-radius:3px;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .badge{font-size:10px;padding:2px 5px;border-radius:3px;font-weight:bold;display:inline-block}
 .badge.main{background:#ffd814;color:#0f1111}
 .badge.rel{background:#cbd5e1;color:#334155}
 .badge.source-asin{background:#e0e7ff;color:#4f46e5}
 .badge.source-kw{background:#fce7f3;color:#db2777}
 .asin-link{font-weight:700;color:#007185;text-decoration:none;font-size:13px}
-.title-text{max-width:220px;overflow:hidden;text-overflow:ellipsis;color:#64748b;font-size:12px;line-height:1.3}
+.title-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#64748b;font-size:12px;line-height:1.3}
 .chg{font-weight:700;padding:1px 4px;border-radius:3px;font-size:11px;margin-left:4px}
 .chg.up{color:#dc2626;background:#fef2f2}
 .chg.dn{color:#059669;background:#f0fdf4}
-.events-cell{display:flex;flex-direction:column;gap:4px;max-width:180px;white-space:normal}
+.events-cell{display:flex;flex-direction:column;gap:3px;white-space:normal}
 .e-tag{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600;border:1px solid transparent;display:inline-block;width:fit-content}
 .e-alert{background:#fef2f2;color:#dc2626;border-color:#fca5a5}
 .e-none{color:#94a3b8;font-size:11px}
 .status-indicator{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:5px 10px;border-radius:4px;width:85px;justify-content:center}
 .status-indicator.changed{background:#dc2626;color:#fff}
 .status-indicator.stable{background:#059669;color:#fff}
-.diff-cell{font-size:12px;line-height:1.6;min-width:90px}
+.diff-cell{font-size:12px;line-height:1.6}
 .diff-item{display:flex;align-items:center;gap:4px}
 .diff-arrow{font-size:11px}
 .diff-arrow.up{color:#dc2626}
@@ -535,30 +532,30 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       var badge2Text = item.source_keyword ? (item.source_keyword_rank || item.logic_type || '自然位') : (item.logic_type || '');
       html += '<tr>' +
         '<td class="col-img"><img src="' + (item.img || '') + '"></td>' +
-        '<td><div class="info-block">' +
+        '<td class="col-info"><div class="info-block">' +
           '<div><span class="badge ' + (item.source_keyword ? 'source-kw' : 'source-asin') + '">' + badge1Text + '</span> <span class="badge ' + (item.is_main ? 'main' : 'rel') + '">' + badge2Text + '</span></div>' +
           '<div><a href="https://www.amazon.com/dp/' + (item.asin || '') + '" target="_blank" class="asin-link">' + (item.asin || '') + '</a> [' + (item.brand || '') + ']</div>' +
           '<div class="title-text" title="' + (item.title || '') + '">' + (item.title || '') + '</div>' +
         '</div></td>' +
-        '<td><div class="metrics-block">' +
+        '<td class="col-metrics"><div class="metrics-block">' +
           '<div>价格: <strong>' + priceStr + '</strong>' + (diff.price ? ' <span class="diff-arrow ' + diff.price.direction + '">' + (diff.price.direction === 'up' ? '\u2191' : (diff.price.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.price.direction + '">' + diff.price.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_price"></canvas></span></div>' +
           '<div>评分: <strong>' + ratingStr + '</strong>' + (diff.rating ? ' <span class="diff-arrow ' + diff.rating.direction + '">' + (diff.rating.direction === 'up' ? '\u2191' : (diff.rating.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.rating.direction + '">' + diff.rating.change + '</span>' : '') + ' <span style="color:#64748b;font-size:12px;">评论 ' + reviewsStr + '</span></div>' +
           '<div>大类: <span class="cat-item">' + (item.main_cat || '-') + '</span> <strong>' + mainBsrStr + '</strong>' + (diff.bsr ? ' <span class="diff-arrow ' + diff.bsr.direction + '">' + (diff.bsr.direction === 'up' ? '\u2191' : (diff.bsr.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.bsr.direction + '">' + diff.bsr.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_main_bsr"></canvas></span></div>' +
           '<div>小类: <span class="cat-item">' + (item.sub_cat || '-') + '</span> <strong>' + (item.sub_bsr != null ? '#' + item.sub_bsr : '-') + '</strong>' + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_sub_bsr"></canvas></span></div>' +
           badgeHtml + dealHtml + couponHtml + primeHtml +
         '</div></td>' +
-        '<td><div class="events-cell">' + eventsHtml + '</div></td>' +
-        '<td><div class="diff-cell">' + diffHtml + '</div></td>' +
-        '<td>' +
-          '<div style="font-size:12px;">销量 ' + (item.jike_units != null ? item.jike_units.toLocaleString() : '-') + '</div>' +
-          '<div style="font-size:11px;color:#64748b;margin-top:2px;">销售额 $' + (item.jike_sales != null ? item.jike_sales.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '-') + '</div>' +
-          '<div style="font-size:11px;color:#64748b;">毛利率 ' + (item.jike_gross_profit_rate != null ? item.jike_gross_profit_rate + '%' : '-') + '</div>' +
-          '<div style="font-size:11px;">ACOS ' + (item.jike_acos != null ? item.jike_acos + '%' : '-') + '</div>' +
-          '<div style="font-size:11px;color:#64748b;">广告费 $' + (item.jike_ads_spend != null ? item.jike_ads_spend.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '-') + '</div>' +
-          '<div style="font-size:11px;">FBA库存 ' + (item.jike_fba_quantity != null ? item.jike_fba_quantity.toLocaleString() : '-') + '</div>' +
-          '<div style="font-size:11px;color:#64748b;">库存周转 ' + (item.jike_fba_turnover != null ? item.jike_fba_turnover.toFixed(1) : '-') + '</div>' +
+        '<td class="col-events"><div class="events-cell">' + eventsHtml + '</div></td>' +
+        '<td class="col-diff"><div class="diff-cell">' + diffHtml + '</div></td>' +
+        '<td class="col-jike">' +
+          '<div style="font-size:12px;line-height:1.4;">销量 <strong>' + (item.jike_units != null ? item.jike_units.toLocaleString() : '-') + '</strong></div>' +
+          '<div style="font-size:11px;color:#64748b;line-height:1.4;">销售额 $' + (item.jike_sales != null ? item.jike_sales.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
+          '<div style="font-size:11px;color:#64748b;line-height:1.4;">毛利率 ' + (item.jike_gross_profit_rate != null ? item.jike_gross_profit_rate + '%' : '-') + '</div>' +
+          '<div style="font-size:11px;line-height:1.4;">ACOS ' + (item.jike_acos != null ? item.jike_acos + '%' : '-') + '</div>' +
+          '<div style="font-size:11px;color:#64748b;line-height:1.4;">广告费 $' + (item.jike_ads_spend != null ? item.jike_ads_spend.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
+          '<div style="font-size:11px;line-height:1.4;">FBA库存 ' + (item.jike_fba_quantity != null ? item.jike_fba_quantity.toLocaleString() : '-') + '</div>' +
+          '<div style="font-size:11px;color:#64748b;line-height:1.4;">周转 ' + (item.jike_fba_turnover != null ? item.jike_fba_turnover.toFixed(1) : '-') + '</div>' +
         '</td>' +
-        '<td style="color:#64748b;font-size:12px;">' + (rawData.updated || '-') + '</td>' +
+        '<td class="col-time" style="color:#64748b;font-size:12px;">' + (rawData.updated || '-') + '</td>' +
       '</tr>';
     });
     tb.innerHTML = html || '<tr><td colspan="14" style="text-align:center;padding:20px;">没有匹配数据</td></tr>';
