@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-10T08:59:12",
+  "updated": "2026-06-10T10:10:56",
   "items": [
     {
       "monitor_type": "KW",
@@ -896,24 +896,7 @@
         0
       ],
       "history_sub_bsr": [],
-      "events": [],
-      "jike_sales": null,
-      "jike_orders": null,
-      "jike_units": null,
-      "jike_session": null,
-      "jike_page_views": null,
-      "jike_conversion_rate": null,
-      "jike_rating": null,
-      "jike_reviews": null,
-      "jike_main_seller_rank": null,
-      "jike_seller_rank": null,
-      "jike_listing_state": null,
-      "jike_product_name": null,
-      "jike_acos": null,
-      "jike_ads_spend": null,
-      "jike_fba_quantity": null,
-      "jike_fba_turnover": null,
-      "jike_gross_profit_rate": null
+      "events": []
     },
     {
       "monitor_type": "ASIN",
@@ -952,23 +935,6 @@
       ],
       "history_sub_bsr": [],
       "events": [],
-      "jike_sales": null,
-      "jike_orders": null,
-      "jike_units": null,
-      "jike_session": null,
-      "jike_page_views": null,
-      "jike_conversion_rate": null,
-      "jike_rating": null,
-      "jike_reviews": null,
-      "jike_main_seller_rank": null,
-      "jike_seller_rank": null,
-      "jike_listing_state": null,
-      "jike_product_name": null,
-      "jike_acos": null,
-      "jike_ads_spend": null,
-      "jike_fba_quantity": null,
-      "jike_fba_turnover": null,
-      "jike_gross_profit_rate": null,
       "source_keyword": "antifungal cream",
       "source_keyword_rank": "自然位：第1页第3位"
     },
