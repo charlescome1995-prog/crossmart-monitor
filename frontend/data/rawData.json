@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-10T10:10:56",
+  "updated": "2026-06-10T11:00:33",
   "items": [
     {
       "monitor_type": "KW",
@@ -54,12 +54,12 @@
       "badges_lost": [],
       "coupon": "无",
       "prime_discount": "未开启",
-      "main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
       "main_bsr": 796,
-      "sub_cat": "",
-      "expected_sub_cat": "",
-      "sub_bsr": 796,
+      "sub_cat": "Antifungal Remedies",
+      "expected_sub_cat": "Antifungal Remedies",
+      "sub_bsr": 2,
       "history_main_bsr": [
         834,
         834,
@@ -76,7 +76,22 @@
         796,
         796
       ],
-      "history_sub_bsr": [],
+      "history_sub_bsr": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
       "history_price": [
         18.97,
         18.97,
@@ -183,12 +198,12 @@
       "badges_lost": [],
       "coupon": "无",
       "prime_discount": "未开启",
-      "main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
       "main_bsr": 383,
-      "sub_cat": "",
-      "expected_sub_cat": "",
-      "sub_bsr": 383,
+      "sub_cat": "Antifungal Remedies",
+      "expected_sub_cat": "Antifungal Remedies",
+      "sub_bsr": 1,
       "history_main_bsr": [
         389,
         389,
@@ -205,7 +220,22 @@
         383,
         383
       ],
-      "history_sub_bsr": [],
+      "history_sub_bsr": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
       "history_price": [
         4.85,
         4.85,
@@ -312,12 +342,12 @@
       "badges_lost": [],
       "coupon": "无",
       "prime_discount": "未开启",
-      "main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
       "main_bsr": 2177,
-      "sub_cat": "",
-      "expected_sub_cat": "",
-      "sub_bsr": 2177,
+      "sub_cat": "Antifungal Remedies",
+      "expected_sub_cat": "Antifungal Remedies",
+      "sub_bsr": 6,
       "history_main_bsr": [
         2127,
         2127,
@@ -334,7 +364,22 @@
         2177,
         2177
       ],
-      "history_sub_bsr": [],
+      "history_sub_bsr": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
       "history_price": [
         6.49,
         6.49,
@@ -441,12 +486,12 @@
       "badges_lost": [],
       "coupon": "无",
       "prime_discount": "未开启",
-      "main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
       "main_bsr": 3378,
-      "sub_cat": "",
-      "expected_sub_cat": "",
-      "sub_bsr": 3378,
+      "sub_cat": "Ayurvedic Balms & Ointments",
+      "expected_sub_cat": "Ayurvedic Balms & Ointments",
+      "sub_bsr": 1,
       "history_main_bsr": [
         3458,
         3461,
@@ -464,7 +509,23 @@
         3378,
         3378
       ],
-      "history_sub_bsr": [],
+      "history_sub_bsr": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
       "history_price": [
         27.97,
         27.97,
@@ -573,12 +634,12 @@
       "badges_lost": [],
       "coupon": "无",
       "prime_discount": "未开启",
-      "main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
       "main_bsr": 1549,
-      "sub_cat": "",
-      "expected_sub_cat": "",
-      "sub_bsr": 1549,
+      "sub_cat": "Jock Itch Treatments",
+      "expected_sub_cat": "Jock Itch Treatments",
+      "sub_bsr": 1,
       "history_main_bsr": [
         1508,
         1508,
@@ -587,7 +648,14 @@
         1549,
         1549
       ],
-      "history_sub_bsr": [],
+      "history_sub_bsr": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
       "history_price": [
         4.97,
         4.97,
@@ -677,12 +745,12 @@
       "badges_lost": [],
       "coupon": "无",
       "prime_discount": "未开启",
-      "main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
       "main_bsr": 5263,
-      "sub_cat": "",
-      "expected_sub_cat": "",
-      "sub_bsr": 5263,
+      "sub_cat": "Antifungal Remedies",
+      "expected_sub_cat": "Antifungal Remedies",
+      "sub_bsr": 21,
       "history_main_bsr": [
         5038,
         5038,
@@ -699,7 +767,22 @@
         5263,
         5263
       ],
-      "history_sub_bsr": [],
+      "history_sub_bsr": [
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21
+      ],
       "history_price": [
         9.99,
         9.99,
@@ -806,12 +889,12 @@
       "badges_lost": [],
       "coupon": "无",
       "prime_discount": "未开启",
-      "main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
       "main_bsr": 107521,
-      "sub_cat": "",
-      "expected_sub_cat": "",
-      "sub_bsr": 107521,
+      "sub_cat": "Antifungal Remedies",
+      "expected_sub_cat": "Antifungal Remedies",
+      "sub_bsr": 207,
       "history_main_bsr": [
         116118,
         116098,
@@ -821,7 +904,15 @@
         111951,
         107521
       ],
-      "history_sub_bsr": [],
+      "history_sub_bsr": [
+        207,
+        207,
+        207,
+        207,
+        207,
+        207,
+        207
+      ],
       "history_price": [
         18.99,
         18.99,
@@ -895,7 +986,9 @@
       "history_main_bsr": [
         0
       ],
-      "history_sub_bsr": [],
+      "history_sub_bsr": [
+        0
+      ],
       "events": []
     },
     {
@@ -933,7 +1026,9 @@
       "history_main_bsr": [
         0
       ],
-      "history_sub_bsr": [],
+      "history_sub_bsr": [
+        0
+      ],
       "events": [],
       "source_keyword": "antifungal cream",
       "source_keyword_rank": "自然位：第1页第3位"
@@ -991,12 +1086,12 @@
       "badges_lost": [],
       "coupon": "无",
       "prime_discount": "未开启",
-      "main_cat": "Health & Household (See Top 100 in Health & Household)",
-      "expected_main_cat": "Health & Household (See Top 100 in Health & Household)",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
       "main_bsr": 33318,
-      "sub_cat": "",
-      "expected_sub_cat": "",
-      "sub_bsr": 33318,
+      "sub_cat": "Antifungal Remedies",
+      "expected_sub_cat": "Antifungal Remedies",
+      "sub_bsr": 89,
       "history_main_bsr": [
         42767,
         42767,
@@ -1006,7 +1101,15 @@
         34319,
         33318
       ],
-      "history_sub_bsr": [],
+      "history_sub_bsr": [
+        89,
+        89,
+        89,
+        89,
+        89,
+        89,
+        89
+      ],
       "history_price": [
         21.99,
         21.99,
