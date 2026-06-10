@@ -50,10 +50,48 @@ def extract_asin_data(browser: CDPBrowser):
 
     const soldBy = $('#merchantInfoFeature_feature_div .a-link-normal') || $('#merchant-info') || '';
 
-    let mainImg = (document.querySelector('#landingImage') ||
-                   document.querySelector('#imgTagWrapperId img') ||
-                   document.querySelector('#main-image'))?.getAttribute('src') || '';
-    mainImg = mainImg.replace(/\._AC_SX\d+_\.jpg/, '._AC_SL1500_.jpg');
+    // ── 产品图片（多个备选选择器 + 高分辨率替换）──
+    let mainImg = '';
+    const imgSelectors = [
+        '#landingImage',
+        '#imgTagWrapperId img',
+        '#main-image',
+        '#imgBlkFront',
+        '#mainImage',
+        '#ebay-image img',
+        '.a-dynamic-image',
+        '#altImages img',
+        '#richThumbnails img',
+    ];
+    for (const sel of imgSelectors) {
+        const el = document.querySelector(sel);
+        if (el) {
+            mainImg = el.getAttribute('src') || el.getAttribute('data-old-hires') || '';
+            if (mainImg) break;
+        }
+    }
+    // 尝试从 data-a-dynamic-image 提取最高分辨率图片
+    if (!mainImg) {
+        const dynEl = document.querySelector('[data-a-dynamic-image]');
+        if (dynEl) {
+            try {
+                const dynData = JSON.parse(dynEl.getAttribute('data-a-dynamic-image') || '{}');
+                const urls = Object.keys(dynData);
+                if (urls.length > 0) {
+                    // 取分辨率最高的（最后一张通常是主图）
+                    mainImg = urls[urls.length - 1];
+                }
+            } catch(e) {}
+        }
+    }
+    // 升级到高分辨率
+    if (mainImg) {
+        mainImg = mainImg.replace(/\._AC_\w+_\.jpg/, '._AC_SL1500_.jpg');
+        mainImg = mainImg.replace(/\._SY\d+_\.jpg/, '._AC_SL1500_.jpg');
+        mainImg = mainImg.replace(/\._SX\d+_\.jpg/, '._AC_SL1500_.jpg');
+        // 去掉尺寸后缀参数
+        mainImg = mainImg.replace(/\?.*$/, '');
+    }
 
     // ── BSR ──
     let bsr = '', bsrSubCategory = '', bsrSubRank = '';
