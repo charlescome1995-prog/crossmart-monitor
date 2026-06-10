@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-10T21:13:34",
+  "updated": "2026-06-10T21:19:03",
   "items": [
     {
       "monitor_type": "KW",
@@ -585,9 +585,13 @@
         3407,
         3415,
         3415,
+        3415,
+        3415,
         3415
       ],
       "history_sub_bsr": [
+        1,
+        1,
         1,
         1,
         1,
@@ -643,6 +647,8 @@
         null,
         null,
         null,
+        null,
+        null,
         null
       ],
       "history_rating": [
@@ -667,6 +673,8 @@
         4.3,
         4.3,
         4.5,
+        null,
+        null,
         null,
         null,
         null,
@@ -999,9 +1007,9 @@
       "diff": {
         "bsr": {
           "current": 106774,
-          "prev": 106489,
-          "change": "+285",
-          "direction": "dn"
+          "prev": 106774,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
           "current": 207,
@@ -1045,9 +1053,11 @@
         106585,
         106489,
         106489,
+        106774,
         106774
       ],
       "history_sub_bsr": [
+        207,
         207,
         207,
         207,
@@ -1081,6 +1091,7 @@
         null,
         null,
         null,
+        null,
         null
       ],
       "history_rating": [
@@ -1096,6 +1107,7 @@
         4.0,
         4.0,
         4.0,
+        null,
         null,
         null,
         null,
@@ -1228,12 +1240,12 @@
       "badges_lost": [],
       "coupon": "无",
       "prime_discount": "未开启",
-      "main_cat": "",
-      "expected_main_cat": "",
-      "main_bsr": 0,
-      "sub_cat": "",
-      "expected_sub_cat": "",
-      "sub_bsr": 0,
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
+      "main_bsr": 34817,
+      "sub_cat": "Antifungal Remedies",
+      "expected_sub_cat": "Antifungal Remedies",
+      "sub_bsr": 92,
       "history_main_bsr": [
         32788,
         34313,
@@ -1249,26 +1261,28 @@
         33318,
         34739,
         34689,
-        null,
-        null
+        34817,
+        34817,
+        34817
       ],
       "history_sub_bsr": [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null
+        92,
+        92,
+        92,
+        92,
+        92,
+        92,
+        92,
+        92,
+        92,
+        92,
+        92,
+        92,
+        92,
+        92,
+        92,
+        92,
+        92
       ],
       "history_price": [
         21.99,
@@ -1283,6 +1297,7 @@
         21.99,
         21.99,
         21.99,
+        null,
         null,
         null,
         null,
@@ -1301,6 +1316,7 @@
         4.7,
         4.7,
         4.7,
+        null,
         null,
         null,
         null,
