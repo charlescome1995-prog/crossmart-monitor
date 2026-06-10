@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-11T05:14:25",
+  "updated": "2026-06-11T05:17:11",
   "items": [
     {
       "monitor_type": "KW",
@@ -552,9 +552,9 @@
       "diff": {
         "bsr": {
           "current": 3407,
-          "prev": 3415,
-          "change": "8",
-          "direction": "up"
+          "prev": 3407,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
           "current": 1,
@@ -612,9 +612,11 @@
         3415,
         3415,
         3415,
+        3407,
         3407
       ],
       "history_sub_bsr": [
+        1,
         1,
         1,
         1,
@@ -676,6 +678,7 @@
         null,
         null,
         null,
+        null,
         null
       ],
       "history_rating": [
@@ -700,6 +703,7 @@
         4.3,
         4.3,
         4.5,
+        null,
         null,
         null,
         null,
@@ -1265,9 +1269,9 @@
       "diff": {
         "bsr": {
           "current": 34777,
-          "prev": 34817,
-          "change": "40",
-          "direction": "up"
+          "prev": 34777,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
           "current": 92,
@@ -1313,9 +1317,11 @@
         34777,
         34777,
         34817,
+        34777,
         34777
       ],
       "history_sub_bsr": [
+        92,
         92,
         92,
         92,
@@ -1353,6 +1359,7 @@
         null,
         null,
         null,
+        null,
         null
       ],
       "history_rating": [
@@ -1368,6 +1375,7 @@
         4.7,
         4.7,
         4.7,
+        null,
         null,
         null,
         null,
