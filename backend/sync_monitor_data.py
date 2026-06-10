@@ -68,7 +68,7 @@ def safe_int(v, default=None):
 
 
 def extract_bsr(data):
-    v = safe_int(data.get('bsr_sub_rank'))
+    v = safe_int(data.get('bsr_subrank'))  # bsr_subrank 在快照里是大类排名（如 111951）
     if v is not None:
         return v
     bsr_raw = data.get('bsr', '')
@@ -79,6 +79,18 @@ def extract_bsr(data):
         m = re.search(r'([\d,]+)', str(bsr_raw))
         if m:
             return safe_int(m.group(1))
+    return None
+
+
+def extract_sub_bsr(data):
+    """从 bsr 字符串中提取小类排名（如 #213 in Antifungal Remedies）"""
+    bsr_raw = data.get('bsr', '')
+    if not bsr_raw:
+        return None
+    # 匹配第二个 #数字（小类排名，格式：#213 in xxx）
+    matches = re.findall(r'#(\d[\d,]*)', str(bsr_raw))
+    if len(matches) >= 2:
+        return safe_int(matches[1])
     return None
 
 
@@ -227,16 +239,39 @@ def load_asin_meta(asin):
         return json.load(f)
 
 
+def parse_bsr_categories(bsr_raw):
+    """从 bsr 字符串解析大类和小类分类名"""
+    # 格式: "Best Sellers Rank: #111,951 in Health & Household (See Top 100 in Health & Household)\n#213 in Antifungal Remedies"
+    if not bsr_raw:
+        return '', ''
+    lines = str(bsr_raw).split('\n')
+    main_cat = ''
+    sub_cat = ''
+    if lines:
+        # 第一行：大类分类名
+        m = re.search(r'in\s+([A-Za-z& ]+?)\s*\(', lines[0])
+        if m:
+            main_cat = m.group(1).strip()
+    if len(lines) > 1:
+        # 第二行：小类分类名
+        m = re.search(r'#\d+\s+in\s+([^\n]+)', lines[1])
+        if m:
+            sub_cat = m.group(1).strip().rstrip(')')
+    return main_cat, sub_cat
+
+
 def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
     """构建前端 rawData.items 格式（主ASIN或关联ASIN）"""
     price = safe_float(data.get('price', '')) or 0
     rating = safe_float(data.get('rating', '')) or 0
     review_count = safe_int(data.get('review_count', data.get('reviews', ''))) or 0
-    bsr = extract_bsr(data)
-    main_bsr = bsr or 0
+    main_bsr = extract_bsr(data)   # 大类排名
+    sub_bsr = extract_sub_bsr(data)  # 小类排名
     title = data.get('title', data.get('product_title', ''))
     brand = data.get('brand', '')
-    main_cat = data.get('bsr_subcategory', '') or ''
+    # 从 bsr 字符串解析大类和小类分类名
+    bsr_raw = data.get('bsr', '')
+    main_cat, sub_cat = parse_bsr_categories(bsr_raw)
 
     # 与上次快照的 diff
     prev_data = get_prev_snapshot_data(history)
@@ -276,12 +311,12 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "prime_discount": data.get('prime_discount', '未开启') or '未开启',
         "main_cat": main_cat,
         "expected_main_cat": main_cat,
-        "main_bsr": main_bsr,
-        "sub_cat": '',
-        "expected_sub_cat": '',
-        "sub_bsr": main_bsr,
-        "history_main_bsr": [h.get('bsr') or main_bsr for h in history] if history else [main_bsr],
-        "history_sub_bsr": [],
+        "main_bsr": main_bsr or 0,
+        "sub_cat": sub_cat or '',
+        "expected_sub_cat": sub_cat or '',
+        "sub_bsr": sub_bsr or 0,
+        "history_main_bsr": [h.get('bsr') or main_bsr for h in history] if history else [main_bsr or 0],
+        "history_sub_bsr": [extract_sub_bsr(h) or sub_bsr for h in history] if history else [sub_bsr or 0],
         "history_price": [h.get('price') for h in history] if history else [price],
         "history_rating": [h.get('rating') for h in history] if history else [rating],
         "events": [],
@@ -313,20 +348,11 @@ def build_related_item(asin, rel_data, main_asin=None):
     rating = safe_float(rel_data.get('rating', '')) or 0
     reviews = safe_int(rel_data.get('reviews', '')) or 0
     bsr_raw = rel_data.get('bsr', '')
-    bsr = None
-    if bsr_raw:
-        m = re.search(r'#([\d,]+)', bsr_raw)
-        bsr = safe_int(m.group(1) if m else bsr_raw) if m else None
-    main_bsr = bsr or 0
-    main_cat = ''
-    if bsr_raw:
-        m = re.search(r'#\d+ in ([^(]+)', bsr_raw)
-        if m:
-            main_cat = m.group(1).strip()
-        else:
-            m = re.search(r'in ([A-Za-z& ]+)\s*\(', bsr_raw)
-            if m:
-                main_cat = m.group(1).strip()
+    main_bsr = extract_bsr(rel_data) or 0
+    sub_bsr = extract_sub_bsr(rel_data) or 0
+    main_cat, sub_cat = parse_bsr_categories(bsr_raw)
+    if not main_cat:
+        main_cat = sub_cat
 
     return {
         "monitor_type": "ASIN",
@@ -357,11 +383,11 @@ def build_related_item(asin, rel_data, main_asin=None):
         "main_cat": main_cat,
         "expected_main_cat": main_cat,
         "main_bsr": main_bsr,
-        "sub_cat": main_cat,
-        "expected_sub_cat": main_cat,
-        "sub_bsr": main_bsr,
+        "sub_cat": sub_cat or main_cat,
+        "expected_sub_cat": sub_cat or main_cat,
+        "sub_bsr": sub_bsr,
         "history_main_bsr": [main_bsr],
-        "history_sub_bsr": [],
+        "history_sub_bsr": [sub_bsr],
         "events": [],
     }
 
@@ -403,11 +429,19 @@ def build_keyword_item(kw, a):
     price = snap_price if snap_price is not None else (safe_float(a.get('price', '')) or 0)
     rating = snap_rating if snap_rating is not None else (safe_float(a.get('rating', '')) or 0)
     reviews = snap_reviews if snap_reviews is not None else (safe_int(a.get('reviews', '')) or 0)
-    main_bsr = extract_bsr(sd) if sd else None
-    main_cat = sd.get('bsr_subcategory', '') if sd else ''
+    bsr_raw = sd.get('bsr', '') if sd else ''
+    main_bsr = extract_bsr({'bsr': bsr_raw}) if bsr_raw else None
+    sub_bsr = extract_sub_bsr({'bsr': bsr_raw}) if bsr_raw else None
+    main_cat, sub_cat = parse_bsr_categories(bsr_raw)
+    if not main_cat and sd:
+        main_cat = sd.get('bsr_subcategory', '') or ''
     # 历史快照
     history = _load_asin_history(asin_key)
     history_main_bsr = [h['bsr'] for h in history] if history else []
+    history_sub_bsr = []
+    for h in history:
+        hs = extract_sub_bsr(h)
+        history_sub_bsr.append(hs if hs is not None else (sub_bsr or 0))
     history_price = [h['price'] for h in history] if history else []
     history_rating = [h['rating'] for h in history] if history else []
     return {
@@ -439,11 +473,11 @@ def build_keyword_item(kw, a):
         "main_cat": main_cat,
         "expected_main_cat": main_cat,
         "main_bsr": main_bsr or 0,
-        "sub_cat": '',
-        "expected_sub_cat": '',
-        "sub_bsr": main_bsr or 0,
+        "sub_cat": sub_cat or '',
+        "expected_sub_cat": sub_cat or '',
+        "sub_bsr": sub_bsr or 0,
         "history_main_bsr": history_main_bsr,
-        "history_sub_bsr": [],
+        "history_sub_bsr": history_sub_bsr,
         "history_price": history_price,
         "history_rating": history_rating,
         "events": [],
