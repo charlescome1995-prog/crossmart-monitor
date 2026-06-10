@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-10T13:01:05",
+  "updated": "2026-06-10T13:04:13",
   "items": [
     {
       "monitor_type": "KW",
@@ -403,37 +403,19 @@
       "is_main": false,
       "logic_type": "关键词-antifungal cream",
       "source_keyword": "antifungal cream",
-      "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More (Pack of 5)",
-      "brand": "Globe",
-      "img": "https://m.media-amazon.com/images/I/719DSRQP3YL._AC_SX679_PIbundle-5,TopRight,0,0_SH20_.jpg",
+      "title": "Adding to Cart...",
+      "brand": "",
+      "img": "",
       "price": 6.49,
       "chg": 0.0,
-      "rating": 4.6,
-      "reviews": 28524,
+      "rating": 0,
+      "reviews": 0,
       "diff": {
         "price": {
           "current": 6.49,
           "prev": 6.49,
           "change": "+0.0",
           "pct": "+0.0%",
-          "direction": "same"
-        },
-        "rating": {
-          "current": 4.6,
-          "prev": 4.6,
-          "change": "+0.0",
-          "direction": "same"
-        },
-        "review_count": {
-          "current": 28524,
-          "prev": 28524,
-          "change": "+0",
-          "direction": "same"
-        },
-        "bsr": {
-          "current": 2176,
-          "prev": 2176,
-          "change": "+0",
           "direction": "same"
         }
       },
@@ -450,12 +432,12 @@
       "badges_lost": [],
       "coupon": "无",
       "prime_discount": "未开启",
-      "main_cat": "Health & Household",
-      "expected_main_cat": "Health & Household",
-      "main_bsr": 2176,
-      "sub_cat": "Antifungal Remedies",
-      "expected_sub_cat": "Antifungal Remedies",
-      "sub_bsr": 6,
+      "main_cat": "",
+      "expected_main_cat": "",
+      "main_bsr": 0,
+      "sub_cat": "",
+      "expected_sub_cat": "",
+      "sub_bsr": 0,
       "history_main_bsr": [
         2127,
         2127,
@@ -479,38 +461,40 @@
         2176,
         2176,
         2176,
+        null,
         2176,
         2176,
         2176,
-        2176
+        null
       ],
       "history_sub_bsr": [
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6,
-        6
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
       ],
       "history_price": [
         6.49,
@@ -536,6 +520,7 @@
         6.49,
         6.49,
         14.99,
+        6.49,
         6.49,
         6.49,
         6.49
@@ -566,7 +551,8 @@
         4.3,
         4.6,
         4.6,
-        4.6
+        4.6,
+        null
       ],
       "events": [],
       "related_asins": [],
@@ -660,38 +646,38 @@
       "is_main": false,
       "logic_type": "关联竞品",
       "source_keyword": "",
-      "title": "SimplyVital 1% Clotrimazole Antifungal Cream - Treats Most Athlete's Foot, Jock Itch, Ringworm - Athletes Foot Treatment Anti Fungal Cream for Skin, Ring Worm Medication for Humans, 2oz",
-      "brand": "SimplyVital",
-      "img": "https://m.media-amazon.com/images/I/71pVr1gTu9L._AC_SY300_SX300_QL70_FMwebp_.jpg",
-      "price": 27.97,
+      "title": "MED PRIDE 1% Clotrimazole Antifungal Cream 1oz- Fungus Skin Care Treatment with - Jock Itch Body Ointment - Fights Infection, Sweat Rash, Athletes Foot, Ringworm & Relieves Itching, Burning",
+      "brand": "MED PRIDE",
+      "img": "https://m.media-amazon.com/images/I/71Uk-kNakSL._AC_SL1500_.jpg",
+      "price": 4.97,
       "chg": 0.0,
-      "rating": 4.3,
-      "reviews": 1026,
+      "rating": 4.5,
+      "reviews": 3801,
       "diff": {
         "price": {
-          "current": 27.97,
+          "current": 4.97,
           "prev": 27.97,
-          "change": "+0.0",
-          "pct": "+0.0%",
-          "direction": "same"
+          "change": "-23.0",
+          "pct": "-82.2%",
+          "direction": "dn"
         },
         "rating": {
-          "current": 4.3,
+          "current": 4.5,
           "prev": 4.3,
-          "change": "+0.0",
-          "direction": "same"
+          "change": "+0.2",
+          "direction": "up"
         },
         "review_count": {
-          "current": 1026,
+          "current": 3801,
           "prev": 1026,
-          "change": "+0",
-          "direction": "same"
+          "change": "+2775",
+          "direction": "up"
         },
         "bsr": {
-          "current": 3378,
+          "current": 1568,
           "prev": 3378,
-          "change": "+0",
-          "direction": "same"
+          "change": "1810",
+          "direction": "up"
         }
       },
       "listing_status": "正常",
@@ -709,9 +695,9 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 3378,
-      "sub_cat": "Ayurvedic Balms & Ointments",
-      "expected_sub_cat": "Ayurvedic Balms & Ointments",
+      "main_bsr": 1568,
+      "sub_cat": "Jock Itch Treatments",
+      "expected_sub_cat": "Jock Itch Treatments",
       "sub_bsr": 1,
       "history_main_bsr": [
         3458,
@@ -735,9 +721,11 @@
         3378,
         3378,
         3378,
-        3378
+        3378,
+        1568
       ],
       "history_sub_bsr": [
+        1,
         1,
         1,
         1,
@@ -783,7 +771,8 @@
         27.97,
         27.97,
         27.97,
-        27.97
+        27.97,
+        4.97
       ],
       "history_rating": [
         4.3,
@@ -807,7 +796,8 @@
         4.3,
         4.3,
         4.3,
-        4.3
+        4.3,
+        4.5
       ],
       "events": [],
       "related_asins": [],
@@ -904,9 +894,11 @@
         1568,
         1568,
         1568,
+        1568,
         1568
       ],
       "history_sub_bsr": [
+        1,
         1,
         1,
         1,
@@ -940,6 +932,7 @@
         4.97,
         4.97,
         4.97,
+        4.97,
         4.97
       ],
       "history_rating": [
@@ -952,6 +945,7 @@
         4.5,
         4.5,
         null,
+        4.5,
         4.5,
         4.5,
         4.5,
@@ -1664,7 +1658,7 @@
       "source_keyword": "",
       "title": "Antifungal Cream for Athlete’s Foot, Jock Itch & Ringworm – 1% Clotrimazole Antifungal Cream, Ringworm Treatment for Humans, Relieves Burning, Itching, Scaling & Cracking (3.5 Ounce)",
       "brand": "Brand: Kerova",
-      "img": "https://m.media-amazon.com/images/I/71d5TpA9XbL._AC_SY300_SX300_QL70_FMwebp_.jpg",
+      "img": "https://m.media-amazon.com/images/I/71d5TpA9XbL._AC_SL1500_.jpg",
       "price": 21.99,
       "chg": 0.0,
       "rating": 4.7,
@@ -1727,9 +1721,11 @@
         33318,
         33318,
         33318,
+        33318,
         33318
       ],
       "history_sub_bsr": [
+        89,
         89,
         89,
         89,
@@ -1755,11 +1751,13 @@
         21.99,
         21.99,
         21.99,
+        21.99,
         21.99
       ],
       "history_rating": [
         4.8,
         4.8,
+        4.7,
         4.7,
         4.7,
         4.7,
