@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-11T05:17:11",
+  "updated": "2026-06-11T11:10:26",
   "items": [
     {
       "monitor_type": "KW",
@@ -1038,14 +1038,14 @@
       "reviews": 0,
       "diff": {
         "bsr": {
-          "current": 106723,
-          "prev": 106723,
+          "current": 131072,
+          "prev": 131072,
           "change": "+0",
           "direction": "same"
         },
         "sub_bsr": {
-          "current": 207,
-          "prev": 207,
+          "current": 233,
+          "prev": 233,
           "change": "+0",
           "direction": "same"
         }
@@ -1065,10 +1065,10 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 106723,
+      "main_bsr": 131072,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
-      "sub_bsr": 207,
+      "sub_bsr": 233,
       "history_main_bsr": [
         114352,
         114352,
@@ -1088,28 +1088,32 @@
         106774,
         106774,
         106723,
-        106723
+        106723,
+        131072,
+        131072
       ],
       "history_sub_bsr": [
-        207,
-        207,
-        207,
-        207,
-        207,
-        207,
-        207,
-        207,
-        207,
-        207,
-        207,
-        207,
-        207,
-        207,
-        207,
-        207,
-        207,
-        207,
-        207
+        233,
+        233,
+        233,
+        233,
+        233,
+        233,
+        233,
+        233,
+        233,
+        233,
+        233,
+        233,
+        233,
+        233,
+        233,
+        233,
+        233,
+        233,
+        233,
+        233,
+        233
       ],
       "history_price": [
         18.99,
@@ -1124,6 +1128,8 @@
         18.99,
         18.99,
         18.99,
+        null,
+        null,
         null,
         null,
         null,
@@ -1145,6 +1151,8 @@
         4.0,
         4.0,
         4.0,
+        null,
+        null,
         null,
         null,
         null,
