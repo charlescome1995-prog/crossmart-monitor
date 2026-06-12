@@ -174,18 +174,17 @@ class CDPBrowser:
                             self.ws = websocket.create_connection(first_ws_url, timeout=15)
                         except:
                             pass
-                # 创建新标签页
+                # 找不到对应标签页 → 直接导航到 Amazon 商品页（而不是创建空白页）
                 if self.ws:
-                    target = self.cmd("Target.createTarget", {"url": "about:blank"})
-                    target_id = target.get("targetId")
-                    time.sleep(0.5)
-                self._refresh_tabs()
-                # 找到新创建的标签页或用第一个
-                if self.ws:
-                    filtered_new = [t for t in self._raw_tabs if t.get("id") == target_id]
+                    amazon_url = f"https://www.amazon.com/dp/{tab_url_filter}"
+                    print(f"  [导航] 未找到已有标签页，自动打开: {amazon_url}")
+                    self.cmd("Page.navigate", {"url": amazon_url})
+                    time.sleep(2)
+                    self._refresh_tabs()
+                    # 用新打开的页面作为当前标签页
+                    filtered_new = [t for t in self._raw_tabs if tab_url_filter.lower() in t.get("url","").lower()]
                     self.tab = filtered_new[0] if filtered_new else self._raw_tabs[0]
                 else:
-                    # 连websocket都建立不了，直接用第一个标签页
                     self.tab = self._raw_tabs[0] if self._raw_tabs else None
         else:
             self.tab = tabs[tab_index] if tabs else None

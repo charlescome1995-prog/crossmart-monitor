@@ -8,7 +8,7 @@ ASIN监控主入口 — 完整版
   python browser/asin_monitor.py B0XXXXXXX --discover  # 只做竞品关联发现（不查亚马逊）
   python browser/asin_monitor.py B0XXXXXXX --status   # 查看状态
 """
-import sys, os, json, time, random
+import sys, os, json, time, random, re
 sys.stdout.reconfigure(encoding='utf-8')
 from datetime import datetime
 
@@ -24,16 +24,216 @@ from browser.human_timer import get_daily_plan
 
 # ─── DOM数据提取工具 ───
 
+def extract_sprite_plugin_data(browser: CDPBrowser):
+    """从亚马逊页面的卖家精灵插件 DOM 提取数据（插件面板在页面内嵌）"""
+    js_get_plugin_text = r"""
+(function(){
+    var ids = [
+        'seller-sprite-extension-quick-view-listing-page',
+        'seller-sprite-extension-quick-view-listing',
+        'seller-sprite-extension-main-relation',
+        'sellersprite-extension-inventory'
+    ];
+    var data = {};
+    for (var i = 0; i < ids.length; i++) {
+        var el = document.getElementById(ids[i]);
+        if (el) {
+            // 流量词用 innerHTML（Element UI 表格结构，textContent 解析不了）
+            if (ids[i] === 'seller-sprite-extension-main-relation') {
+                data[ids[i]] = el.innerHTML;
+            } else {
+                data[ids[i]] = (el.textContent||'').trim();
+            }
+        }
+    }
+    return JSON.stringify(data);
+})()
+"""
+    try:
+        raw = browser.eval(js_get_plugin_text)
+        if not raw:
+            return {}
+        plugin_texts = json.loads(raw) if isinstance(raw, str) else raw
+        metrics_text = plugin_texts.get('seller-sprite-extension-quick-view-listing-page', '')
+        main_text   = plugin_texts.get('seller-sprite-extension-quick-view-listing', '')
+        traffic_text = plugin_texts.get('seller-sprite-extension-main-relation', '')
+        inv_text    = plugin_texts.get('sellersprite-extension-inventory', '')
+    except Exception as e:
+        print("  [插件] DOM 提取失败: " + str(e))
+        return {}
+
+    combined = (metrics_text + ' ' + main_text).replace('\n', ' ').replace('  ', ' ')
+    data = {}
+
+    # ── 指标面板字段 ──
+    v = re.search(r'v([\d.]+)', metrics_text)
+    if v: data['plugin_version'] = v.group(1)
+    lqs = re.search(r'质量得分([\d.]+)', metrics_text)
+    if lqs: data['lqs'] = lqs.group(1)
+
+
+    sales = re.search(r'近30天销量.+?\(父体\)[^:\d]*([\d,]+)', combined)
+    if sales:
+        data['sales_30d_parent'] = sales.group(1).replace(',', '')
+    sales_child = re.search(r'近30天销量.+?\(子体\)[^:\d]*([\d,]+)', combined)
+    if sales_child:
+        data['sales_30d_child'] = sales_child.group(1).replace(',', '')
+
+    rev = re.search(r'Listing销售额\s+\$([\d,]+)', combined)
+    if rev: data['revenue_30d'] = rev.group(1).replace(',', '')
+    avg = re.search(r'均价\s+\$([\d.]+)', combined)
+    if avg: data['avg_price'] = avg.group(1)
+    bsr = re.search(r'BSR([\d,]+)', combined)
+    if bsr: data['bsr'] = bsr.group(1).replace(',', '')
+    fba = re.search(r'FBA费用\$([\d.]+)', combined)
+    if fba: data['fba_fee'] = fba.group(1)
+    variants = re.search(r'变体数(\d+)', combined)
+    if variants: data['variant_count'] = variants.group(1)
+
+    # 上架时间：格式 "2022-03-16(1,548天)" 或 "2022-03-16 (1,548天)"
+    launch = re.search(r'(\d{4}-\d{2}-\d{2})\s*\((\d+)天\)', combined)
+    if launch:
+        data['launch_date'] = launch.group(1)
+        data['days_online'] = launch.group(2)
+
+    # 毛利率：支持 N/A 或 12.5% 格式
+    profit = re.search(r'毛利率[^:\d]*([\d.]+%|[N/n]\s*/\s*[A/a])', combined)
+    if profit:
+        data['gross_margin'] = profit.group(1).replace(' ', '')
+
+    # ── 主面板字段 ──
+    asin_m = re.search(r'ASIN[:：]*(B[A-Z0-9]{9,10})', combined)
+    if asin_m: data['asin'] = asin_m.group(1)
+
+
+    # 品牌：Amazon Basics
+    brand = re.search(r'品牌[:：]*\s*([A-Za-z][^\s：:]{2,30}(?:\s+[A-Za-z][^\s：:]{2,20})?)(?=\s*卖家|$)', combined)
+    if brand:
+        b = brand.group(1).strip()
+        b = re.sub(r'[\x00-\x1f\x7f-\x9f]', '', b)
+        data['brand'] = b
+
+    # 卖家
+    seller = re.search(r'卖家[:：]*\s*([A-Za-z][^\s：:]{2,30})', combined)
+    if seller: data['seller'] = seller.group(1).strip()
+
+    # 配送类型：AMZ / FBA（用负向前瞻排除中文"卖家"）
+    fulfill = re.search(r'配送[:：]*\s*([A-Z]{2,6}(?![A-Za-z\u4e00-\u9fff]))', combined)
+    if fulfill: data['fulfillment'] = fulfill.group(1).strip()
+
+
+    # 卖家数
+    sc = re.search(r'卖家[:：]*\s*(\d+)', combined)
+    if sc: data['seller_count'] = sc.group(1)
+
+    # 大类 BSR
+    bsr_main = re.search(r'#(\d+)\s+in\s+([^#\n]{3,40})', combined)
+    if bsr_main:
+        data['bsr_rank'] = bsr_main.group(1)
+        data['bsr_category'] = bsr_main.group(2).strip()
+
+    # 小类 BSR：第二个 # 后面到 "近30天销量" 或下一个 # 之前
+    idx1 = combined.find('#')
+    if idx1 >= 0:
+        rest = combined[idx1 + 1:]
+        idx2 = rest.find('#')
+        if idx2 >= 0:
+            segment = rest[idx2:]
+            bsr_sub = re.search(r'#(\d+)\s+in\s+(.{3,40}?)(?=\s*#|\s*近30天)', segment)
+            if bsr_sub:
+                data['bsr_sub_rank'] = bsr_sub.group(1)
+                data['bsr_sub_category'] = bsr_sub.group(2).strip()
+
+
+    # 评分 + 评分数（合并提取）
+    rating_m = re.search(r'评分[^\d]*([\d.]+)\s*\(?([\d,]+)\)?', combined)
+    if rating_m:
+        data['rating'] = rating_m.group(1)
+        data['review_count'] = rating_m.group(2).replace(',', '')
+
+    price_m = re.search(r'价格[^\d]*\$([\d.]+)', combined)
+    if price_m: data['price'] = price_m.group(1)
+    ship = re.search(r'配送时长[^\d]*(\d+)天', combined)
+    if ship: data['ship_days'] = ship.group(1)
+    prime = re.search(r'Prime配送时长[^\d]*(\d+)天', combined)
+    if prime: data['prime_ship_days'] = prime.group(1)
+
+    # 商品重量
+    weight = re.search(r'商品重量[:：]*\s*([\d.]+)\s*ounces?\s*\(?([\d.]+)\s*g\)?', combined)
+    if weight:
+        data['weight_oz'] = weight.group(1)
+        data['weight_g'] = weight.group(2)
+
+    # 商品尺寸
+    dims = re.search(r'商品尺寸[:：]*\s*([\d.]+)\s*x\s*([\d.]+)\s*x\s*([\d.]+)\s*inches?', combined)
+    if dims:
+        data['dim_l'], data['dim_w'], data['dim_h'] = dims.group(1), dims.group(2), dims.group(3)
+
+
+    # 关键词统计
+    for label, key in [('全部流量词', 'total_keywords'), ('自然搜索词', 'natural_keywords'),
+                       ('广告流量词', 'ad_keywords'), ('搜索推荐词', 'suggest_keywords')]:
+        m = re.search(rf'{re.escape(label)}[^\d]*(\d+)', combined)
+        if m: data[key] = m.group(1)
+
+
+    # 库存
+    inv_stock = re.search(r'剩余库存(\d+)', inv_text)
+    inv_price = re.search(r'剩余库存\d+\$([\d.]+)', inv_text)
+    if inv_stock: data['inv_stock'] = inv_stock.group(1)
+    if inv_price: data['inv_price'] = inv_price.group(1)
+
+    # 流量词 Top 列表（Element UI 表格解析）
+    # 插件使用 div.el-table__row 结构，每行 6 个 td.cell，innerHTML 含嵌套 div
+    try:
+        tds = re.findall(r'<td[^>]*>(.*?)</td>', traffic_text, re.DOTALL)
+        cell_texts = []
+        for td in tds:
+            # 剥除所有 HTML 标签；把 >< 替换为换行符，这样不同嵌套层级的文本不会串线
+            raw = re.sub(r'<[^>]*>', '', td)
+            raw = re.sub(r'\{\{[^}]+\}\}', '', raw)
+            lines = [l.strip() for l in raw.split('\n') if l.strip()]
+            cell_texts.append('\n'.join(lines))
+
+        keywords = []
+        for i in range(0, len(cell_texts), 6):
+            if i + 5 >= len(cell_texts):
+                break
+            kw = cell_texts[i+1].strip()
+            click_raw = cell_texts[i+2].strip()
+            click_lines = [l.strip() for l in click_raw.split('\n') if l.strip()]
+            click_pct = click_lines[0] if click_lines else ''
+            kw_type = click_lines[1] if len(click_lines) > 1 else ''
+            organic_raw = cell_texts[i+4].strip()
+            organic_lines = [l.strip() for l in organic_raw.split('\n') if l.strip()]
+            organic_rank = organic_lines[0] if organic_lines else ''
+            if kw:
+                keywords.append({
+                    'keyword': kw,
+                    'traffic_pct': click_pct,
+                    'type': kw_type,
+                    'organic_rank': organic_rank
+                })
+        if keywords:
+            data['traffic_keywords_top'] = keywords[:4]  # 只取前4个主要流量词
+    except Exception as e:
+        pass  # 流量词解析失败不影响主流程
+
+    print(f"  [插件] 提取到 {len(data)} 个字段" + (f", 流量词 {len(keywords)} 条" if keywords else ""))
+    return data
+
+
 def extract_asin_data(browser: CDPBrowser):
     """从当前详情页提取完整的商品数据（修复版）"""
     print("  📊 提取商品数据...")
 
     js_bundle = r"""
 (() => {
-    const $ = (sel) => document.querySelector(sel) ? document.querySelector(sel).textContent.trim() : '';
+    const $ = (sel) => document.querySelector(sel);
     const body = document.body.innerText || '';
 
-    const title = ($('#productTitle') || $('h1')).substring(0, 200);
+    const titleEl = document.querySelector('#productTitle');
+    const title = (titleEl ? titleEl.textContent.trim() : (document.querySelector('h1') || {textContent: ''}).textContent.trim()).substring(0, 200);
     // title 备选：从 meta og:title 或 JSON-LD
     if (!title) {
         const ogT = document.querySelector('meta[property="og:title"]');
@@ -44,25 +244,30 @@ def extract_asin_data(browser: CDPBrowser):
         if (ld) { try { const d = JSON.parse(ld.textContent); if (d && d.name) title = d.name.substring(0, 200); } catch(e){} }
     }
 
-    const corePrice = $('#corePrice_feature_div .a-offscreen') ||
-                     ($('#corePrice_feature_div .a-price-whole') ? '$' + $('#corePrice_feature_div .a-price-whole') : '');
-    let price = corePrice || $('.a-price .a-offscreen') || '';
+    const priceWholeEl = document.querySelector('#corePrice_feature_div .a-price-whole');
+    const priceOffscreenEl = document.querySelector('#corePrice_feature_div .a-offscreen');
+    const corePrice = priceOffscreenEl ? priceOffscreenEl.textContent.trim() : (priceWholeEl ? '$' + priceWholeEl.textContent.trim() : '');
+    let price = corePrice || (document.querySelector('.a-price .a-offscreen') || {textContent: ''}).textContent.trim();
     // price 备选：从页面 body 文本匹配 $xx.xx 或 $xx
     if (!price) { const pm = body.match(/\$\d+\.\d{2}/); if (pm) price = pm[0]; }
     if (!price) { const pm2 = body.match(/\$\d+(?:\.\d+)?/); if (pm2) price = pm2[0]; }
 
-    const ratingM = ($('.a-icon-alt') || '').match(/([\d.]+)/);
+    const ratingEl = document.querySelector('.a-icon-alt');
+    const ratingM = (ratingEl ? ratingEl.textContent.trim() : '').match(/([\d.]+)/);
     let rating = ratingM ? ratingM[1] : '';
     // rating 备选：从 body 文本匹配 "X.X out of 5 stars"
     if (!rating) { const rm = body.match(/([\d.]+)\s*out\s*of\s*5\s*stars?/i); if (rm) rating = rm[1]; }
 
-    const reviewM = ($('#acrCustomerReviewText') || '').match(/([\d,]+)/);
+    const reviewEl = document.querySelector('#acrCustomerReviewText');
+    const reviewM = (reviewEl ? reviewEl.textContent.trim() : '').match(/([\d,]+)/);
     const review_count = reviewM ? reviewM[1].replace(/,/g, '') : '';
 
-    let brand = ($('#bylineInfo') || '').replace(/^Visit the /, '').replace(/ Store$/, '').replace(/^访问/, '').replace(/品牌旗舰店$/, '').trim();
+    const brandEl = document.querySelector('#bylineInfo');
+    let brand = (brandEl ? brandEl.textContent.trim() : '').replace(/^Visit the /, '').replace(/ Store$/, '').replace(/^访问/, '').replace(/品牌旗舰店$/, '').trim();
     if (brand.length > 60) brand = brand.substring(0, 60);
 
-    const soldBy = $('#merchantInfoFeature_feature_div .a-link-normal') || $('#merchant-info') || '';
+    const soldByEl = document.querySelector('#merchantInfoFeature_feature_div .a-link-normal') || document.querySelector('#merchant-info');
+    const soldBy = soldByEl ? soldByEl.textContent.trim() : '';
 
     // ── 产品图片（多个备选选择器 + 高分辨率替换）──
     let mainImg = '';
@@ -118,7 +323,7 @@ def extract_asin_data(browser: CDPBrowser):
             try {
                 const d = JSON.parse(ldI.textContent);
                 if (d && d.image) mainImg = Array.isArray(d.image) ? d.image[0] : d.image;
-                else if (d && d.@graph) { const g = d.@graph.find(x => x['@type'] === 'Product'); if (g && g.image) mainImg = Array.isArray(g.image) ? g.image[0] : g.image; }
+                else if (d && d["@graph"]) { const g = d["@graph"].find(x => x['@type'] === 'Product'); if (g && g.image) mainImg = Array.isArray(g.image) ? g.image[0] : g.image; }
             } catch(e){}
         }
     }
@@ -197,7 +402,7 @@ def extract_asin_data(browser: CDPBrowser):
     const primeEl = document.querySelector('#primeExclusiveExtraContent, #primeBenefits, .prime-benefits, #prime-ingress-features');
     if (primeEl) {
         const pt = primeEl.innerText || '';
-        const discM = pt.match((\d+)%/);
+        const discM = pt.match(/(\d+)%/);
         if (discM) prime_discount = discM[1] + '%';
         else if (pt.includes('Prime')) prime_discount = pt.trim().substring(0, 30);
     }
@@ -208,6 +413,26 @@ def extract_asin_data(browser: CDPBrowser):
         }
     }
 
+    // ── 评分分布（直方图） ──
+    const rating_distribution = {};
+    const histBars = document.querySelectorAll('#histogramTable .a-histogram-bar');
+    if (histBars.length > 0) {
+        histBars.forEach(bar => {
+            const barEl = bar.querySelector('.a-bar-container');
+            const countEl = bar.querySelector('.a-histogram-count');
+            const barAria = barEl ? barEl.getAttribute('aria-label') || '' : '';
+            const countText = countEl ? countEl.textContent.trim() : '';
+            const starsM = barAria.match(/(\d+)星/);
+            const pctM = barAria.match(/(\d+)%/);
+            if (starsM) {
+                const star = starsM[1] + 'star';
+                const pct = pctM ? pctM[1] + '%' : '';
+                const count = countText.replace(/[,，]/g, '').match(/(\d+)/);
+                rating_distribution[star] = { pct: pct, count: count ? count[1] : countText };
+            }
+        });
+    }
+
     const result = {
         title, price, rating, review_count, brand, soldBy,
         main_image: mainImg,
@@ -216,6 +441,7 @@ def extract_asin_data(browser: CDPBrowser):
         deal_activity: deal_activity,
         coupon: coupon,
         prime_discount: prime_discount,
+        rating_distribution: rating_distribution,
         snapshot_time: new Date().toISOString(),
     };
     return JSON.stringify(result);
@@ -365,15 +591,19 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
             amazon.browse_category()
         amazon.search_for_asin(asin, search_keyword)
         browser.scroll_down(times=1, min_pause=0.3, max_pause=0.8)
-        # ── 等待插件加载（最长30秒）──
+        # ── 等待页面关键元素加载（最长30秒）──
         deadline = time.time() + 30
         while time.time() < deadline:
-            ready = browser.eval("""
-                document.querySelector('#productTitle') !== null ||
-                document.querySelector('#dpContainer') !== null ||
-                document.readyState === 'complete'
-            """)
-            if ready:
+            ready = browser.eval("""(() => {
+                var titleEl = document.querySelector('#productTitle');
+                var titleOk = titleEl && titleEl.textContent.trim().length > 0;
+                var imgEl = document.querySelector('#landingImage');
+                var imgOk = imgEl && imgEl.complete && imgEl.naturalWidth > 0;
+                return { titleOk: titleOk, imgOk: imgOk, ready: titleOk };
+            })()""")
+            if ready and ready.get('ready'):
+                elapsed = time.time() - (deadline - 30)
+                print(f"  页面加载完成，耗时 {elapsed:.1f}s (title={ready.get('titleOk')}, img={ready.get('imgOk')})")
                 break
             time.sleep(1)
         time.sleep(random.uniform(0.3, 0.8))  # 再等1-3秒让插件彻底渲染
@@ -388,6 +618,24 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
         print("  亚马逊检查完成")
     except Exception as e:
         print("  亚马逊检查失败: %s" % e)
+
+    # ─── Phase A2: 卖家精灵插件 DOM（直接从页面内嵌插件提取，插件在页面上浮窗显示）───
+    if mode == "full":
+        print("\n" + "="*50)
+        print("卖家精灵插件数据")
+        print("="*50)
+        time.sleep(random.uniform(0.5, 1.5))  # 等待插件 DOM 完全渲染
+        try:
+            plugin_data = extract_sprite_plugin_data(browser)
+            if plugin_data:
+                # 插件数据与 amazon_data 合并（插件字段加前缀 sprite_ 避免覆盖）
+                for k, v in plugin_data.items():
+                    amazon_data['sprite_' + k] = v
+                print("  插件数据提取完成")
+            else:
+                print("  插件面板未检测到（可能未安装或未激活）")
+        except Exception as e:
+            print("  插件提取失败: %s" % e)
 
     # ─── Phase B: 卖家精灵（可选）───
     related_asins_meta = []
