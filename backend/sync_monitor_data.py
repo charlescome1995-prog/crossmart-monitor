@@ -421,7 +421,7 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "jike_ads_spend": jk.get('adsSpend'),
         "jike_fba_quantity": jk.get('fbaQuantity'),
         "jike_fba_turnover": jk.get('fbaTurnover'),
-        "jike_gross_profit_rate": jk.get('salesGrossProfitRate') or (jk.get('_raw') or {}).get('grossProfitRate'),
+        "jike_gross_profit_rate": jk.get('grossProfitRate') or jk.get('salesGrossProfitRate'),
 
         # ── 卖家精灵插件数据 ──
         "lqs": data.get('lqs', ''),
