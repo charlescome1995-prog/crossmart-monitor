@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-11T18:38:49",
+  "updated": "2026-06-11T20:05:10",
   "items": [
     {
       "monitor_type": "KW",
@@ -14,7 +14,39 @@
       "chg": 0.0,
       "rating": 4.6,
       "reviews": 29953,
-      "diff": {},
+      "diff": {
+        "price": {
+          "current": 18.97,
+          "prev": 18.97,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.6,
+          "prev": 4.6,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 29953,
+          "prev": 29953,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 692,
+          "prev": 692,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 2,
+          "prev": 2,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -39,15 +71,19 @@
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 2,
       "history_main_bsr": [
+        692,
         692
       ],
       "history_sub_bsr": [
+        2,
         2
       ],
       "history_price": [
+        18.97,
         18.97
       ],
       "history_rating": [
+        4.6,
         4.6
       ],
       "events": [],
@@ -74,7 +110,39 @@
       "chg": 0.0,
       "rating": 4.6,
       "reviews": 16171,
-      "diff": {},
+      "diff": {
+        "price": {
+          "current": 4.85,
+          "prev": 4.85,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.6,
+          "prev": 4.6,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 16171,
+          "prev": 16171,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 373,
+          "prev": 373,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 1,
+          "prev": 1,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -90,7 +158,7 @@
         "A+"
       ],
       "badges_lost": [],
-      "coupon": "无",
+      "coupon": "$4.61 off",
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
@@ -99,15 +167,19 @@
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 1,
       "history_main_bsr": [
+        373,
         373
       ],
       "history_sub_bsr": [
+        1,
         1
       ],
       "history_price": [
+        4.85,
         4.85
       ],
       "history_rating": [
+        4.6,
         4.6
       ],
       "events": [],
@@ -134,7 +206,39 @@
       "chg": 0.0,
       "rating": 4.6,
       "reviews": 28535,
-      "diff": {},
+      "diff": {
+        "price": {
+          "current": 6.49,
+          "prev": 6.49,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.6,
+          "prev": 4.6,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 28535,
+          "prev": 28535,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 2082,
+          "prev": 2082,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 6,
+          "prev": 6,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -150,7 +254,7 @@
         "A+"
       ],
       "badges_lost": [],
-      "coupon": "无",
+      "coupon": "$6.17 off",
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
@@ -159,15 +263,19 @@
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 6,
       "history_main_bsr": [
+        2082,
         2082
       ],
       "history_sub_bsr": [
+        6,
         6
       ],
       "history_price": [
+        6.49,
         6.49
       ],
       "history_rating": [
+        4.6,
         4.6
       ],
       "events": [],
@@ -214,17 +322,21 @@
           "change": "+0",
           "direction": "same"
         },
-        "bsr": {
-          "current": 3609,
-          "prev": 3609,
-          "change": "+0",
-          "direction": "same"
-        },
-        "sub_bsr": {
-          "current": 1,
-          "prev": 1,
-          "change": "+0",
-          "direction": "same"
+        "badges": {
+          "current": [
+            "AC",
+            "NR"
+          ],
+          "prev": [
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "lost": [
+            "A+"
+          ],
+          "gained": [],
+          "direction": "changed"
         }
       },
       "listing_status": "正常",
@@ -238,31 +350,40 @@
       "deal_activity": "Deal",
       "badges_current": [
         "AC",
-        "NR",
+        "NR"
+      ],
+      "badges_lost": [
         "A+"
       ],
-      "badges_lost": [],
       "coupon": "无",
       "prime_discount": "未开启",
-      "main_cat": "Health & Household",
-      "expected_main_cat": "Health & Household",
-      "main_bsr": 3609,
-      "sub_cat": "Ayurvedic Balms & Ointments",
-      "expected_sub_cat": "Ayurvedic Balms & Ointments",
-      "sub_bsr": 1,
+      "main_cat": "",
+      "expected_main_cat": "",
+      "main_bsr": 0,
+      "sub_cat": "",
+      "expected_sub_cat": "",
+      "sub_bsr": 0,
       "history_main_bsr": [
         3609,
-        3609
+        3609,
+        3609,
+        null
       ],
       "history_sub_bsr": [
-        1,
-        1
+        null,
+        null,
+        null,
+        null
       ],
       "history_price": [
+        27.97,
+        27.97,
         27.97,
         27.97
       ],
       "history_rating": [
+        4.3,
+        4.3,
         4.3,
         4.3
       ],
@@ -289,8 +410,40 @@
       "price": 9.99,
       "chg": 0.0,
       "rating": 4.6,
-      "reviews": 842,
-      "diff": {},
+      "reviews": 843,
+      "diff": {
+        "price": {
+          "current": 9.99,
+          "prev": 9.99,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.6,
+          "prev": 4.6,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 843,
+          "prev": 842,
+          "change": "+1",
+          "direction": "up"
+        },
+        "bsr": {
+          "current": 5239,
+          "prev": 5238,
+          "change": "+1",
+          "direction": "dn"
+        },
+        "sub_bsr": {
+          "current": 21,
+          "prev": 21,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -309,20 +462,24 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 5238,
+      "main_bsr": 5239,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 21,
       "history_main_bsr": [
-        5238
+        5238,
+        5239
       ],
       "history_sub_bsr": [
+        21,
         21
       ],
       "history_price": [
+        9.99,
         9.99
       ],
       "history_rating": [
+        4.6,
         4.6
       ],
       "events": [],
@@ -349,7 +506,39 @@
       "chg": 0.0,
       "rating": 4.1,
       "reviews": 27,
-      "diff": {},
+      "diff": {
+        "price": {
+          "current": 18.99,
+          "prev": 18.99,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.1,
+          "prev": 4.1,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 27,
+          "prev": 27,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 113881,
+          "prev": 113895,
+          "change": "14",
+          "direction": "up"
+        },
+        "sub_bsr": {
+          "current": 211,
+          "prev": 211,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -368,20 +557,24 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 113895,
+      "main_bsr": 113881,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 211,
       "history_main_bsr": [
-        113895
+        113895,
+        113881
       ],
       "history_sub_bsr": [
+        211,
         211
       ],
       "history_price": [
+        18.99,
         18.99
       ],
       "history_rating": [
+        4.1,
         4.1
       ],
       "events": [],
@@ -521,7 +714,39 @@
       "chg": 0.0,
       "rating": 4.8,
       "reviews": 41,
-      "diff": {},
+      "diff": {
+        "price": {
+          "current": 21.99,
+          "prev": 21.99,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.8,
+          "prev": 4.8,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 41,
+          "prev": 41,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 41099,
+          "prev": 41098,
+          "change": "+1",
+          "direction": "dn"
+        },
+        "sub_bsr": {
+          "current": 95,
+          "prev": 95,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -541,20 +766,24 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 41098,
+      "main_bsr": 41099,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 95,
       "history_main_bsr": [
-        41098
+        41098,
+        41099
       ],
       "history_sub_bsr": [
+        95,
         95
       ],
       "history_price": [
+        21.99,
         21.99
       ],
       "history_rating": [
+        4.8,
         4.8
       ],
       "events": [],
