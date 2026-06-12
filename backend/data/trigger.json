@@ -1,1 +1,4 @@
-{"status": "running", "triggered_at": "", "progress": "开始抓取...", "updated_at": "2026-06-11T16:45:21"}
+{
+  "status": "done",
+  "completed_at": "2026-06-11T18:13:32.946005"
+}
