@@ -599,7 +599,7 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
                 var titleOk = titleEl && titleEl.textContent.trim().length > 0;
                 var imgEl = document.querySelector('#landingImage');
                 var imgOk = imgEl && imgEl.complete && imgEl.naturalWidth > 0;
-                return { titleOk: titleOk, imgOk: imgOk, ready: titleOk };
+                return { titleOk: titleOk, imgOk: imgOk, ready: titleOk && imgOk };
             })()""")
             if ready and ready.get('ready'):
                 elapsed = time.time() - (deadline - 30)

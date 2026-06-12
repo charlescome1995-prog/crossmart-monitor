@@ -246,6 +246,9 @@ def run_monitor(config_override=None):
 
     print("配置: " + str(len(asins)) + " 个ASIN, " + str(len(keywords)) + " 个关键词")
 
+    # ── 已抓取ASIN去重集合 ──
+    seen_asins = set()
+
     # ── 时间窗口判断 ──
     now = datetime.now()
     current_slot = None
@@ -294,6 +297,10 @@ def run_monitor(config_override=None):
                 aasin = a.get("asin", "").strip()
                 if not aasin:
                     continue
+                if aasin in seen_asins:
+                    print(f"  [跳过] ASIN {aasin} 已抓过（来源：关键词{kw}），继续")
+                    continue
+                seen_asins.add(aasin)
                 print(f"\n--- 关键词ASIN详情: {aasin} (来源: {kw}) ---")
                 ok = run_command(
                     [sys.executable, "-m", "browser.asin_monitor", aasin, "--amazon"],
@@ -308,6 +315,10 @@ def run_monitor(config_override=None):
         main_asin = asin_entry.get("main", "").strip()
         if not main_asin:
             continue
+        if main_asin in seen_asins:
+            print(f"  [跳过] 主ASIN {main_asin} 已抓过，继续")
+            continue
+        seen_asins.add(main_asin)
 
         print("\n--- 主ASIN监控: " + main_asin + " ---")
         ok = run_command(
@@ -339,6 +350,10 @@ def run_monitor(config_override=None):
             rel_asin = rel_asin.strip()
             if not rel_asin:
                 continue
+            if rel_asin in seen_asins:
+                print(f"  [跳过] 关联ASIN {rel_asin} 已抓过，继续")
+                continue
+            seen_asins.add(rel_asin)
             print("\n--- 关联竞品: " + rel_asin + " ---")
             ok = run_command(
                 [sys.executable, "-m", "browser.asin_monitor", rel_asin, "--amazon"],
