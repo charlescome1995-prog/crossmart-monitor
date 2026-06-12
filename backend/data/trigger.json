@@ -1,1 +1,5 @@
-{"status": "done", "triggered_at": "", "progress": "抓取完成", "updated_at": "2026-06-12T00:40:22"}
+{
+  "status": "pending",
+  "triggered_at": "2026-06-12T05:00:01.448721",
+  "author": "local-scheduler"
+}
