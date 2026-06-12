@@ -121,6 +121,23 @@ def build_diff(curr_data, prev_data):
       deal_activity: {current, prev, direction}
       badges:   {current, prev, lost, gained, direction}
     """
+    # ── helpers (defined before the None check so first-scrape branch can use them) ──
+    def cf(key, default=None):
+        """safe_float from curr"""
+        return safe_float(curr_data.get(key, ''), default)
+
+    def pf(key, default=None):
+        """safe_float from prev"""
+        return safe_float(prev_data.get(key, ''), default)
+
+    def ci(key, default=None):
+        """safe_int from curr"""
+        return safe_int(curr_data.get(key, curr_data.get(key.replace('_count', ''), '')), default)
+
+    def pi(key, default=None):
+        """safe_int from prev"""
+        return safe_int(prev_data.get(key, prev_data.get(key.replace('_count', ''), '')), default)
+
     if prev_data is None:
         # First scrape: show all current values as "no change yet" (direction=same, change=0)
         p_c = cf('price'); r_c = cf('rating'); rc_c = ci('review_count')
@@ -137,23 +154,8 @@ def build_diff(curr_data, prev_data):
         if sb_c is not None:
             diff['sub_bsr'] = {'current': sb_c, 'prev': sb_c, 'change': '0', 'direction': 'same'}
         return diff
+
     diff = {}
-
-    def cf(key, default=None):
-        """safe_float from curr"""
-        return safe_float(curr_data.get(key, ''), default)
-
-    def pf(key, default=None):
-        """safe_float from prev"""
-        return safe_float(prev_data.get(key, ''), default)
-
-    def ci(key, default=None):
-        """safe_int from curr"""
-        return safe_int(curr_data.get(key, curr_data.get(key.replace('_count', ''), '')), default)
-
-    def pi(key, default=None):
-        """safe_int from prev"""
-        return safe_int(prev_data.get(key, prev_data.get(key.replace('_count', ''), '')), default)
 
     # 价格
     p_c = cf('price')
