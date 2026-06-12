@@ -75,17 +75,12 @@ def ensure_edge_running(port=None):
     exe = find_edge_exe()
     print(f"  Edge未运行，启动中... (port={port})")
 
-    # 使用OpenClaw已有profile目录（确保登录态）
-    OPENCLAW_USER_DIR = os.path.expandvars(r"%USERPROFILE%\.openclaw\browser\openclaw\user-data")
-    if os.path.exists(OPENCLAW_USER_DIR):
-        profile_dir = OPENCLAW_USER_DIR
-    else:
-        profile_dir = EDGE_PROFILE_DIR
+    # 始终使用闫旭的系统默认 Edge profile（不指定 --user-data-dir，让 Edge 自动加载默认 profile）
+    profile_dir = None  # None = 使用系统默认 profile
 
     print(f"  📂 Profile: {profile_dir}")
     args = [
         exe,
-        f"--user-data-dir={profile_dir}",
         f"--remote-debugging-port={port}",
         "--remote-allow-origins=*",
         "--no-first-run",
@@ -93,6 +88,8 @@ def ensure_edge_running(port=None):
         "--new-window",
         "about:blank",
     ]
+    if profile_dir:
+        args.insert(1, f"--user-data-dir={profile_dir}")
     subprocess.Popen(args)
 
     # 等待CDP端口可用
