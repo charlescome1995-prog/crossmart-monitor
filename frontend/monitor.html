@@ -209,7 +209,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
           <th>&#21830;&#21697;&#20449;&#24687;</th>
           <th>&#26680;&#24515;&#25351;&#26631;</th>
           <th>&#31258;&#21152;&#25968;&#25454;</th>
-          <th>&#27993;&#20869;&#35782;&#21035;</th>
+          <th>&#27993;&#37327;&#27982;&#35270;</th>
           <th>&#26356;&#26032;&#26102;&#38388;</th>
         </tr>
       </thead>
@@ -537,13 +537,13 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
           '<div><span class="badge ' + (item.source_keyword ? 'source-kw' : 'source-asin') + '">' + badge1Text + '</span>' + (badge2Text ? ' <span class="badge ' + (item.is_main ? 'main' : 'rel') + '">' + badge2Text + '</span>' : '') + '</div>' +
           '<div><a href="https://www.amazon.com/dp/' + (item.asin || '') + '" target="_blank" class="asin-link">' + (item.asin || '') + '</a> [' + (item.brand || '') + ']</div>' +
           '<div class="title-text" title="' + (item.title || '') + '">' + (item.title || '') + '</div>' +
+          badgeHtml + dealHtml + couponHtml + primeHtml + variantHtml +
         '</div></td>' +
         '<td class="col-metrics"><div class="metrics-block">' +
           '<div>价格: <strong>' + priceStr + '</strong>' + (diff.price ? ' <span class="diff-arrow ' + diff.price.direction + '">' + (diff.price.direction === 'up' ? '\u2191' : (diff.price.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.price.direction + '">' + diff.price.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_price"></canvas></span></div>' +
           '<div>评分: <strong>' + ratingStr + '</strong>' + (diff.rating ? ' <span class="diff-arrow ' + diff.rating.direction + '">' + (diff.rating.direction === 'up' ? '\u2191' : (diff.rating.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.rating.direction + '">' + diff.rating.change + '</span>' : '') + ' <span style="color:#64748b;font-size:12px;">评论 ' + reviewsStr + '</span></div>' +
           '<div>大类: <span class="cat-item">' + (item.main_cat || '-') + '</span> <strong>' + mainBsrStr + '</strong>' + (diff.bsr ? ' <span class="diff-arrow ' + diff.bsr.direction + '">' + (diff.bsr.direction === 'up' ? '\u2191' : (diff.bsr.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.bsr.direction + '">' + diff.bsr.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_main_bsr"></canvas></span></div>' +
-          '<div>小类: <span class="cat-item">' + (item.sub_cat || '-') + '</span> <strong>' + (item.sub_bsr != null ? '#' + item.sub_bsr : '-') + '</strong>' + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_sub_bsr"></canvas></span></div>' +
-          badgeHtml + dealHtml + couponHtml + primeHtml +
+          '<div>小类: <span class="cat-item">' + (item.sub_cat || '-') + '</span> <strong>' + (item.sub_bsr != null ? '#' + item.sub_bsr : '-') + '</strong>' + (diff.sub_bsr ? ' <span class="diff-arrow ' + diff.sub_bsr.direction + '">' + (diff.sub_bsr.direction === 'up' ? '\u2191' : (diff.sub_bsr.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.sub_bsr.direction + '">' + diff.sub_bsr.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_sub_bsr"></canvas></span></div>' +
         '</div></td>' +
         '<td class="col-jike">' +
           (item.is_main ? (
@@ -557,7 +557,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
           ) : '<span style="color:#cbd5e1;font-size:11px;">-</span>') +
         '</td>' +
         '<td class="col-plugin">' +
-          '<div style="font-size:11px;color:#64748b;margin-bottom:4px;">&#27993;&#20869;&#35782;&#21035;</div>' +
+          '<div style="font-size:11px;color:#64748b;margin-bottom:4px;">&#27993;&#37327;&#27982;&#35270;</div>' +
           (item.lqs ? '<div><strong>LQS</strong> ' + item.lqs + '</div>' : '') +
           (item.variant_count ? '<div><strong>&#21464;&#20307;</strong> ' + item.variant_count + '</div>' : '') +
           (item.launch_date ? '<div><strong>&#19978;&#26552;</strong> ' + item.launch_date + '</div>' : '') +
