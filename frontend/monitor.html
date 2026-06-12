@@ -210,7 +210,8 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
           <th>&#26680;&#24515;&#25351;&#26631;</th>
           <th>&#31258;&#21152;&#25968;&#25454;</th>
           <th>&#27993;&#37327;&#27982;&#35270;</th>
-          <th>&#26356;&#26032;&#26102;&#38388;</th>
+          <th>更新时间</th>
+
         </tr>
       </thead>
       <tbody id="tableBody"><tr><td colspan="15" style="text-align:center;padding:40px;color:#94a3b8;">&#21152;&#36733;&#20013;...</td></tr></tbody>
@@ -299,6 +300,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       .then(function(d) {
         rawData = d;
         renderTable();
+        highlightTimeCell();
         se.textContent = '数据加载成功';
         se.style.background = '#d1fae5';
         se.style.color = '#065f46';
@@ -309,6 +311,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
         se.style.background = '#fee2e2';
         se.style.color = '#991b1b';
         renderTable();
+        highlightTimeCell();
       });
   }
 
@@ -576,7 +579,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
             }).join('')
           : '') +
         '</td>' +
-        '<td class="col-time"><div style="color:#64748b;font-size:12px;line-height:1.5;">' + (rawData.updated || '-') + '</div>' + (eventsHtml && eventsHtml.indexOf('e-none') === -1 ? '<div style="margin-top:4px;">' + eventsHtml + '</div>' : '') + '</td>' +
+        '<td class="col-time"><div id="timeCell" style="font-size:12px;line-height:1.5;">' + (rawData.updated || '-') + '</div>' + (eventsHtml && eventsHtml.indexOf('e-none') === -1 ? '<div style="margin-top:4px;">' + eventsHtml + '</div>' : '') + '</td>' +
       '</tr>';
     });
     tb.innerHTML = html || '<tr><td colspan="15" style="text-align:center;padding:20px;">没有匹配数据</td></tr>';
@@ -595,6 +598,22 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
         if (c) drawSparkline(c, item.history_sub_bsr, '#7c3aed');
       }
     });
+  }
+
+  // 渲染完成后检测更新时间是否异常（>12h未更新标红）
+  function highlightTimeCell() {
+    var tc = document.getElementById('timeCell');
+    if (!tc || !rawData.updated) return;
+    var msAgo = Date.now() - new Date(rawData.updated).getTime();
+    var minAgo = msAgo / 60000;
+    if (minAgo >= 720) {
+      tc.style.color = '#dc2626';
+      tc.innerHTML = '\u274c ' + rawData.updated;
+    } else if (minAgo >= 30) {
+      tc.style.color = '#d97706';
+    } else {
+      tc.style.color = '#059669';
+    }
   }
 
   function drawSparkline(canvas, data, color) {
