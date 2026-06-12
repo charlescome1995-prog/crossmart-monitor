@@ -623,16 +623,41 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
         print("\n" + "="*50)
         print("卖家精灵插件数据")
         print("="*50)
-        time.sleep(random.uniform(0.5, 1.5))  # 等待插件 DOM 完全渲染
-        try:
-            plugin_data = extract_sprite_plugin_data(browser)
-            if plugin_data:
-                # 插件数据与 amazon_data 合并（插件字段加前缀 sprite_ 避免覆盖）
-                for k, v in plugin_data.items():
-                    amazon_data['sprite_' + k] = v
-                print("  插件数据提取完成")
-            else:
-                print("  插件面板未检测到（可能未安装或未激活）")
+        # 轮询等待插件数据加载完成（最长 30s，每 1s 检查一次）
+        plugin_data = {}
+        for elapsed in range(30):
+            time.sleep(1)
+            try:
+                candidate = extract_sprite_plugin_data(browser)
+                if candidate:
+                    # 用 plugin_version 或 lqs 字段判断插件数据是否已加载
+                    has_data = bool(
+                        candidate.get('plugin_version') or
+                        candidate.get('lqs') or
+                        candidate.get('variant_count') or
+                        (candidate.get('main_text') or '').strip()
+                    )
+                    if has_data:
+                        plugin_data = candidate
+                        print(f"  插件数据加载完成（等待 {elapsed+1}s）")
+                        break
+                # 每 5 秒打印一次进度
+                if (elapsed + 1) % 5 == 0:
+                    print(f"  插件加载中... ({elapsed+1}s)")
+            except Exception as e:
+                print(f"  插件轮询异常: {e}")
+                break
+        else:
+            print("  插件数据等待超时（30s），继续（可能未安装或网络慢）")
+
+
+        if plugin_data:
+            # 插件数据与 amazon_data 合并（插件字段加前缀 sprite_ 避免覆盖）
+            for k, v in plugin_data.items():
+                amazon_data['sprite_' + k] = v
+            print("  插件数据提取完成")
+        else:
+            print("  插件面板未检测到（可能未安装或未激活）")
         except Exception as e:
             print("  插件提取失败: %s" % e)
 
