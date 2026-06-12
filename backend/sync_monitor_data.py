@@ -447,6 +447,19 @@ def build_related_item(asin, rel_data, main_asin=None):
     if not main_cat:
         main_cat = sub_cat
 
+    # ── 变化对比：有历史则计算差值，无历史则返回 diff=0 ──
+    history = _load_asin_history(asin)
+    prev_data = get_prev_snapshot_data(history)
+    diff = build_diff(rel_data, prev_data)
+
+    # ── 历史轨迹：有快照则用真实历史，否则用当前值做单点占位 ──
+    if history:
+        hist_main_bsr = [extract_bsr(h.get('data', h)) or main_bsr for h in history]
+        hist_sub_bsr  = [extract_sub_bsr(h.get('data', h)) or sub_bsr for h in history]
+    else:
+        hist_main_bsr = [main_bsr]
+        hist_sub_bsr  = [sub_bsr]
+
     return {
         "monitor_type": "ASIN",
         "asin": asin,
@@ -459,7 +472,7 @@ def build_related_item(asin, rel_data, main_asin=None):
         "chg": 0.0,
         "rating": rating,
         "reviews": reviews,
-        "diff": {},
+        "diff": diff,
         "listing_status": "正常",
         "expected_listing_status": "正常",
         "title_changed": False,
@@ -479,8 +492,8 @@ def build_related_item(asin, rel_data, main_asin=None):
         "sub_cat": sub_cat or main_cat,
         "expected_sub_cat": sub_cat or main_cat,
         "sub_bsr": sub_bsr,
-        "history_main_bsr": [main_bsr],
-        "history_sub_bsr": [sub_bsr],
+        "history_main_bsr": hist_main_bsr,
+        "history_sub_bsr": hist_sub_bsr,
         "events": [],
 
         # ── 卖家精灵插件数据 ──
@@ -547,6 +560,29 @@ def build_keyword_item(kw, a):
         history_sub_bsr.append(hs if hs is not None else (sub_bsr or 0))
     history_price = [h['price'] for h in history] if history else []
     history_rating = [h['rating'] for h in history] if history else []
+    # ── 变化对比：有历史则计算差值，无历史则返回 diff=0 ──
+    # 优先用 latest.json（Phase A2 完整抓取），回退到关键词搜索结果（数据较少）
+    curr_data_for_diff = sd if sd else {
+        'price': a.get('price', ''),
+        'rating': a.get('rating', ''),
+        'review_count': a.get('reviews', ''),
+        'bsr': bsr_raw,
+    }
+    kw_prev_data = get_prev_snapshot_data(history)
+    kw_diff = build_diff(curr_data_for_diff, kw_prev_data)
+
+    # ── 历史轨迹：有快照则用真实历史，否则用当前值做单点占位 ──
+    if history:
+        kw_hist_main_bsr = [h['bsr'] for h in history]
+        kw_hist_sub_bsr  = [extract_sub_bsr(h) or (sub_bsr or 0) for h in history]
+        kw_hist_price    = [h['price'] for h in history]
+        kw_hist_rating   = [h['rating'] for h in history]
+    else:
+        kw_hist_main_bsr = [main_bsr or 0]
+        kw_hist_sub_bsr  = [sub_bsr or 0]
+        kw_hist_price    = [price]
+        kw_hist_rating   = [rating]
+
     return {
         "monitor_type": "KW",
         "asin": asin_key,
@@ -559,7 +595,7 @@ def build_keyword_item(kw, a):
         "chg": 0.0,
         "rating": rating,
         "reviews": reviews,
-        "diff": {},
+        "diff": kw_diff,
         "listing_status": "正常",
         "expected_listing_status": "正常",
         "title_changed": False,
@@ -579,10 +615,10 @@ def build_keyword_item(kw, a):
         "sub_cat": sub_cat or '',
         "expected_sub_cat": sub_cat or '',
         "sub_bsr": sub_bsr or 0,
-        "history_main_bsr": history_main_bsr,
-        "history_sub_bsr": history_sub_bsr,
-        "history_price": history_price,
-        "history_rating": history_rating,
+        "history_main_bsr": kw_hist_main_bsr,
+        "history_sub_bsr": kw_hist_sub_bsr,
+        "history_price": kw_hist_price,
+        "history_rating": kw_hist_rating,
         "events": [],
 
         # ── 卖家精灵插件数据 ──
