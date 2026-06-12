@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-12T00:39:35",
+  "updated": "2026-06-12T05:06:26",
   "items": [
     {
       "monitor_type": "KW",
@@ -513,7 +513,7 @@
       "expected_sub_cat": "",
       "sub_bsr": 0,
       "history_main_bsr": [
-        0
+        42081
       ],
       "history_sub_bsr": [
         0
@@ -561,9 +561,11 @@
       "expected_sub_cat": "",
       "sub_bsr": 0,
       "history_main_bsr": [
-        0
+        3626,
+        3626
       ],
       "history_sub_bsr": [
+        0,
         0
       ],
       "events": [],
@@ -673,6 +675,15 @@
       "keyword": "antifungal cream",
       "top_asins": [
         {
+          "asin": "B0CTX77NHH",
+          "type": "unknown",
+          "rank": "",
+          "title": "CHARMPOO Antifungal Cream, 2% Miconazole for Jock Itch, Athlete’s Foot & Ringworm, Fast-Absorbing Anti Fungal Skin Cream for Feet, Groin & Body Folds, 3.4 oz / 100g",
+          "price": "$22.95",
+          "rating": "",
+          "reviews": ""
+        },
+        {
           "asin": "B013PGADAW",
           "type": "unknown",
           "rank": "",
@@ -680,15 +691,6 @@
           "price": "$4.85",
           "rating": "",
           "reviews": "1"
-        },
-        {
-          "asin": "B0D98XM5C9",
-          "type": "unknown",
-          "rank": "",
-          "title": "Miconazole Antifungal Cream for Skin - 4 oz of Miconazole Nitrate for Jock Itch, Athlete's Foot, Itching, and Ringworm",
-          "price": "$9.99",
-          "rating": "",
-          "reviews": "4"
         },
         {
           "asin": "B0C7VP8SFV",
@@ -700,6 +702,15 @@
           "reviews": "2"
         },
         {
+          "asin": "B0D98XM5C9",
+          "type": "unknown",
+          "rank": "",
+          "title": "Miconazole Antifungal Cream for Skin - 4 oz of Miconazole Nitrate for Jock Itch, Athlete's Foot, Itching, and Ringworm",
+          "price": "$9.99",
+          "rating": "",
+          "reviews": "4"
+        },
+        {
           "asin": "B015HNGLJS",
           "type": "unknown",
           "rank": "",
@@ -707,15 +718,6 @@
           "price": "$6.49",
           "rating": "",
           "reviews": "1"
-        },
-        {
-          "asin": "B0CTX77NHH",
-          "type": "unknown",
-          "rank": "",
-          "title": "CHARMPOO Antifungal Cream, 2% Miconazole for Jock Itch, Athlete’s Foot & Ringworm, Fast-Absorbing Anti Fungal Skin Cream for Feet, Groin & Body Folds, 3.4 oz / 100g",
-          "price": "$22.95",
-          "rating": "",
-          "reviews": "4"
         }
       ]
     }
