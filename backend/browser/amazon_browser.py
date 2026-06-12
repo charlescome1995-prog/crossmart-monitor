@@ -62,16 +62,46 @@ class AmazonBrowser:
         return self
 
     def search_for_asin(self, asin, search_keyword=None):
+        """搜索关键词后在结果页点击 ASIN 链接，而非直接跳转"""
         self.current_asin = asin
         kw = search_keyword or random.choice(_COMMON_SEARCHES)
         print(f"\n  🎯 搜索 '{kw}' 找 {asin}")
-        self.b.navigate(f"https://www.amazon.com/s?k={kw.replace(' ', '+')}", wait_min=3, wait_max=7)
-        self.b.scroll_down(times=random.randint(1, 3))
-        human_pause(2, 6)
-        print(f"  🖱️ 打开 ASIN {asin}")
-        self.b.navigate(f"https://www.amazon.com/dp/{asin}", wait_min=2, wait_max=4)
+        self.b.navigate(f"https://www.amazon.com/s?k={kw.replace(' ', '+')}", wait_min=2, wait_max=4)
+        self.b.scroll_down(times=random.randint(1, 2))
+        human_pause(1, 3)
+        clicked = self._click_asin_in_results(asin)
+        if not clicked:
+            print(f"  ⚠️ 搜索结果未找到 ASIN {asin}，fallback 直接跳转")
+            self.b.navigate(f"https://www.amazon.com/dp/{asin}", wait_min=2, wait_max=4)
         read_pause()
         return self
+
+    def _click_asin_in_results(self, asin):
+        """从搜索结果页找目标 ASIN 并点击"""
+        js = (
+            "(() => {"
+            "const links = document.querySelectorAll("
+            "'a.a-link-normal.s-no-outline[href*=\"/dp/" + asin + "\"],"
+            " a.a-link-normal[href*=\"/dp/" + asin + "?\"]');"
+            "const natural = Array.from(links).filter(a => "
+            "!a.closest('[class*=\"advertisement\"],[class*=\"Sponsored\"]') && "
+            "a.href.includes('/dp/" + asin + "'));"
+            "if (natural.length > 0) {"
+            "const el = natural[0];"
+            "el.scrollIntoView({behavior:'smooth', block:'center'});"
+            "setTimeout(() => el.click(), 300);"
+            "return JSON.stringify({ok: true});"
+            "}"
+            "return JSON.stringify({ok: false});"
+            "})()"
+        )
+        import json as _j
+        result = _j.loads(self.b.eval(js) or '{"ok":false}')
+        if result.get('ok'):
+            print(f"  🖱️ 点击搜索结果中的 ASIN {asin}")
+            time.sleep(random.uniform(2, 4))
+            return True
+        return False
 
     def view_asin_detail(self, asin):
         self.current_asin = asin
@@ -86,15 +116,6 @@ class AmazonBrowser:
         human_pause(2, 6)
         self.b.scroll_down(times=random.randint(1, 2))
         think_pause()
-        return self
-
-    def view_reviews(self):
-        if not self.current_asin:
-            return self
-        print(f"\n  💬 看评价...")
-        self.b.navigate(f"https://www.amazon.com/product-reviews/{self.current_asin}/", wait_min=2, wait_max=4)
-        self.b.scroll_down(times=random.randint(1, 2))
-        read_pause()
         return self
 
     def screenshot_asin(self):
@@ -121,22 +142,17 @@ class AmazonBrowser:
         print(f"   {datetime.now().strftime('%H:%M:%S')}")
         print(f"{'='*60}")
 
-        if random.random() < 0.7:
+        # 极少逛首页
+        if random.random() < 0.1:
             self.browse_homepage()
-        if random.random() < 0.5:
-            self.browse_category()
-        if random.random() < 0.4:
-            self.random_search()
 
         self.search_for_asin(asin, search_keyword)
-        self.b.scroll_down(times=random.randint(1, 3))
+        self.b.scroll_down(times=random.randint(1, 2))
         think_pause()
         self.screenshot_asin()
 
-        if random.random() < 0.6:
-            self.view_reviews()
-
-        if competitors and random.random() < 0.5:
+        # 竞品浏览概率降低，且不看评论页
+        if competitors and random.random() < 0.3:
             n = random.randint(1, min(2, len(competitors)))
             selected = random.sample(competitors, n)
             for comp in selected:
@@ -187,7 +203,7 @@ class AmazonBrowser:
             return null;
         })()
         """
-        import json as j  # shadow outer to avoid name conflict
+        import json as j
         result = j.loads(self.b.eval(js) or "null")
         if result:
             print(f"  🖱️ 点击结果: {result.get('title','')[:40]}")

@@ -613,8 +613,7 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
             if bsr:
                 amazon_data["bsr"] = bsr
         print_card(amazon_data)
-        if random.random() < 0.15:
-            amazon.view_reviews()
+
         print("  亚马逊检查完成")
     except Exception as e:
         print("  亚马逊检查失败: %s" % e)
