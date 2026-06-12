@@ -42,26 +42,13 @@ def find_edge_exe():
 
 def ensure_edge_running(port=None):
     """
-    确保Edge在运行+CDP端口已开
-    优先尝试OpenClaw管理的Edge（已有亚马逊登录态），失败则自动启动新实例。
+    确保闫旭的默认Edge在运行+CDP端口已开。
+    始终使用系统默认profile，不指定 --user-data-dir，让Edge自动加载闫旭的账户。
     """
     if port is None:
         port = EDGE_PORT
 
-    # 1. 优先尝试OpenClaw的CDP端口
-    try:
-        req = urllib.request.urlopen(f"{OPENCLAW_CDP_URL}/json", timeout=3)
-        tabs = json.loads(req.read())
-        if tabs and len(tabs) > 0:
-            # 找到非devtools、非about:blank的标签页优先
-            real_tabs = [t for t in tabs if t.get('url','') not in ('','about:blank') and 'devtools://' not in t.get('url','')]
-            if real_tabs:
-                print(f"  ✅ 连接OpenClaw管理的Edge (port=18800, {len(tabs)}个标签页)")
-                return True
-    except:
-        pass
-
-    # 2. 尝试指定端口
+    # 直接尝试指定端口（9225 = 闫旭的默认Edge）
     try:
         req = urllib.request.urlopen(f"http://127.0.0.1:{port}/json", timeout=3)
         tabs = json.loads(req.read())
