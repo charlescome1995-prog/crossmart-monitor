@@ -407,6 +407,16 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "jike_fba_quantity": jk.get('fbaQuantity'),
         "jike_fba_turnover": jk.get('fbaTurnover'),
         "jike_gross_profit_rate": jk.get('salesGrossProfitRate') or (jk.get('_raw') or {}).get('grossProfitRate'),
+
+        # ── 卖家精灵插件数据 ──
+        "lqs": data.get('lqs', ''),
+        "variant_count": data.get('variant_count', ''),
+        "launch_date": data.get('launch_date', ''),
+        "total_keywords": data.get('total_keywords', ''),
+        "natural_keywords": data.get('natural_keywords', ''),
+        "ad_keywords": data.get('ad_keywords', ''),
+        "suggest_keywords": data.get('suggest_keywords', ''),
+        "traffic_keywords_top": data.get('traffic_keywords_top', []),
     }
 
 
@@ -457,6 +467,16 @@ def build_related_item(asin, rel_data, main_asin=None):
         "history_main_bsr": [main_bsr],
         "history_sub_bsr": [sub_bsr],
         "events": [],
+
+        # ── 卖家精灵插件数据 ──
+        "lqs": rel_data.get('lqs', ''),
+        "variant_count": rel_data.get('variant_count', ''),
+        "launch_date": rel_data.get('launch_date', ''),
+        "total_keywords": rel_data.get('total_keywords', ''),
+        "natural_keywords": rel_data.get('natural_keywords', ''),
+        "ad_keywords": rel_data.get('ad_keywords', ''),
+        "suggest_keywords": rel_data.get('suggest_keywords', ''),
+        "traffic_keywords_top": rel_data.get('traffic_keywords_top', []),
     }
 
 
@@ -549,6 +569,16 @@ def build_keyword_item(kw, a):
         "history_price": history_price,
         "history_rating": history_rating,
         "events": [],
+
+        # ── 卖家精灵插件数据 ──
+        "lqs": (sd.get('lqs', '') if sd else '') or '',
+        "variant_count": (sd.get('variant_count', '') if sd else '') or '',
+        "launch_date": (sd.get('launch_date', '') if sd else '') or '',
+        "total_keywords": (sd.get('total_keywords', '') if sd else '') or '',
+        "natural_keywords": (sd.get('natural_keywords', '') if sd else '') or '',
+        "ad_keywords": (sd.get('ad_keywords', '') if sd else '') or '',
+        "suggest_keywords": (sd.get('suggest_keywords', '') if sd else '') or '',
+        "traffic_keywords_top": (sd.get('traffic_keywords_top', []) if sd else []) or [],
     }
 
 

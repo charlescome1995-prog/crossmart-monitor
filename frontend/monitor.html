@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -51,6 +51,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
 .col-events{width:140px;min-width:140px;vertical-align:top;padding:8px 6px}
 .col-diff{width:110px;min-width:110px;vertical-align:top;padding:8px 6px}
 .col-jike{width:130px;min-width:130px;vertical-align:top;padding:8px 6px}
+.col-plugin{width:140px;min-width:140px;vertical-align:top;padding:8px 6px;font-size:11px;line-height:1.6}
 .col-time{width:130px;min-width:130px;vertical-align:middle;padding:8px 6px}
 /* Sparklines */
 .metrics-block{position:relative}
@@ -208,10 +209,11 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
           <th>&#21830;&#21697;&#20449;&#24687;</th>
           <th>&#26680;&#24515;&#25351;&#26631;</th>
           <th>&#31258;&#21152;&#25968;&#25454;</th>
+          <th>&#27993;&#20869;&#35782;&#21035;</th>
           <th>&#26356;&#26032;&#26102;&#38388;</th>
         </tr>
       </thead>
-      <tbody id="tableBody"><tr><td colspan="14" style="text-align:center;padding:40px;color:#94a3b8;">&#21152;&#36733;&#20013;...</td></tr></tbody>
+      <tbody id="tableBody"><tr><td colspan="15" style="text-align:center;padding:40px;color:#94a3b8;">&#21152;&#36733;&#20013;...</td></tr></tbody>
     </table>
   </div>
 </div>
@@ -486,7 +488,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
 
   function renderTable() {
     var tb = document.getElementById('tableBody');
-    if (!tb || !rawData.items) { tb.innerHTML = '<tr><td colspan="14" style="text-align:center;padding:20px;">暂无数据</td></tr>'; return; }
+    if (!tb || !rawData.items) { tb.innerHTML = '<tr><td colspan="15" style="text-align:center;padding:20px;">暂无数据</td></tr>'; return; }
     var searchTxt = (document.getElementById('searchInput') || {}).value || '';
     var sourceFilter = (document.getElementById('sourceFilter') || {}).value || 'ALL';
     var onlyChg = (document.getElementById('changeFilter') || {}).checked || false;
@@ -554,10 +556,30 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
             '<div style="font-size:11px;color:#64748b;line-height:1.4;">周转 ' + (item.jike_fba_turnover != null ? item.jike_fba_turnover.toFixed(1) : '-') + '</div>'
           ) : '<span style="color:#cbd5e1;font-size:11px;">-</span>') +
         '</td>' +
+        '<td class="col-plugin">' +
+          '<div style="font-size:11px;color:#64748b;margin-bottom:4px;">&#27993;&#20869;&#35782;&#21035;</div>' +
+          (item.lqs ? '<div><strong>LQS</strong> ' + item.lqs + '</div>' : '') +
+          (item.variant_count ? '<div><strong>&#21464;&#20307;</strong> ' + item.variant_count + '</div>' : '') +
+          (item.launch_date ? '<div><strong>&#19978;&#26552;</strong> ' + item.launch_date + '</div>' : '') +
+          (item.total_keywords || item.natural_keywords || item.ad_keywords || item.suggest_keywords ?
+            '<div style="margin-top:4px;"><strong>&#27993;&#37327;&#35782;&#35782;&#20998;&#24067;</strong></div>' +
+            (item.total_keywords ? '<div>&#24635;&#35780;&#35782; <strong>' + item.total_keywords + '</strong></div>' : '') +
+            (item.natural_keywords ? '<div>&#33258;&#28982; <strong>' + item.natural_keywords + '</strong></div>' : '') +
+            (item.ad_keywords ? '<div>&#24191;&#21578; <strong>' + item.ad_keywords + '</strong></div>' : '') +
+            (item.suggest_keywords ? '<div>&#25551;&#33616; <strong>' + item.suggest_keywords + '</strong></div>' : '')
+          : '') +
+          (item.traffic_keywords_top && item.traffic_keywords_top.length ?
+            '<div style="margin-top:6px;"><strong>&#27993;&#37327;&#35782;Top</strong></div>' +
+            item.traffic_keywords_top.slice(0, 4).map(function(kw) {
+              return '<div style="color:#7c3aed;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + kw.keyword + '">' +
+                kw.keyword + ' <span style="color:#64748b;">' + (kw.traffic_pct || '') + '</span></div>';
+            }).join('')
+          : '') +
+        '</td>' +
         '<td class="col-time"><div style="color:#64748b;font-size:12px;line-height:1.5;">' + (rawData.updated || '-') + '</div>' + (eventsHtml && eventsHtml.indexOf('e-none') === -1 ? '<div style="margin-top:4px;">' + eventsHtml + '</div>' : '') + '</td>' +
       '</tr>';
     });
-    tb.innerHTML = html || '<tr><td colspan="14" style="text-align:center;padding:20px;">没有匹配数据</td></tr>';
+    tb.innerHTML = html || '<tr><td colspan="15" style="text-align:center;padding:20px;">没有匹配数据</td></tr>';
     // Draw sparklines for each item with history data
     rawData.items.forEach(function(item) {
       if (item.history_price && item.history_price.length > 1) {
@@ -609,7 +631,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
   }
 
   function exportToExcel() {
-    var rows = [['ASIN', '类型', '品牌', '监控类型', '逻辑类型', '商品状态', '价格', 'BSR', '评分', '评论数', '销量(积加)', '销售额(积加)', '毛利率(积加)', 'ACOS(积加)', '广告费(积加)', 'FBA库存(积加)', '库存周转(积加)', '最后更新']];
+    var rows = [['ASIN', '类型', '品牌', '监控类型', '逻辑类型', '商品状态', '价格', 'BSR', '评分', '评论数', 'LQS', '变体数', '上架日期', '总词数', '自然词数', '广告词数', '描荐词数', '销量(积加)', '销售额(积加)', '毛利率(积加)', 'ACOS(积加)', '广告费(积加)', 'FBA库存(积加)', '库存周转(积加)', '最后更新']];
     rawData.items.forEach(function(m) {
       var jikeUnits = m.jike_units != null ? m.jike_units : '-';
       var jikeSales = m.jike_sales != null ? m.jike_sales : '-';
@@ -618,7 +640,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       var jikeAdsSpend = m.jike_ads_spend != null ? m.jike_ads_spend : '-';
       var jikeFbaQty = m.jike_fba_quantity != null ? m.jike_fba_quantity : '-';
       var jikeFbaTurnover = m.jike_fba_turnover != null ? m.jike_fba_turnover : '-';
-      rows.push([m.asin, m.monitor_type, m.brand || '', m.monitor_type, m.logic_type, m.listing_status, m.price, m.main_bsr, m.rating, m.reviews, jikeUnits, jikeSales, jikeGrossProfit, jikeAcos, jikeAdsSpend, jikeFbaQty, jikeFbaTurnover, rawData.updated]);
+      rows.push([m.asin, m.monitor_type, m.brand || '', m.monitor_type, m.logic_type, m.listing_status, m.price, m.main_bsr, m.rating, m.reviews, m.lqs || '', m.variant_count || '', m.launch_date || '', m.total_keywords || '', m.natural_keywords || '', m.ad_keywords || '', m.suggest_keywords || '', jikeUnits, jikeSales, jikeGrossProfit, jikeAcos, jikeAdsSpend, jikeFbaQty, jikeFbaTurnover, rawData.updated]);
     });
     var ws = XLSX.utils.aoa_to_sheet(rows);
     var wb = XLSX.utils.book_new();
