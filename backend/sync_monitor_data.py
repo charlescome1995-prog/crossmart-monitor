@@ -122,8 +122,21 @@ def build_diff(curr_data, prev_data):
       badges:   {current, prev, lost, gained, direction}
     """
     if prev_data is None:
-        return {}
-
+        # First scrape: show all current values as "no change yet" (direction=same, change=0)
+        p_c = cf('price'); r_c = cf('rating'); rc_c = ci('review_count')
+        b_c = extract_bsr(curr_data); sb_c = extract_sub_bsr(curr_data)
+        diff = {}
+        if p_c is not None:
+            diff['price'] = {'current': p_c, 'prev': p_c, 'change': '0', 'pct': '0%', 'direction': 'same'}
+        if r_c is not None:
+            diff['rating'] = {'current': r_c, 'prev': r_c, 'change': '0', 'direction': 'same'}
+        if rc_c is not None:
+            diff['review_count'] = {'current': rc_c, 'prev': rc_c, 'change': '0', 'direction': 'same'}
+        if b_c is not None:
+            diff['bsr'] = {'current': b_c, 'prev': b_c, 'change': '0', 'direction': 'same'}
+        if sb_c is not None:
+            diff['sub_bsr'] = {'current': sb_c, 'prev': sb_c, 'change': '0', 'direction': 'same'}
+        return diff
     diff = {}
 
     def cf(key, default=None):
