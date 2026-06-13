@@ -23,13 +23,23 @@ for i in range(30):
         break
     time.sleep(1)
 
-time.sleep(2)  # let plugin render
+time.sleep(2)  # let plugin warm up, then poll until ready (max 30s)
 
 # Extract Amazon data
 amazon_data = am.extract_asin_data(browser)
 
-# Extract plugin data and merge with prefix
-plugin_data = am.extract_sprite_plugin_data(browser)
+# Active polling: wait for plugin data to be ready
+plugin_data = {}
+for elapsed in range(30):
+    candidate = am.extract_sprite_plugin_data(browser)
+    if candidate and (candidate.get('plugin_version') or candidate.get('lqs') or (candidate.get('main_text') or '').strip()):
+        plugin_data = candidate
+        print(f"  Plugin data ready after {elapsed+1}s")
+        break
+    time.sleep(1)
+else:
+    print("  Plugin data not detected (extension not installed or not loaded)")
+
 if plugin_data:
     for k, v in plugin_data.items():
         amazon_data['sprite_' + k] = v
