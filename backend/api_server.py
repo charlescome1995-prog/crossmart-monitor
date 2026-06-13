@@ -4,17 +4,18 @@
 
 
 
-工作流程：
+"""
+工作流程:
 1. 接收前端传来的主ASIN列表
-2. 对每个主ASIN，从卖家精灵查找最多4个关联ASIN
+2. 对每个主ASIN,从卖家精灵查找最多4个关联ASIN
 3. 组合成 主ASIN + 关联ASIN = 5个一组
-4. 逐个抓取亚马逊数据（asin_monitor）
+4. 逐个抓取亚马逊数据(asin_monitor)
 5. 同步到前端
 
-新架构（2026-06-02）：纯本地轮询
+新架构(2026-06-02):纯本地轮询
 - 前端写入 trigger.json 到 GitHub
-- api_server.py 轮询 GitHub trigger.json，检测到 pending 则执行 run_monitor.py
-- 不再依赖 127.0.0.1:8765（远程访问不可达的问题）
+- api_server.py 轮询 GitHub trigger.json,检测到 pending 则执行 run_monitor.py
+- 不再依赖 127.0.0.1:8765(远程访问不可达的问题)
 """
 import sys, os, json, subprocess, threading, time, urllib.request
 sys.stdout.reconfigure(encoding='utf-8')
@@ -38,7 +39,7 @@ USER_CONFIG_PATH = os.path.join(PROJECT, 'data', 'user_config.json')
 GH_TOKEN_PATH = os.path.join(PROJECT, 'data', 'gh_token.txt')
 GH_TOKEN = os.environ.get("GH_TOKEN", "")
 
-# 从本地文件读取 token（由前端写入）
+# 从本地文件读取 token(由前端写入)
 def load_gh_token():
     global GH_TOKEN
     if GH_TOKEN:
@@ -54,24 +55,19 @@ def save_gh_token(token):
     os.makedirs(os.path.dirname(GH_TOKEN_PATH), exist_ok=True)
 
 def load_config_from_github():
-    """从GitHub加载用户配置（云端加载）"""
+    """从GitHub加载用户配置(云端加载)"""
     cfg = fetch_github_json(API_BASE + "/contents/backend/data/user_config.json")
     if cfg is not None:
         print(f"[配置] 从GitHub加载成功")
         return cfg
-    print("[配置] GitHub加载失败，回退到本地文件")
+    print("[配置] GitHub加载失败,回退到本地文件")
     if os.path.exists(USER_CONFIG_PATH):
         with open(USER_CONFIG_PATH, 'r', encoding='utf-8') as f:
             return json.load(f)
     return None
 
-        if os.path.exists(USER_CONFIG_PATH):
-            with open(USER_CONFIG_PATH, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        return None
-
 def fetch_github_json(url):
-    """从GitHub获取JSON（带token认证）"""
+    """从GitHub获取JSON(带token认证)"""
     token = load_gh_token()
     if not token:
         return None
@@ -130,7 +126,7 @@ def update_trigger_on_github(status, progress=""):
         print(f"[Trigger] 更新失败: {e}")
 
 def ensure_edge():
-    """确保Edge在9225端口运行（polling worker用，不重复启动已有实例）"""
+    """确保Edge在9225端口运行(polling worker用,不重复启动已有实例)"""
     try:
         r = urllib.request.urlopen("http://127.0.0.1:9225/json", timeout=3)
         tabs = json.loads(r.read())
@@ -138,8 +134,8 @@ def ensure_edge():
         return True
     except:
         pass
-    # Edge未响应，不再重复启动（保持用户已有窗口）
-    print("[Edge] 端口9225无响应，跳过启动（保持已有窗口）")
+    # Edge未响应,不再重复启动(保持用户已有窗口)
+    print("[Edge] 端口9225无响应,跳过启动(保持已有窗口)")
     return True  # 不卡住轮询线程
 
 def find_related_asins(main_asin, max_count=4):
@@ -173,7 +169,7 @@ def run_full_scrape(main_asins):
     all_asins = []      # 最终要抓的所有ASIN
     related_map = {}    # 主ASIN -> 关联ASIN列表
 
-    # 抓取前清理多余标签页（避免 Edge 卡顿）
+    # 抓取前清理多余标签页(避免 Edge 卡顿)
     try:
         from browser.cdp_bridge import cleanup_excess_tabs, get_tab_count
         before = get_tab_count()
@@ -198,9 +194,9 @@ def run_full_scrape(main_asins):
             all_asins.extend(group)
             print("[步骤] 组合: %s + %d个关联 = %d个" % (main_asin, len(related), len(group)))
         else:
-            # 没找到关联，只抓主ASIN本身
+            # 没找到关联,只抓主ASIN本身
             all_asins.append(main_asin)
-            print("[步骤] %s 无关联ASIN，只抓主ASIN" % main_asin)
+            print("[步骤] %s 无关联ASIN,只抓主ASIN" % main_asin)
 
     if not all_asins:
         # fallback
@@ -216,7 +212,7 @@ def run_full_scrape(main_asins):
 
         try:
             from browser.asin_monitor import check_asin
-            # 抓取时只查亚马逊前台，不查卖家精灵（关联ASIN已在前面查过）
+            # 抓取时只查亚马逊前台,不查卖家精灵(关联ASIN已在前面查过)
             result = check_asin(asin, use_sprite=False)
             results.append(result)
         except Exception as e:
@@ -240,7 +236,7 @@ def run_full_scrape(main_asins):
         print("[同步] 失败: %s" % e)
 
 
-    # 抓取后清理多余标签页（收尾）
+    # 抓取后清理多余标签页(收尾)
     try:
         from browser.cdp_bridge import cleanup_excess_tabs, get_tab_count
         before = get_tab_count()
@@ -258,14 +254,14 @@ def run_full_scrape(main_asins):
     print("\n[完成] 采集 %d 个ASIN" % len(results))
 
 # =============================================================================
-# 轮询线程：从 GitHub 读取 trigger.json，检测到 pending 则执行抓取
+# 轮询线程:从 GitHub 读取 trigger.json,检测到 pending 则执行抓取
 # =============================================================================
 POLL_INTERVAL = 10  # 每 10 秒检查一次
 
 def polling_worker():
-    """后台轮询线程：检查 GitHub trigger.json，发现 pending 则执行"""
+    """后台轮询线程:检查 GitHub trigger.json,发现 pending 则执行"""
     global SCRAPE_STATUS, MONITOR_PROCESS
-    print(f"[轮询] 启动，每 {POLL_INTERVAL} 秒检查 GitHub trigger.json")
+    print(f"[轮询] 启动,每 {POLL_INTERVAL} 秒检查 GitHub trigger.json")
     
     while True:
         time.sleep(POLL_INTERVAL)
@@ -275,7 +271,7 @@ def polling_worker():
         
         token = load_gh_token()
         if not token:
-            print("[轮询] GH_TOKEN 未设置，跳过")
+            print("[轮询] GH_TOKEN 未设置,跳过")
             continue
         
         try:
@@ -286,19 +282,18 @@ def polling_worker():
 
 
 
-                trigger_data = json.loads(r.read().decode("utf-8"))
 
             print(f"[轮询] 检查 trigger.json: status={trigger_data.get('status')}")
 
             if trigger_data.get("status") == "pending":
-                print("\n[轮询] 检测到 trigger.json pending，开始执行抓取...")
+                print("\n[轮询] 检测到 trigger.json pending,开始执行抓取...")
                 SCRAPE_STATUS["running"] = True
                 SCRAPE_STATUS["progress"] = "正在从 GitHub 加载配置..."
                 
                 # 加载配置
                 config = load_config_from_github()
                 if not config:
-                    print("[轮询] 无法加载配置，停止")
+                    print("[轮询] 无法加载配置,停止")
                     update_trigger_on_github("error", "配置加载失败")
                     SCRAPE_STATUS["running"] = False
                     continue
@@ -352,7 +347,7 @@ def polling_worker():
                         print(f"[轮询] run_monitor.py 失败 (exit {returncode})")
                     
                 except subprocess.TimeoutExpired:
-                    update_trigger_on_github("error", "执行超时（600秒）")
+                    update_trigger_on_github("error", "执行超时(600秒)")
                 except Exception as e:
                     import traceback
                     traceback.print_exc()
@@ -411,7 +406,7 @@ class ScrapeHandler(BaseHTTPRequestHandler):
             self._send_json({"error": "not found"}, 404)
 
     def _handle_token(self):
-        """前端写入 GitHub Token（保存到本地文件，供轮询线程使用）"""
+        """前端写入 GitHub Token(保存到本地文件,供轮询线程使用)"""
         content_len = int(self.headers.get("Content-Length", 0))
         body = b""
         if content_len > 0:
@@ -434,7 +429,7 @@ class ScrapeHandler(BaseHTTPRequestHandler):
         """将 user_config.json 同步推送到 GitHub 仓库"""
         token = load_gh_token()
         if not token:
-            print("[GitHub推送] 未配置 token，跳过")
+            print("[GitHub推送] 未配置 token,跳过")
             return False
         import base64
         content = json.dumps(config_obj, ensure_ascii=False, indent=2)
@@ -494,7 +489,7 @@ class ScrapeHandler(BaseHTTPRequestHandler):
             cloud_ok = push_user_config_to_github(config)
             self._send_json({
                 "status": "ok",
-                "message": "配置已保存到本地" + ("" if cloud_ok else "（云端同步失败）"),
+                "message": "配置已保存到本地" + ("" if cloud_ok else "(云端同步失败)"),
                 "cloud_sync": cloud_ok,
                 "path": USER_CONFIG_PATH,
                 "count": {"asins": len(asins), "keywords": len(keywords)}
@@ -507,14 +502,14 @@ class ScrapeHandler(BaseHTTPRequestHandler):
         global SCRAPE_STATUS
 
         if SCRAPE_STATUS["running"]:
-            self._send_json({"status": "busy", "message": "正在采集中，请稍候"})
+            self._send_json({"status": "busy", "message": "正在采集中,请稍候"})
             return
 
         main_asins = []
         gh_config = load_config_from_github()
         if gh_config:
             main_asins = [a.strip() for a in gh_config.get("asins", []) if a.strip()]
-            print(f"[配置] 使用GitHub配置，共 {len(main_asins)} 个ASIN: {main_asins}")
+            print(f"[配置] 使用GitHub配置,共 {len(main_asins)} 个ASIN: {main_asins}")
 
         if not main_asins:
             content_len = int(self.headers.get("Content-Length", 0))
@@ -562,11 +557,11 @@ class ScrapeHandler(BaseHTTPRequestHandler):
         t.start()
 
     def _handle_trigger(self):
-        """触发完整监控流程（Phase A→B→B2→C→D），启动 run_monitor.py"""
+        """触发完整监控流程(Phase A→B→B2→C→D),启动 run_monitor.py"""
         global SCRAPE_STATUS, MONITOR_PROCESS
 
         if SCRAPE_STATUS["running"] and SCRAPE_STATUS.get("trigger_mode"):
-            self._send_json({"status": "busy", "message": "正在采集中，请稍候"})
+            self._send_json({"status": "busy", "message": "正在采集中,请稍候"})
             return
 
         content_len = int(self.headers.get("Content-Length", 0))
@@ -594,7 +589,7 @@ class ScrapeHandler(BaseHTTPRequestHandler):
         with open(USER_CONFIG_PATH, 'w', encoding='utf-8') as f:
             json.dump(config, f, ensure_ascii=False, indent=2)
 
-        self._send_json({"status": "ok", "message": "触发成功，采集线程已启动", "asins": len(asins), "keywords": len(keywords)})
+        self._send_json({"status": "ok", "message": "触发成功,采集线程已启动", "asins": len(asins), "keywords": len(keywords)})
 
         SCRAPE_STATUS["running"] = True
         SCRAPE_STATUS["trigger_mode"] = True
@@ -629,7 +624,7 @@ class ScrapeHandler(BaseHTTPRequestHandler):
                 )
                 SCRAPE_STATUS["last_result"] = {"status": "ok", "message": "采集完成"}
             except subprocess.TimeoutExpired:
-                SCRAPE_STATUS["last_result"] = {"status": "error", "error": "超时（600s）"}
+                SCRAPE_STATUS["last_result"] = {"status": "error", "error": "超时(600s)"}
             except Exception as e:
                 import traceback
                 traceback.print_exc()
@@ -654,7 +649,7 @@ def main():
     print("CrossMart Monitor API Server")
     print("  URL: http://127.0.0.1:%d" % port)
     print("  架构: GitHub trigger.json 轮询触发")
-    print("  Token: 在前端输入 GitHub Token（自动保存到本地）")
+    print("  Token: 在前端输入 GitHub Token(自动保存到本地)")
     print("  轮询间隔: %d 秒" % POLL_INTERVAL)
     print("=" * 60)
     try:
@@ -663,4 +658,4 @@ def main():
         print("\nServer stopped.")
 
 if __name__ == "__main__":
-            trigger_data = fetch_github_json(API_BASE + "/contents/backend/data/trigger.json")
+    main()
