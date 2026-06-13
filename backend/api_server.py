@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-api_server.py - CrossMart Monitor 本地API服务
-启动后: http://127.0.0.1:8765
+
+
+
+
+
 
 工作流程：
 1. 接收前端传来的主ASIN列表
@@ -29,7 +29,7 @@ CORS_HEADERS = {
 }
 
 REPO = "charlescome1995-prog/crossmart-monitor"
-RAW_BASE = f"https://raw.githubusercontent.com/{REPO}/main"
+API_BASE = f"https://api.github.com/repos/{REPO}"
 API_BASE = f"https://api.github.com/repos/{REPO}"
 
 SCRAPE_STATUS = {"running": False, "last_result": None, "progress": "", "trigger_mode": False}
@@ -52,32 +52,19 @@ def save_gh_token(token):
     global GH_TOKEN
     GH_TOKEN = token
     os.makedirs(os.path.dirname(GH_TOKEN_PATH), exist_ok=True)
-    with open(GH_TOKEN_PATH, 'w', encoding='utf-8') as f:
-        f.write(token)
-    print(f"[Token] 已保存到本地 ({len(token)} chars)")
 
 def load_config_from_github():
     """从GitHub加载用户配置（云端加载）"""
-    token = load_gh_token()
-    if not token:
-        print("[配置] GH_TOKEN 未设置，尝试本地文件")
-        if os.path.exists(USER_CONFIG_PATH):
-            with open(USER_CONFIG_PATH, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        return None
-    try:
-        url = f"{RAW_BASE}/backend/data/user_config.json"
-        req = urllib.request.Request(url, headers={
-            "Authorization": f"token {token}",
-            "Accept": "application/vnd.github.v3.raw",
-            "User-Agent": "crossmart-monitor/1.0"
-        })
-        with urllib.request.urlopen(req, timeout=30) as r:
-            content = r.read().decode("utf-8")
-            print(f"[配置] 从GitHub加载: {content[:100]}")
-            return json.loads(content)
-    except Exception as e:
-        print(f"[配置] GitHub加载失败: {e}，回退到本地文件")
+    cfg = fetch_github_json(API_BASE + "/contents/backend/data/user_config.json")
+    if cfg is not None:
+        print(f"[配置] 从GitHub加载成功")
+        return cfg
+    print("[配置] GitHub加载失败，回退到本地文件")
+    if os.path.exists(USER_CONFIG_PATH):
+        with open(USER_CONFIG_PATH, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return None
+
         if os.path.exists(USER_CONFIG_PATH):
             with open(USER_CONFIG_PATH, 'r', encoding='utf-8') as f:
                 return json.load(f)
@@ -292,13 +279,13 @@ def polling_worker():
             continue
         
         try:
-            url = f"{RAW_BASE}/backend/data/trigger.json?t={time.time()}"
-            req = urllib.request.Request(url, headers={
-                "Authorization": f"token {token}",
-                "Accept": "application/vnd.github.v3.raw",
-                "User-Agent": "crossmart-monitor/1.0"
-            })
-            with urllib.request.urlopen(req, timeout=15) as r:
+            trigger_data = fetch_github_json(API_BASE + "/contents/backend/data/trigger.json")
+
+
+
+
+
+
                 trigger_data = json.loads(r.read().decode("utf-8"))
 
             print(f"[轮询] 检查 trigger.json: status={trigger_data.get('status')}")
@@ -676,4 +663,4 @@ def main():
         print("\nServer stopped.")
 
 if __name__ == "__main__":
-    main()
+            trigger_data = fetch_github_json(API_BASE + "/contents/backend/data/trigger.json")
