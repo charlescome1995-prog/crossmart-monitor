@@ -658,8 +658,6 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
             print("  插件数据提取完成")
         else:
             print("  插件面板未检测到（可能未安装或未激活）")
-        except Exception as e:
-            print("  插件提取失败: %s" % e)
 
     # ─── Phase B: 卖家精灵（可选）───
     related_asins_meta = []
