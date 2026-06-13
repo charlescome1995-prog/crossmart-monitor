@@ -1,4 +1,4 @@
-﻿<script>
+
 (function() {
   var REPO = 'charlescome1995-prog/crossmart-monitor';
   var RAW_DATA_URL = 'https://raw.githubusercontent.com/' + REPO + '/main/frontend/data/rawData.json';
@@ -453,4 +453,4 @@
   document.getElementById('btnSaveConfig').addEventListener('click', saveConfig);
   document.getElementById('btnSaveToken').addEventListener('click', saveToken);
   document.getElementById('btnExport').addEventListener('click', exportToExcel);
-})();
+
