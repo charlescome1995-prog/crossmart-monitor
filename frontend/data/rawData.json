@@ -1,1 +1,481 @@
-﻿[]
+{
+  "updated": "2026-06-12T19:10:12",
+  "items": [
+    {
+      "monitor_type": "KW",
+      "asin": "B015HNGLJS",
+      "is_main": false,
+      "logic_type": "关键词-antifungal cream",
+      "source_keyword": "antifungal cream",
+      "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More (Pack of 5)",
+      "brand": "Globe",
+      "img": "https://m.media-amazon.com/images/I/719DSRQP3YL._AC_SL1500_.jpg",
+      "price": 6.49,
+      "chg": 0.0,
+      "rating": 4.6,
+      "reviews": 28542,
+      "diff": {
+        "price": {
+          "current": 6.49,
+          "prev": 6.49,
+          "change": "0",
+          "pct": "0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.6,
+          "prev": 4.6,
+          "change": "0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 28542,
+          "prev": 28542,
+          "change": "0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 2009,
+          "prev": 2009,
+          "change": "0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 6,
+          "prev": 6,
+          "change": "0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$6.17 off",
+      "prime_discount": "未开启",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
+      "main_bsr": 2009,
+      "sub_cat": "Antifungal Remedies",
+      "expected_sub_cat": "Antifungal Remedies",
+      "sub_bsr": 6,
+      "history_main_bsr": [
+        2009
+      ],
+      "history_sub_bsr": [
+        6
+      ],
+      "history_price": [
+        6.49
+      ],
+      "history_rating": [
+        4.6
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "",
+      "variant_count": "",
+      "launch_date": "",
+      "total_keywords": "",
+      "natural_keywords": "",
+      "ad_keywords": "",
+      "suggest_keywords": "",
+      "traffic_keywords_top": []
+    },
+    {
+      "monitor_type": "ASIN",
+      "asin": "B0C7VP8SFV",
+      "is_main": false,
+      "logic_type": "关联竞品",
+      "source_keyword": "",
+      "title": "SimplyVital 1% Clotrimazole Antifungal Cream - Treats Most Athlete's Foot, Jock Itch, Ringworm - Athletes Foot Treatment Anti Fungal Cream for Skin, Ring Worm Medication for Humans, 2oz",
+      "brand": "SimplyVital",
+      "img": "https://m.media-amazon.com/images/I/71pVr1gTu9L._AC_SL1500_.jpg",
+      "price": 27.97,
+      "chg": 0.0,
+      "rating": 4.3,
+      "reviews": 1034,
+      "diff": {
+        "price": {
+          "current": 27.97,
+          "prev": 27.97,
+          "change": "0",
+          "pct": "0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.3,
+          "prev": 4.3,
+          "change": "0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 1034,
+          "prev": 1034,
+          "change": "0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 3746,
+          "prev": 3746,
+          "change": "0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 1,
+          "prev": 1,
+          "change": "0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$25.17 off",
+      "prime_discount": "未开启",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
+      "main_bsr": 3746,
+      "sub_cat": "Ayurvedic Balms & Ointments",
+      "expected_sub_cat": "Ayurvedic Balms & Ointments",
+      "sub_bsr": 1,
+      "history_main_bsr": [
+        3746
+      ],
+      "history_sub_bsr": [
+        1
+      ],
+      "history_price": [
+        27.97
+      ],
+      "history_rating": [
+        4.3
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "",
+      "variant_count": "",
+      "launch_date": "",
+      "total_keywords": "",
+      "natural_keywords": "",
+      "ad_keywords": "",
+      "suggest_keywords": "",
+      "traffic_keywords_top": []
+    },
+    {
+      "monitor_type": "KW",
+      "asin": "B0D98XM5C9",
+      "is_main": false,
+      "logic_type": "关键词-antifungal cream",
+      "source_keyword": "antifungal cream",
+      "title": "Miconazole Antifungal Cream for Skin - 4 oz of Miconazole Nitrate for Jock Itch, Athlete's Foot, Itching, and Ringworm",
+      "brand": "TenderGentle",
+      "img": "https://m.media-amazon.com/images/I/61J8DSM5iQL._AC_SL1500_.jpg",
+      "price": 9.99,
+      "chg": 0.0,
+      "rating": 4.6,
+      "reviews": 846,
+      "diff": {
+        "price": {
+          "current": 9.99,
+          "prev": 9.99,
+          "change": "0",
+          "pct": "0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.6,
+          "prev": 4.6,
+          "change": "0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 846,
+          "prev": 846,
+          "change": "0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 5113,
+          "prev": 5113,
+          "change": "0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 21,
+          "prev": 21,
+          "change": "0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$8.99 off",
+      "prime_discount": "未开启",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
+      "main_bsr": 5113,
+      "sub_cat": "Antifungal Remedies",
+      "expected_sub_cat": "Antifungal Remedies",
+      "sub_bsr": 21,
+      "history_main_bsr": [
+        5113
+      ],
+      "history_sub_bsr": [
+        21
+      ],
+      "history_price": [
+        9.99
+      ],
+      "history_rating": [
+        4.6
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "",
+      "variant_count": "",
+      "launch_date": "",
+      "total_keywords": "",
+      "natural_keywords": "",
+      "ad_keywords": "",
+      "suggest_keywords": "",
+      "traffic_keywords_top": []
+    },
+    {
+      "monitor_type": "ASIN",
+      "asin": "B0FVSS8SR1",
+      "is_main": true,
+      "logic_type": "主监控",
+      "source_keyword": "",
+      "title": "22% Undecylenate Complex Antifungal Cream: Treats Most Athlete’s Foot, Jock Itch & Ringworm, Relieves Itching, Burning, Scaling & Cracking - Fungus Cream for Sensitive Skin, 60g Glass Jar",
+      "brand": "EVERFERE",
+      "img": "https://m.media-amazon.com/images/I/71Ns3+umtgL._AC_SL1500_.jpg",
+      "price": 18.99,
+      "chg": 0.0,
+      "rating": 4.1,
+      "reviews": 27,
+      "diff": {
+        "price": {
+          "current": 18.99,
+          "prev": 18.99,
+          "change": "0",
+          "pct": "0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.1,
+          "prev": 4.1,
+          "change": "0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 27,
+          "prev": 27,
+          "change": "0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 126773,
+          "prev": 126773,
+          "change": "0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 230,
+          "prev": 230,
+          "change": "0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "无",
+      "prime_discount": "未开启",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
+      "main_bsr": 126773,
+      "sub_cat": "Antifungal Remedies",
+      "expected_sub_cat": "Antifungal Remedies",
+      "sub_bsr": 230,
+      "history_main_bsr": [
+        126773
+      ],
+      "history_sub_bsr": [
+        230
+      ],
+      "history_price": [
+        18.99
+      ],
+      "history_rating": [
+        4.1
+      ],
+      "events": [],
+      "related_asins": [],
+      "jike_sales": 436.77,
+      "jike_orders": 23,
+      "jike_units": 23,
+      "jike_session": 84,
+      "jike_page_views": 102,
+      "jike_conversion_rate": 27.38,
+      "jike_rating": 4.0,
+      "jike_reviews": 7,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
+      "jike_listing_state": "-",
+      "jike_product_name": "60g瓶装止痒膏",
+      "jike_acos": 0.0,
+      "jike_ads_spend": -2.89,
+      "jike_fba_quantity": 1899,
+      "jike_fba_turnover": 510.4839,
+      "jike_gross_profit_rate": null,
+      "lqs": "",
+      "variant_count": "",
+      "launch_date": "",
+      "total_keywords": "",
+      "natural_keywords": "",
+      "ad_keywords": "",
+      "suggest_keywords": "",
+      "traffic_keywords_top": []
+    },
+    {
+      "monitor_type": "ASIN",
+      "asin": "B0GPGR4JDF",
+      "is_main": false,
+      "logic_type": "关联竞品",
+      "source_keyword": "",
+      "title": "Antifungal Cream for Athlete’s Foot, Jock Itch & Ringworm – 1% Clotrimazole Antifungal Cream, Ringworm Treatment for Humans, Relieves Burning, Itching, Scaling & Cracking (3.5 Ounce)",
+      "brand": "Brand: Kerova",
+      "img": "https://m.media-amazon.com/images/I/71d5TpA9XbL._AC_SL1500_.jpg",
+      "price": 21.99,
+      "chg": 0.0,
+      "rating": 4.8,
+      "reviews": 44,
+      "diff": {
+        "price": {
+          "current": 21.99,
+          "prev": 21.99,
+          "change": "0",
+          "pct": "0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.8,
+          "prev": 4.8,
+          "change": "0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 44,
+          "prev": 44,
+          "change": "0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 37457,
+          "prev": 37457,
+          "change": "0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 93,
+          "prev": 93,
+          "change": "0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "无",
+      "prime_discount": "1%",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
+      "main_bsr": 37457,
+      "sub_cat": "",
+      "expected_sub_cat": "",
+      "sub_bsr": 93,
+      "history_main_bsr": [
+        37457
+      ],
+      "history_sub_bsr": [
+        93
+      ],
+      "history_price": [
+        21.99
+      ],
+      "history_rating": [
+        4.8
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "",
+      "variant_count": "",
+      "launch_date": "",
+      "total_keywords": "",
+      "natural_keywords": "",
+      "ad_keywords": "",
+      "suggest_keywords": "",
+      "traffic_keywords_top": []
+    }
+  ],
+  "keywords": []
+}
