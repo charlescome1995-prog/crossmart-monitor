@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-13T05:05:13",
+  "updated": "2026-06-13T13:04:08",
   "items": [
     {
       "monitor_type": "KW",
@@ -101,11 +101,11 @@
       "source_keyword": "",
       "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
       "brand": "",
-      "img": "https://m.media-amazon.com/images/I/61qrHCKF0jL._AC_SL1500_.jpg",
+      "img": "https://m.media-amazon.com/images/I/31vytHaYDRL._SY300_SX300_QL70_FMwebp_.jpg",
       "price": 8.82,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 73199,
+      "reviews": 73222,
       "diff": {
         "price": {
           "current": 8.82,
@@ -121,16 +121,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 73199,
-          "prev": 73198,
-          "change": "+1",
+          "current": 73222,
+          "prev": 73199,
+          "change": "+23",
           "direction": "up"
         },
         "bsr": {
-          "current": 49,
-          "prev": 50,
-          "change": "1",
-          "direction": "up"
+          "current": 53,
+          "prev": 49,
+          "change": "+4",
+          "direction": "dn"
         },
         "sub_bsr": {
           "current": 1,
@@ -140,20 +140,20 @@
         },
         "badges": {
           "current": [
-            "BS",
             "AC",
             "NR",
             "A+"
           ],
           "prev": [
+            "BS",
             "AC",
             "NR",
             "A+"
           ],
-          "lost": [],
-          "gained": [
+          "lost": [
             "BS"
           ],
+          "gained": [],
           "direction": "changed"
         }
       },
@@ -167,33 +167,38 @@
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
-        "BS",
         "AC",
         "NR",
         "A+"
       ],
-      "badges_lost": [],
+      "badges_lost": [
+        "BS"
+      ],
       "coupon": "$8.38 off",
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 49,
+      "main_bsr": 53,
       "sub_cat": "Makeup Cleansing Water",
       "expected_sub_cat": "Makeup Cleansing Water",
       "sub_bsr": 1,
       "history_main_bsr": [
         50,
-        49
+        49,
+        53
       ],
       "history_sub_bsr": [
+        1,
         1,
         1
       ],
       "history_price": [
         8.82,
+        8.82,
         8.82
       ],
       "history_rating": [
+        4.7,
         4.7,
         4.7
       ],
@@ -259,9 +264,11 @@
       "sub_bsr": 0,
       "history_main_bsr": [
         3463,
+        3414,
         3414
       ],
       "history_sub_bsr": [
+        0,
         0,
         0
       ],
@@ -287,7 +294,7 @@
       "price": 17.64,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 24253,
+      "reviews": 24255,
       "diff": {
         "price": {
           "current": 17.64,
@@ -303,39 +310,39 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 24253,
-          "prev": 24254,
-          "change": "-1",
-          "direction": "dn"
+          "current": 24255,
+          "prev": 24253,
+          "change": "+2",
+          "direction": "up"
         },
         "bsr": {
           "current": 3414,
-          "prev": 3463,
-          "change": "49",
-          "direction": "up"
+          "prev": 3414,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
           "current": 405,
-          "prev": 407,
-          "change": "2",
-          "direction": "up"
+          "prev": 405,
+          "change": "+0",
+          "direction": "same"
         },
         "badges": {
           "current": [
-            "BS",
             "AC",
             "NR",
             "A+"
           ],
           "prev": [
+            "BS",
             "AC",
             "NR",
             "A+"
           ],
-          "lost": [],
-          "gained": [
+          "lost": [
             "BS"
           ],
+          "gained": [],
           "direction": "changed"
         }
       },
@@ -349,12 +356,13 @@
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
-        "BS",
         "AC",
         "NR",
         "A+"
       ],
-      "badges_lost": [],
+      "badges_lost": [
+        "BS"
+      ],
       "coupon": "$16.76 off",
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
@@ -365,17 +373,21 @@
       "sub_bsr": 405,
       "history_main_bsr": [
         3463,
+        3414,
         3414
       ],
       "history_sub_bsr": [
+        405,
         405,
         405
       ],
       "history_price": [
         17.64,
+        17.64,
         17.64
       ],
       "history_rating": [
+        4.7,
         4.7,
         4.7
       ],
@@ -396,40 +408,40 @@
       "is_main": true,
       "logic_type": "主监控",
       "source_keyword": "",
-      "title": "",
-      "brand": "",
-      "img": "",
-      "price": 10.0,
+      "title": "Amazon Basics Hypoallergenic Cotton Rounds for Makeup Removal and Skincare, 100 Count, 1 Pack",
+      "brand": "Amazon Basics",
+      "img": "https://m.media-amazon.com/images/I/21dluA3iqqL._SY300_SX300_QL70_FMwebp_.jpg",
+      "price": 3.23,
       "chg": 0.0,
-      "rating": 0,
-      "reviews": 0,
+      "rating": 4.7,
+      "reviews": 51190,
       "diff": {
         "price": {
-          "current": 10.0,
-          "prev": 3.23,
-          "change": "+6.77",
-          "pct": "+209.6%",
-          "direction": "up"
+          "current": 3.23,
+          "prev": 10.0,
+          "change": "-6.77",
+          "pct": "-67.7%",
+          "direction": "dn"
         },
         "deal_activity": {
-          "current": "无",
-          "prev": "Deal",
+          "current": "Deal",
+          "prev": "无",
           "direction": "changed"
         },
         "badges": {
           "current": [
-            "NR"
-          ],
-          "prev": [
             "AC",
             "NR",
             "A+"
           ],
-          "lost": [
+          "prev": [
+            "NR"
+          ],
+          "lost": [],
+          "gained": [
             "AC",
             "A+"
           ],
-          "gained": [],
           "direction": "changed"
         }
       },
@@ -441,37 +453,40 @@
       "description_changed": false,
       "variant_status": "正常",
       "variant_changed": false,
-      "deal_activity": "无",
+      "deal_activity": "Deal",
       "badges_current": [
-        "NR"
-      ],
-      "badges_lost": [
         "AC",
+        "NR",
         "A+"
       ],
-      "coupon": "无",
-      "prime_discount": "未开启",
-      "main_cat": "",
-      "expected_main_cat": "",
-      "main_bsr": 0,
-      "sub_cat": "",
-      "expected_sub_cat": "",
-      "sub_bsr": 0,
+      "badges_lost": [],
+      "coupon": "$3.07 off",
+      "prime_discount": "10%",
+      "main_cat": "Beauty & Personal Care",
+      "expected_main_cat": "Beauty & Personal Care",
+      "main_bsr": 7,
+      "sub_cat": "Cotton Pads & Rounds",
+      "expected_sub_cat": "Cotton Pads & Rounds",
+      "sub_bsr": 1,
       "history_main_bsr": [
         7,
-        null
+        7,
+        7
       ],
       "history_sub_bsr": [
-        null,
-        null
+        1,
+        1,
+        1
       ],
       "history_price": [
         3.23,
-        10.0
+        10.0,
+        3.23
       ],
       "history_rating": [
         4.7,
-        null
+        null,
+        4.7
       ],
       "events": [],
       "related_asins": [],
