@@ -1,1 +1,4 @@
-{"status": "running", "triggered_at": "", "progress": "test from CLI", "updated_at": "2026-06-12T20:03:07"}
+{
+  "status": "done",
+  "completed_at": "2026-06-12T20:10:09.868328"
+}
