@@ -1,4 +1,5 @@
 {
-  "status": "done",
-  "completed_at": "2026-06-12T20:10:09.868328"
+  "status": "pending",
+  "triggered_at": "2026-06-13T05:00:01.877445",
+  "author": "local-scheduler"
 }
