@@ -222,9 +222,16 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
 <script>
 (function() {
   var REPO = 'charlescome1995-prog/crossmart-monitor';
-  var RAW_DATA_URL = 'https://raw.githubusercontent.com/' + REPO + '/main/frontend/data/rawData.json';
+  var RAW_DATA_URL = 'https://api.github.com/repos/' + REPO + '/contents/frontend/data/rawData.json';
   var rawData = { updated: '', items: [], keywords: [] };
   var userConfiguredAsins = new Set();
+
+  function ghFetch(url) {
+    return fetch(url).then(function(r) { return r.json(); }).then(function(data) {
+      if (data.content) return JSON.parse(atob(data.content.replace(/\n/g, '')));
+      throw new Error('Not found');
+    });
+  }
 
   window.addEventListener('DOMContentLoaded', function() {
     var saved = localStorage.getItem('gh_token') || '';
@@ -236,8 +243,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
 
   function loadGitHubConfig() {
     var se = document.getElementById('configStatus');
-    fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/user_config.json?v=' + Date.now())
-      .then(function(r) { if (!r.ok) throw new Error('Config not found'); return r.json(); })
+    ghFetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/user_config.json?v=' + Date.now())
       .then(function(cfg) {
         applyConfig(cfg);
         se.textContent = '配置加载成功';
@@ -295,8 +301,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
     se.textContent = '加载中...';
     se.style.background = '#fef3c7';
     se.style.color = '#92400e';
-    fetch(RAW_DATA_URL + '?t=' + Date.now())
-      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    ghFetch(RAW_DATA_URL + '?t=' + Date.now())
       .then(function(d) {
         rawData = d;
         renderTable();
@@ -417,8 +422,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
   var pollTimer = null;
   function pollStatus(token) {
     if (pollTimer) clearTimeout(pollTimer);
-    fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/trigger.json?t=' + Date.now())
-      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    ghFetch('https://api.github.com/repos/' + REPO + '/contents/backend/data/trigger.json?t=' + Date.now())
       .then(function(data) {
         var se = document.getElementById('configStatus');
         var btn = document.getElementById('btnTrigger');
