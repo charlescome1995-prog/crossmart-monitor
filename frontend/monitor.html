@@ -323,14 +323,24 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
   function saveToken() {
     var ti = document.getElementById('ghTokenInput');
     var t = ti ? ti.value.trim() : '';
-    if (!t) { alert('请输入 GitHub Token'); return; }
+    if (!t) { alert('Please enter GitHub Token'); return; }
     localStorage.setItem('gh_token', t);
-    alert('Token saved to browser. If api_server.py does not receive trigger, restart it in PowerShell with: $env:GH_TOKEN = your_token');
+    // Also send to local API server for polling thread
+    fetch('http://127.0.0.1:8765/api/token', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({token: t})
+    }).then(function(r) {
+      if (r.ok) console.log('Token sent to local API');
+      else console.warn('Failed to send token to local API');
+    }).catch(function(e) {
+      console.warn('Failed to send token to local API:', e);
+    });
+    alert('Token saved! Local API will now use it for polling.');
     loadRawData();
   }
 
-
-  function getRelatedVals(type, streamIdx) {
+function getRelatedVals(type, streamIdx) {
     var vals = [];
     for (var r = 0; r < 5; r++) {
       var el = document.getElementById('rel-' + type + '-' + streamIdx + '-' + r);
