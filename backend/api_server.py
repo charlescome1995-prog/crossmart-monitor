@@ -67,7 +67,7 @@ def load_config_from_github():
     return None
 
 def fetch_github_json(url):
-    """从GitHub获取JSON(带token认证)"""
+    """从GitHub获取JSON(带token认证，自动解码base64)"""
     token = load_gh_token()
     if not token:
         return None
@@ -78,53 +78,16 @@ def fetch_github_json(url):
             "User-Agent": "crossmart-monitor/1.0"
         })
         with urllib.request.urlopen(req, timeout=15) as r:
-            return json.loads(r.read().decode("utf-8"))
+            resp = json.loads(r.read().decode("utf-8"))
+            # GitHub API /contents/ returns base64 content - decode it
+            if isinstance(resp, dict) and resp.get("encoding") == "base64":
+                import base64
+                raw = base64.b64decode(resp["content"].replace(chr(10), ""))
+                return json.loads(raw)
+            return resp
     except Exception as e:
-        print(f"[GitHub] 请求失败 {url}: {e}")
+        print(f"[GitHub] fetch fail {url}: {e}")
         return None
-
-def update_trigger_on_github(status, progress=""):
-    """更新GitHub上的trigger.json状态"""
-    token = load_gh_token()
-    if not token:
-        return
-    import base64
-    try:
-        url = f"{API_BASE}/contents/backend/data/trigger.json"
-        req = urllib.request.Request(url, headers={
-            "Authorization": f"token {token}",
-            "Accept": "application/vnd.github.v3+json",
-            "User-Agent": "crossmart-monitor/1.0"
-        })
-        with urllib.request.urlopen(req, timeout=10) as r:
-            current = json.loads(r.read().decode("utf-8"))
-            sha = current.get("sha", "")
-
-        content = json.dumps({
-            "status": status,
-            "triggered_at": current.get("triggered_at", ""),
-            "progress": progress,
-            "updated_at": time.strftime("%Y-%m-%dT%H:%M:%S")
-        }, ensure_ascii=False)
-        encoded = base64.b64encode(content.encode("utf-8")).decode("ascii")
-
-        put_req = urllib.request.Request(url, method="PUT", headers={
-            "Authorization": f"token {token}",
-            "Accept": "application/vnd.github.v3+json",
-            "Content-Type": "application/json",
-            "User-Agent": "crossmart-monitor/1.0"
-        })
-        body = json.dumps({
-            "message": "update trigger status",
-            "content": encoded,
-            "sha": sha
-        }).encode("utf-8")
-        put_req.data = body
-        with urllib.request.urlopen(put_req, timeout=10) as r:
-            print(f"[Trigger] GitHub trigger.json 更新为 {status}")
-    except Exception as e:
-        print(f"[Trigger] 更新失败: {e}")
-
 def ensure_edge():
     """确保Edge在9225端口运行(polling worker用,不重复启动已有实例)"""
     try:
@@ -275,13 +238,13 @@ def polling_worker():
             continue
         
         try:
-            trigger_data = fetch_github_json(API_BASE + "/contents/backend/data/trigger.json")
-
-
-
-
-
-
+            resp = fetch_github_json(API_BASE + "/contents/backend/data/trigger.json")
+            if resp and resp.get("encoding") == "base64":
+                import base64
+                raw = base64.b64decode(resp["content"].replace(chr(10), ""))
+                trigger_data = json.loads(raw)
+            else:
+                trigger_data = resp
 
             print(f"[轮询] 检查 trigger.json: status={trigger_data.get('status')}")
 
