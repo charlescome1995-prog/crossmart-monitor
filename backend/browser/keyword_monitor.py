@@ -158,16 +158,16 @@ def extract_asin_marks_from_page(browser):
         return []
 
 
-def group_and_pick_top5(marks):
+
+def group_and_pick_top3(marks):
     """
-    Pick Top5 ASINs from all marked results:
-      Priority: natural_top1 > ad_top1 > new_natural_top1 > new_ad_top1 > natural_other
-    Deduplicated. Same type sorted by rank number.
+    Pick up to 3 ASINs from all marked results:
+      Priority: natural_top1 > ad_top1 > new_natural_top1
+    Deduplicated. Stop when 3 collected.
     """
     natural = [m for m in marks if m.get("type") == "natural"]
     ad = [m for m in marks if m.get("type") == "ad"]
     new_list = [m for m in marks if m.get("type") == "new"]
-    other = [m for m in marks if m.get("type") not in ("natural", "ad", "new")]
 
     def rank_num(m):
         t = m.get("rank", "")
@@ -183,31 +183,17 @@ def group_and_pick_top5(marks):
     selected = []
     seen = set()
 
-    def pick(src, label):
-        for m in src:
+    for pool, label in [(natural[:1], "natural_top1"), (ad[:1], "ad_top1"), (new_list[:1], "new_natural_top1")]:
+        for m in pool:
             if m.get("asin") not in seen:
                 m["_label"] = label
                 selected.append(m)
                 seen.add(m.get("asin"))
-                return
+                break
+        if len(selected) >= 3:
+            break
 
-    pick(natural[:1], "natural_top1")
-    pick(ad[:1], "ad_top1")
-    pick(new_list[:1], "new_natural_top1")
-    pick(ad[1:2], "new_ad_top1")
-    pick(natural[1:2], "natural_other")
-
-    all_pool = natural + ad + new_list + other
-    for m in all_pool:
-        if m.get("asin") not in seen and len(selected) < 5:
-            m["_label"] = "fill"
-            selected.append(m)
-            seen.add(m.get("asin"))
-
-    return selected[:5]
-
-
-# --- Keyword Related ASINs Cache (keep-old) ---
+    return selected[:3]
 
 def _kw_rel_path(keyword):
     data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
@@ -288,11 +274,11 @@ def do_keyword_search(browser, keyword):
 
     # 3. Wait for plugin markers (up to 15s)
     print("  Waiting for Seller Sprite plugin markers...")
-    plugin_found = wait_for_plugin_markers(browser, timeout=15)
+    plugin_found = wait_for_plugin_markers(browser, timeout=30)
 
     # 3.5 Wait extra 10s for page to fully stabilize after plugin markers appear
     print("  等待10秒页面稳定...")
-    time.sleep(5)
+    time.sleep(10)
 
     # 4. Human behavior simulation
     random_scroll(browser, times=random.randint(1, 2))
@@ -310,8 +296,8 @@ def do_keyword_search(browser, keyword):
         print("     [" + t.ljust(15) + "] " + a + " | " + title)
 
     top_asins = group_and_pick_top5(marks)
-    print("  Top5 ASINs:")
-    for a in top_asins:
+    top_asins = group_and_pick_top3(marks)
+    print("  Top3 ASINs:")
         print("     [" + str(a.get("type", "")).ljust(20) + "] " + a.get("asin", "") + " | " + a.get("price", ""))
 
     # 6. Close new tab, restore main tab
