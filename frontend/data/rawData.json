@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-13T13:04:08",
+  "updated": "2026-06-13T19:05:36",
   "items": [
     {
       "monitor_type": "KW",
@@ -122,45 +122,27 @@
         },
         "review_count": {
           "current": 73222,
-          "prev": 73199,
-          "change": "+23",
-          "direction": "up"
+          "prev": 73222,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
           "current": 53,
-          "prev": 49,
-          "change": "+4",
-          "direction": "dn"
+          "prev": 53,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
           "current": 1,
           "prev": 1,
           "change": "+0",
           "direction": "same"
-        },
-        "badges": {
-          "current": [
-            "AC",
-            "NR",
-            "A+"
-          ],
-          "prev": [
-            "BS",
-            "AC",
-            "NR",
-            "A+"
-          ],
-          "lost": [
-            "BS"
-          ],
-          "gained": [],
-          "direction": "changed"
         }
       },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
-      "img_changed": true,
+      "img_changed": false,
       "bullets_changed": false,
       "description_changed": false,
       "variant_status": "正常",
@@ -171,9 +153,7 @@
         "NR",
         "A+"
       ],
-      "badges_lost": [
-        "BS"
-      ],
+      "badges_lost": [],
       "coupon": "$8.38 off",
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
@@ -185,9 +165,11 @@
       "history_main_bsr": [
         50,
         49,
+        53,
         53
       ],
       "history_sub_bsr": [
+        1,
         1,
         1,
         1
@@ -195,9 +177,11 @@
       "history_price": [
         8.82,
         8.82,
+        8.82,
         8.82
       ],
       "history_rating": [
+        4.7,
         4.7,
         4.7,
         4.7
@@ -265,9 +249,11 @@
       "history_main_bsr": [
         3463,
         3414,
-        3414
+        3414,
+        3728
       ],
       "history_sub_bsr": [
+        0,
         0,
         0,
         0
@@ -311,36 +297,34 @@
         },
         "review_count": {
           "current": 24255,
-          "prev": 24253,
-          "change": "+2",
-          "direction": "up"
+          "prev": 24255,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
-          "current": 3414,
+          "current": 3728,
           "prev": 3414,
-          "change": "+0",
-          "direction": "same"
+          "change": "+314",
+          "direction": "dn"
         },
         "sub_bsr": {
-          "current": 405,
+          "current": 423,
           "prev": 405,
-          "change": "+0",
-          "direction": "same"
+          "change": "+18",
+          "direction": "dn"
         },
         "badges": {
           "current": [
-            "AC",
             "NR",
             "A+"
           ],
           "prev": [
-            "BS",
             "AC",
             "NR",
             "A+"
           ],
           "lost": [
-            "BS"
+            "AC"
           ],
           "gained": [],
           "direction": "changed"
@@ -356,37 +340,40 @@
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
-        "AC",
         "NR",
         "A+"
       ],
       "badges_lost": [
-        "BS"
+        "AC"
       ],
       "coupon": "$16.76 off",
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 3414,
+      "main_bsr": 3728,
       "sub_cat": "Facial Cleansing Washes",
       "expected_sub_cat": "Facial Cleansing Washes",
-      "sub_bsr": 405,
+      "sub_bsr": 423,
       "history_main_bsr": [
         3463,
         3414,
-        3414
+        3414,
+        3728
       ],
       "history_sub_bsr": [
-        405,
-        405,
-        405
+        423,
+        423,
+        423,
+        423
       ],
       "history_price": [
+        17.64,
         17.64,
         17.64,
         17.64
       ],
       "history_rating": [
+        4.7,
         4.7,
         4.7,
         4.7
@@ -410,45 +397,48 @@
       "source_keyword": "",
       "title": "Amazon Basics Hypoallergenic Cotton Rounds for Makeup Removal and Skincare, 100 Count, 1 Pack",
       "brand": "Amazon Basics",
-      "img": "https://m.media-amazon.com/images/I/21dluA3iqqL._SY300_SX300_QL70_FMwebp_.jpg",
+      "img": "https://m.media-amazon.com/images/I/41roS4Ps5RL._AC_SL1500_.jpg",
       "price": 3.23,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 51190,
+      "reviews": 51189,
       "diff": {
         "price": {
           "current": 3.23,
-          "prev": 10.0,
-          "change": "-6.77",
-          "pct": "-67.7%",
+          "prev": 3.23,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.7,
+          "prev": 4.7,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 51189,
+          "prev": 51190,
+          "change": "-1",
           "direction": "dn"
         },
-        "deal_activity": {
-          "current": "Deal",
-          "prev": "无",
-          "direction": "changed"
+        "bsr": {
+          "current": 7,
+          "prev": 7,
+          "change": "+0",
+          "direction": "same"
         },
-        "badges": {
-          "current": [
-            "AC",
-            "NR",
-            "A+"
-          ],
-          "prev": [
-            "NR"
-          ],
-          "lost": [],
-          "gained": [
-            "AC",
-            "A+"
-          ],
-          "direction": "changed"
+        "sub_bsr": {
+          "current": 1,
+          "prev": 1,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
-      "img_changed": false,
+      "img_changed": true,
       "bullets_changed": false,
       "description_changed": false,
       "variant_status": "正常",
@@ -471,9 +461,11 @@
       "history_main_bsr": [
         7,
         7,
+        7,
         7
       ],
       "history_sub_bsr": [
+        1,
         1,
         1,
         1
@@ -481,11 +473,13 @@
       "history_price": [
         3.23,
         10.0,
+        3.23,
         3.23
       ],
       "history_rating": [
         4.7,
         null,
+        4.7,
         4.7
       ],
       "events": [],
