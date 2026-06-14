@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-14T05:06:06",
+  "updated": "2026-06-14T13:05:09",
   "items": [
     {
       "monitor_type": "KW",
@@ -105,7 +105,7 @@
       "price": 8.82,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 73232,
+      "reviews": 73237,
       "diff": {
         "price": {
           "current": 8.82,
@@ -121,9 +121,9 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 73232,
-          "prev": 73222,
-          "change": "+10",
+          "current": 73237,
+          "prev": 73232,
+          "change": "+5",
           "direction": "up"
         },
         "bsr": {
@@ -140,20 +140,20 @@
         },
         "badges": {
           "current": [
-            "BS",
             "AC",
             "NR",
             "A+"
           ],
           "prev": [
+            "BS",
             "AC",
             "NR",
             "A+"
           ],
-          "lost": [],
-          "gained": [
+          "lost": [
             "BS"
           ],
+          "gained": [],
           "direction": "changed"
         }
       },
@@ -167,12 +167,13 @@
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
-        "BS",
         "AC",
         "NR",
         "A+"
       ],
-      "badges_lost": [],
+      "badges_lost": [
+        "BS"
+      ],
       "coupon": "$8.38 off",
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
@@ -186,9 +187,11 @@
         49,
         53,
         53,
+        53,
         53
       ],
       "history_sub_bsr": [
+        1,
         1,
         1,
         1,
@@ -200,9 +203,11 @@
         8.82,
         8.82,
         8.82,
+        8.82,
         8.82
       ],
       "history_rating": [
+        4.7,
         4.7,
         4.7,
         4.7,
@@ -274,9 +279,11 @@
         3414,
         3414,
         3728,
+        3645,
         3645
       ],
       "history_sub_bsr": [
+        0,
         0,
         0,
         0,
@@ -322,33 +329,50 @@
         },
         "review_count": {
           "current": 24257,
-          "prev": 24255,
-          "change": "+2",
-          "direction": "up"
+          "prev": 24257,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
           "current": 3645,
-          "prev": 3728,
-          "change": "83",
-          "direction": "up"
+          "prev": 3645,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
           "current": 421,
-          "prev": 423,
-          "change": "2",
-          "direction": "up"
+          "prev": 421,
+          "change": "+0",
+          "direction": "same"
+        },
+        "badges": {
+          "current": [
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "prev": [
+            "NR",
+            "A+"
+          ],
+          "lost": [],
+          "gained": [
+            "AC"
+          ],
+          "direction": "changed"
         }
       },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
-      "img_changed": true,
+      "img_changed": false,
       "bullets_changed": false,
       "description_changed": false,
       "variant_status": "正常",
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
+        "AC",
         "NR",
         "A+"
       ],
@@ -366,9 +390,11 @@
         3414,
         3414,
         3728,
+        3645,
         3645
       ],
       "history_sub_bsr": [
+        421,
         421,
         421,
         421,
@@ -380,9 +406,11 @@
         17.64,
         17.64,
         17.64,
+        17.64,
         17.64
       ],
       "history_rating": [
+        4.7,
         4.7,
         4.7,
         4.7,
@@ -412,7 +440,7 @@
       "price": 3.23,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 51206,
+      "reviews": 51213,
       "diff": {
         "price": {
           "current": 3.23,
@@ -428,9 +456,9 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 51206,
-          "prev": 51189,
-          "change": "+17",
+          "current": 51213,
+          "prev": 51206,
+          "change": "+7",
           "direction": "up"
         },
         "bsr": {
@@ -449,7 +477,7 @@
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
-      "img_changed": true,
+      "img_changed": false,
       "bullets_changed": false,
       "description_changed": false,
       "variant_status": "正常",
@@ -474,9 +502,11 @@
         7,
         7,
         7,
+        7,
         7
       ],
       "history_sub_bsr": [
+        1,
         1,
         1,
         1,
@@ -488,11 +518,13 @@
         10.0,
         3.23,
         3.23,
+        3.23,
         3.23
       ],
       "history_rating": [
         4.7,
         null,
+        4.7,
         4.7,
         4.7,
         4.7
