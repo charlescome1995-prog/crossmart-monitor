@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-13T19:05:36",
+  "updated": "2026-06-14T05:06:06",
   "items": [
     {
       "monitor_type": "KW",
@@ -105,7 +105,7 @@
       "price": 8.82,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 73222,
+      "reviews": 73232,
       "diff": {
         "price": {
           "current": 8.82,
@@ -121,10 +121,10 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 73222,
+          "current": 73232,
           "prev": 73222,
-          "change": "+0",
-          "direction": "same"
+          "change": "+10",
+          "direction": "up"
         },
         "bsr": {
           "current": 53,
@@ -137,6 +137,24 @@
           "prev": 1,
           "change": "+0",
           "direction": "same"
+        },
+        "badges": {
+          "current": [
+            "BS",
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "prev": [
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "lost": [],
+          "gained": [
+            "BS"
+          ],
+          "direction": "changed"
         }
       },
       "listing_status": "正常",
@@ -149,6 +167,7 @@
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
+        "BS",
         "AC",
         "NR",
         "A+"
@@ -166,9 +185,11 @@
         50,
         49,
         53,
+        53,
         53
       ],
       "history_sub_bsr": [
+        1,
         1,
         1,
         1,
@@ -178,9 +199,11 @@
         8.82,
         8.82,
         8.82,
+        8.82,
         8.82
       ],
       "history_rating": [
+        4.7,
         4.7,
         4.7,
         4.7,
@@ -250,9 +273,11 @@
         3463,
         3414,
         3414,
-        3728
+        3728,
+        3645
       ],
       "history_sub_bsr": [
+        0,
         0,
         0,
         0,
@@ -276,11 +301,11 @@
       "source_keyword": "",
       "title": "Garnier Micellar Water with Rose Water and Glycerin, Hydrating Facial Cleanser & Makeup Remover, For All Skin Types, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 2 Count",
       "brand": "",
-      "img": "https://m.media-amazon.com/images/I/51LRzgV7RJL._SY300_SX300_QL70_FMwebp_.jpg",
+      "img": "https://m.media-amazon.com/images/I/81H4tFnlrML._AC_SL1500_.jpg",
       "price": 17.64,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 24255,
+      "reviews": 24257,
       "diff": {
         "price": {
           "current": 17.64,
@@ -296,44 +321,28 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 24255,
+          "current": 24257,
           "prev": 24255,
-          "change": "+0",
-          "direction": "same"
+          "change": "+2",
+          "direction": "up"
         },
         "bsr": {
-          "current": 3728,
-          "prev": 3414,
-          "change": "+314",
-          "direction": "dn"
+          "current": 3645,
+          "prev": 3728,
+          "change": "83",
+          "direction": "up"
         },
         "sub_bsr": {
-          "current": 423,
-          "prev": 405,
-          "change": "+18",
-          "direction": "dn"
-        },
-        "badges": {
-          "current": [
-            "NR",
-            "A+"
-          ],
-          "prev": [
-            "AC",
-            "NR",
-            "A+"
-          ],
-          "lost": [
-            "AC"
-          ],
-          "gained": [],
-          "direction": "changed"
+          "current": 421,
+          "prev": 423,
+          "change": "2",
+          "direction": "up"
         }
       },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
-      "img_changed": false,
+      "img_changed": true,
       "bullets_changed": false,
       "description_changed": false,
       "variant_status": "正常",
@@ -343,36 +352,38 @@
         "NR",
         "A+"
       ],
-      "badges_lost": [
-        "AC"
-      ],
+      "badges_lost": [],
       "coupon": "$16.76 off",
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 3728,
+      "main_bsr": 3645,
       "sub_cat": "Facial Cleansing Washes",
       "expected_sub_cat": "Facial Cleansing Washes",
-      "sub_bsr": 423,
+      "sub_bsr": 421,
       "history_main_bsr": [
         3463,
         3414,
         3414,
-        3728
+        3728,
+        3645
       ],
       "history_sub_bsr": [
-        423,
-        423,
-        423,
-        423
+        421,
+        421,
+        421,
+        421,
+        421
       ],
       "history_price": [
+        17.64,
         17.64,
         17.64,
         17.64,
         17.64
       ],
       "history_rating": [
+        4.7,
         4.7,
         4.7,
         4.7,
@@ -397,11 +408,11 @@
       "source_keyword": "",
       "title": "Amazon Basics Hypoallergenic Cotton Rounds for Makeup Removal and Skincare, 100 Count, 1 Pack",
       "brand": "Amazon Basics",
-      "img": "https://m.media-amazon.com/images/I/41roS4Ps5RL._AC_SL1500_.jpg",
+      "img": "https://m.media-amazon.com/images/I/21dluA3iqqL._SY300_SX300_QL70_FMwebp_.jpg",
       "price": 3.23,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 51189,
+      "reviews": 51206,
       "diff": {
         "price": {
           "current": 3.23,
@@ -417,10 +428,10 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 51189,
-          "prev": 51190,
-          "change": "-1",
-          "direction": "dn"
+          "current": 51206,
+          "prev": 51189,
+          "change": "+17",
+          "direction": "up"
         },
         "bsr": {
           "current": 7,
@@ -452,13 +463,14 @@
       "badges_lost": [],
       "coupon": "$3.07 off",
       "prime_discount": "10%",
-      "main_cat": "Beauty & Personal Care",
-      "expected_main_cat": "Beauty & Personal Care",
+      "main_cat": "Our Brands",
+      "expected_main_cat": "Our Brands",
       "main_bsr": 7,
       "sub_cat": "Cotton Pads & Rounds",
       "expected_sub_cat": "Cotton Pads & Rounds",
       "sub_bsr": 1,
       "history_main_bsr": [
+        7,
         7,
         7,
         7,
@@ -468,17 +480,20 @@
         1,
         1,
         1,
+        1,
         1
       ],
       "history_price": [
         3.23,
         10.0,
         3.23,
+        3.23,
         3.23
       ],
       "history_rating": [
         4.7,
         null,
+        4.7,
         4.7,
         4.7
       ],
