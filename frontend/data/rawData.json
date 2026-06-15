@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-14T19:06:32",
+  "updated": "2026-06-14T19:29:03",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -71,31 +71,15 @@
       "expected_sub_cat": "Makeup Cleansing Water",
       "sub_bsr": 1,
       "history_main_bsr": [
-        55,
-        55,
-        55,
-        55,
         55
       ],
       "history_sub_bsr": [
-        1,
-        1,
-        1,
-        1,
         1
       ],
       "history_price": [
-        8.82,
-        8.82,
-        8.82,
-        8.82,
         8.82
       ],
       "history_rating": [
-        4.7,
-        4.7,
-        4.7,
-        4.7,
         4.7
       ],
       "events": [],
@@ -134,7 +118,7 @@
       "source_keyword": "",
       "title": "Garnier Micellar Water with Rose Water and Glycerin, Hydrating Facial Cleanser & Makeup Remover, For All Skin Types, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 2 Count",
       "brand": "Garnier",
-      "img": "https://m.media-amazon.com/images/I/51LRzgV7RJL._SY300_SX300_QL70_FMwebp_.jpg",
+      "img": "https://m.media-amazon.com/images/I/81H4tFnlrML._AC_SL1500_.jpg",
       "price": 17.64,
       "chg": 0.0,
       "rating": 4.7,
@@ -188,7 +172,7 @@
       ],
       "badges_lost": [],
       "coupon": "$16.76 off",
-      "prime_discount": "未开启",
+      "prime_discount": "100%",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
       "main_bsr": 3847,
@@ -196,27 +180,15 @@
       "expected_sub_cat": "Facial Cleansing Washes",
       "sub_bsr": 430,
       "history_main_bsr": [
-        3847,
-        3847,
-        3847,
         3847
       ],
       "history_sub_bsr": [
-        430,
-        430,
-        430,
         430
       ],
       "history_price": [
-        17.64,
-        17.64,
-        17.64,
         17.64
       ],
       "history_rating": [
-        4.7,
-        4.7,
-        4.7,
         4.7
       ],
       "events": [],
@@ -300,31 +272,15 @@
       "expected_sub_cat": "Cotton Pads & Rounds",
       "sub_bsr": 1,
       "history_main_bsr": [
-        7,
-        7,
-        7,
-        7,
         7
       ],
       "history_sub_bsr": [
-        1,
-        1,
-        1,
-        1,
         1
       ],
       "history_price": [
-        3.23,
-        3.23,
-        3.23,
-        3.23,
         3.23
       ],
       "history_rating": [
-        4.7,
-        4.7,
-        4.7,
-        4.7,
         4.7
       ],
       "events": [],
