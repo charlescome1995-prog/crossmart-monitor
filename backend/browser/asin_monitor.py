@@ -591,22 +591,57 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
             amazon.browse_category()
         amazon.search_for_asin(asin, search_keyword)
         browser.scroll_down(times=1, min_pause=0.3, max_pause=0.8)
-        # ── 等待页面关键元素加载（最长30秒）──
-        deadline = time.time() + 30
+
+        # ── 合并等待：页面就绪 + 插件就绪，两个条件都满足后再统一提取 ──
+        page_ready = False
+        plugin_ready = False
+        deadline = time.time() + 60
         while time.time() < deadline:
-            ready = browser.eval("""(() => {
-                var titleEl = document.querySelector('#productTitle');
-                var titleOk = titleEl && titleEl.textContent.trim().length > 0;
-                var imgEl = document.querySelector('#landingImage');
-                var imgOk = imgEl && imgEl.complete && imgEl.naturalWidth > 0;
-                return { titleOk: titleOk, imgOk: imgOk, ready: titleOk && imgOk };
-            })()""")
-            if ready and ready.get('ready'):
-                elapsed = time.time() - (deadline - 30)
-                print(f"  页面加载完成，耗时 {elapsed:.1f}s (title={ready.get('titleOk')}, img={ready.get('imgOk')})")
+            elapsed = time.time() - (deadline - 60)
+
+            # 检查页面元素（每轮都检查，不等待）
+            if not page_ready:
+                page_status = browser.eval("""(() => {
+                    var titleEl = document.querySelector('#productTitle');
+                    var titleOk = titleEl && titleEl.textContent.trim().length > 0;
+                    var imgEl = document.querySelector('#landingImage');
+                    var imgOk = imgEl && imgEl.complete && imgEl.naturalWidth > 0;
+                    return { titleOk: titleOk, imgOk: imgOk };
+                })()""")
+                if page_status and page_status.get('titleOk') and page_status.get('imgOk'):
+                    page_ready = True
+                    print(f"  页面加载完成（耗时 {elapsed:.1f}s）")
+
+            # 检查插件就绪（每轮都检查）
+            if not plugin_ready and mode == "full":
+                try:
+                    candidate = extract_sprite_plugin_data(browser)
+                    if candidate:
+                        has_data = bool(
+                            candidate.get('plugin_version') or
+                            candidate.get('lqs') or
+                            candidate.get('variant_count') or
+                            (candidate.get('main_text') or '').strip()
+                        )
+                        if has_data:
+                            plugin_ready = True
+                            print(f"  插件就绪（耗时 {elapsed:.1f}s）")
+                except Exception:
+                    pass
+
+            # 两个条件都满足，停止等待
+            if page_ready and (mode == "amazon" or plugin_ready):
                 break
+
+            # 每 5 秒打印一次进度
+            if int(elapsed) % 5 == 0 and int(elapsed) > 0:
+                print(f"  等待中... {elapsed:.0f}s (页面={'✓' if page_ready else '⏳'}, 插件={'✓' if plugin_ready else '⏳'})")
+
             time.sleep(1)
-        time.sleep(random.uniform(0.3, 0.8))  # 再等1-3秒让插件彻底渲染
+        else:
+            print("  等待超时（60s），继续执行（页面={'✓' if page_ready else '✗'}, 插件={'✓' if plugin_ready else '✗'}）")
+
+        # ── 统一提取：等所有条件都就绪后，一次性提取亚马逊数据 + 插件 DOM ──
         amazon_data = extract_asin_data(browser)
         if not amazon_data.get("bsr"):
             bsr = extract_bsr_direct(browser)
@@ -614,50 +649,19 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
                 amazon_data["bsr"] = bsr
         print_card(amazon_data)
 
+        if mode == "full":
+            if plugin_ready:
+                plugin_data = extract_sprite_plugin_data(browser)
+                if plugin_data:
+                    for k, v in plugin_data.items():
+                        amazon_data['sprite_' + k] = v
+                    print("  插件数据提取完成")
+            else:
+                print("  插件未就绪，跳过插件数据提取")
+
         print("  亚马逊检查完成")
     except Exception as e:
         print("  亚马逊检查失败: %s" % e)
-
-    # ─── Phase A2: 卖家精灵插件 DOM（直接从页面内嵌插件提取，插件在页面上浮窗显示）───
-    if mode == "full":
-        print("\n" + "="*50)
-        print("卖家精灵插件数据")
-        print("="*50)
-        # 轮询等待插件数据加载完成（最长 30s，每 1s 检查一次）
-        plugin_data = {}
-        for elapsed in range(30):
-            time.sleep(1)
-            try:
-                candidate = extract_sprite_plugin_data(browser)
-                if candidate:
-                    # 用 plugin_version 或 lqs 字段判断插件数据是否已加载
-                    has_data = bool(
-                        candidate.get('plugin_version') or
-                        candidate.get('lqs') or
-                        candidate.get('variant_count') or
-                        (candidate.get('main_text') or '').strip()
-                    )
-                    if has_data:
-                        plugin_data = candidate
-                        print(f"  插件数据加载完成（等待 {elapsed+1}s）")
-                        break
-                # 每 5 秒打印一次进度
-                if (elapsed + 1) % 5 == 0:
-                    print(f"  插件加载中... ({elapsed+1}s)")
-            except Exception as e:
-                print(f"  插件轮询异常: {e}")
-                break
-        else:
-            print("  插件数据等待超时（30s），继续（可能未安装或网络慢）")
-
-
-        if plugin_data:
-            # 插件数据与 amazon_data 合并（插件字段加前缀 sprite_ 避免覆盖）
-            for k, v in plugin_data.items():
-                amazon_data['sprite_' + k] = v
-            print("  插件数据提取完成")
-        else:
-            print("  插件面板未检测到（可能未安装或未激活）")
 
     # ─── Phase B: 卖家精灵（可选）───
     related_asins_meta = []
