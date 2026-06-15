@@ -347,8 +347,15 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
     bullets_changed = False
     description_changed = False
     if prev_data:
-        bullets_changed = bool(prev_data.get('bullets', []) != data.get('bullets', []))
+        bullets_changed = bool(prev_data.get('features', []) != data.get('features', []))
         description_changed = bool(prev_data.get('description', '') != data.get('description', ''))
+
+    # 卖家变化
+    seller_changed = False
+    if prev_data:
+        prev_seller = prev_data.get('soldBy', '') or prev_data.get('sold_by', '')
+        curr_seller = data.get('soldBy', '') or data.get('sold_by', '')
+        seller_changed = bool(prev_seller and curr_seller and prev_seller != curr_seller)
 
     # 变体关系变化
     variant_changed = False
@@ -385,6 +392,7 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "img_changed": img_changed,
         "bullets_changed": bullets_changed,
         "description_changed": description_changed,
+        "seller_changed": seller_changed,
         "variant_status": variant_status,
         "variant_changed": variant_changed,
         "deal_activity": data.get('deal_activity', '无') or '无',

@@ -451,8 +451,18 @@ def extract_asin_data(browser: CDPBrowser):
         });
     }
 
+    // ── 五点描述（feature bullets）──
+    const features = [];
+    const featureSources = [
+        () => Array.from(document.querySelectorAll('#feature-bullets li, #fb-inherited-content li, #important-information li')).map(li => li.textContent.trim()).filter(t => t && t.length > 10).slice(0, 5),
+        () => Array.from(document.querySelectorAll('.a-unordered-list li')).filter(li => li.textContent.trim().length > 10 && !li.closest('[id*="detailBullets"]') && !li.closest('[id*="SalesRank"]')).map(li => li.textContent.trim()).slice(0, 5),
+    ];
+    for (const fn of featureSources) { const f = fn(); if (f.length >= 3) { features.push(...f); break; } }
+    const uniqueFeatures = features.slice(0, 5);
+
     const result = {
         title, price, rating, review_count, brand, soldBy,
+        features: uniqueFeatures,
         main_image: mainImg,
         bsr: bsr, bsr_subcategory: bsrSubCategory, bsr_subrank: bsrSubRank, bsr_all_subranks: bsrAllSubRanks,
         badges: badges,
