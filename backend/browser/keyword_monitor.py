@@ -298,6 +298,7 @@ def do_keyword_search(browser, keyword):
     top_asins = group_and_pick_top5(marks)
     top_asins = group_and_pick_top3(marks)
     print("  Top3 ASINs:")
+    for a in top_asins:
         print("     [" + str(a.get("type", "")).ljust(20) + "] " + a.get("asin", "") + " | " + a.get("price", ""))
 
     # 6. Close new tab, restore main tab
@@ -341,6 +342,11 @@ def check_keyword(keyword):
         import traceback
         traceback.print_exc()
         marks, top_asins = [], []
+
+    # ── 数据有效性检查：无效时不写入快照 ──
+    if not marks and not top_asins:
+        print("  ⚠️ 关键词搜索无结果，跳过快照保存")
+        return
 
     snapshot = {
         "keyword": keyword,

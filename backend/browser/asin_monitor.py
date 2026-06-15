@@ -700,6 +700,15 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
     else:
         print("  首次记录")
 
+    # ── 数据有效性检查：无效时不写入快照 ──
+    has_title = bool(amazon_data.get('title', '').strip())
+    has_price = bool(amazon_data.get('price', '').strip())
+    has_image = bool(amazon_data.get('main_image', '').strip())
+    if not (has_title or has_price or has_image):
+        print("  ⚠️ 页面数据无效（title/price/image 均空），跳过快照保存")
+        browser.close()
+        return
+
     snapshot_data = {
         **amazon_data,
         "_sprite_text": sprite_data.get("competitor", {}).get("text", "")[:2000] if sprite_data else "",
