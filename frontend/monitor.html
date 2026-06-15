@@ -602,7 +602,7 @@ function getRelatedVals(type, streamIdx) {
             }).join('')
           : '') +
         '</td>' +
-        '<td class="col-time">' + (item.listing_status ? '<div><span style="background:' + (item.listing_status === '\u6b63\u5e38' ? '#059669' : '#dc2626') + ';color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;font-weight:700;">' + item.listing_status + '</span></div>' : '') + '<div id="timeCell" style="font-size:12px;line-height:1.5;">' + (rawData.updated || '-') + '</div>' + (eventsHtml && eventsHtml.indexOf('e-none') === -1 ? '<div style="margin-top:4px;">' + eventsHtml + '</div>' : '') + '</td>' +
+        '<td class="col-time">' + (item.listing_status ? '<div><span style="background:' + (item.listing_status === '\u6b63\u5e38' ? '#059669' : '#dc2626') + ';color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;font-weight:700;">' + item.listing_status + '</span></div>' : '') + (item.launch_date ? '<div style="font-size:11px;color:#64748b;margin-top:2px;">上架 ' + item.launch_date + '</div>' : '') + '<div id="timeCell" style="font-size:12px;line-height:1.5;">' + (rawData.updated || '-') + '</div>' + (eventsHtml && eventsHtml.indexOf('e-none') === -1 ? '<div style="margin-top:4px;">' + eventsHtml + '</div>' : '') + '</td>' +
       '</tr>';
     });
     tb.innerHTML = html || '<tr><td colspan="15" style="text-align:center;padding:20px;">没有匹配数据</td></tr>';
