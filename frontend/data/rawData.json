@@ -1,5 +1,348 @@
 {
-  "updated": "",
-  "items": [],
+  "updated": "2026-06-14T19:01:54",
+  "items": [
+    {
+      "monitor_type": "ASIN",
+      "asin": "B017PCGABI",
+      "is_main": true,
+      "logic_type": "主监控",
+      "source_keyword": "",
+      "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
+      "brand": "Garnier",
+      "img": "https://m.media-amazon.com/images/I/31vytHaYDRL._SY300_SX300_QL70_FMwebp_.jpg",
+      "price": 8.82,
+      "chg": 0.0,
+      "rating": 4.7,
+      "reviews": 73237,
+      "diff": {
+        "price": {
+          "current": 8.82,
+          "prev": 8.82,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.7,
+          "prev": 4.7,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 73237,
+          "prev": 73237,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 55,
+          "prev": 55,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 1,
+          "prev": 1,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$8.38 off",
+      "prime_discount": "未开启",
+      "main_cat": "Beauty & Personal Care",
+      "expected_main_cat": "Beauty & Personal Care",
+      "main_bsr": 55,
+      "sub_cat": "Makeup Cleansing Water",
+      "expected_sub_cat": "Makeup Cleansing Water",
+      "sub_bsr": 1,
+      "history_main_bsr": [
+        55,
+        55,
+        55,
+        55
+      ],
+      "history_sub_bsr": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "history_price": [
+        8.82,
+        8.82,
+        8.82,
+        8.82
+      ],
+      "history_rating": [
+        4.7,
+        4.7,
+        4.7,
+        4.7
+      ],
+      "events": [],
+      "related_asins": [],
+      "jike_sales": null,
+      "jike_orders": null,
+      "jike_units": null,
+      "jike_session": null,
+      "jike_page_views": null,
+      "jike_conversion_rate": null,
+      "jike_rating": null,
+      "jike_reviews": null,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
+      "jike_listing_state": null,
+      "jike_product_name": null,
+      "jike_acos": null,
+      "jike_ads_spend": null,
+      "jike_fba_quantity": null,
+      "jike_fba_turnover": null,
+      "jike_gross_profit_rate": null,
+      "lqs": "",
+      "variant_count": "",
+      "launch_date": "",
+      "total_keywords": "",
+      "natural_keywords": "",
+      "ad_keywords": "",
+      "suggest_keywords": "",
+      "traffic_keywords_top": []
+    },
+    {
+      "monitor_type": "ASIN",
+      "asin": "B08ZCT2GJP",
+      "is_main": false,
+      "logic_type": "关联竞品",
+      "source_keyword": "",
+      "title": "Garnier Micellar Water with Rose Water and Glycerin, Hydrating Facial Cleanser & Makeup Remover, For All Skin Types, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 2 Count",
+      "brand": "Garnier",
+      "img": "https://m.media-amazon.com/images/I/51LRzgV7RJL._SY300_SX300_QL70_FMwebp_.jpg",
+      "price": 17.64,
+      "chg": 0.0,
+      "rating": 4.7,
+      "reviews": 24257,
+      "diff": {
+        "price": {
+          "current": 17.64,
+          "prev": 17.64,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.7,
+          "prev": 4.7,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 24257,
+          "prev": 24257,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 3847,
+          "prev": 3847,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 430,
+          "prev": 430,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$16.76 off",
+      "prime_discount": "未开启",
+      "main_cat": "Beauty & Personal Care",
+      "expected_main_cat": "Beauty & Personal Care",
+      "main_bsr": 3847,
+      "sub_cat": "Facial Cleansing Washes",
+      "expected_sub_cat": "Facial Cleansing Washes",
+      "sub_bsr": 430,
+      "history_main_bsr": [
+        3847,
+        3847,
+        3847
+      ],
+      "history_sub_bsr": [
+        430,
+        430,
+        430
+      ],
+      "history_price": [
+        17.64,
+        17.64,
+        17.64
+      ],
+      "history_rating": [
+        4.7,
+        4.7,
+        4.7
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "",
+      "variant_count": "",
+      "launch_date": "",
+      "total_keywords": "",
+      "natural_keywords": "",
+      "ad_keywords": "",
+      "suggest_keywords": "",
+      "traffic_keywords_top": []
+    },
+    {
+      "monitor_type": "ASIN",
+      "asin": "B09542G9ZN",
+      "is_main": true,
+      "logic_type": "主监控",
+      "source_keyword": "",
+      "title": "Amazon Basics Hypoallergenic Cotton Rounds for Makeup Removal and Skincare, 100 Count, 1 Pack",
+      "brand": "Amazon Basics",
+      "img": "https://m.media-amazon.com/images/I/21dluA3iqqL._SY300_SX300_QL70_FMwebp_.jpg",
+      "price": 3.23,
+      "chg": 0.0,
+      "rating": 4.7,
+      "reviews": 51215,
+      "diff": {
+        "price": {
+          "current": 3.23,
+          "prev": 3.23,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.7,
+          "prev": 4.7,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 51215,
+          "prev": 51213,
+          "change": "+2",
+          "direction": "up"
+        },
+        "bsr": {
+          "current": 7,
+          "prev": 7,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 1,
+          "prev": 1,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$3.07 off",
+      "prime_discount": "10%",
+      "main_cat": "Our Brands",
+      "expected_main_cat": "Our Brands",
+      "main_bsr": 7,
+      "sub_cat": "Cotton Pads & Rounds",
+      "expected_sub_cat": "Cotton Pads & Rounds",
+      "sub_bsr": 1,
+      "history_main_bsr": [
+        7,
+        7,
+        7,
+        7
+      ],
+      "history_sub_bsr": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "history_price": [
+        3.23,
+        3.23,
+        3.23,
+        3.23
+      ],
+      "history_rating": [
+        4.7,
+        4.7,
+        4.7,
+        4.7
+      ],
+      "events": [],
+      "related_asins": [],
+      "jike_sales": null,
+      "jike_orders": null,
+      "jike_units": null,
+      "jike_session": null,
+      "jike_page_views": null,
+      "jike_conversion_rate": null,
+      "jike_rating": null,
+      "jike_reviews": null,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
+      "jike_listing_state": null,
+      "jike_product_name": null,
+      "jike_acos": null,
+      "jike_ads_spend": null,
+      "jike_fba_quantity": null,
+      "jike_fba_turnover": null,
+      "jike_gross_profit_rate": null,
+      "lqs": "",
+      "variant_count": "",
+      "launch_date": "",
+      "total_keywords": "",
+      "natural_keywords": "",
+      "ad_keywords": "",
+      "suggest_keywords": "",
+      "traffic_keywords_top": []
+    }
+  ],
   "keywords": []
 }
