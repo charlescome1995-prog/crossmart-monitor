@@ -635,7 +635,18 @@ def build_keyword_item(kw, a):
 
 def main():
     items = []
-    seen_asins = set()  # 去重：防止同一 ASIN 被多个主 ASIN 的竞品列表重复添加
+    seen_asins = {}  # {asin: item} 优先保留数据更完整的条目
+
+    def _completeness(item):
+        """评分函数：数据越完整分数越高"""
+        score = 0
+        if item.get('title'): score += 1
+        if item.get('img'): score += 2      # 图片最重要，权重最高
+        if item.get('price'): score += 1
+        if item.get('rating'): score += 1
+        if item.get('reviews'): score += 1
+        if item.get('main_bsr'): score += 1
+        return score
 
     # ── 加载关键词竞品映射（ASIN → keyword）───────────────────────────────
     kw_related_file = os.path.join(os.path.dirname(DATA_DIR), 'keyword_related_asins.json')
@@ -756,10 +767,15 @@ def main():
                 item.pop(jf, None)
         # 否则保持 build_rawdata_item 默认值（主监控），保留积加数据
         if asin not in seen_asins:
-            seen_asins.add(asin)
-            items.append(item)
+            seen_asins[asin] = item
         else:
-            print(f"  [去重] 主ASIN {asin} 已存在，跳过")
+            old_score = _completeness(seen_asins[asin])
+            new_score = _completeness(item)
+            if new_score > old_score:
+                print(f"  [去重] {asin} 保留更完整数据（{old_score}→{new_score}）")
+                seen_asins[asin] = item
+            else:
+                print(f"  [去重] {asin} 数据不足（{new_score}<{old_score}），跳过")
 
         # 每个关联ASIN也作为独立行输出（仅输出 config 中指定的关联ASIN）
         if related_asins:
@@ -768,13 +784,18 @@ def main():
             for ra in meta['related_asins']:
                 asin_key = ra.get('asin', '')
                 if asin_key in user_related:
-                    if asin_key in seen_asins:
-                        print(f"  [去重] 关联ASIN {asin_key} 已存在，跳过")
+                    rt = rt_map.get(asin_key, {})
+                    rel_item = build_related_item(asin_key, rt)
+                    if asin_key not in seen_asins:
+                        seen_asins[asin_key] = rel_item
                     else:
-                        seen_asins.add(asin_key)
-                        rt = rt_map.get(asin_key, {})
-                        rel_item = build_related_item(asin_key, rt)
-                        items.append(rel_item)
+                        old_score = _completeness(seen_asins[asin_key])
+                        new_score = _completeness(rel_item)
+                        if new_score > old_score:
+                            print(f"  [去重] {asin_key} 关联竞品保留更完整数据（{old_score}→{new_score}）")
+                            seen_asins[asin_key] = rel_item
+                        else:
+                            print(f"  [去重] {asin_key} 关联竞品数据不足（{new_score}<{old_score}），跳过")
 
         if related_asins:
             print(f'  related={len(related_asins)}', end='')
@@ -819,6 +840,9 @@ def main():
         print(f'  kw [{kw}]: {len(top_asins)} top ASINs')
 
     # keyword 来源已在主循环中标记完毕
+
+    # ── 去重完成：将 seen_asins 字典写回 items 列表 ──
+    items = list(seen_asins.values())
 
     output = {
         'updated': datetime.now().isoformat()[:19],
