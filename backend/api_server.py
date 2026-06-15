@@ -288,10 +288,13 @@ def polling_worker():
             else:
                 trigger_data = resp
 
+            if not trigger_data:
+                print("[轮询] trigger.json 不存在(404)，等待前端触发")
+                continue
+
             print(f"[轮询] 检查 trigger.json: status={trigger_data.get('status')}")
 
-            if not trigger_data:
-                continue
+            if trigger_data.get("status") == "pending":
 
             if trigger_data.get("status") == "pending":
                 print("\n[轮询] 检测到 trigger.json pending,开始执行抓取...")
