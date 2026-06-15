@@ -209,6 +209,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
           <th>&#22260;&#29255;</th>
           <th>&#21830;&#21697;&#20449;&#24687;</th>
           <th>&#26680;&#24515;&#25351;&#26631;</th>
+          <th>&#21464;&#21294;</th>
           <th>&#31258;&#21152;&#25968;&#25454;</th>
           <th>&#27993;&#37327;&#27982;&#35270;</th>
           <th>更新时间</th>
@@ -514,6 +515,17 @@ function getRelatedVals(type, streamIdx) {
 
   function renderTable() {
     var tb = document.getElementById('tableBody');
+
+  function buildDiffBlock(diff) {
+    if (!diff || Object.keys(diff).length === 0) return '<span class="diff-none">-</span>';
+    var rows = [];
+    if (diff.price) { var dir = diff.price.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '\u2014'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> 价格: <span class="diff-val ' + dir + '">$' + diff.price.current + '</span></div>'); }
+    if (diff.review_count) { var dir = diff.review_count.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '\u2014'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> 评论: <span class="diff-val ' + dir + '">' + diff.review_count.change + '</span></div>'); }
+    if (diff.rating) { var dir = diff.rating.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '\u2014'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> 评分: <span class="diff-val ' + dir + '">' + diff.rating.change + '</span></div>'); }
+    if (diff.bsr) { var dir = diff.bsr.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '\u2014'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> BSR: <span class="diff-val ' + dir + '">' + diff.bsr.change + '</span></div>'); }
+    if (diff.sub_bsr) { var dir = diff.sub_bsr.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '\u2014'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> 小类: <span class="diff-val ' + dir + '">' + diff.sub_bsr.change + '</span></div>'); }
+    return rows.join('') || '<span class="diff-none">-</span>';
+  }
     if (!tb || !rawData.items) { tb.innerHTML = '<tr><td colspan="15" style="text-align:center;padding:20px;">暂无数据</td></tr>'; return; }
     var searchTxt = (document.getElementById('searchInput') || {}).value || '';
     var sourceFilter = (document.getElementById('sourceFilter') || {}).value || 'ALL';
@@ -566,10 +578,13 @@ function getRelatedVals(type, streamIdx) {
           badgeHtml + dealHtml + couponHtml + primeHtml + variantHtml +
         '</div></td>' +
         '<td class="col-metrics"><div class="metrics-block">' +
-          '<div>价格: <strong>' + priceStr + '</strong>' + (diff.price ? ' <span class="diff-arrow ' + diff.price.direction + '">' + (diff.price.direction === 'up' ? '\u2191' : (diff.price.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.price.direction + '">' + diff.price.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_price"></canvas></span></div>' +
-          '<div>评分: <strong>' + ratingStr + '</strong>' + (diff.rating ? ' <span class="diff-arrow ' + diff.rating.direction + '">' + (diff.rating.direction === 'up' ? '\u2191' : (diff.rating.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.rating.direction + '">' + diff.rating.change + '</span>' : '') + ' <span style="color:#64748b;font-size:12px;">评论 ' + reviewsStr + '</span></div>' +
-          '<div>大类: <span class="cat-item">' + (item.main_cat || '-') + '</span> <strong>' + mainBsrStr + '</strong>' + (diff.bsr ? ' <span class="diff-arrow ' + diff.bsr.direction + '">' + (diff.bsr.direction === 'up' ? '\u2191' : (diff.bsr.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.bsr.direction + '">' + diff.bsr.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_main_bsr"></canvas></span></div>' +
-          '<div>小类: <span class="cat-item">' + (item.sub_cat || '-') + '</span> <strong>' + (item.sub_bsr != null ? '#' + item.sub_bsr : '-') + '</strong>' + (diff.sub_bsr ? ' <span class="diff-arrow ' + diff.sub_bsr.direction + '">' + (diff.sub_bsr.direction === 'up' ? '\u2191' : (diff.sub_bsr.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.sub_bsr.direction + '">' + diff.sub_bsr.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_sub_bsr"></canvas></span></div>' +
+          '<div>价格: <strong>' + priceStr + '</strong> <span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_price"></canvas></span></div>' +
+          '<div>评分: <strong>' + ratingStr + '</strong> <span style="color:#64748b;font-size:12px;">评论 ' + reviewsStr + '</span></div>' +
+          '<div>大类: <span class="cat-item">' + (item.main_cat || '-') + '</span> <strong>' + mainBsrStr + '</strong> <span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_main_bsr"></canvas></span></div>' +
+          '<div>小类: <span class="cat-item">' + (item.sub_cat || '-') + '</span> <strong>' + (item.sub_bsr != null ? '#' + item.sub_bsr : '-') + '</strong> <span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_sub_bsr"></canvas></span></div>' +
+        '</div></td>' +
+        '<td class="col-diff"><div class="diff-cell">' +
+          buildDiffBlock(diff) +
         '</div></td>' +
         '<td class="col-jike">' +
           (item.is_main ? (
