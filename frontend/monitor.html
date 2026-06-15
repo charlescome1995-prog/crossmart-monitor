@@ -228,7 +228,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
   var userConfiguredAsins = new Set();
 
   function ghFetch(url) {
-    return fetch(url).then(function(r) { return r.json(); }).then(function(data) {
+    return fetch(url, { cache: 'no-cache' }).then(function(r) { return r.json(); }).then(function(data) {
       if (data.content) return JSON.parse(atob(data.content.replace(/\n/g, '')));
       throw new Error('Not found');
     });
@@ -313,9 +313,10 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
       })
       .catch(function(e) {
         console.warn(e);
-        se.textContent = '加载失败';
-        se.style.background = '#fee2e2';
-        se.style.color = '#991b1b';
+        rawData = { updated: '', items: [], keywords: [] };
+        se.textContent = '暂无数据，请配置并点击"立即抓取"';
+        se.style.background = '#fef3c7';
+        se.style.color = '#92400e';
         renderTable();
         highlightTimeCell();
       });
