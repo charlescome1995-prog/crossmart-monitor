@@ -635,6 +635,7 @@ def build_keyword_item(kw, a):
 
 def main():
     items = []
+    seen_asins = set()  # 去重：防止同一 ASIN 被多个主 ASIN 的竞品列表重复添加
 
     # ── 加载关键词竞品映射（ASIN → keyword）───────────────────────────────
     kw_related_file = os.path.join(os.path.dirname(DATA_DIR), 'keyword_related_asins.json')
@@ -754,7 +755,11 @@ def main():
             for jf in JIKE_FIELDS:
                 item.pop(jf, None)
         # 否则保持 build_rawdata_item 默认值（主监控），保留积加数据
-        items.append(item)
+        if asin not in seen_asins:
+            seen_asins.add(asin)
+            items.append(item)
+        else:
+            print(f"  [去重] 主ASIN {asin} 已存在，跳过")
 
         # 每个关联ASIN也作为独立行输出（仅输出 config 中指定的关联ASIN）
         if related_asins:
@@ -763,9 +768,13 @@ def main():
             for ra in meta['related_asins']:
                 asin_key = ra.get('asin', '')
                 if asin_key in user_related:
-                    rt = rt_map.get(asin_key, {})
-                    rel_item = build_related_item(asin_key, rt)
-                    items.append(rel_item)
+                    if asin_key in seen_asins:
+                        print(f"  [去重] 关联ASIN {asin_key} 已存在，跳过")
+                    else:
+                        seen_asins.add(asin_key)
+                        rt = rt_map.get(asin_key, {})
+                        rel_item = build_related_item(asin_key, rt)
+                        items.append(rel_item)
 
         if related_asins:
             print(f'  related={len(related_asins)}', end='')
