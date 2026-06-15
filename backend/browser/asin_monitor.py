@@ -460,9 +460,19 @@ def extract_asin_data(browser: CDPBrowser):
     for (const fn of featureSources) { const f = fn(); if (f.length >= 3) { features.push(...f); break; } }
     const uniqueFeatures = features.slice(0, 5);
 
+    // ── 上架时间（Date first available）──
+    let launchDate = '';
+    const dateSources = [
+        () => { const el = document.querySelector('#detailBulletsWrapper_feature_div, #productDetails_detailBullets_sections1'); if (!el) return ''; const m = el.textContent.match(/Date first available[^\n]*?(\d{1,2}\s+\w+\s+\d{4}|\d{4}-\d{2}-\d{2})/i); return m ? m[1].trim() : ''; },
+        () => { const els = document.querySelectorAll('#prodDetails td, #detailBullets_feature_div li, .detail-bullet'); for (const el of els) { const m = el.textContent.match(/Date first available[^\n]*?(\d{1,2}\s+\w+\s+\d{4}|\d{4}-\d{2}-\d{2})/i); if (m) return m[1].trim(); } return ''; },
+        () => { const m = body.match(/Date first available[^\n]{0,100}/i); return m ? m[0].replace(/Date first available[^\d]*/i, '').trim() : ''; },
+    ];
+    for (const fn of dateSources) { launchDate = fn(); if (launchDate) break; }
+
     const result = {
         title, price, rating, review_count, brand, soldBy,
         features: uniqueFeatures,
+        launch_date: launchDate,
         main_image: mainImg,
         bsr: bsr, bsr_subcategory: bsrSubCategory, bsr_subrank: bsrSubRank, bsr_all_subranks: bsrAllSubRanks,
         badges: badges,
