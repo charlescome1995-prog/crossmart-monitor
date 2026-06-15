@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-14T16:57:36",
+  "updated": "2026-06-14T17:04:44",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -18,33 +18,47 @@
         "price": {
           "current": 8.82,
           "prev": 8.82,
-          "change": "0",
-          "pct": "0%",
+          "change": "+0.0",
+          "pct": "+0.0%",
           "direction": "same"
         },
         "rating": {
           "current": 4.7,
           "prev": 4.7,
-          "change": "0",
+          "change": "+0.0",
           "direction": "same"
         },
         "review_count": {
           "current": 73237,
           "prev": 73237,
-          "change": "0",
+          "change": "+0",
           "direction": "same"
         },
         "bsr": {
           "current": 55,
           "prev": 55,
-          "change": "0",
+          "change": "+0",
           "direction": "same"
         },
-        "sub_bsr": {
-          "current": 1,
-          "prev": 1,
-          "change": "0",
-          "direction": "same"
+        "deal_activity": {
+          "current": "Deal",
+          "prev": "无",
+          "direction": "changed"
+        },
+        "badges": {
+          "current": [
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "prev": [],
+          "lost": [],
+          "gained": [
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "direction": "changed"
         }
       },
       "listing_status": "正常",
@@ -127,33 +141,47 @@
         "price": {
           "current": 17.64,
           "prev": 17.64,
-          "change": "0",
-          "pct": "0%",
+          "change": "+0.0",
+          "pct": "+0.0%",
           "direction": "same"
         },
         "rating": {
           "current": 4.7,
           "prev": 4.7,
-          "change": "0",
+          "change": "+0.0",
           "direction": "same"
         },
         "review_count": {
           "current": 24257,
           "prev": 24257,
-          "change": "0",
+          "change": "+0",
           "direction": "same"
         },
         "bsr": {
           "current": 3847,
           "prev": 3847,
-          "change": "0",
+          "change": "+0",
           "direction": "same"
         },
-        "sub_bsr": {
-          "current": 430,
-          "prev": 430,
-          "change": "0",
-          "direction": "same"
+        "deal_activity": {
+          "current": "Deal",
+          "prev": "无",
+          "direction": "changed"
+        },
+        "badges": {
+          "current": [
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "prev": [],
+          "lost": [],
+          "gained": [
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "direction": "changed"
         }
       },
       "listing_status": "正常",
@@ -219,33 +247,47 @@
         "price": {
           "current": 3.23,
           "prev": 3.23,
-          "change": "0",
-          "pct": "0%",
+          "change": "+0.0",
+          "pct": "+0.0%",
           "direction": "same"
         },
         "rating": {
           "current": 4.7,
           "prev": 4.7,
-          "change": "0",
+          "change": "+0.0",
           "direction": "same"
         },
         "review_count": {
           "current": 51214,
           "prev": 51214,
-          "change": "0",
+          "change": "+0",
           "direction": "same"
         },
         "bsr": {
           "current": 7,
           "prev": 7,
-          "change": "0",
+          "change": "+0",
           "direction": "same"
         },
-        "sub_bsr": {
-          "current": 1,
-          "prev": 1,
-          "change": "0",
-          "direction": "same"
+        "deal_activity": {
+          "current": "Deal",
+          "prev": "无",
+          "direction": "changed"
+        },
+        "badges": {
+          "current": [
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "prev": [],
+          "lost": [],
+          "gained": [
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "direction": "changed"
         }
       },
       "listing_status": "正常",
