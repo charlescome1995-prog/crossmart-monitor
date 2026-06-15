@@ -259,7 +259,7 @@ def build_diff(curr_data, prev_data):
 def get_prev_snapshot_data(history):
     """从 history 列表中取出倒数第二个快照的 data"""
     if len(history) < 2:
-        return None
+        return None if len(history) == 0 else dict(history[-1])
     snap = history[-2]
     if isinstance(snap, dict) and 'data' in snap:
         return snap['data']
