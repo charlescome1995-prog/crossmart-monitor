@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-14T18:27:49",
+  "updated": "2026-06-15 10:27",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -25,25 +25,25 @@
         "rating": {
           "current": 4.7,
           "prev": 4.7,
-          "change": "+0.0",
+          "change": "0",
           "direction": "same"
         },
         "review_count": {
           "current": 73237,
           "prev": 73237,
-          "change": "+0",
+          "change": "0",
           "direction": "same"
         },
         "bsr": {
-          "current": 55,
-          "prev": 55,
-          "change": "+0",
+          "current": 0,
+          "prev": 0,
+          "change": "0",
           "direction": "same"
         },
         "sub_bsr": {
-          "current": 1,
-          "prev": 1,
-          "change": "+0",
+          "current": 0,
+          "prev": 0,
+          "change": "0",
           "direction": "same"
         }
       },
@@ -64,51 +64,22 @@
       "badges_lost": [],
       "coupon": "$8.38 off",
       "prime_discount": "未开启",
-      "main_cat": "Beauty & Personal Care",
-      "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 55,
-      "sub_cat": "Makeup Cleansing Water",
-      "expected_sub_cat": "Makeup Cleansing Water",
-      "sub_bsr": 1,
+      "main_cat": "",
+      "expected_main_cat": "",
+      "main_bsr": 0,
+      "sub_cat": "",
+      "expected_sub_cat": "",
+      "sub_bsr": 0,
       "history_main_bsr": [
-        55,
-        55,
-        55
+        null
       ],
       "history_sub_bsr": [
-        1,
-        1,
-        1
+        0
       ],
       "history_price": [
-        8.82,
-        8.82,
         8.82
       ],
-      "history_rating": [
-        4.7,
-        4.7,
-        4.7
-      ],
       "events": [],
-      "related_asins": [],
-      "jike_sales": null,
-      "jike_orders": null,
-      "jike_units": null,
-      "jike_session": null,
-      "jike_page_views": null,
-      "jike_conversion_rate": null,
-      "jike_rating": null,
-      "jike_reviews": null,
-      "jike_main_seller_rank": null,
-      "jike_seller_rank": null,
-      "jike_listing_state": null,
-      "jike_product_name": null,
-      "jike_acos": null,
-      "jike_ads_spend": null,
-      "jike_fba_quantity": null,
-      "jike_fba_turnover": null,
-      "jike_gross_profit_rate": null,
       "lqs": "",
       "variant_count": "",
       "launch_date": "",
@@ -142,13 +113,25 @@
         "rating": {
           "current": 4.7,
           "prev": 4.7,
-          "change": "+0.0",
+          "change": "0",
           "direction": "same"
         },
         "review_count": {
           "current": 24257,
           "prev": 24257,
-          "change": "+0",
+          "change": "0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 0,
+          "prev": 0,
+          "change": "0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 0,
+          "prev": 0,
+          "change": "0",
           "direction": "same"
         }
       },
@@ -169,30 +152,22 @@
       "badges_lost": [],
       "coupon": "$16.76 off",
       "prime_discount": "未开启",
-      "main_cat": "Beauty & Personal Care",
-      "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 3847,
-      "sub_cat": "Facial Cleansing Washes",
-      "expected_sub_cat": "Facial Cleansing Washes",
-      "sub_bsr": 430,
+      "main_cat": "",
+      "expected_main_cat": "",
+      "main_bsr": 0,
+      "sub_cat": "",
+      "expected_sub_cat": "",
+      "sub_bsr": 0,
       "history_main_bsr": [
-        3847,
-        3847
+        null
       ],
       "history_sub_bsr": [
-        430,
-        430
+        0
       ],
       "history_price": [
-        17.64,
         17.64
       ],
-      "history_rating": [
-        4.7,
-        4.7
-      ],
       "events": [],
-      "related_asins": [],
       "lqs": "",
       "variant_count": "",
       "launch_date": "",
@@ -226,25 +201,25 @@
         "rating": {
           "current": 4.7,
           "prev": 4.7,
-          "change": "+0.0",
+          "change": "0",
           "direction": "same"
         },
         "review_count": {
           "current": 51213,
           "prev": 51213,
-          "change": "+0",
+          "change": "0",
           "direction": "same"
         },
         "bsr": {
-          "current": 7,
-          "prev": 7,
-          "change": "+0",
+          "current": 0,
+          "prev": 0,
+          "change": "0",
           "direction": "same"
         },
         "sub_bsr": {
-          "current": 1,
-          "prev": 1,
-          "change": "+0",
+          "current": 0,
+          "prev": 0,
+          "change": "0",
           "direction": "same"
         }
       },
@@ -265,51 +240,22 @@
       "badges_lost": [],
       "coupon": "$3.07 off",
       "prime_discount": "10%",
-      "main_cat": "Our Brands",
-      "expected_main_cat": "Our Brands",
-      "main_bsr": 7,
-      "sub_cat": "Cotton Pads & Rounds",
-      "expected_sub_cat": "Cotton Pads & Rounds",
-      "sub_bsr": 1,
+      "main_cat": "",
+      "expected_main_cat": "",
+      "main_bsr": 0,
+      "sub_cat": "",
+      "expected_sub_cat": "",
+      "sub_bsr": 0,
       "history_main_bsr": [
-        7,
-        7,
-        7
+        null
       ],
       "history_sub_bsr": [
-        1,
-        1,
-        1
+        0
       ],
       "history_price": [
-        3.23,
-        3.23,
         3.23
       ],
-      "history_rating": [
-        4.7,
-        4.7,
-        4.7
-      ],
       "events": [],
-      "related_asins": [],
-      "jike_sales": null,
-      "jike_orders": null,
-      "jike_units": null,
-      "jike_session": null,
-      "jike_page_views": null,
-      "jike_conversion_rate": null,
-      "jike_rating": null,
-      "jike_reviews": null,
-      "jike_main_seller_rank": null,
-      "jike_seller_rank": null,
-      "jike_listing_state": null,
-      "jike_product_name": null,
-      "jike_acos": null,
-      "jike_ads_spend": null,
-      "jike_fba_quantity": null,
-      "jike_fba_turnover": null,
-      "jike_gross_profit_rate": null,
       "lqs": "",
       "variant_count": "",
       "launch_date": "",
