@@ -223,15 +223,22 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
 <script>
 (function() {
   var REPO = 'charlescome1995-prog/crossmart-monitor';
-  var RAW_DATA_URL = 'https://api.github.com/repos/' + REPO + '/contents/frontend/data/rawData.json';
+  var RAW_DATA_URL = 'https://raw.githubusercontent.com/' + REPO + '/main/frontend/data/rawData.json';
   var rawData = { updated: '', items: [], keywords: [] };
   var userConfiguredAsins = new Set();
 
+  // 通用 fetch：自动区分 GitHub API(base64) 和 raw.githubusercontent.com(JSON直出)
   function ghFetch(url) {
-    return fetch(url, { cache: 'no-cache' }).then(function(r) { return r.json(); }).then(function(data) {
-      if (data.content) return JSON.parse(atob(data.content.replace(/\n/g, '')));
-      throw new Error('Not found');
-    });
+    return fetch(url, { cache: 'no-cache' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        // GitHub Contents API 格式：{content: "base64...", encoding: "base64"}
+        if (data.content && typeof data.content === 'string') {
+          return JSON.parse(atob(data.content.replace(/\n/g, '')));
+        }
+        // raw.githubusercontent.com 或其他直接 JSON
+        return data;
+      });
   }
 
   window.addEventListener('DOMContentLoaded', function() {
