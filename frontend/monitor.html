@@ -563,6 +563,7 @@ function getRelatedVals(type, streamIdx) {
           '<div><span class="badge ' + (item.source_keyword ? 'source-kw' : 'source-asin') + '">' + badge1Text + '</span>' + (badge2Text ? ' <span class="badge ' + (item.is_main ? 'main' : 'rel') + '">' + badge2Text + '</span>' : '') + '</div>' +
           '<div><a href="https://www.amazon.com/dp/' + (item.asin || '') + '" target="_blank" class="asin-link">' + (item.asin || '') + '</a> [' + (item.brand || '') + ']</div>' +
           '<div class="title-text" title="' + (item.title || '') + '">' + (item.title || '') + '</div>' +
+          (item.listing_status ? '<div style="margin-top:3px"><span style="background:#dc2626;color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;font-weight:700;">' + item.listing_status + '</span></div>' : '') +
           badgeHtml + dealHtml + couponHtml + primeHtml + variantHtml +
         '</div></td>' +
         '<td class="col-metrics"><div class="metrics-block">' +
