@@ -608,15 +608,15 @@ function getRelatedVals(type, streamIdx) {
     tb.innerHTML = html || '<tr><td colspan="15" style="text-align:center;padding:20px;">没有匹配数据</td></tr>';
     // Draw sparklines for each item with history data
     rawData.items.forEach(function(item) {
-      if (item.history_price && item.history_price.length > 1) {
+      if (item.history_price && item.history_price.length >= 1) {
         var c = document.getElementById('sp_' + item.asin + '_price');
         if (c) drawSparkline(c, item.history_price, item.diff && item.diff.price && item.diff.price.direction === 'dn' ? '#dc2626' : '#059669');
       }
-      if (item.history_main_bsr && item.history_main_bsr.length > 1) {
+      if (item.history_main_bsr && item.history_main_bsr.length >= 1) {
         var c = document.getElementById('sp_' + item.asin + '_main_bsr');
         if (c) drawSparkline(c, item.history_main_bsr, item.diff && item.diff.bsr && item.diff.bsr.direction === 'dn' ? '#dc2626' : '#e94560');
       }
-      if (item.history_sub_bsr && item.history_sub_bsr.length > 1) {
+      if (item.history_sub_bsr && item.history_sub_bsr.length >= 1) {
         var c = document.getElementById('sp_' + item.asin + '_sub_bsr');
         if (c) drawSparkline(c, item.history_sub_bsr, '#7c3aed');
       }
@@ -640,17 +640,25 @@ function getRelatedVals(type, streamIdx) {
   }
 
   function drawSparkline(canvas, data, color) {
-    if (!canvas || !data || data.length < 2) return;
+    if (!canvas || !data || data.length < 1) return;
     var ctx = canvas.getContext('2d');
     var w = canvas.width = 60;
     var h = canvas.height = 28;
     var min = Math.min.apply(null, data);
     var max = Math.max.apply(null, data);
     var range = max - min || 1;
-    var stepX = (w - 4) / (data.length - 1);
+    var stepX = data.length > 1 ? (w - 4) / (data.length - 1) : 0;
     ctx.clearRect(0, 0, w, h);
-    ctx.beginPath();
     ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    if (data.length === 1) {
+      var y = h - 2 - ((data[0] - min) / range) * (h - 4);
+      ctx.beginPath();
+      ctx.arc(w / 2, y, 2, 0, Math.PI * 2);
+      ctx.fill();
+      return;
+    }
+    ctx.beginPath();
     ctx.lineWidth = 1.5;
     data.forEach(function(v, i) {
       var x = 2 + i * stepX;
