@@ -262,8 +262,22 @@ def extract_asin_data(browser: CDPBrowser):
     const reviewM = (reviewEl ? reviewEl.textContent.trim() : '').match(/([\d,]+)/);
     const review_count = reviewM ? reviewM[1].replace(/,/g, '') : '';
 
-    const brandEl = document.querySelector('#bylineInfo');
-    let brand = (brandEl ? brandEl.textContent.trim() : '').replace(/^Visit the /, '').replace(/ Store$/, '').replace(/^访问/, '').replace(/品牌旗舰店$/, '').trim();
+    // ── 品牌（多来源备选）──
+    let brand = '';
+    const brandSources = [
+      // #1: bylineInfo（亚马逊自营常用）
+      () => { const el = document.querySelector('#bylineInfo'); return el ? el.textContent.trim() : ''; },
+      // #2: detailBulletsWrapper 里的 Brand:
+      () => { const el = document.querySelector('#detailBulletsWrapper_feature_div'); if (!el) return ''; const m = el.textContent.match(/Brand:\s*([^\n]+)/i); return m ? m[1].trim() : ''; },
+      // #3: product details tech spec table
+      () => { const el = document.querySelector('#productDetails_techSpec_section_1'); if (!el) return ''; const m = el.textContent.match(/Brand\s*([^\n]+)/i); return m ? m[1].trim() : ''; },
+      // #4: JSON-LD structured data
+      () => { const el = document.querySelector('script[type="application/ld+json"]'); if (!el) return ''; try { const d = JSON.parse(el.textContent); if (d && d.brand) return typeof d.brand === 'string' ? d.brand : (d.brand.name || ''); if (d && d['@graph']) { const p = d['@graph'].find(x => x['@type'] === 'Product'); return (p && p.brand) ? (typeof p.brand === 'string' ? p.brand : (p.brand.name || '')) : ''; } } catch(e){} return ''; },
+      // #5: page body text "Brand: XXX"
+      () => { const m = body.match(/Brand:\s*([^\n]{2,50})/i); return m ? m[1].trim() : ''; },
+    ];
+    for (const fn of brandSources) { brand = fn(); if (brand && brand.length > 1) break; }
+    brand = brand.replace(/^Visit the /, '').replace(/ Store$/, '').replace(/^访问/, '').replace(/品牌旗舰店$/, '').replace(/Brand:\s*/i, '').trim();
     if (brand.length > 60) brand = brand.substring(0, 60);
 
     const soldByEl = document.querySelector('#merchantInfoFeature_feature_div .a-link-normal') || document.querySelector('#merchant-info');
