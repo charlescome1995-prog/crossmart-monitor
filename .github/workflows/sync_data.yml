@@ -1,0 +1,32 @@
+name: Sync Monitor Data
+
+on:
+  push:
+    paths:
+      - 'backend/data/asin_related_asins.json'
+      - 'backend/data/keyword_list.json'
+      - 'backend/data/keyword_related_asins.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Sync data
+        run: |
+          python backend/sync_monitor_data.py
+          git config --global user.name 'CrossMart Bot'
+          git config --global user.email 'bot@crossmart.ai'
+          git add frontend/data/rawData.json
+          git diff --staged --quiet || (git commit -m "auto: sync $(date -u '+%Y-%m-%d %H:%M UTC')" && git push)
