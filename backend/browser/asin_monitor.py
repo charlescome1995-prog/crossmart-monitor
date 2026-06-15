@@ -262,19 +262,23 @@ def extract_asin_data(browser: CDPBrowser):
     const reviewM = (reviewEl ? reviewEl.textContent.trim() : '').match(/([\d,]+)/);
     const review_count = reviewM ? reviewM[1].replace(/,/g, '') : '';
 
-    // ── 品牌（多来源备选）──
+    // ── 品牌（多来源备选，优先级从高到低）──
     let brand = '';
     const brandSources = [
-      // #1: bylineInfo（亚马逊自营常用）
+      // #1: "Visit the XXX Store" → 提取XXX（Amazon第三方卖家常用格式）
+      () => { const m = body.match(/Visit the ([A-Z][A-Za-z\s&'\-]{2,40}) Store/i); return m ? m[1].trim() : ''; },
+      // #2: bylineInfo 元素
       () => { const el = document.querySelector('#bylineInfo'); return el ? el.textContent.trim() : ''; },
-      // #2: detailBulletsWrapper 里的 Brand:
+      // #3: detailBulletsWrapper → Brand:
       () => { const el = document.querySelector('#detailBulletsWrapper_feature_div'); if (!el) return ''; const m = el.textContent.match(/Brand:\s*([^\n]+)/i); return m ? m[1].trim() : ''; },
-      // #3: product details tech spec table
+      // #4: tech spec table
       () => { const el = document.querySelector('#productDetails_techSpec_section_1'); if (!el) return ''; const m = el.textContent.match(/Brand\s*([^\n]+)/i); return m ? m[1].trim() : ''; },
-      // #4: JSON-LD structured data
+      // #5: JSON-LD
       () => { const el = document.querySelector('script[type="application/ld+json"]'); if (!el) return ''; try { const d = JSON.parse(el.textContent); if (d && d.brand) return typeof d.brand === 'string' ? d.brand : (d.brand.name || ''); if (d && d['@graph']) { const p = d['@graph'].find(x => x['@type'] === 'Product'); return (p && p.brand) ? (typeof p.brand === 'string' ? p.brand : (p.brand.name || '')) : ''; } } catch(e){} return ''; },
-      // #5: page body text "Brand: XXX"
+      // #6: page body "Brand: XXX"
       () => { const m = body.match(/Brand:\s*([^\n]{2,50})/i); return m ? m[1].trim() : ''; },
+      // #7: 从标题提取首个单词（Garnier Micellar → Garnier）
+      () => { const m = title.match(/^([A-Z][A-Za-z\s&'\-]{2,30})\s/); return m ? m[1].trim() : ''; },
     ];
     for (const fn of brandSources) { brand = fn(); if (brand && brand.length > 1) break; }
     brand = brand.replace(/^Visit the /, '').replace(/ Store$/, '').replace(/^访问/, '').replace(/品牌旗舰店$/, '').replace(/Brand:\s*/i, '').trim();
