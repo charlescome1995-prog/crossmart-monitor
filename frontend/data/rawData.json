@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-14T16:27:10",
+  "updated": "2026-06-14T16:30:31",
   "items": [
     {
       "monitor_type": "KW",
@@ -247,14 +247,63 @@
       "asin": "B08ZCT2GJP",
       "is_main": false,
       "logic_type": "关联竞品",
-      "title": "",
+      "source_keyword": "",
+      "title": "Garnier Micellar Water with Rose Water and Glycerin, Hydrating Facial Cleanser & Makeup Remover, For All Skin Types, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 2 Count",
       "brand": "",
-      "img": "",
-      "price": 0,
+      "img": "https://m.media-amazon.com/images/I/81H4tFnlrML._AC_SL1500_.jpg",
+      "price": 17.64,
       "chg": 0.0,
-      "rating": 0,
-      "reviews": 0,
-      "diff": {},
+      "rating": 4.7,
+      "reviews": 24257,
+      "diff": {
+        "price": {
+          "current": 17.64,
+          "prev": 17.64,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.7,
+          "prev": 4.7,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 24257,
+          "prev": 24257,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 3645,
+          "prev": 3645,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 421,
+          "prev": 421,
+          "change": "+0",
+          "direction": "same"
+        },
+        "badges": {
+          "current": [
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "prev": [
+            "NR",
+            "A+"
+          ],
+          "lost": [],
+          "gained": [
+            "AC"
+          ],
+          "direction": "changed"
+        }
+      },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
@@ -263,17 +312,21 @@
       "description_changed": false,
       "variant_status": "正常",
       "variant_changed": false,
-      "deal_activity": "无",
-      "badges_current": [],
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
       "badges_lost": [],
-      "coupon": "无",
+      "coupon": "$16.76 off",
       "prime_discount": "未开启",
-      "main_cat": "",
-      "expected_main_cat": "",
-      "main_bsr": 0,
-      "sub_cat": "",
-      "expected_sub_cat": "",
-      "sub_bsr": 0,
+      "main_cat": "Beauty & Personal Care",
+      "expected_main_cat": "Beauty & Personal Care",
+      "main_bsr": 3645,
+      "sub_cat": "Facial Cleansing Washes",
+      "expected_sub_cat": "Facial Cleansing Washes",
+      "sub_bsr": 421,
       "history_main_bsr": [
         3463,
         3414,
@@ -283,14 +336,31 @@
         3645
       ],
       "history_sub_bsr": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
+        421,
+        421,
+        421,
+        421,
+        421,
+        421
+      ],
+      "history_price": [
+        17.64,
+        17.64,
+        17.64,
+        17.64,
+        17.64,
+        17.64
+      ],
+      "history_rating": [
+        4.7,
+        4.7,
+        4.7,
+        4.7,
+        4.7,
+        4.7
       ],
       "events": [],
+      "related_asins": [],
       "lqs": "",
       "variant_count": "",
       "launch_date": "",
