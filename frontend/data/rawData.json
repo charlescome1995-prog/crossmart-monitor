@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-15T17:17:27",
+  "updated": "2026-06-15T17:25:30",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -80,9 +80,11 @@
         55,
         55,
         55,
+        55,
         55
       ],
       "history_sub_bsr": [
+        1,
         1,
         1,
         1,
@@ -102,9 +104,11 @@
         8.82,
         8.82,
         8.82,
+        8.82,
         8.82
       ],
       "history_rating": [
+        4.7,
         4.7,
         4.7,
         4.7,
@@ -136,7 +140,7 @@
       "jike_gross_profit_rate": null,
       "lqs": "10.0",
       "variant_count": "4",
-      "launch_date": "",
+      "launch_date": "2015-11-12",
       "total_keywords": "733",
       "natural_keywords": "643",
       "ad_keywords": "1",
