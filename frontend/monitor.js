@@ -337,21 +337,22 @@
             '<div style="font-size:11px;color:#64748b;line-height:1.4;">周转 ' + (item.jike_fba_turnover != null ? item.jike_fba_turnover.toFixed(1) : '-') + '</div>'
           ) : '<span style="color:#cbd5e1;font-size:11px;">-</span>') +
         '</td>' +
-        '<td class="col-plugin">' +
-          '<div style="font-size:11px;color:#64748b;margin-bottom:4px;">流量经济视</div>' +
+        '<td class="col-plugin-l">' +
           (item.lqs ? '<div><strong>LQS</strong> ' + item.lqs + '</div>' : '') +
           (item.variant_count ? '<div><strong>变体</strong> ' + item.variant_count + '</div>' : '') +
           (item.launch_date ? '<div><strong>上架</strong> ' + item.launch_date + '</div>' : '') +
-          (item.total_keywords || item.natural_keywords || item.ad_keywords || item.suggest_keywords ?
-            '<div style="margin-top:4px;font-size:10px;color:#64748b;">关键词分布</div>' +
-            (item.natural_keywords ? '<div style="font-size:10px;">自然 <strong>' + item.natural_keywords + '</strong></div>' : '') +
-            (item.ad_keywords ? '<div style="font-size:10px;">广告 <strong>' + item.ad_keywords + '</strong></div>' : '') +
-            (item.suggest_keywords ? '<div style="font-size:10px;">推荐 <strong>' + item.suggest_keywords + '</strong></div>' : '')
+        '</td>' +
+        '<td class="col-plugin-r">' +
+          (item.natural_keywords || item.ad_keywords || item.suggest_keywords ?
+            '<div style="font-size:10px;color:#64748b;margin-bottom:2px;">关键词分布</div>' +
+            (item.natural_keywords ? '<div>自然 <strong>' + item.natural_keywords + '</strong></div>' : '') +
+            (item.ad_keywords ? '<div>广告 <strong>' + item.ad_keywords + '</strong></div>' : '') +
+            (item.suggest_keywords ? '<div>推荐 <strong>' + item.suggest_keywords + '</strong></div>' : '')
           : '') +
           (item.traffic_keywords_top && item.traffic_keywords_top.length ?
-            '<div style="margin-top:4px;font-size:10px;color:#64748b;">流量词 Top</div>' +
+            '<div style="font-size:10px;color:#64748b;margin-top:4px;margin-bottom:2px;">流量词 Top</div>' +
             item.traffic_keywords_top.slice(0, 4).map(function(kw) {
-              return '<div style="font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + kw.keyword + ' (' + (kw.type||'') + ')">' +
+              return '<div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + kw.keyword + ' (' + (kw.type||'') + ')">' +
                 kw.keyword + ' <span style="color:#7c3aed;">' + (kw.traffic_pct || '') + '</span></div>';
             }).join('')
           : '') +
