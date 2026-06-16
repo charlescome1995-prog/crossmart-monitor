@@ -78,7 +78,7 @@
       .then(function(d) {
         rawData = d;
         renderTable();
-        highlightTimeCell();
+        // highlightTimeCell removed
         se.textContent = '数据加载成功';
         se.style.background = '#d1fae5';
         se.style.color = '#065f46';
@@ -89,7 +89,7 @@
         se.style.background = '#fee2e2';
         se.style.color = '#991b1b';
         renderTable();
-        highlightTimeCell();
+        // highlightTimeCell removed
       });
   }
 
@@ -295,7 +295,7 @@
       var chgClass = item.chg > 0 ? 'up' : (item.chg < 0 ? 'dn' : '');
       var chgText = item.chg !== 0 ? (item.chg > 0 ? '\u25B2 $' + Math.abs(item.chg) : '\u25BC $' + Math.abs(item.chg)) : '';
       var diff = item.diff || {};
-      var diffHtml = buildDiffHtml(diff);
+      var diffHtml = buildDiffHtml(diff, item);
       var eventsHtml = activeEvents.length ? activeEvents.map(function(e) { return '<span class="e-tag ' + e.cls + '">' + e.txt + '</span>'; }).join('') : '<span class="e-none">无事件</span>';
       var priceStr = item.price != null ? '$' + item.price : '-';
       var ratingStr = item.rating != null ? item.rating : '-';
@@ -303,8 +303,9 @@
       var mainBsrStr = item.main_bsr != null ? '#' + item.main_bsr : '-';
       var subBsrStr = item.sub_bsr != null ? ' / #' + item.sub_bsr : '';
       var variantHtml = item.variant_status && item.variant_status !== '正常' ? ' <span style="color:#d97706;font-size:12px;">变体:' + item.variant_status + '</span>' : '';
-      var statusClass = hasActiveAnomaly ? 'changed' : 'stable';
-      var statusText = hasActiveAnomaly ? '有变化' : '正常';
+      var statusClass = hasActiveAnomaly || isStale ? 'changed' : 'stable';
+      var statusText = isStale ? '超期' : (hasActiveAnomaly ? '有变化' : '正常');
+      var isStale = rawData.updated && (Date.now() - new Date(rawData.updated).getTime()) / 60000 >= 720;
       var badgeHtml = (item.badges_current && item.badges_current.length) ? '<div style="margin-top:3px">' + item.badges_current.map(function(b) { return '<span style="background:#fef3c7;color:#d97706;font-size:10px;padding:1px 5px;border-radius:3px;margin-right:3px;font-weight:700;">' + b + '</span>'; }).join('') + '</div>' : '';
       var dealHtml = item.deal_activity && item.deal_activity !== '\u65e0' ? '<div style="color:#d97706;font-size:12px;">Deal: ' + item.deal_activity + '</div>' : '';
       var couponHtml = item.coupon && item.coupon !== '\u65e0' ? '<div style="color:#059669;font-size:12px;">代金券: ' + item.coupon + '</div>' : '';
@@ -354,7 +355,8 @@
             }).join('')
           : '<span style="color:#cbd5e1;">-</span>') +
         '</td>' +
-        '<td class="col-time"><div>' + (rawData.updated || '-') + '</div>' +
+        '<td class="col-time"><div class="status-indicator ' + statusClass + '">' + statusText + '</div>' +
+          '<div style="margin-top:4px;color:#64748b;">' + (rawData.updated || '-') + '</div>' +
           (item.launch_date ? '<div style="margin-top:4px;color:#64748b;">上架 ' + item.launch_date + '</div>' : '') +
           (eventsHtml && eventsHtml.indexOf('e-none') === -1 ? '<div style="margin-top:4px;">' + eventsHtml + '</div>' : '') + '</td>' +
       '</tr>';
@@ -362,39 +364,23 @@
     tb.innerHTML = html || '<tr><td colspan="15" style="text-align:center;padding:20px;">没有匹配数据</td></tr>';
     // Draw sparklines for each item with history data
     rawData.items.forEach(function(item) {
-      if (item.history_price && item.history_price.length > 1) {
+      if (item.history_price && item.history_price.length >= 1) {
         var c = document.getElementById('sp_' + item.asin + '_price');
         if (c) drawSparkline(c, item.history_price, item.diff && item.diff.price && item.diff.price.direction === 'dn' ? '#dc2626' : '#059669');
       }
-      if (item.history_main_bsr && item.history_main_bsr.length > 1) {
+      if (item.history_main_bsr && item.history_main_bsr.length >= 1) {
         var c = document.getElementById('sp_' + item.asin + '_main_bsr');
         if (c) drawSparkline(c, item.history_main_bsr, item.diff && item.diff.bsr && item.diff.bsr.direction === 'dn' ? '#dc2626' : '#e94560');
       }
-      if (item.history_sub_bsr && item.history_sub_bsr.length > 1) {
+      if (item.history_sub_bsr && item.history_sub_bsr.length >= 1) {
         var c = document.getElementById('sp_' + item.asin + '_sub_bsr');
         if (c) drawSparkline(c, item.history_sub_bsr, '#7c3aed');
       }
     });
   }
 
-  // 渲染完成后检测更新时间是否异常（>12h未更新标红）
-  function highlightTimeCell() {
-    var tc = document.getElementById('timeCell');
-    if (!tc || !rawData.updated) return;
-    var msAgo = Date.now() - new Date(rawData.updated).getTime();
-    var minAgo = msAgo / 60000;
-    if (minAgo >= 720) {
-      tc.style.color = '#dc2626';
-      tc.innerHTML = '\u274c ' + rawData.updated;
-    } else if (minAgo >= 30) {
-      tc.style.color = '#d97706';
-    } else {
-      tc.style.color = '#059669';
-    }
-  }
-
   function drawSparkline(canvas, data, color) {
-    if (!canvas || !data || data.length < 2) return;
+    if (!canvas || !data || data.length < 1) return;
     var ctx = canvas.getContext('2d');
     var w = canvas.width = 60;
     var h = canvas.height = 28;
@@ -415,8 +401,17 @@
     ctx.stroke();
   }
 
-  function buildDiffHtml(diff) {
-    if (!diff || Object.keys(diff).length === 0) return '<span class="diff-none">-</span>';
+  function buildDiffHtml(diff, item) {
+    if (!diff || Object.keys(diff).length === 0) {
+      // First-time ASIN: show absolute values
+      var abs = [];
+      if (item.price != null) abs.push('<div class="diff-item">价格: <span class="diff-val same">$' + item.price + '</span></div>');
+      if (item.reviews != null) abs.push('<div class="diff-item">评论: <span class="diff-val same">' + item.reviews + '</span></div>');
+      if (item.rating != null) abs.push('<div class="diff-item">评分: <span class="diff-val same">' + item.rating + '</span></div>');
+      if (item.main_bsr != null) abs.push('<div class="diff-item">BSR: <span class="diff-val same">#' + item.main_bsr + '</span></div>');
+      if (item.sub_bsr != null) abs.push('<div class="diff-item">小类: <span class="diff-val same">#' + item.sub_bsr + '</span></div>');
+      return abs.length ? abs.join('') : '<span class="diff-none">-</span>';
+    }
     var rows = [];
     if (diff.price) { var dir = diff.price.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '-'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> 价格: <span class="diff-val ' + dir + '">$' + diff.price.current + '</span></div>'); }
     if (diff.review_count) { var dir = diff.review_count.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '-'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> 评论: <span class="diff-val ' + dir + '">' + diff.review_count.change + '</span></div>'); }
