@@ -829,6 +829,7 @@ if __name__ == "__main__":
     parser.add_argument("--amazon", action="store_true")
     parser.add_argument("--discover", action="store_true")
     parser.add_argument("--status", action="store_true")
+    parser.add_argument("--keyword", action="store_true")
     args = parser.parse_args()
 
     if not args.asin:
@@ -849,6 +850,23 @@ if __name__ == "__main__":
             print("价格: %s" % prev.get("data",{}).get("price",""))
         else:
             print("无快照记录")
+        sys.exit(0)
+
+    if args.keyword:
+        import json as _json
+        cfg_path = os.path.join(os.path.dirname(BASE), "data", "user_config.json")
+        if os.path.exists(cfg_path):
+            with open(cfg_path, "r", encoding="utf-8") as _f:
+                _cfg = _json.load(_f)
+        else:
+            _cfg = {"keywords": []}
+        _keywords = [k.get("main","") for k in _cfg.get("keywords",[]) if k.get("main","")]
+        if not _keywords:
+            print("no keywords in user_config.json")
+            sys.exit(1)
+        from browser.fetch_keyword_asins import fetch_keyword_asins
+        _results = fetch_keyword_asins(_keywords)
+        print("keyword asins results:", len(_results))
         sys.exit(0)
 
     check_asin(args.asin.strip(), use_sprite=True, mode=mode)

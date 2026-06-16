@@ -439,11 +439,13 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
     jk = jike_data if jike_data else {}
 
     return {
-        "monitor_type": "ASIN",
+        "monitor_type": data.get("_asin_type") or "ASIN",
         "asin": asin,
-        "is_main": True,
-        "logic_type": "主监控",
-        "source_keyword": "",
+        "is_main": not not data.get("_source_keyword"),
+        "logic_type": ("关联竞品" if data.get("_asin_type") == "stable" else
+                         "变化ASIN" if data.get("_asin_type") == "variable" else
+                         "主监控"),
+        "source_keyword": data.get("_source_keyword") or "",
         "title": title[:200],
         "brand": brand[:60] if brand else '',
         "img": data.get('main_image', data.get('img', '')),
