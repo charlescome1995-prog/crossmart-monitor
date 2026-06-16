@@ -1,12 +1,12 @@
 {
-  "updated": "2026-06-15T23:13:08",
+  "updated": "2026-06-15T23:53:14",
   "items": [
     {
-      "monitor_type": "ASIN",
+      "monitor_type": "KW",
       "asin": "B017PCGABI",
       "is_main": false,
-      "logic_type": "主监控",
-      "source_keyword": "",
+      "logic_type": "关键词-Makeup Remover",
+      "source_keyword": "Makeup Remover",
       "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
       "brand": "Garnier",
       "img": "https://m.media-amazon.com/images/I/31vytHaYDRL._SY300_SX300_QL70_FMwebp_.jpg",
@@ -30,15 +30,15 @@
         },
         "review_count": {
           "current": 73259,
-          "prev": 73260,
-          "change": "-1",
-          "direction": "dn"
+          "prev": 73259,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
           "current": 54,
-          "prev": 55,
-          "change": "1",
-          "direction": "up"
+          "prev": 54,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
           "current": 1,
@@ -48,20 +48,20 @@
         },
         "badges": {
           "current": [
-            "BS",
             "AC",
             "NR",
             "A+"
           ],
           "prev": [
+            "BS",
             "AC",
             "NR",
             "A+"
           ],
-          "lost": [],
-          "gained": [
+          "lost": [
             "BS"
           ],
+          "gained": [],
           "direction": "changed"
         }
       },
@@ -76,55 +76,43 @@
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
-        "BS",
         "AC",
         "NR",
         "A+"
       ],
-      "badges_lost": [],
-      "coupon": "无",
+      "badges_lost": [
+        "BS"
+      ],
+      "coupon": "$8.38 off",
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
       "main_bsr": 54,
-      "sub_cat": "",
-      "expected_sub_cat": "",
+      "sub_cat": "Makeup Cleansing Water",
+      "expected_sub_cat": "Makeup Cleansing Water",
       "sub_bsr": 1,
       "history_main_bsr": [
         55,
+        54,
         54
       ],
       "history_sub_bsr": [
+        1,
         1,
         1
       ],
       "history_price": [
         8.82,
+        8.82,
         8.82
       ],
       "history_rating": [
+        4.7,
         4.7,
         4.7
       ],
       "events": [],
       "related_asins": [],
-      "jike_sales": null,
-      "jike_orders": null,
-      "jike_units": null,
-      "jike_session": null,
-      "jike_page_views": null,
-      "jike_conversion_rate": null,
-      "jike_rating": null,
-      "jike_reviews": null,
-      "jike_main_seller_rank": null,
-      "jike_seller_rank": null,
-      "jike_listing_state": null,
-      "jike_product_name": null,
-      "jike_acos": null,
-      "jike_ads_spend": null,
-      "jike_fba_quantity": null,
-      "jike_fba_turnover": null,
-      "jike_gross_profit_rate": null,
       "lqs": "",
       "variant_count": "",
       "launch_date": "",
@@ -259,7 +247,7 @@
       "price": 3.23,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 51240,
+      "reviews": 51239,
       "diff": {
         "price": {
           "current": 3.23,
@@ -275,10 +263,10 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 51240,
-          "prev": 51238,
-          "change": "+2",
-          "direction": "up"
+          "current": 51239,
+          "prev": 51240,
+          "change": "-1",
+          "direction": "dn"
         },
         "bsr": {
           "current": 7,
@@ -291,6 +279,24 @@
           "prev": 1,
           "change": "+0",
           "direction": "same"
+        },
+        "badges": {
+          "current": [
+            "BS",
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "prev": [
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "lost": [],
+          "gained": [
+            "BS"
+          ],
+          "direction": "changed"
         }
       },
       "listing_status": "正常",
@@ -304,32 +310,37 @@
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
+        "BS",
         "AC",
         "NR",
         "A+"
       ],
       "badges_lost": [],
-      "coupon": "$3.07 off",
+      "coupon": "15% off",
       "prime_discount": "10%",
       "main_cat": "Our Brands",
       "expected_main_cat": "Our Brands",
       "main_bsr": 7,
-      "sub_cat": "Cotton Pads & Rounds",
-      "expected_sub_cat": "Cotton Pads & Rounds",
+      "sub_cat": "",
+      "expected_sub_cat": "",
       "sub_bsr": 1,
       "history_main_bsr": [
+        7,
         7,
         7
       ],
       "history_sub_bsr": [
         1,
+        1,
         1
       ],
       "history_price": [
         3.23,
+        3.23,
         3.23
       ],
       "history_rating": [
+        4.7,
         4.7,
         4.7
       ],
@@ -396,31 +407,15 @@
         },
         "bsr": {
           "current": 140283,
-          "prev": 145146,
-          "change": "4863",
-          "direction": "up"
+          "prev": 140283,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
           "current": 249,
-          "prev": 252,
-          "change": "3",
-          "direction": "up"
-        },
-        "badges": {
-          "current": [
-            "BS",
-            "NR",
-            "A+"
-          ],
-          "prev": [
-            "NR",
-            "A+"
-          ],
-          "lost": [],
-          "gained": [
-            "BS"
-          ],
-          "direction": "changed"
+          "prev": 249,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -449,17 +444,21 @@
       "sub_bsr": 249,
       "history_main_bsr": [
         145146,
+        140283,
         140283
       ],
       "history_sub_bsr": [
+        249,
         249,
         249
       ],
       "history_price": [
         18.99,
+        18.99,
         18.99
       ],
       "history_rating": [
+        3.9,
         3.9,
         3.9
       ],
