@@ -338,22 +338,21 @@
           ) : '<span style="color:#cbd5e1;font-size:11px;">-</span>') +
         '</td>' +
         '<td class="col-plugin">' +
-          '<div style="font-size:11px;color:#64748b;margin-bottom:4px;">&#27993;&#37327;&#27982;&#35270;</div>' +
+          '<div style="font-size:11px;color:#64748b;margin-bottom:4px;">流量经济视</div>' +
           (item.lqs ? '<div><strong>LQS</strong> ' + item.lqs + '</div>' : '') +
-          (item.variant_count ? '<div><strong>&#21464;&#20307;</strong> ' + item.variant_count + '</div>' : '') +
-          (item.launch_date ? '<div><strong>&#19978;&#26552;</strong> ' + item.launch_date + '</div>' : '') +
+          (item.variant_count ? '<div><strong>变体</strong> ' + item.variant_count + '</div>' : '') +
+          (item.launch_date ? '<div><strong>上架</strong> ' + item.launch_date + '</div>' : '') +
           (item.total_keywords || item.natural_keywords || item.ad_keywords || item.suggest_keywords ?
-            '<div style="margin-top:4px;"><strong>&#27993;&#37327;&#35782;&#35782;&#20998;&#24067;</strong></div>' +
-            (item.total_keywords ? '<div>&#24635;&#35780;&#35782; <strong>' + item.total_keywords + '</strong></div>' : '') +
-            (item.natural_keywords ? '<div>&#33258;&#28982; <strong>' + item.natural_keywords + '</strong></div>' : '') +
-            (item.ad_keywords ? '<div>&#24191;&#21578; <strong>' + item.ad_keywords + '</strong></div>' : '') +
-            (item.suggest_keywords ? '<div>&#25551;&#33616; <strong>' + item.suggest_keywords + '</strong></div>' : '')
+            '<div style="margin-top:4px;font-size:10px;color:#64748b;">关键词分布</div>' +
+            (item.natural_keywords ? '<div style="font-size:10px;">自然 <strong>' + item.natural_keywords + '</strong></div>' : '') +
+            (item.ad_keywords ? '<div style="font-size:10px;">广告 <strong>' + item.ad_keywords + '</strong></div>' : '') +
+            (item.suggest_keywords ? '<div style="font-size:10px;">推荐 <strong>' + item.suggest_keywords + '</strong></div>' : '')
           : '') +
           (item.traffic_keywords_top && item.traffic_keywords_top.length ?
-            '<div style="margin-top:6px;"><strong>&#27993;&#37327;&#35782;Top</strong></div>' +
+            '<div style="margin-top:4px;font-size:10px;color:#64748b;">流量词 Top</div>' +
             item.traffic_keywords_top.slice(0, 4).map(function(kw) {
-              return '<div style="color:#7c3aed;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + kw.keyword + '">' +
-                kw.keyword + ' <span style="color:#64748b;">' + (kw.traffic_pct || '') + '</span></div>';
+              return '<div style="font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + kw.keyword + ' (' + (kw.type||'') + ')">' +
+                kw.keyword + ' <span style="color:#7c3aed;">' + (kw.traffic_pct || '') + '</span></div>';
             }).join('')
           : '') +
         '</td>' +

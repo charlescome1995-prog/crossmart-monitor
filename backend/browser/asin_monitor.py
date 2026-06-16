@@ -240,14 +240,23 @@ def extract_sprite_plugin_data(browser: CDPBrowser):
         for i in range(0, len(cell_texts), 6):
             if i + 5 >= len(cell_texts):
                 break
-            kw = cell_texts[i+1].strip()
+            # keyword：去掉末尾的中文翻译，只保留纯英文词
+            kw_raw = cell_texts[i+1].strip()
+            kw = re.sub(r'[\u4e00-\udd2f\uf900-\ufaaf\u3400-\u4dbf\U00020000-\U0002a6df\U0002a700-\U0002ebaf\U00030000-\U000323af]', '', kw_raw).strip()
+
+            # click_pct：只取第一行（百分比），去掉第二行的类型垃圾
+            # click_pct：cell[i+2] 的第一行
             click_raw = cell_texts[i+2].strip()
             click_lines = [l.strip() for l in click_raw.split('\n') if l.strip()]
             click_pct = click_lines[0] if click_lines else ''
-            kw_type = click_lines[1] if len(click_lines) > 1 else ''
+
+            # kw_type：cell[i+3]（自然搜索词/AC推荐词等）
+            kw_type = cell_texts[i+3].strip() if len(cell_texts) > i+3 else ''
+
+            # organic_rank：cell[i+4] 取开头的数字
             organic_raw = cell_texts[i+4].strip()
-            organic_lines = [l.strip() for l in organic_raw.split('\n') if l.strip()]
-            organic_rank = organic_lines[0] if organic_lines else ''
+            organic_m = re.search(r'^(\d+)', organic_raw)
+            organic_rank = organic_m.group(1) if organic_m else ''
             if kw:
                 keywords.append({
                     'keyword': kw,
