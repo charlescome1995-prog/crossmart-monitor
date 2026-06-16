@@ -1,10 +1,10 @@
 {
-  "updated": "2026-06-15T19:19:03",
+  "updated": "2026-06-15T23:13:08",
   "items": [
     {
       "monitor_type": "ASIN",
       "asin": "B017PCGABI",
-      "is_main": true,
+      "is_main": false,
       "logic_type": "主监控",
       "source_keyword": "",
       "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
@@ -13,7 +13,7 @@
       "price": 8.82,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 73260,
+      "reviews": 73259,
       "diff": {
         "price": {
           "current": 8.82,
@@ -29,22 +29,40 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 73260,
+          "current": 73259,
           "prev": 73260,
-          "change": "+0",
-          "direction": "same"
+          "change": "-1",
+          "direction": "dn"
         },
         "bsr": {
-          "current": 55,
+          "current": 54,
           "prev": 55,
-          "change": "+0",
-          "direction": "same"
+          "change": "1",
+          "direction": "up"
         },
         "sub_bsr": {
           "current": 1,
           "prev": 1,
           "change": "+0",
           "direction": "same"
+        },
+        "badges": {
+          "current": [
+            "BS",
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "prev": [
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "lost": [],
+          "gained": [
+            "BS"
+          ],
+          "direction": "changed"
         }
       },
       "listing_status": "正常",
@@ -58,29 +76,34 @@
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
+        "BS",
         "AC",
         "NR",
         "A+"
       ],
       "badges_lost": [],
-      "coupon": "$8.38 off",
+      "coupon": "无",
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 55,
-      "sub_cat": "Makeup Cleansing Water",
-      "expected_sub_cat": "Makeup Cleansing Water",
+      "main_bsr": 54,
+      "sub_cat": "",
+      "expected_sub_cat": "",
       "sub_bsr": 1,
       "history_main_bsr": [
-        55
+        55,
+        54
       ],
       "history_sub_bsr": [
+        1,
         1
       ],
       "history_price": [
+        8.82,
         8.82
       ],
       "history_rating": [
+        4.7,
         4.7
       ],
       "events": [],
@@ -145,16 +168,32 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 3794,
+          "current": 3735,
           "prev": 3794,
-          "change": "+0",
-          "direction": "same"
+          "change": "59",
+          "direction": "up"
         },
         "sub_bsr": {
-          "current": 436,
+          "current": 432,
           "prev": 436,
-          "change": "+0",
-          "direction": "same"
+          "change": "4",
+          "direction": "up"
+        },
+        "badges": {
+          "current": [
+            "BS",
+            "NR",
+            "A+"
+          ],
+          "prev": [
+            "NR",
+            "A+"
+          ],
+          "lost": [],
+          "gained": [
+            "BS"
+          ],
+          "direction": "changed"
         }
       },
       "listing_status": "正常",
@@ -168,28 +207,33 @@
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
+        "BS",
         "NR",
         "A+"
       ],
       "badges_lost": [],
-      "coupon": "$16.76 off",
-      "prime_discount": "未开启",
+      "coupon": "无",
+      "prime_discount": "90%",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 3794,
-      "sub_cat": "Facial Cleansing Washes",
-      "expected_sub_cat": "Facial Cleansing Washes",
-      "sub_bsr": 436,
+      "main_bsr": 3735,
+      "sub_cat": "",
+      "expected_sub_cat": "",
+      "sub_bsr": 432,
       "history_main_bsr": [
-        3794
+        3794,
+        3735
       ],
       "history_sub_bsr": [
-        436
+        432,
+        432
       ],
       "history_price": [
+        17.64,
         17.64
       ],
       "history_rating": [
+        4.7,
         4.7
       ],
       "events": [],
@@ -206,7 +250,7 @@
     {
       "monitor_type": "ASIN",
       "asin": "B09542G9ZN",
-      "is_main": true,
+      "is_main": false,
       "logic_type": "主监控",
       "source_keyword": "",
       "title": "Amazon Basics Hypoallergenic Cotton Rounds for Makeup Removal and Skincare, 100 Count, 1 Pack",
@@ -215,7 +259,7 @@
       "price": 3.23,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 51238,
+      "reviews": 51240,
       "diff": {
         "price": {
           "current": 3.23,
@@ -231,10 +275,10 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 51238,
+          "current": 51240,
           "prev": 51238,
-          "change": "+0",
-          "direction": "same"
+          "change": "+2",
+          "direction": "up"
         },
         "bsr": {
           "current": 7,
@@ -274,15 +318,19 @@
       "expected_sub_cat": "Cotton Pads & Rounds",
       "sub_bsr": 1,
       "history_main_bsr": [
+        7,
         7
       ],
       "history_sub_bsr": [
+        1,
         1
       ],
       "history_price": [
+        3.23,
         3.23
       ],
       "history_rating": [
+        4.7,
         4.7
       ],
       "events": [],
@@ -316,7 +364,7 @@
     {
       "monitor_type": "ASIN",
       "asin": "B0FVSS8SR1",
-      "is_main": true,
+      "is_main": false,
       "logic_type": "主监控",
       "source_keyword": "",
       "title": "22% Undecylenate Complex Antifungal Cream: Treats Most Athlete’s Foot, Jock Itch & Ringworm, Relieves Itching, Burning, Scaling & Cracking - Fungus Cream for Sensitive Skin, 60g Glass Jar",
@@ -347,16 +395,32 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 145146,
+          "current": 140283,
           "prev": 145146,
-          "change": "+0",
-          "direction": "same"
+          "change": "4863",
+          "direction": "up"
         },
         "sub_bsr": {
-          "current": 252,
+          "current": 249,
           "prev": 252,
-          "change": "+0",
-          "direction": "same"
+          "change": "3",
+          "direction": "up"
+        },
+        "badges": {
+          "current": [
+            "BS",
+            "NR",
+            "A+"
+          ],
+          "prev": [
+            "NR",
+            "A+"
+          ],
+          "lost": [],
+          "gained": [
+            "BS"
+          ],
+          "direction": "changed"
         }
       },
       "listing_status": "正常",
@@ -370,28 +434,33 @@
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
+        "BS",
         "NR",
         "A+"
       ],
       "badges_lost": [],
       "coupon": "无",
-      "prime_discount": "未开启",
+      "prime_discount": "22%",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 145146,
-      "sub_cat": "Antifungal Remedies",
-      "expected_sub_cat": "Antifungal Remedies",
-      "sub_bsr": 252,
+      "main_bsr": 140283,
+      "sub_cat": "",
+      "expected_sub_cat": "",
+      "sub_bsr": 249,
       "history_main_bsr": [
-        145146
+        145146,
+        140283
       ],
       "history_sub_bsr": [
-        252
+        249,
+        249
       ],
       "history_price": [
+        18.99,
         18.99
       ],
       "history_rating": [
+        3.9,
         3.9
       ],
       "events": [],
@@ -415,7 +484,7 @@
       "jike_gross_profit_rate": null,
       "lqs": "",
       "variant_count": "",
-      "launch_date": "11, 2025",
+      "launch_date": "",
       "total_keywords": "",
       "natural_keywords": "",
       "ad_keywords": "",
