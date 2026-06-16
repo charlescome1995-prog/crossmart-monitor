@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-15T17:04:58",
+  "updated": "2026-06-15T17:17:27",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -78,9 +78,13 @@
         55,
         55,
         55,
+        55,
+        55,
         55
       ],
       "history_sub_bsr": [
+        1,
+        1,
         1,
         1,
         1,
@@ -96,9 +100,13 @@
         8.82,
         8.82,
         8.82,
+        8.82,
+        8.82,
         8.82
       ],
       "history_rating": [
+        4.7,
+        4.7,
         4.7,
         4.7,
         4.7,
@@ -135,28 +143,28 @@
       "suggest_keywords": "126",
       "traffic_keywords_top": [
         {
-          "keyword": "face wash洗脸",
+          "keyword": "face wash",
           "traffic_pct": "19.38%",
-          "type": "- -->主要流量词",
-          "organic_rank": "46第1页,46/76今日02:53排名"
+          "type": "自然搜索词",
+          "organic_rank": "46"
         },
         {
-          "keyword": "makeup化妆",
+          "keyword": "makeup",
           "traffic_pct": "15.02%",
-          "type": "- -->主要流量词",
-          "organic_rank": "53第1页,53/56今日04:07排名"
+          "type": "自然搜索词",
+          "organic_rank": "53"
         },
         {
-          "keyword": "micellar water微晶水",
+          "keyword": "micellar water",
           "traffic_pct": "11.32%",
-          "type": "- -->主要流量词转化优质词",
-          "organic_rank": "8第1页,8/76昨日18:35排名"
+          "type": "自然搜索词AC推荐词",
+          "organic_rank": "8"
         },
         {
-          "keyword": "makeup remover卸妆液",
+          "keyword": "makeup remover",
           "traffic_pct": "6.33%",
-          "type": "- -->主要流量词转化优质词",
-          "organic_rank": "4第1页,4/60今日01:25排名"
+          "type": "自然搜索词AC推荐词",
+          "organic_rank": "4"
         }
       ]
     },
