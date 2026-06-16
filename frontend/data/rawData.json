@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-15T01:32:40",
+  "updated": "2026-06-15T16:55:29",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -13,7 +13,7 @@
       "price": 8.82,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 73239,
+      "reviews": 73260,
       "diff": {
         "price": {
           "current": 8.82,
@@ -29,14 +29,14 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 73239,
-          "prev": 73239,
+          "current": 73260,
+          "prev": 73260,
           "change": "+0",
           "direction": "same"
         },
         "bsr": {
-          "current": 54,
-          "prev": 54,
+          "current": 55,
+          "prev": 55,
           "change": "+0",
           "direction": "same"
         },
@@ -50,7 +50,7 @@
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
-      "img_changed": false,
+      "img_changed": true,
       "bullets_changed": false,
       "description_changed": false,
       "seller_changed": false,
@@ -67,20 +67,28 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 54,
+      "main_bsr": 55,
       "sub_cat": "Makeup Cleansing Water",
       "expected_sub_cat": "Makeup Cleansing Water",
       "sub_bsr": 1,
       "history_main_bsr": [
-        54
+        54,
+        55,
+        55
       ],
       "history_sub_bsr": [
+        1,
+        1,
         1
       ],
       "history_price": [
+        8.82,
+        8.82,
         8.82
       ],
       "history_rating": [
+        4.7,
+        4.7,
         4.7
       ],
       "events": [],
