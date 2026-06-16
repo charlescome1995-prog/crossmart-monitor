@@ -159,6 +159,52 @@ def extract_asin_marks_from_page(browser):
 
 
 
+def group_and_pick_top5(marks):
+    """
+    Pick up to 5 ASINs from all marked results:
+      Priority: natural_top1-3 > ad_top1 > new_natural_top1 > unknown_top1
+    Deduplicated. Stop when 5 collected.
+    Falls back to 'unknown' type if natural/ad/new don't fill all 5 slots.
+    """
+    natural = [m for m in marks if m.get("type") == "natural"]
+    ad = [m for m in marks if m.get("type") == "ad"]
+    new_list = [m for m in marks if m.get("type") == "new"]
+    unknown = [m for m in marks if m.get("type") == "unknown"]
+
+    def rank_num(m):
+        t = m.get("rank", "")
+        if not t:
+            return 999
+        nums = re.findall(r"\d+", t)
+        return int(nums[-1]) if nums else 999
+
+    natural.sort(key=rank_num)
+    ad.sort(key=rank_num)
+    new_list.sort(key=rank_num)
+    unknown.sort(key=rank_num)
+
+    selected = []
+    seen = set()
+
+    for pool, label in [
+        (natural[:3], "natural_top"),
+        (ad[:1], "ad_top"),
+        (new_list[:1], "new_natural_top"),
+        (unknown[:1], "unknown_top"),
+    ]:
+        for m in pool:
+            if m.get("asin") not in seen:
+                m["_label"] = label
+                selected.append(m)
+                seen.add(m.get("asin"))
+                if len(selected) >= 5:
+                    break
+        if len(selected) >= 5:
+            break
+
+    return selected[:5]
+
+
 def group_and_pick_top3(marks):
     """
     Pick up to 3 ASINs from all marked results:
@@ -296,7 +342,6 @@ def do_keyword_search(browser, keyword):
         print("     [" + t.ljust(15) + "] " + a + " | " + title)
 
     top_asins = group_and_pick_top5(marks)
-    top_asins = group_and_pick_top3(marks)
     print("  Top3 ASINs:")
     for a in top_asins:
         print("     [" + str(a.get("type", "")).ljust(20) + "] " + a.get("asin", "") + " | " + a.get("price", ""))
