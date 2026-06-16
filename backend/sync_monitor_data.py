@@ -442,7 +442,7 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "monitor_type": data.get("_asin_type") or "ASIN",
         "asin": asin,
         "is_main": not not data.get("_source_keyword"),
-        "logic_type": ("关联竞品" if data.get("_asin_type") == "stable" else
+        "logic_type": ("程定ASIN" if data.get("_asin_type") == "stable" else
                          "变化ASIN" if data.get("_asin_type") == "variable" else
                          "主监控"),
         "source_keyword": data.get("_source_keyword") or "",
