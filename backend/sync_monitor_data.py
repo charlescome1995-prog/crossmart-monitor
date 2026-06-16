@@ -672,19 +672,19 @@ def build_keyword_item(kw, a):
         "rating": rating,
         "reviews": reviews,
         "diff": kw_diff,
-        "listing_status": "正常",
-        "expected_listing_status": "正常",
+        "listing_status": (sd.get('listing_status', '') if sd else '') or "正常",
+        "expected_listing_status": (sd.get('expected_listing_status', '') if sd else '') or "正常",
         "title_changed": False,
         "img_changed": False,
         "bullets_changed": False,
         "description_changed": False,
-        "variant_status": "正常",
+        "variant_status": (sd.get('variant_status', '') if sd else '') or "正常",
         "variant_changed": False,
-        "deal_activity": "无",
+        "deal_activity": (sd.get('deal_activity', '') if sd else '') or "无",
         "badges_current": [],
         "badges_lost": [],
-        "coupon": "无",
-        "prime_discount": "未开启",
+        "coupon": (sd.get('coupon', '') if sd else '') or "无",
+        "prime_discount": (sd.get('prime_discount', '') if sd else '') or "未开启",
         "main_cat": main_cat,
         "expected_main_cat": main_cat,
         "main_bsr": main_bsr or 0,
@@ -894,20 +894,38 @@ def main():
         inner = latest.get('data', latest)
         top_asins = inner.get('top_asins', [])
 
+        # Build enriched top_asins with full snapshot data
+        _top_asins_full = []
+        for _a in top_asins:
+            _asin_key = _a.get('asin', '')
+            _asin_dir = os.path.join(DATA_DIR, f'asin_{_asin_key}')
+            _asin_latest = os.path.join(_asin_dir, 'latest.json')
+            _sd = None
+            if os.path.exists(_asin_latest):
+                try:
+                    with open(_asin_latest, 'r', encoding='utf-8') as _f:
+                        _sd = json.load(_f).get('data', {})
+                except:
+                    pass
+            _top_asins_full.append({
+                "asin": _asin_key,
+                "type": _a.get('type', ''),
+                "rank": _a.get('rank', ''),
+                "title": _a.get('title', '')[:200],
+                "price": (_sd.get('price', '') if _sd else '') or _a.get('price', ''),
+                "rating": (_sd.get('rating', '') if _sd else '') or _a.get('rating', ''),
+                "reviews": (_sd.get('review_count', _sd.get('reviews', '')) if _sd else '') or _a.get('reviews', ''),
+                "launch_date": (_sd.get('launch_date', '') if _sd else '') or '',
+                "listing_status": (_sd.get('listing_status', '') if _sd else '') or '',
+                "deal_activity": (_sd.get('deal_activity', '') if _sd else '') or '',
+                "coupon": (_sd.get('coupon', '') if _sd else '') or '',
+                "prime_discount": (_sd.get('prime_discount', '') if _sd else '') or '',
+            })
+
+
         keywords_data.append({
             "keyword": kw,
-            "top_asins": [
-                {
-                    "asin": a.get('asin', ''),
-                    "type": a.get('type', ''),
-                    "rank": a.get('rank', ''),
-                    "title": a.get('title', ''),
-                    "price": a.get('price', ''),
-                    "rating": a.get('rating', ''),
-                    "reviews": a.get('reviews', ''),
-                }
-                for a in top_asins
-            ]
+            "top_asins": _top_asins_full,
         })
         for a in top_asins:
             asin_key = a.get('asin', '')
