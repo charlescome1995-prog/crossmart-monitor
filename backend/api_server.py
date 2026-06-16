@@ -411,28 +411,12 @@ class ScrapeHandler(BaseHTTPRequestHandler):
             self._handle_trigger()
         elif self.path == "/api/token":
             self._handle_token()
-        elif path == "/api/clear-keyword":
+        elif self.path == "/api/clear-keyword":
             self._handle_clear_keyword()
         else:
             self._send_json({"error": "not found"}, 404)
 
-    
-    def _handle_clear_keyword(self):
-        """DELETE all keyword_asins data (kw_* dirs) to allow fresh restart."""
-        import glob as _glob, shutil as _shutil
-        kw_dirs = _glob.glob(os.path.join(PROJECT, "data", "kw_*"))
-        count = 0
-        for kw_dir in kw_dirs:
-            try:
-                _shutil.rmtree(kw_dir)
-                count += 1
-                log_message("Cleared: " + kw_dir)
-            except Exception as e:
-                log_message("Failed to clear " + kw_dir + ": " + str(e))
-        log_message("Cleared " + str(count) + " keyword data dirs")
-        self._send_json({"ok": True, "cleared": count})
-
-def _handle_token(self):
+    def _handle_token(self):
         """前端写入 GitHub Token(保存到本地文件,供轮询线程使用)"""
         content_len = int(self.headers.get("Content-Length", 0))
         body = b""
@@ -664,6 +648,21 @@ def _handle_token(self):
 
         t = threading.Thread(target=run, daemon=True)
         t.start()
+
+    def _handle_clear_keyword(self):
+        """DELETE all keyword_asins data (kw_* dirs) to allow fresh restart."""
+        import glob as _glob, shutil as _shutil
+        kw_dirs = _glob.glob(os.path.join(PROJECT, "data", "kw_*"))
+        count = 0
+        for kw_dir in kw_dirs:
+            try:
+                _shutil.rmtree(kw_dir)
+                count += 1
+                log_message("Cleared: " + kw_dir)
+            except Exception as e:
+                log_message("Failed to clear " + kw_dir + ": " + str(e))
+        log_message("Cleared " + str(count) + " keyword data dirs")
+        self._send_json({"ok": True, "cleared": count})
 
 def main():
     # 启动轮询线程
