@@ -342,20 +342,18 @@
           (item.variant_count ? '<div><strong>变体</strong> ' + item.variant_count + '</div>' : '') +
           (item.launch_date ? '<div><strong>上架</strong> ' + item.launch_date + '</div>' : '') +
         '</td>' +
+        '<td class="col-plugin-m">' +
+          (item.natural_keywords ? '<div>自然 <strong>' + item.natural_keywords + '</strong></div>' : '') +
+          (item.ad_keywords ? '<div>广告 <strong>' + item.ad_keywords + '</strong></div>' : '') +
+          (item.suggest_keywords ? '<div>推荐 <strong>' + item.suggest_keywords + '</strong></div>' : '') +
+        '</td>' +
         '<td class="col-plugin-r">' +
-          (item.natural_keywords || item.ad_keywords || item.suggest_keywords ?
-            '<div style="font-size:10px;color:#64748b;margin-bottom:2px;">关键词分布</div>' +
-            (item.natural_keywords ? '<div>自然 <strong>' + item.natural_keywords + '</strong></div>' : '') +
-            (item.ad_keywords ? '<div>广告 <strong>' + item.ad_keywords + '</strong></div>' : '') +
-            (item.suggest_keywords ? '<div>推荐 <strong>' + item.suggest_keywords + '</strong></div>' : '')
-          : '') +
           (item.traffic_keywords_top && item.traffic_keywords_top.length ?
-            '<div style="font-size:10px;color:#64748b;margin-top:4px;margin-bottom:2px;">流量词 Top</div>' +
             item.traffic_keywords_top.slice(0, 4).map(function(kw) {
               return '<div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + kw.keyword + ' (' + (kw.type||'') + ')">' +
                 kw.keyword + ' <span style="color:#7c3aed;">' + (kw.traffic_pct || '') + '</span></div>';
             }).join('')
-          : '') +
+          : '<span style="color:#cbd5e1;">-</span>') +
         '</td>' +
         '<td class="col-time"><div id="timeCell" style="font-size:12px;line-height:1.5;">' + (rawData.updated || '-') + '</div>' + (eventsHtml && eventsHtml.indexOf('e-none') === -1 ? '<div style="margin-top:4px;">' + eventsHtml + '</div>' : '') + '</td>' +
       '</tr>';
