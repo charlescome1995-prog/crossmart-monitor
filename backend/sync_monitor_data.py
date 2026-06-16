@@ -19,15 +19,81 @@ JIKE_FIELDS = [
 
 
 def load_jike_data(asin):
-    """从 processed/asin_ASIN/jike_latest.json 加载积加数据"""
+    """
+    从 processed/asin_ASIN/jike_latest.json 加载积加数据。
+    如果文件为空或不存在，尝试从快照的 sprite_ 字段构建后备数据。
+    """
     path = os.path.join(DATA_DIR, f'asin_{asin}', 'jike_latest.json')
-    if not os.path.exists(path):
+    if os.path.exists(path):
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                content = json.load(f)
+            # 如果积加 API 返回了有效数据，直接返回
+            if content and isinstance(content, dict) and any(content.values()):
+                return content
+        except Exception:
+            pass
+
+    # ── 积加数据为空，尝试从快照的 sprite_ 字段构建后备 ──
+    # 插件数据（销量、关键词等）映射到积加格式
+    latest_path = os.path.join(DATA_DIR, f'asin_{asin}', 'latest.json')
+    if not os.path.exists(latest_path):
         return {}
     try:
-        with open(path, 'r', encoding='utf-8') as f:
-            content = json.load(f)
-        # 直接返回 dict（key 是 ASIN），不需要包装层
-        return content if isinstance(content, dict) else {}
+        with open(latest_path, 'r', encoding='utf-8') as f:
+            snap = json.load(f)
+        data = snap.get('data', {})
+
+        # 检查是否有 sprite_ 字段
+        sprite_keys = [k for k in data.keys() if k.startswith('sprite_')]
+        if not sprite_keys:
+            return {}
+
+        s = data
+        # 销量（近30天）→ unitsOrdered
+        raw_sales = s.get('sprite_sales_30d_parent', '')
+        if raw_sales:
+            units = int(str(raw_sales).replace(',', ''))
+        else:
+            units = None
+
+        # 销售额 → orderProductSales
+        raw_rev = s.get('sprite_revenue_30d', '')
+        if raw_rev:
+            sales = float(str(raw_rev).replace(',', ''))
+        else:
+            sales = None
+
+        # 毛利率
+        raw_margin = s.get('sprite_gross_margin', '')
+        gross_rate = None
+        if raw_margin and '%' in str(raw_margin):
+            try:
+                gross_rate = float(str(raw_margin).replace('%', ''))
+            except:
+                pass
+
+        return {
+            'unitsOrdered': units,
+            'orderProductSales': sales,
+            'orders': None,
+            'sessions': None,
+            'pageViews': None,
+            'cvr': None,
+            'star': s.get('sprite_rating'),
+            'reviewQuantity': s.get('sprite_review_count'),
+            'mainSellerRank': s.get('sprite_bsr_rank'),
+            'sellerRank': s.get('sprite_bsr_sub_rank'),
+            'listingState': None,
+            'productName': s.get('sprite_product_name'),
+            'marketName': None,
+            'acos': None,
+            'adsSpend': None,
+            'fbaQuantity': None,
+            'fbaTurnover': None,
+            'salesGrossProfitRate': gross_rate,
+            '_from_sprite': True,  # 标记数据来源
+        }
     except Exception:
         return {}
 
@@ -370,7 +436,7 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
     diff = build_diff(data, prev_data)
 
     # 积加数据（主ASIN有，关联ASIN无）
-    jk = jike_data.get(asin, {}) if jike_data else {}
+    jk = jike_data if jike_data else {}
 
     return {
         "monitor_type": "ASIN",

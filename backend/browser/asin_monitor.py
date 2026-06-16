@@ -26,6 +26,36 @@ from browser.human_timer import get_daily_plan
 
 def extract_sprite_plugin_data(browser: CDPBrowser):
     """从亚马逊页面的卖家精灵插件 DOM 提取数据（插件面板在页面内嵌）"""
+    # ── Step 1: 点击插件的产品查询按钮，激活 quick-view 面板 ──
+    click_js = r"""
+    (function(){
+        // 找到产品查询按钮并点击
+        var btns = document.querySelectorAll('.nav-web');
+        for (var i = 0; i < btns.length; i++) {
+            if (btns[i].textContent.trim() === '产品查询') {
+                btns[i].click();
+                return 'clicked';
+            }
+        }
+        // 备选：找包含"产品查询"文字的任何可点击元素
+        var allEls = document.querySelectorAll('[class*="nav"], [class*="menu"]');
+        for (var i = 0; i < allEls.length; i++) {
+            if (allEls[i].textContent.trim() === '产品查询' && allEls[i].click) {
+                allEls[i].click();
+                return 'clicked-alt';
+            }
+        }
+        return 'not-found';
+    })()
+    """
+    click_result = browser.eval(click_js)
+    if click_result not in ('clicked', 'clicked-alt'):
+        print("  [插件] 产品查询按钮未找到，跳过")
+        return {}
+    print(f"  [插件] 已点击产品查询按钮，延迟等待面板加载...")
+    time.sleep(4)  # 等待 overlay 完全渲染
+
+    # ── Step 2: 提取 DOM 数据 ──
     js_get_plugin_text = r"""
 (function(){
     var ids = [
@@ -38,13 +68,24 @@ def extract_sprite_plugin_data(browser: CDPBrowser):
     for (var i = 0; i < ids.length; i++) {
         var el = document.getElementById(ids[i]);
         if (el) {
-            // 流量词用 innerHTML（Element UI 表格结构，textContent 解析不了）
             if (ids[i] === 'seller-sprite-extension-main-relation') {
                 data[ids[i]] = el.innerHTML;
             } else {
                 data[ids[i]] = (el.textContent||'').trim();
             }
         }
+    }
+    // 备用：直接从页面 DOM 树中提取插件数据（overlay 模式下）
+    // 找所有包含关键数据的 div
+    var dataEls = [];
+    document.querySelectorAll('div').forEach(function(el){
+        var txt = el.textContent || '';
+        if (txt.includes('质量得分') || txt.includes('近30天销量') || txt.includes('Listing销售额')) {
+            dataEls.push(el.textContent.trim());
+        }
+    });
+    if (dataEls.length > 0) {
+        data['fallback_text'] = dataEls.join(' | ');
     }
     return JSON.stringify(data);
 })()
@@ -72,10 +113,10 @@ def extract_sprite_plugin_data(browser: CDPBrowser):
     if lqs: data['lqs'] = lqs.group(1)
 
 
-    sales = re.search(r'近30天销量.+?\(父体\)[^:\d]*([\d,]+)', combined)
+    sales = re.search(r'近30天销量\(父体\)([\d,]+)', combined)
     if sales:
         data['sales_30d_parent'] = sales.group(1).replace(',', '')
-    sales_child = re.search(r'近30天销量.+?\(子体\)[^:\d]*([\d,]+)', combined)
+    sales_child = re.search(r'近30天销量\(子体\)([\d,]+)', combined)
     if sales_child:
         data['sales_30d_child'] = sales_child.group(1).replace(',', '')
 

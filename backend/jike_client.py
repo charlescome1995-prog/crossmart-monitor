@@ -70,11 +70,16 @@ def get_access_token(app_id: str, app_key: str) -> str:
     headers = {"Content-Type": "application/json"}
 
     resp = requests.post(url, json=payload, headers=headers, timeout=30)
-    resp.raise_for_status()
     result = resp.json()
 
-    if result.get("code") != 200:
-        raise Exception(f"获取 access_token 失败: {result}")
+    # 检查业务错误码
+    if result.get('code') == 40302:
+        # IP 无访问权限，抛出明确异常供调用方识别
+        raise PermissionError(f"积加API IP无访问权限: {result.get('messages', '')}")
+    if result.get('code') != 200:
+        raise Exception(f"获取 access_token 失败: code={result.get('code')}, msg={result.get('messages', '')}")
+    if resp.status_code != 200:
+        raise Exception(f"HTTP {resp.status_code}: {resp.text[:200]}")
 
     data = result.get("data", {})
     token = data.get("accessToken")
@@ -129,13 +134,25 @@ def fetch_sales_by_asin(token: str, asin: str,
     }
 
     resp = requests.post(url, json=payload, headers=headers, timeout=30)
-    resp.raise_for_status()
     result = resp.json()
+
+    # 检查业务错误码
+    code = result.get('code')
+    if code == 40302:
+        raise PermissionError(f"积加API IP无访问权限: {result.get('messages', '')}")
+    if code == 401 or code == 40005:
+        raise PermissionError(f"积加API Token无效/过期: {result.get('messages', '')}")
+    if code == 509:
+        raise RuntimeError(f"积加API 限流(509): {result.get('messages', '')}")
+    if code != 200:
+        raise RuntimeError(f"积加API 错误: code={code}, msg={result.get('messages', '')}")
 
     data_obj = result.get("data")
     if data_obj is None:
         return result, []
     rows = data_obj.get("rows") if isinstance(data_obj, dict) else []
+    if rows is None:
+        rows = []
     return result, rows
 
 
