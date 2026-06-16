@@ -162,9 +162,8 @@ def extract_asin_marks_from_page(browser):
 def group_and_pick_top5(marks):
     """
     Pick up to 5 ASINs from all marked results:
-      Priority: natural_top1-3 > ad_top1 > new_natural_top1 > unknown_top1
+      Priority: natural_top1-3 > ad_top1 > new_natural_top1 > unknown (fill remaining)
     Deduplicated. Stop when 5 collected.
-    Falls back to 'unknown' type if natural/ad/new don't fill all 5 slots.
     """
     natural = [m for m in marks if m.get("type") == "natural"]
     ad = [m for m in marks if m.get("type") == "ad"]
@@ -190,7 +189,6 @@ def group_and_pick_top5(marks):
         (natural[:3], "natural_top"),
         (ad[:1], "ad_top"),
         (new_list[:1], "new_natural_top"),
-        (unknown[:1], "unknown_top"),
     ]:
         for m in pool:
             if m.get("asin") not in seen:
@@ -201,6 +199,16 @@ def group_and_pick_top5(marks):
                     break
         if len(selected) >= 5:
             break
+
+    # Fill remaining slots from unknown
+    if len(selected) < 5:
+        for m in unknown:
+            if m.get("asin") not in seen:
+                m["_label"] = "unknown_top"
+                selected.append(m)
+                seen.add(m.get("asin"))
+                if len(selected) >= 5:
+                    break
 
     return selected[:5]
 
