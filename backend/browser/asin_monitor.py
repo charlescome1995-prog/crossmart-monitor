@@ -132,10 +132,10 @@ def extract_sprite_plugin_data(browser: CDPBrowser):
     if variants: data['variant_count'] = variants.group(1)
 
     # 上架时间：格式 "2022-03-16(1,548天)" 或 "2022-03-16 (1,548天)"
-    launch = re.search(r'(\d{4}-\d{2}-\d{2})\s*\((\d+)天\)', combined)
+    launch = re.search(r'(\d{4}-\d{2}-\d{2})\s*\(([\d,]+)\s*天\)', combined)
     if launch:
         data['launch_date'] = launch.group(1)
-        data['days_online'] = launch.group(2)
+        data['days_online'] = launch.group(2).replace(',', '').replace(',', '')
 
     # 毛利率：支持 N/A 或 12.5% 格式
     profit = re.search(r'毛利率[^:\d]*([\d.]+%|[N/n]\s*/\s*[A/a])', combined)
