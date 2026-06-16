@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-15T16:56:42",
+  "updated": "2026-06-15T17:00:46",
   "items": [
     {
       "monitor_type": "ASIN",
@@ -50,7 +50,7 @@
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
-      "img_changed": true,
+      "img_changed": false,
       "bullets_changed": false,
       "description_changed": false,
       "seller_changed": false,
@@ -74,9 +74,15 @@
       "history_main_bsr": [
         54,
         55,
+        55,
+        55,
+        55,
         55
       ],
       "history_sub_bsr": [
+        1,
+        1,
+        1,
         1,
         1,
         1
@@ -84,9 +90,15 @@
       "history_price": [
         8.82,
         8.82,
+        8.82,
+        8.82,
+        8.82,
         8.82
       ],
       "history_rating": [
+        4.7,
+        4.7,
+        4.7,
         4.7,
         4.7,
         4.7
@@ -110,14 +122,39 @@
       "jike_fba_quantity": null,
       "jike_fba_turnover": null,
       "jike_gross_profit_rate": null,
-      "lqs": "",
-      "variant_count": "",
+      "lqs": "10.0",
+      "variant_count": "4",
       "launch_date": "",
-      "total_keywords": "",
-      "natural_keywords": "",
-      "ad_keywords": "",
-      "suggest_keywords": "",
-      "traffic_keywords_top": []
+      "total_keywords": "733",
+      "natural_keywords": "643",
+      "ad_keywords": "1",
+      "suggest_keywords": "126",
+      "traffic_keywords_top": [
+        {
+          "keyword": "face wash洗脸",
+          "traffic_pct": "19.38%",
+          "type": "- -->主要流量词",
+          "organic_rank": "46第1页,46/76今日02:53排名"
+        },
+        {
+          "keyword": "makeup化妆",
+          "traffic_pct": "15.02%",
+          "type": "- -->主要流量词",
+          "organic_rank": "53第1页,53/56今日04:07排名"
+        },
+        {
+          "keyword": "micellar water微晶水",
+          "traffic_pct": "11.32%",
+          "type": "- -->主要流量词转化优质词",
+          "organic_rank": "8第1页,8/76昨日18:35排名"
+        },
+        {
+          "keyword": "makeup remover卸妆液",
+          "traffic_pct": "6.33%",
+          "type": "- -->主要流量词转化优质词",
+          "organic_rank": "4第1页,4/60今日01:25排名"
+        }
+      ]
     },
     {
       "monitor_type": "ASIN",
