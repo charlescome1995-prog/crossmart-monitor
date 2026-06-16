@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-15T23:53:14",
+  "updated": "2026-06-15T23:53:33",
   "items": [
     {
       "monitor_type": "KW",
@@ -491,5 +491,56 @@
       "traffic_keywords_top": []
     }
   ],
-  "keywords": []
+  "keywords": [
+    {
+      "keyword": "Makeup Remover",
+      "top_asins": [
+        {
+          "asin": "B017PCGABI",
+          "type": "unknown",
+          "rank": "",
+          "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
+          "price": "$8.82",
+          "rating": "",
+          "reviews": "13"
+        },
+        {
+          "asin": "B07HHCB2XG",
+          "type": "unknown",
+          "rank": "",
+          "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 2 Count",
+          "price": "$17.64",
+          "rating": "",
+          "reviews": ","
+        },
+        {
+          "asin": "B017PCGAXQ",
+          "type": "unknown",
+          "rank": "",
+          "title": "Garnier Micellar Water For Waterproof Makeup, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
+          "price": "$8.82",
+          "rating": "",
+          "reviews": "13"
+        },
+        {
+          "asin": "B078WPCDV1",
+          "type": "unknown",
+          "rank": "",
+          "title": "Garnier Micellar Water for Waterproof Makeup, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 2 Count",
+          "price": "$17.64",
+          "rating": "",
+          "reviews": ","
+        },
+        {
+          "asin": "B01M9F9JYH",
+          "type": "unknown",
+          "rank": "",
+          "title": "Garnier Micellar Cleansing Water, All-in-1 Makeup Remover and Facial Cleanser, For All Skin Types, 3.4 Fl Oz (100mL), 1 Count (Packaging May Vary)",
+          "price": "$3.82",
+          "rating": "",
+          "reviews": "3"
+        }
+      ]
+    }
+  ]
 }
