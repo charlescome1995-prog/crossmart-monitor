@@ -192,6 +192,12 @@ def fetch_keyword_asins(keywords, browser=None):
                     if latest:
                         print('    [cache] ' + asin)
                         d = latest.get('data', {})
+                        if not d.get('title'):
+                            # Stable ASIN but first time seen - crawl to populate cache
+                            print('    [first-crawl stable] ' + asin)
+                            d = fetch_asin_full(browser, asin, kw, source='stable')
+                            if d and d.get('title'):
+                                save_asin_snapshot(asin, d)
                         d['_source_keyword'] = kw
                         d['_asin_type'] = 'stable'
                         results.append({'asin': asin, 'keyword': kw, 'data': d, 'asin_type': 'stable'})

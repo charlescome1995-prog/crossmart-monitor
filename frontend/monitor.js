@@ -10,6 +10,14 @@
     if (ti && saved) ti.value = saved;
     loadGitHubConfig();
     loadRawData();
+    var clearBtn = document.getElementById('btnClearKw');
+    if (clearBtn) clearBtn.addEventListener('click', function() {
+      if (!confirm('\u786e\u5b9a\u6e05\u9664\u6240\u6709\u5173\u952e\u8bcd\u6570\u636e\u5417\uff1f\u8fd9\u5c06\u91cd\u65b0\u8bc6\u522b\u6240\u6709ASIN\u3002')) return;
+      fetch('/api/clear-keyword', {method:'POST',headers:{'Content-Type':'application/json'}})
+        .then(function(r){return r.json()})
+        .then(function(){ loadRawData(); })
+        .catch(function(){alert('\u6e05\u9664\u5931\u8d25');});
+    });
   });
 
   function loadGitHubConfig() {
