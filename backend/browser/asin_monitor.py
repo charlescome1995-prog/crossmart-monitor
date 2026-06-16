@@ -701,7 +701,7 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
                     print(f"  页面加载完成（耗时 {elapsed:.1f}s）")
 
             # 检查插件就绪（每轮都检查）
-            if not plugin_ready and mode == "full":
+            if not plugin_ready and mode in ("full", "amazon"):
                 try:
                     candidate = extract_sprite_plugin_data(browser)
                     if candidate:
@@ -737,7 +737,7 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
                 amazon_data["bsr"] = bsr
         print_card(amazon_data)
 
-        if mode == "full":
+        if mode in ("full", "amazon"):
             if plugin_ready:
                 plugin_data = extract_sprite_plugin_data(browser)
                 if plugin_data:
@@ -822,51 +822,53 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
     print("="*50)
 
 
-if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("asin", nargs="?")
-    parser.add_argument("--amazon", action="store_true")
-    parser.add_argument("--discover", action="store_true")
-    parser.add_argument("--status", action="store_true")
-    parser.add_argument("--keyword", action="store_true")
-    args = parser.parse_args()
-
-    if not args.asin:
-        print("用法: python asin_monitor.py ASIN [--amazon] [--discover] [--status]")
-        sys.exit(1)
-
-    mode = "full"
-    if args.amazon:
-        mode = "amazon"
-    elif args.discover:
-        mode = "discover"
-
-    if args.status:
-        from browser.snapshot_storage import load_latest_asin
-        prev = load_latest_asin(args.asin)
-        if prev:
-            print("已有快照，时间: %s" % prev.get("_timestamp","未知"))
-            print("价格: %s" % prev.get("data",{}).get("price",""))
-        else:
-            print("无快照记录")
-        sys.exit(0)
-
-    if args.keyword:
-        import json as _json
-        cfg_path = os.path.join(os.path.dirname(BASE), "data", "user_config.json")
-        if os.path.exists(cfg_path):
-            with open(cfg_path, "r", encoding="utf-8") as _f:
-                _cfg = _json.load(_f)
-        else:
-            _cfg = {"keywords": []}
-        _keywords = [k.get("main","") for k in _cfg.get("keywords",[]) if k.get("main","")]
-        if not _keywords:
-            print("no keywords in user_config.json")
+def main():
+        import argparse
+        parser = argparse.ArgumentParser()
+        parser.add_argument("asin", nargs="?")
+        parser.add_argument("--amazon", action="store_true")
+        parser.add_argument("--discover", action="store_true")
+        parser.add_argument("--status", action="store_true")
+        parser.add_argument("--keyword", action="store_true")
+        args = parser.parse_args()
+    
+        if not args.asin:
+            print("用法: python asin_monitor.py ASIN [--amazon] [--discover] [--status]")
             sys.exit(1)
-        from browser.fetch_keyword_asins import fetch_keyword_asins
-        _results = fetch_keyword_asins(_keywords)
-        print("keyword asins results:", len(_results))
-        sys.exit(0)
-
-    check_asin(args.asin.strip(), use_sprite=True, mode=mode)
+    
+        mode = "full"
+        if args.amazon:
+            mode = "amazon"
+        elif args.discover:
+            mode = "discover"
+    
+        if args.status:
+            from browser.snapshot_storage import load_latest_asin
+            prev = load_latest_asin(args.asin)
+            if prev:
+                print("已有快照，时间: %s" % prev.get("_timestamp","未知"))
+                print("价格: %s" % prev.get("data",{}).get("price",""))
+            else:
+                print("无快照记录")
+            sys.exit(0)
+    
+        if args.keyword:
+            import json as _json
+            cfg_path = os.path.join(os.path.dirname(BASE), "data", "user_config.json")
+            if os.path.exists(cfg_path):
+                with open(cfg_path, "r", encoding="utf-8") as _f:
+                    _cfg = _json.load(_f)
+            else:
+                _cfg = {"keywords": []}
+            _keywords = [k.get("main","") for k in _cfg.get("keywords",[]) if k.get("main","")]
+            if not _keywords:
+                print("no keywords in user_config.json")
+                sys.exit(1)
+            from browser.fetch_keyword_asins import fetch_keyword_asins
+            _results = fetch_keyword_asins(_keywords)
+            print("keyword asins results:", len(_results))
+            sys.exit(0)
+    
+        check_asin(args.asin.strip(), use_sprite=True, mode=mode)
+if __name__ == "__main__":
+    main()
