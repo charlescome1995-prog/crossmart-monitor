@@ -340,7 +340,6 @@
         '<td class="col-plugin-l">' +
           (item.lqs ? '<div><strong>LQS</strong> ' + item.lqs + '</div>' : '') +
           (item.variant_count ? '<div><strong>变体</strong> ' + item.variant_count + '</div>' : '') +
-          (item.launch_date ? '<div><strong>上架</strong> ' + item.launch_date + '</div>' : '') +
         '</td>' +
         '<td class="col-plugin-m">' +
           (item.natural_keywords ? '<div>自然 <strong>' + item.natural_keywords + '</strong></div>' : '') +
@@ -355,7 +354,9 @@
             }).join('')
           : '<span style="color:#cbd5e1;">-</span>') +
         '</td>' +
-        '<td class="col-time"><div id="timeCell" style="font-size:12px;line-height:1.5;">' + (rawData.updated || '-') + '</div>' + (eventsHtml && eventsHtml.indexOf('e-none') === -1 ? '<div style="margin-top:4px;">' + eventsHtml + '</div>' : '') + '</td>' +
+        '<td class="col-time"><div>' + (rawData.updated || '-') + '</div>' +
+          (item.launch_date ? '<div style="margin-top:4px;color:#64748b;">上架 ' + item.launch_date + '</div>' : '') +
+          (eventsHtml && eventsHtml.indexOf('e-none') === -1 ? '<div style="margin-top:4px;">' + eventsHtml + '</div>' : '') + '</td>' +
       '</tr>';
     });
     tb.innerHTML = html || '<tr><td colspan="15" style="text-align:center;padding:20px;">没有匹配数据</td></tr>';
