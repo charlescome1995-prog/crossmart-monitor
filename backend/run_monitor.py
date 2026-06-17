@@ -364,19 +364,27 @@ def run_monitor(config_override=None):
             print("  ASIN " + main_asin + " 执行失败，继续")
         else:
             # 主ASIN抓取成功后，调用积加API
+            asin_dir = os.path.join(PROJECT_ROOT, "backend", "data", "processed", f"asin_{main_asin}")
+            os.makedirs(asin_dir, exist_ok=True)
+            jike_path = os.path.join(asin_dir, "jike_latest.json")
             if JIKE_AVAILABLE:
                 try:
                     print("  调用积加 API... ")
                     jike_data = get_jike_data_for_asins([main_asin])
-                    # 保存积加数据到 processed 目录
-                    asin_dir = os.path.join(PROJECT_ROOT, "backend", "data", "processed", f"asin_{main_asin}")
-                    os.makedirs(asin_dir, exist_ok=True)
-                    jike_path = os.path.join(asin_dir, "jike_latest.json")
                     with open(jike_path, "w", encoding="utf-8") as f:
-                        json.dump(jike_data, f)
+                        json.dump(jike_data, f, ensure_ascii=False, indent=2)
                     print(f"  积加数据已保存: {jike_path}")
                 except Exception as e:
-                    print(f"  积加API调用失败: {e}")
+                    # 即使调用失败也写一个标记文件，sync 时 fallback 到卖家精灵数据
+                    err_marker = {"_error": str(e), "_failed_at": datetime.now().isoformat()}
+                    with open(jike_path, "w", encoding="utf-8") as f:
+                        json.dump(err_marker, f, ensure_ascii=False, indent=2)
+                    print(f"  积加API调用失败（已写错误标记）: {e}")
+            else:
+                # JIKE 不可用也写空文件，避免 sync 走未定义路径
+                with open(jike_path, "w", encoding="utf-8") as f:
+                    json.dump({}, f)
+                print(f"  积加模块未加载（已写空文件）")
         time.sleep(5)  # 积加 API 限流：每 5 秒最多 1 次请求
         time.sleep(random.randint(20, 50))
 

@@ -22,12 +22,18 @@ def load_jike_data(asin):
     """
     从 processed/asin_ASIN/jike_latest.json 加载积加数据。
     如果文件为空或不存在，尝试从快照的 sprite_ 字段构建后备数据。
+
+    返回格式：始终是扁平的 {orderProductSales:..., unitsOrdered:..., ...}
+    支持检测嵌套格式 {asin: data}（jike_client 原始格式）并自动解包。
     """
     path = os.path.join(DATA_DIR, f'asin_{asin}', 'jike_latest.json')
     if os.path.exists(path):
         try:
             with open(path, 'r', encoding='utf-8') as f:
                 content = json.load(f)
+            # 嵌套格式：{asin: data} → unwrap 到 {data}
+            if isinstance(content, dict) and asin in content and isinstance(content[asin], dict):
+                content = content[asin]
             # 如果积加 API 返回了有效数据，直接返回
             if content and isinstance(content, dict) and any(content.values()):
                 return content
@@ -825,9 +831,13 @@ def main():
         jike_data = load_jike_data(asin)
 
         item = build_rawdata_item(asin, data, all_snaps, jike_data=jike_data)
-        # 判断 ASIN 来源：data._asin_type 优先（stable/variable），未设时按归属兜底
+        # 判断 ASIN 来源：主ASIN > user_related > keyword，未设时按归属兑底
         asin_type = data.get('_asin_type', '')
-        if asin in user_related:
+        if asin in user_mains:
+            # 主ASIN：保留全部 jike_* 字段；保持 build_rawdata_item 的默认 monitor_type/logic_type
+            item['is_main'] = True
+            item['source_keyword'] = ''
+        elif asin in user_related:
             item['is_main'] = False
             # 关联竞品无积加数据，清理字段
             for jf in JIKE_FIELDS:
