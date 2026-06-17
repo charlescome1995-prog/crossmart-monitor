@@ -10,14 +10,6 @@
     if (ti && saved) ti.value = saved;
     loadGitHubConfig();
     loadRawData();
-    var clearBtn = document.getElementById('btnClearKw');
-    if (clearBtn) clearBtn.addEventListener('click', function() {
-      if (!confirm('\u786e\u5b9a\u6e05\u9664\u6240\u6709\u5173\u952e\u8bcd\u6570\u636e\u5417\uff1f\u8fd9\u5c06\u91cd\u65b0\u8bc6\u522b\u6240\u6709ASIN\u3002')) return;
-      fetch('/api/clear-keyword', {method:'POST',headers:{'Content-Type':'application/json'}})
-        .then(function(r){return r.json()})
-        .then(function(){ loadRawData(); })
-        .catch(function(){alert('\u6e05\u9664\u5931\u8d25');});
-    });
   });
 
   function loadGitHubConfig() {
@@ -86,7 +78,6 @@
       .then(function(d) {
         rawData = d;
         renderTable();
-        renderKeywordAsinsBox();
         // highlightTimeCell removed
         se.textContent = '数据加载成功';
         se.style.background = '#d1fae5';
@@ -275,9 +266,6 @@
       }));
     });
   }
-
-  function renderKeywordAsinsBox(){var b=document.querySelector('.keyword-asins-box');if(!b)return;var ks=document.getElementById('kwSelect');var td=document.getElementById('kaTags');if(!ks||!td)return;var kws=rawData.keywords||[];var cv=ks.value;ks.innerHTML='<option value="">-- --</option>';kws.forEach(function(k){var o=document.createElement('option');o.value=k.keyword;o.textContent=k.keyword;ks.appendChild(o)});if(cv&&kws.some(function(k){return k.keyword===cv})){ks.value=cv}else if(kws.length>0){ks.value=kws[0].keyword}ks.onchange=function(){renderKwTags(ks.value)};renderKwTags(ks.value)}
-  function renderKwTags(kw){var td=document.getElementById('kaTags');if(!td)return;td.innerHTML='';if(!kw)return;var kws=rawData.keywords||[];var ke=kws.find(function(k){return k.keyword===kw});if(!ke||!ke.top_asins||!ke.top_asins.length){td.innerHTML='<span style="font-size:12px;color:#94a3b8;"> </span>';return}var items=rawData.items||[];ke.top_asins.forEach(function(a){var asin=a.asin||a;var item=items.find(function(i){return i.asin===asin});var typ=(item && (item.logic_type==='稳定ASIN' || item.monitor_type==='stable')) ? 'stable' : ((item && (item.logic_type==='变化ASIN' || item.monitor_type==='variable')) ? 'variable' : 'stable');var tag=document.createElement('span');tag.className='asin-tag '+typ;tag.textContent=(typ==='variable'?'\u21bb ':'')+asin;td.appendChild(tag)});var bx=document.querySelector('.keyword-asins-box');if(bx)bx.style.display='block'}
 
   function renderTable() {
     var tb = document.getElementById('tableBody');
