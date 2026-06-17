@@ -65,4 +65,4 @@ if __name__ == "__main__":
     print(f"OpenAI URL:    {OPENAI_BASE_URL}")
     print(f"Chat model:    {CHAT_MODEL}")
     print(f"Embedding:     {EMBEDDING_MODEL}")
-    print(f"API Key set:   {'✅' if is_configured() else '❌ (set $env:ARK_API_KEY)'}")
+    print(f"API Key set:   {'YES' if is_configured() else 'NO  (set $env:ARK_API_KEY)'}")
