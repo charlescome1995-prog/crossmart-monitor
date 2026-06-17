@@ -1,5 +1,81 @@
 {
-  "updated": "",
+  "updated": "2026-06-16T19:58:53",
   "items": [],
-  "keywords": []
+  "keywords": [
+    {
+      "keyword": "Makeup Remover",
+      "top_asins": [
+        {
+          "asin": "B017PCGABI",
+          "type": "unknown",
+          "rank": "",
+          "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
+          "price": "$8.82",
+          "rating": "",
+          "reviews": "13",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "",
+          "coupon": "",
+          "prime_discount": ""
+        },
+        {
+          "asin": "B017PCGAXQ",
+          "type": "unknown",
+          "rank": "",
+          "title": "Garnier Micellar Water For Waterproof Makeup, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
+          "price": "$8.82",
+          "rating": "",
+          "reviews": "13",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "",
+          "coupon": "",
+          "prime_discount": ""
+        },
+        {
+          "asin": "B07HHCB2XG",
+          "type": "unknown",
+          "rank": "",
+          "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 2 Count",
+          "price": "$17.64",
+          "rating": "",
+          "reviews": ",",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "",
+          "coupon": "",
+          "prime_discount": ""
+        },
+        {
+          "asin": "B01M9F9JYH",
+          "type": "unknown",
+          "rank": "",
+          "title": "Garnier Micellar Cleansing Water, All-in-1 Makeup Remover and Facial Cleanser, For All Skin Types, 3.4 Fl Oz (100mL), 1 Count (Packaging May Vary)",
+          "price": "$3.82",
+          "rating": "",
+          "reviews": "3",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "",
+          "coupon": "",
+          "prime_discount": ""
+        },
+        {
+          "asin": "B00U2VQZDS",
+          "type": "unknown",
+          "rank": "",
+          "title": "Neutrogena Makeup Remover Wipes Micellar Alcohol-Free Face Towelettes Remove Waterproof Mascara & Oil, Compostable 100% Plant-Based Cloth, Dermatologist & Ophthalmologist Tested, Twin Pack 2 x 25 ct",
+          "price": "$9.97",
+          "rating": "",
+          "reviews": "25",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "",
+          "coupon": "",
+          "prime_discount": ""
+        }
+      ]
+    }
+  ]
 }
