@@ -10,6 +10,7 @@ test_*.py
 replace_*.py
 backend/data/processed/
 backend/data/cache/
+_archive/
 backend/data/user_config.json
 backend/data/trigger.json
 backend/data/gh_token.txt

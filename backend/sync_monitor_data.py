@@ -930,11 +930,15 @@ def main():
         diff = subprocess.run(['git', 'diff', '--cached', '--stat'], capture_output=True, text=True, cwd=BASE)
         if diff.stdout.strip():
             subprocess.run(['git', 'commit', '-m', 'auto: sync rawData.json with keywords + diff'], capture_output=True, cwd=BASE)
-            result = subprocess.run(['git', 'push'], capture_output=True, text=True, cwd=BASE)
-            if result.returncode == 0:
+            # 先 pull --rebase 同步远程变更，避免 push 被拒
+            pull = subprocess.run(['git', 'pull', '--rebase', 'origin', 'main'], capture_output=True, text=True, cwd=BASE)
+            if pull.returncode != 0:
+                print('⚠️ pull --rebase 失败:', pull.stderr[:200])
+            push = subprocess.run(['git', 'push', 'origin', 'main'], capture_output=True, text=True, cwd=BASE)
+            if push.returncode == 0:
                 print('🚀 rawData.json 已推送至 GitHub')
             else:
-                print('⚠️ 推送失败:', result.stderr[:200])
+                print('⚠️ 推送失败:', push.stderr[:200])
         else:
             print('ℹ️ rawData.json 无变化，跳过推送')
     except Exception as e:
