@@ -442,7 +442,7 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "monitor_type": data.get("_asin_type") or "ASIN",
         "asin": asin,
         "is_main": not not data.get("_source_keyword"),
-        "logic_type": ("程定ASIN" if data.get("_asin_type") == "stable" else
+        "logic_type": ("稳定ASIN" if data.get("_asin_type") == "stable" else
                          "变化ASIN" if data.get("_asin_type") == "variable" else
                          "主监控"),
         "source_keyword": data.get("_source_keyword") or "",
@@ -825,22 +825,27 @@ def main():
         jike_data = load_jike_data(asin)
 
         item = build_rawdata_item(asin, data, all_snaps, jike_data=jike_data)
-        # 判断 ASIN 来源：user_related > keyword > 主ASIN
+        # 判断 ASIN 来源：data._asin_type 优先（stable/variable），未设时按归属兜底
+        asin_type = data.get('_asin_type', '')
         if asin in user_related:
-            item['monitor_type'] = 'ASIN'
-            item['logic_type'] = '关联竞品'
             item['is_main'] = False
             # 关联竞品无积加数据，清理字段
             for jf in JIKE_FIELDS:
                 item.pop(jf, None)
+            # 只有 _asin_type 未设时才覆盖（保持默认）
+            if not asin_type:
+                item['monitor_type'] = 'ASIN'
+                item['logic_type'] = '关联竞品'
         elif asin in kw_asins:
-            item['monitor_type'] = 'KW'
-            item['logic_type'] = '关键词-' + kw_asins[asin]
-            item['source_keyword'] = kw_asins[asin]
             item['is_main'] = False
+            item['source_keyword'] = kw_asins[asin]
             # 关键词 ASIN 无积加数据，清理字段
             for jf in JIKE_FIELDS:
                 item.pop(jf, None)
+            # 只有 _asin_type 未设时才覆盖为 KW（build_rawdata_item 已处理 stable/variable）
+            if not asin_type:
+                item['monitor_type'] = 'KW'
+                item['logic_type'] = '关键词-' + kw_asins[asin]
         # 否则保持 build_rawdata_item 默认值（主监控），保留积加数据
         if asin not in seen_asins:
             seen_asins[asin] = item

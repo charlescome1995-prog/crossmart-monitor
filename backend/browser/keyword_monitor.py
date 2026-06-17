@@ -825,14 +825,27 @@ def check_keyword(keyword):
     with open(latest_file, "w", encoding="utf-8") as f:
         json.dump(snapshot, f, ensure_ascii=False, indent=2)
 
-    # Keyword related ASINs: save on first run (keep-old)
+    # Keyword related ASINs: incremental merge (keep-old + add-new)
+    # - 不删除已存在的 ASIN（用户手动配的可能还在用）
+    # - 新出现的 ASIN 添加进来
+    # - 已消失但历史出现过的 ASIN 保留（用于变动的轮转历史）
     existing = load_kw_related_asins(keyword)
-    if not existing:
-        asins_to_save = [{"asin": a.get("asin", ""), "name": a.get("title", "")[:60]} for a in top_asins]
-        save_kw_related_asins(keyword, asins_to_save)
-        print("  [kw_rel] First run, saved " + str(len(asins_to_save)) + " related ASINs")
+    existing_map = {a.get('asin', ''): a for a in existing if a.get('asin', '')}
+    new_count = 0
+    for a in top_asins:
+        asin = a.get('asin', '')
+        if asin and asin not in existing_map:
+            existing_map[asin] = {"asin": asin, "name": a.get("title", "")[:60]}
+            new_count += 1
+    merged = list(existing_map.values())
+    if new_count > 0 or not existing:
+        save_kw_related_asins(keyword, merged)
+        if not existing:
+            print("  [kw_rel] First run, saved " + str(len(merged)) + " related ASINs")
+        else:
+            print("  [kw_rel] Merged: kept " + str(len(existing)) + " + added " + str(new_count) + " = " + str(len(merged)))
     else:
-        print("  [kw_rel] Already cached " + str(len(existing)) + " related ASINs (keep-old)")
+        print("  [kw_rel] Cached " + str(len(merged)) + " related ASINs (no change)")
 
     browser.close()
 

@@ -309,6 +309,42 @@ def run_monitor(config_override=None):
                     print(f"  关键词ASIN {aasin} 执行失败，继续")
                 time.sleep(random.randint(20, 50))
 
+        # ── Phase A3: 关键词 ASIN 分类（stable/variable）──
+        #  规则：连续3次出现->stable，否则->variable（首个非 stable）
+        try:
+            from browser.fetch_keyword_asins import classify_keyword_asins
+            _cls = classify_keyword_asins(kw, top5)
+            stable_set = set(_cls.get('stable') or [])
+            variable_asin = _cls.get('variable')
+            print(f"  [cls] stable={sorted(stable_set)} variable={variable_asin}")
+            # 把分类结果写入每个 asin 的 latest.json.data._asin_type
+            for a in top5:
+                _asin = a.get('asin', '').strip()
+                if not _asin:
+                    continue
+                _asin_latest = os.path.join(DATA_DIR, 'processed', f'asin_{_asin}', 'latest.json')
+                if not os.path.exists(_asin_latest):
+                    continue
+                with open(_asin_latest, 'r', encoding='utf-8') as _f:
+                    _snap = json.load(_f)
+                _d = _snap.get('data', _snap)
+                if _asin in stable_set:
+                    _d['_asin_type'] = 'stable'
+                elif _asin == variable_asin:
+                    _d['_asin_type'] = 'variable'
+                else:
+                    _d['_asin_type'] = 'new'
+                _d['_source_keyword'] = kw
+                if 'data' in _snap and isinstance(_snap['data'], dict):
+                    _snap['data'] = _d
+                else:
+                    _snap = {'asin': _asin, 'timestamp': _d.get('timestamp', datetime.now().isoformat()), 'data': _d}
+                with open(_asin_latest, 'w', encoding='utf-8') as _f:
+                    json.dump(_snap, _f, ensure_ascii=False, indent=2)
+                print(f"  [cls] {_asin} -> {_d['_asin_type']}")
+        except Exception as e:
+            print(f"  [cls] 分类失败: {e}")
+
     # ── Phase B: ASIN 监控（主ASIN + 关联ASIN）──
     random.shuffle(asins)
     for asin_entry in asins:
