@@ -398,6 +398,7 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "monitor_type": data.get("_asin_type") or "ASIN",
         "asin": asin,
         "is_main": not not data.get("_source_keyword"),
+        "is_stale": bool(data.get("_stale")),
         "logic_type": ("稳定ASIN" if data.get("_asin_type") == "stable" else
                          "变化ASIN" if data.get("_asin_type") == "variable" else
                          "主监控"),

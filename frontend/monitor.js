@@ -276,7 +276,7 @@
     });
   }
 
-  function renderKeywordAsinsBox(){var b=document.querySelector('.keyword-asins-box');if(!b)return;var ks=document.getElementById('kwSelect');var td=document.getElementById('kaTags');if(!ks||!td)return;var kws=rawData.keywords||[];var cv=ks.value;ks.innerHTML='<option value="">-- --</option>';kws.forEach(function(k){var o=document.createElement('option');o.value=k.keyword;o.textContent=k.keyword;ks.appendChild(o)});if(cv)ks.value=cv;ks.onchange=function(){renderKwTags(ks.value)};if(ks.value)renderKwTags(ks.value)}
+  function renderKeywordAsinsBox(){var b=document.querySelector('.keyword-asins-box');if(!b)return;var ks=document.getElementById('kwSelect');var td=document.getElementById('kaTags');if(!ks||!td)return;var kws=rawData.keywords||[];var cv=ks.value;ks.innerHTML='<option value="">-- --</option>';kws.forEach(function(k){var o=document.createElement('option');o.value=k.keyword;o.textContent=k.keyword;ks.appendChild(o)});if(cv&&kws.some(function(k){return k.keyword===cv})){ks.value=cv}else if(kws.length>0){ks.value=kws[0].keyword}ks.onchange=function(){renderKwTags(ks.value)};renderKwTags(ks.value)}
   function renderKwTags(kw){var td=document.getElementById('kaTags');if(!td)return;td.innerHTML='';if(!kw)return;var kws=rawData.keywords||[];var ke=kws.find(function(k){return k.keyword===kw});if(!ke||!ke.top_asins||!ke.top_asins.length){td.innerHTML='<span style="font-size:12px;color:#94a3b8;"> </span>';return}var items=rawData.items||[];ke.top_asins.forEach(function(a){var asin=a.asin||a;var item=items.find(function(i){return i.asin===asin});var typ=(item && (item.logic_type==='稳定ASIN' || item.monitor_type==='stable')) ? 'stable' : ((item && (item.logic_type==='变化ASIN' || item.monitor_type==='variable')) ? 'variable' : 'stable');var tag=document.createElement('span');tag.className='asin-tag '+typ;tag.textContent=(typ==='variable'?'\u21bb ':'')+asin;td.appendChild(tag)});var bx=document.querySelector('.keyword-asins-box');if(bx)bx.style.display='block'}
 
   function renderTable() {
@@ -315,8 +315,8 @@
       var mainBsrStr = item.main_bsr != null ? '#' + item.main_bsr : '-';
       var subBsrStr = item.sub_bsr != null ? ' / #' + item.sub_bsr : '';
       var variantHtml = item.variant_status && item.variant_status !== '正常' ? ' <span style="color:#d97706;font-size:12px;">变体:' + item.variant_status + '</span>' : '';
-      var statusClass = hasActiveAnomaly || isStale ? 'changed' : 'stable';
-      var statusText = isStale ? '超期' : (hasActiveAnomaly ? '有变化' : '正常');
+      var statusClass = hasActiveAnomaly || isStale || item.is_stale ? 'changed' : 'stable';
+      var statusText = item.is_stale ? '抓取失败·保留上次' : (isStale ? '超期' : (hasActiveAnomaly ? '有变化' : '正常'));
       var isStale = rawData.updated && (Date.now() - new Date(rawData.updated).getTime()) / 60000 >= 720;
       var badgeHtml = (item.badges_current && item.badges_current.length) ? '<div style="margin-top:3px">' + item.badges_current.map(function(b) { return '<span style="background:#fef3c7;color:#d97706;font-size:10px;padding:1px 5px;border-radius:3px;margin-right:3px;font-weight:700;">' + b + '</span>'; }).join('') + '</div>' : '';
       var dealHtml = item.deal_activity && item.deal_activity !== '\u65e0' ? '<div style="color:#d97706;font-size:12px;">Deal: ' + item.deal_activity + '</div>' : '';

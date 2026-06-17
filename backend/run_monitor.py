@@ -403,7 +403,28 @@ def run_monitor(config_override=None):
                 [sys.executable, "-m", "browser.asin_monitor", rel_asin, "--amazon"],
                 cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
             if not ok:
-                print("  关联ASIN " + rel_asin + " 执行失败，继续")
+                print("  关联ASIN " + rel_asin + " 执行失败，保留上次快照 + 标记 stale")
+                # ── fallback: 从上次快照复制为 latest.json 并加 _stale 标记
+                _rel_dir = os.path.join(PROJECT_ROOT, "backend", "data", "processed", f"asin_{rel_asin}")
+                if os.path.isdir(_rel_dir):
+                    _snaps = sorted([f for f in os.listdir(_rel_dir) if f.startswith("snapshot_") and f.endswith(".json")])
+                    if _snaps:
+                        try:
+                            with open(os.path.join(_rel_dir, _snaps[-1]), "r", encoding="utf-8") as _sf:
+                                _prev = json.load(_sf)
+                            _d = _prev.get("data", {})
+                            _d["_stale"] = True
+                            _d["_stale_reason"] = "fetch_failed"
+                            _d["_stale_at"] = datetime.now().isoformat()
+                            with open(os.path.join(_rel_dir, "latest.json"), "w", encoding="utf-8") as _lf:
+                                json.dump({"asin": rel_asin, "timestamp": datetime.now().isoformat(), "data": _d}, _lf, ensure_ascii=False, indent=2)
+                            print(f"  [fallback] {rel_asin} 保留上次快照（{_snaps[-1]}）并标记 _stale")
+                        except Exception as _e:
+                            print(f"  [fallback] 复制失败: {_e}")
+                    else:
+                        print(f"  [fallback] {rel_asin} 没有历史快照，跳过")
+                else:
+                    print(f"  [fallback] {rel_asin} 目录不存在，跳过")
             time.sleep(random.randint(20, 50))
 
         # ── 写入 _meta.json（记录关联ASIN，供 sync_monitor_data.py 判断 logic_type）─────────

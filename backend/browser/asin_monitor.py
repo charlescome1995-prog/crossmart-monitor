@@ -660,12 +660,12 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
         amazon.search_for_asin(asin, search_keyword)
         browser.scroll_down(times=1, min_pause=0.3, max_pause=0.8)
 
-        # ── 合并等待：页面就绪 + 插件就绪，两个条件都满足后再统一提取 ──
+        # ── 合并等待：页面就绪 + 插件就绪（amazon 模式也等插件，超时 90s） ──
         page_ready = False
         plugin_ready = False
-        deadline = time.time() + 60
+        deadline = time.time() + 90
         while time.time() < deadline:
-            elapsed = time.time() - (deadline - 60)
+            elapsed = time.time() - (deadline - 90)
 
             # 检查页面元素（每轮都检查，不等待）
             if not page_ready:
@@ -680,7 +680,7 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
                     page_ready = True
                     print(f"  页面加载完成（耗时 {elapsed:.1f}s）")
 
-            # 检查插件就绪（每轮都检查）
+            # 检查插件就绪（amazon/full 模式都要等插件）
             if not plugin_ready and mode in ("full", "amazon"):
                 try:
                     candidate = extract_sprite_plugin_data(browser)
@@ -697,8 +697,8 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
                 except Exception:
                     pass
 
-            # 两个条件都满足，停止等待
-            if page_ready and (mode == "amazon" or plugin_ready):
+            # 页面 + 插件都就绪才能退出；amazon 模式也要等插件
+            if page_ready and plugin_ready:
                 break
 
             # 每 5 秒打印一次进度
@@ -707,7 +707,7 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
 
             time.sleep(1)
         else:
-            print("  等待超时（60s），继续执行（页面={'✓' if page_ready else '✗'}, 插件={'✓' if plugin_ready else '✗'}）")
+            print("  等待超时（90s），继续执行（页面={'✓' if page_ready else '✗'}, 插件={'✓' if plugin_ready else '✗'}）")
 
         # ── 统一提取：等所有条件都就绪后，一次性提取亚马逊数据 + 插件 DOM ──
         amazon_data = extract_asin_data(browser)
@@ -782,6 +782,17 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
         "_sprite_text": sprite_data.get("competitor", {}).get("text", "")[:2000] if sprite_data else "",
         "_timestamp": datetime.now().isoformat(),
     }
+    # ── 保留 Phase A3 写入的关键词分类标签（_asin_type / _source_keyword）─
+    try:
+        from browser.snapshot_storage import load_latest_asin
+        _prev_latest = load_latest_asin(asin)
+        if _prev_latest:
+            _prev_data = _prev_latest.get("data", _prev_latest) if isinstance(_prev_latest, dict) else {}
+            for _k in ("_asin_type", "_source_keyword"):
+                if _prev_data.get(_k) and not snapshot_data.get(_k):
+                    snapshot_data[_k] = _prev_data[_k]
+    except Exception:
+        pass
     save_asin_snapshot(asin, snapshot_data)
 
     browser.close()
