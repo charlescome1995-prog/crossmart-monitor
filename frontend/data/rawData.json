@@ -1,11 +1,11 @@
 {
-  "updated": "2026-06-16T17:22:07",
+  "updated": "2026-06-16T17:22:55",
   "items": [
     {
-      "monitor_type": "KW",
+      "monitor_type": "variable",
       "asin": "B00U2VQZDS",
       "is_main": false,
-      "logic_type": "关键词-Makeup Remover",
+      "logic_type": "变化ASIN",
       "source_keyword": "Makeup Remover",
       "title": "Neutrogena Makeup Remover Wipes Micellar Alcohol-Free Face Towelettes Remove Waterproof Mascara & Oil, Compostable 100% Plant-Based Cloth, Dermatologist & Ophthalmologist Tested, Twin Pack 2 x 25 ct",
       "brand": "Neutrogena",
@@ -120,10 +120,10 @@
       ]
     },
     {
-      "monitor_type": "KW",
+      "monitor_type": "stable",
       "asin": "B017PCGABI",
       "is_main": false,
-      "logic_type": "关键词-Makeup Remover",
+      "logic_type": "稳定ASIN",
       "source_keyword": "Makeup Remover",
       "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
       "brand": "Garnier",
@@ -266,10 +266,10 @@
       ]
     },
     {
-      "monitor_type": "KW",
+      "monitor_type": "stable",
       "asin": "B017PCGAXQ",
       "is_main": false,
-      "logic_type": "关键词-Makeup Remover",
+      "logic_type": "稳定ASIN",
       "source_keyword": "Makeup Remover",
       "title": "Garnier Micellar Water For Waterproof Makeup, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
       "brand": "Garnier",
@@ -384,10 +384,10 @@
       ]
     },
     {
-      "monitor_type": "KW",
+      "monitor_type": "stable",
       "asin": "B01M9F9JYH",
       "is_main": false,
-      "logic_type": "关键词-Makeup Remover",
+      "logic_type": "稳定ASIN",
       "source_keyword": "Makeup Remover",
       "title": "Garnier Micellar Cleansing Water, All-in-1 Makeup Remover and Facial Cleanser, For All Skin Types, 3.4 Fl Oz (100mL), 1 Count (Packaging May Vary)",
       "brand": "Garnier",
@@ -477,10 +477,10 @@
       "traffic_keywords_top": []
     },
     {
-      "monitor_type": "KW",
+      "monitor_type": "stable",
       "asin": "B07HHCB2XG",
       "is_main": false,
-      "logic_type": "关键词-Makeup Remover",
+      "logic_type": "稳定ASIN",
       "source_keyword": "Makeup Remover",
       "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 2 Count",
       "brand": "Garnier",
