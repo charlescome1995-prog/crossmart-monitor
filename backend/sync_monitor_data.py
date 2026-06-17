@@ -21,87 +21,37 @@ JIKE_FIELDS = [
 def load_jike_data(asin):
     """
     从 processed/asin_ASIN/jike_latest.json 加载积加数据。
-    如果文件为空或不存在，尝试从快照的 sprite_ 字段构建后备数据。
+
+    **严格语义**：仅在积加 API 成功调用且返回有效字段时才返回数据。
+    - 文件不存在 → 返回 {}
+    - 文件存在但是 {}（API 调用失败 / 无数据） → 返回 {}
+    - 卖家精灵 (sprite_*) 不再充作积加后备 — 积加数据只能从积加调用
 
     返回格式：始终是扁平的 {orderProductSales:..., unitsOrdered:..., ...}
     支持检测嵌套格式 {asin: data}（jike_client 原始格式）并自动解包。
     """
     path = os.path.join(DATA_DIR, f'asin_{asin}', 'jike_latest.json')
-    if os.path.exists(path):
-        try:
-            with open(path, 'r', encoding='utf-8') as f:
-                content = json.load(f)
-            # 嵌套格式：{asin: data} → unwrap 到 {data}
-            if isinstance(content, dict) and asin in content and isinstance(content[asin], dict):
-                content = content[asin]
-            # 如果积加 API 返回了有效数据，直接返回
-            if content and isinstance(content, dict) and any(content.values()):
-                return content
-        except Exception:
-            pass
-
-    # ── 积加数据为空，尝试从快照的 sprite_ 字段构建后备 ──
-    # 插件数据（销量、关键词等）映射到积加格式
-    latest_path = os.path.join(DATA_DIR, f'asin_{asin}', 'latest.json')
-    if not os.path.exists(latest_path):
+    if not os.path.exists(path):
         return {}
     try:
-        with open(latest_path, 'r', encoding='utf-8') as f:
-            snap = json.load(f)
-        data = snap.get('data', {})
-
-        # 检查是否有 sprite_ 字段
-        sprite_keys = [k for k in data.keys() if k.startswith('sprite_')]
-        if not sprite_keys:
-            return {}
-
-        s = data
-        # 销量（近30天）→ unitsOrdered
-        raw_sales = s.get('sprite_sales_30d_parent', '')
-        if raw_sales:
-            units = int(str(raw_sales).replace(',', ''))
-        else:
-            units = None
-
-        # 销售额 → orderProductSales
-        raw_rev = s.get('sprite_revenue_30d', '')
-        if raw_rev:
-            sales = float(str(raw_rev).replace(',', ''))
-        else:
-            sales = None
-
-        # 毛利率
-        raw_margin = s.get('sprite_gross_margin', '')
-        gross_rate = None
-        if raw_margin and '%' in str(raw_margin):
-            try:
-                gross_rate = float(str(raw_margin).replace('%', ''))
-            except:
-                pass
-
-        return {
-            'unitsOrdered': units,
-            'orderProductSales': sales,
-            'orders': None,
-            'sessions': None,
-            'pageViews': None,
-            'cvr': None,
-            'star': s.get('sprite_rating'),
-            'reviewQuantity': s.get('sprite_review_count'),
-            'mainSellerRank': s.get('sprite_bsr_rank'),
-            'sellerRank': s.get('sprite_bsr_sub_rank'),
-            'listingState': None,
-            'productName': s.get('sprite_product_name'),
-            'marketName': None,
-            'acos': None,
-            'adsSpend': None,
-            'fbaQuantity': None,
-            'fbaTurnover': None,
-            'salesGrossProfitRate': gross_rate,
-            '_from_sprite': True,  # 标记数据来源
-        }
+        with open(path, 'r', encoding='utf-8') as f:
+            content = json.load(f)
     except Exception:
         return {}
+
+    # 错误标记：API 调用失败的 jike_latest.json → 返回 {}
+    if isinstance(content, dict) and content.get('_error'):
+        return {}
+
+    # 嵌套格式：{asin: data} → unwrap 到 {data}
+    if isinstance(content, dict) and asin in content and isinstance(content[asin], dict):
+        content = content[asin]
+
+    # 如果积加 API 返回了有效数据，返回
+    if content and isinstance(content, dict) and any(content.values()):
+        return content
+
+    return {}
 
 
 sys.stdout.reconfigure(encoding='utf-8')
@@ -512,6 +462,14 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "total_keywords": data.get('sprite_total_keywords', ''),
         "natural_keywords": data.get('sprite_natural_keywords', ''),
         "ad_keywords": data.get('sprite_ad_keywords', ''),
+        # 卖家精灵估算（与 jike_* 严格区分，不冒充积加真实数据；None 表示插件未抓到）
+        "seller_units_30d": safe_int(data.get('sprite_sales_30d_parent', '')),
+        "seller_revenue_30d": safe_float(data.get('sprite_revenue_30d', '')),
+        "seller_avg_price": safe_float(data.get('sprite_avg_price', '')),
+        "seller_rating": safe_float(data.get('sprite_rating', '')),
+        "seller_review_count": safe_int(data.get('sprite_review_count', '')),
+        "seller_bsr": safe_int(data.get('sprite_bsr_rank', '')),
+        "seller_fba_fee": safe_float(data.get('sprite_fba_fee', '')),
         "suggest_keywords": data.get('sprite_suggest_keywords', ''),
         "traffic_keywords_top": data.get('sprite_traffic_keywords_top', []),
     }

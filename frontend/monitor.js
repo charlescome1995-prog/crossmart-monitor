@@ -341,13 +341,25 @@
         '</div></td>' +
         '<td class="col-jike">' +
           (item.is_main ? (
-            '<div style="font-size:12px;line-height:1.4;">销量 <strong>' + (item.jike_units != null ? item.jike_units.toLocaleString() : '-') + '</strong></div>' +
-            '<div style="font-size:11px;color:#64748b;line-height:1.4;">销售额 $' + (item.jike_sales != null ? item.jike_sales.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
-            '<div style="font-size:11px;color:#64748b;line-height:1.4;">毛利率 ' + (item.jike_gross_profit_rate != null ? item.jike_gross_profit_rate + '%' : '-') + '</div>' +
-            '<div style="font-size:11px;line-height:1.4;">ACOS ' + (item.jike_acos != null ? item.jike_acos + '%' : '-') + '</div>' +
-            '<div style="font-size:11px;color:#64748b;line-height:1.4;">广告费 $' + (item.jike_ads_spend != null ? item.jike_ads_spend.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
-            '<div style="font-size:11px;line-height:1.4;">FBA库存 ' + (item.jike_fba_quantity != null ? item.jike_fba_quantity.toLocaleString() : '-') + '</div>' +
-            '<div style="font-size:11px;color:#64748b;line-height:1.4;">周转 ' + (item.jike_fba_turnover != null ? item.jike_fba_turnover.toFixed(1) : '-') + '</div>'
+            // 主 ASIN：积加数据为主，卖家精灵估算作为 fallback
+            (item.jike_units != null || item.jike_sales != null || item.jike_orders != null ? (
+              // 有积加真实数据
+              '<div style="font-size:12px;line-height:1.4;">销量 <strong>' + (item.jike_units != null ? item.jike_units.toLocaleString() : '-') + '</strong> <span style="background:#dbeafe;color:#1e40af;font-size:9px;padding:1px 4px;border-radius:3px;margin-left:3px;">积加</span></div>' +
+              '<div style="font-size:11px;color:#64748b;line-height:1.4;">销售额 $' + (item.jike_sales != null ? item.jike_sales.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
+              '<div style="font-size:11px;color:#64748b;line-height:1.4;">毛利率 ' + (item.jike_gross_profit_rate != null ? item.jike_gross_profit_rate + '%' : '-') + '</div>' +
+              '<div style="font-size:11px;line-height:1.4;">ACOS ' + (item.jike_acos != null ? item.jike_acos + '%' : '-') + '</div>' +
+              '<div style="font-size:11px;color:#64748b;line-height:1.4;">广告费 $' + (item.jike_ads_spend != null ? item.jike_ads_spend.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
+              '<div style="font-size:11px;line-height:1.4;">FBA库存 ' + (item.jike_fba_quantity != null ? item.jike_fba_quantity.toLocaleString() : '-') + '</div>' +
+              '<div style="font-size:11px;color:#64748b;line-height:1.4;">周转 ' + (item.jike_fba_turnover != null ? item.jike_fba_turnover.toFixed(1) : '-') + '</div>'
+            ) : (
+              // 积加无数据，显示卖家精灵估算（明确标注来源）
+              '<div style="font-size:11px;color:#92400e;line-height:1.4;margin-bottom:3px;">⚠️ 积加无数据</div>' +
+              (item.seller_units_30d != null || item.seller_revenue_30d != null ? (
+                '<div style="font-size:12px;line-height:1.4;">销量 <strong style="color:#92400e;">' + (item.seller_units_30d != null ? item.seller_units_30d.toLocaleString() : '-') + '</strong> <span style="background:#fef3c7;color:#92400e;font-size:9px;padding:1px 4px;border-radius:3px;margin-left:3px;">卖家精灵估算</span></div>' +
+                '<div style="font-size:11px;color:#92400e;line-height:1.4;">销售额 ~$' + (item.seller_revenue_30d != null ? item.seller_revenue_30d.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
+                '<div style="font-size:10px;color:#92400e;line-height:1.4;font-style:italic;">⚠️ 非积加真实数据</div>'
+              ) : '<span style="color:#cbd5e1;font-size:11px;">-</span>')
+            ))
           ) : '<span style="color:#cbd5e1;font-size:11px;">-</span>') +
         '</td>' +
         '<td class="col-plugin-l">' +
@@ -434,16 +446,17 @@
   }
 
   function exportToExcel() {
-    var rows = [['ASIN', '类型', '品牌', '监控类型', '逻辑类型', '商品状态', '价格', 'BSR', '评分', '评论数', 'LQS', '变体数', '上架日期', '总词数', '自然词数', '广告词数', '描荐词数', '销量(积加)', '销售额(积加)', '毛利率(积加)', 'ACOS(积加)', '广告费(积加)', 'FBA库存(积加)', '库存周转(积加)', '最后更新']];
+    var rows = [['ASIN', '类型', '品牌', '监控类型', '逻辑类型', '商品状态', '价格', 'BSR', '评分', '评论数', 'LQS', '变体数', '上架日期', '总词数', '自然词数', '广告词数', '描荐词数', '销量', '销售额', '毛利率', 'ACOS', '广告费', 'FBA库存', '库存周转', '数据来源', '最后更新']];
     rawData.items.forEach(function(m) {
-      var jikeUnits = m.jike_units != null ? m.jike_units : '-';
-      var jikeSales = m.jike_sales != null ? m.jike_sales : '-';
+      var jikeUnits = m.jike_units != null ? m.jike_units : (m.seller_units_30d != null ? '(估算)' + m.seller_units_30d : '-');
+      var jikeSales = m.jike_sales != null ? m.jike_sales : (m.seller_revenue_30d != null ? '(估算)' + m.seller_revenue_30d : '-');
       var jikeGrossProfit = m.jike_gross_profit_rate != null ? m.jike_gross_profit_rate + '%' : '-';
       var jikeAcos = m.jike_acos != null ? m.jike_acos + '%' : '-';
       var jikeAdsSpend = m.jike_ads_spend != null ? m.jike_ads_spend : '-';
       var jikeFbaQty = m.jike_fba_quantity != null ? m.jike_fba_quantity : '-';
       var jikeFbaTurnover = m.jike_fba_turnover != null ? m.jike_fba_turnover : '-';
-      rows.push([m.asin, m.monitor_type, m.brand || '', m.monitor_type, m.logic_type, m.listing_status, m.price, m.main_bsr, m.rating, m.reviews, m.lqs || '', m.variant_count || '', m.launch_date || '', m.total_keywords || '', m.natural_keywords || '', m.ad_keywords || '', m.suggest_keywords || '', jikeUnits, jikeSales, jikeGrossProfit, jikeAcos, jikeAdsSpend, jikeFbaQty, jikeFbaTurnover, rawData.updated]);
+      var jikeSource = (m.jike_units != null || m.jike_sales != null) ? '积加' : (m.seller_units_30d != null ? '卖家精灵估算' : '无');
+      rows.push([m.asin, m.monitor_type, m.brand || '', m.monitor_type, m.logic_type, m.listing_status, m.price, m.main_bsr, m.rating, m.reviews, m.lqs || '', m.variant_count || '', m.launch_date || '', m.total_keywords || '', m.natural_keywords || '', m.ad_keywords || '', m.suggest_keywords || '', jikeUnits, jikeSales, jikeGrossProfit, jikeAcos, jikeAdsSpend, jikeFbaQty, jikeFbaTurnover, jikeSource, rawData.updated]);
     });
     var ws = XLSX.utils.aoa_to_sheet(rows);
     var wb = XLSX.utils.book_new();
