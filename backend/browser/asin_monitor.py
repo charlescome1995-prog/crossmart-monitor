@@ -25,37 +25,17 @@ from browser.human_timer import get_daily_plan
 # ─── DOM数据提取工具 ───
 
 def extract_sprite_plugin_data(browser: CDPBrowser):
-    """从亚马逊页面的卖家精灵插件 DOM 提取数据（插件面板在页面内嵌）"""
-    # ── Step 1: 点击插件的产品查询按钮，激活 quick-view 面板 ──
-    click_js = r"""
-    (function(){
-        // 找到产品查询按钮并点击
-        var btns = document.querySelectorAll('.nav-web');
-        for (var i = 0; i < btns.length; i++) {
-            if (btns[i].textContent.trim() === '产品查询') {
-                btns[i].click();
-                return 'clicked';
-            }
-        }
-        // 备选：找包含"产品查询"文字的任何可点击元素
-        var allEls = document.querySelectorAll('[class*="nav"], [class*="menu"]');
-        for (var i = 0; i < allEls.length; i++) {
-            if (allEls[i].textContent.trim() === '产品查询' && allEls[i].click) {
-                allEls[i].click();
-                return 'clicked-alt';
-            }
-        }
-        return 'not-found';
-    })()
+    """从亚马逊页面的卖家精灵插件 DOM 提取数据。
+    
+    2026-06-16 优化:卖家精灵扩展已设置为 auto-active,所有数据自动加载,
+    无需点击「产品查询」按钮(点击是多余且会干扰页面行为)。
+    直接读取 DOM 即可。
     """
-    click_result = browser.eval(click_js)
-    if click_result not in ('clicked', 'clicked-alt'):
-        print("  [插件] 产品查询按钮未找到，跳过")
-        return {}
-    print(f"  [插件] 已点击产品查询按钮，延迟等待面板加载...")
-    time.sleep(4)  # 等待 overlay 完全渲染
-
-    # ── Step 2: 提取 DOM 数据 ──
+    # 直接读取 DOM 数据(扩展已自动加载)
+    # 给扩展 1.5s 注入时间(原 click+wait 是 4s,因为点击会触发动画;auto-active 时只需等 DOM 注入)
+    time.sleep(1.5)
+    
+    # ── 提取 DOM 数据 ──
     js_get_plugin_text = r"""
 (function(){
     var ids = [
