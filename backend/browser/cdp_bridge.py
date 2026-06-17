@@ -5,7 +5,7 @@ CDP连接基类 - 控制闫旭的默认Edge浏览器
 只有一个浏览器实例（默认Edge，有缓存/收藏/搜索记录）
 所有操作都在同一个Edge里，开不同标签页完成
 """
-import sys, os, json, time, base64, random, subprocess
+import sys, os, json, time, base64, random, subprocess, re
 sys.stdout.reconfigure(encoding='utf-8')
 import websocket, urllib.request
 from datetime import datetime
@@ -140,7 +140,7 @@ class CDPBrowser:
         self.tabs = self._raw_tabs
 
     def connect_tab(self, tab_index=0, tab_url_filter=None):
-        """连接到某个标签页"""
+        """连接到某个标签页 (P1: 不破坏已加载的 seller-sprite)"""
         self._refresh_tabs()
         tabs = self._raw_tabs
 
@@ -149,8 +149,13 @@ class CDPBrowser:
             if filtered:
                 self.tab = filtered[0]
             else:
-                # 如果还没连接websocket，先连一个已有标签页作为桥梁
-                if not self.ws and tabs:
+                # [P1] 修复点：找不到匹配 tab 时，新建 target 而不是 Page.navigate 污染当前 tab
+                # 这样可以保留已加载的 seller-sprite / Amazon search 结果页
+                if not tabs:
+                    raise RuntimeError("没有可用的标签页")
+
+                # 先连到一个已有 tab 作为"桥梁" (用于发 Target.createTarget)
+                if not self.ws:
                     first_tab = tabs[0]
                     first_ws_url = first_tab.get("webSocketDebuggerUrl")
                     if first_ws_url:
@@ -158,16 +163,49 @@ class CDPBrowser:
                             self.ws = websocket.create_connection(first_ws_url, timeout=15)
                         except:
                             pass
-                # 找不到对应标签页 → 直接导航到 Amazon 商品页（而不是创建空白页）
+
                 if self.ws:
-                    amazon_url = f"https://www.amazon.com/dp/{tab_url_filter}"
-                    print(f"  [导航] 未找到已有标签页，自动打开: {amazon_url}")
-                    self.cmd("Page.navigate", {"url": amazon_url})
-                    time.sleep(2)
+                    # 创建新 target，不动当前 tab
+                    create_url = "about:blank"
+                    # 只有当 filter 不是"about:blank"这种通用词时才考虑导航到具体 URL
+                    if tab_url_filter.lower() not in ("about:blank", "blank", ""):
+                        # 检查 filter 是不是 ASIN
+                        asin_match = re.match(r'^B[0-9A-Z]{9}$', tab_url_filter.upper())
+                        if asin_match:
+                            create_url = f"https://www.amazon.com/dp/{asin_match.group(0)}"
+                        elif tab_url_filter.startswith("http"):
+                            create_url = tab_url_filter
+
+                    result = self.cmd("Target.createTarget", {"url": create_url})
+                    target_id = result.get("targetId")
+                    print(f"  [P1] 未找到匹配 '{tab_url_filter}' 的标签页，新建 target: {target_id}")
+                    time.sleep(1.5)
                     self._refresh_tabs()
-                    # 用新打开的页面作为当前标签页
-                    filtered_new = [t for t in self._raw_tabs if tab_url_filter.lower() in t.get("url","").lower()]
-                    self.tab = filtered_new[0] if filtered_new else self._raw_tabs[0]
+
+                    # 找到新建的 tab 并连接
+                    new_tab = None
+                    for t in self._raw_tabs:
+                        if t.get("id") == target_id:
+                            new_tab = t
+                            break
+                    if new_tab:
+                        ws_url = new_tab.get("webSocketDebuggerUrl")
+                        try:
+                            self.ws.close()
+                        except:
+                            pass
+                        self.ws = websocket.create_connection(ws_url, timeout=15)
+                        self.tab = new_tab
+                    else:
+                        # fallback: 用第一个 tab
+                        self.tab = self._raw_tabs[0]
+                        ws_url = self.tab.get("webSocketDebuggerUrl")
+                        if ws_url:
+                            try:
+                                self.ws.close()
+                            except:
+                                pass
+                            self.ws = websocket.create_connection(ws_url, timeout=15)
                 else:
                     self.tab = self._raw_tabs[0] if self._raw_tabs else None
         else:

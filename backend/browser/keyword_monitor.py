@@ -213,6 +213,374 @@ def group_and_pick_top5(marks):
     return selected[:5]
 
 
+# --- Seller Sprite vxe-table 提取 (P0) ---
+
+SPRITE_KEYWORD_RESEARCH_URL = "https://www.sellersprite.com/v2/keyword-research"
+SPRITE_VXE_ROWS_PER_SCROLL = 16  # vxe-table 每次滚动大约加载 16 行
+SPRITE_VXE_MAX_SCROLL_ROUNDS = 5  # 最多滚 5 次 (16*5=80 行，覆盖 64 行)
+SPRITE_VXE_LOAD_TIMEOUT = 90      # 服务端查询 1-2 分钟
+
+
+def open_sprite_tab(browser):
+    """
+    在新 tab 里打开卖家精灵，独立 WS 连接，不污染当前 Amazon tab。
+    返回 (new_ws, new_tab, target_id)；失败返回 (None, None, None)。
+    调用方负责关闭。
+    """
+    saved_ws = browser.ws
+    saved_tab = browser.tab
+
+    result = browser.cmd("Target.createTarget", {"url": "about:blank"})
+    target_id = result.get("targetId")
+    if not target_id:
+        return None, None, None
+    time.sleep(1.2)
+    browser._refresh_tabs()
+
+    new_tab = None
+    for t in browser._raw_tabs:
+        if t.get("id") == target_id:
+            new_tab = t
+            break
+    if not new_tab:
+        return None, None, None
+
+    ws_url = new_tab.get("webSocketDebuggerUrl")
+    if browser.ws:
+        try:
+            browser.ws.close()
+        except:
+            pass
+    browser.ws = websocket.create_connection(ws_url, timeout=15)
+    browser.tab = new_tab
+    return saved_ws, saved_tab, target_id
+
+
+def close_sprite_tab(browser, saved_ws, saved_tab, target_id):
+    """关闭卖家精灵 tab 并恢复主 tab WS"""
+    try:
+        browser.cmd("Target.closeTarget", {"targetId": target_id})
+    except:
+        pass
+    browser._refresh_tabs()
+    if saved_ws:
+        try:
+            saved_ws.close()
+        except:
+            pass
+    if saved_tab:
+        ws_url = saved_tab.get("webSocketDebuggerUrl")
+        if ws_url:
+            try:
+                browser.ws = websocket.create_connection(ws_url, timeout=15)
+                browser.tab = saved_tab
+            except:
+                pass
+
+
+def scroll_vxe_table(browser, scroll_rounds=None):
+    """
+    触发 vxe-table 虚拟滚动，分批加载行。
+    返回当前可见的行数。
+    """
+    if scroll_rounds is None:
+        scroll_rounds = SPRITE_VXE_MAX_SCROLL_ROUNDS
+
+    js = """
+    (function(rounds) {
+        // vxe-table body-wrapper: .vxe-table--body-wrapper
+        var wrapper = document.querySelector(
+            '#main-sellersprite-extension .vxe-table--body-wrapper, ' +
+            '.seller-sprite-extension-app .vxe-table--body-wrapper, ' +
+            '.vxe-table--body-wrapper'
+        );
+        if (!wrapper) return -1;
+        var step = wrapper.clientHeight || 400;
+        for (var i = 0; i < rounds; i++) {
+            wrapper.scrollTop = (i + 1) * step;
+            wrapper.dispatchEvent(new Event('scroll', {bubbles: true}));
+        }
+        // 统计当前可见 + 缓冲区的 row 数
+        var rows = wrapper.querySelectorAll('tr.body--wrapper, tr.vxe-body--row');
+        return rows.length;
+    })(arguments[0])
+    """
+    try:
+        return browser.eval(js.replace("arguments[0]", str(scroll_rounds)))
+    except Exception as e:
+        print("  [vxe-scroll] " + str(e))
+        return -1
+
+
+def extract_vxe_rows(browser):
+    """
+    从卖家精灵 vxe-table 提取当前可见的所有行。
+    根据 audit: col_4=rank, col_6=title, col_7=brand, col_22=launch_date
+    返回 [{rank:int, title:str, brand:str, asin:str|None, launch_date:str|None}]
+    """
+    js = r"""
+    (function() {
+        var rows = document.querySelectorAll(
+            '#main-sellersprite-extension .vxe-table--body-wrapper tr, ' +
+            '.seller-sprite-extension-app .vxe-table--body-wrapper tr, ' +
+            '.vxe-table--body-wrapper tr'
+        );
+        var out = [];
+        var seen = new Set();
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            // 排除表头
+            if (row.parentElement && row.parentElement.tagName === 'THEAD') continue;
+            if (row.classList.contains('vxe-header--row')) continue;
+
+            var cells = row.querySelectorAll('td, .vxe-body--column');
+            if (cells.length < 8) continue;
+
+            // col_4 = rank 数字（也可能是其它 cell，根据 audit）
+            var rankCell = cells[3] || cells[0];
+            var rankText = (rankCell.innerText || '').trim();
+            var rank = parseInt(rankText.replace(/[^\d]/g, ''), 10);
+
+            // col_6 = title, col_7 = brand
+            var title = (cells[5] && cells[5].innerText || '').trim().slice(0, 200);
+            var brand = (cells[6] && cells[6].innerText || '').trim().slice(0, 80);
+
+            // col_22 = launch_date (索引 21)
+            var launch = '';
+            if (cells[21]) {
+                launch = (cells[21].innerText || '').trim().slice(0, 20);
+            }
+
+            // 尝试从 title 单元格里的链接抓 ASIN
+            var asin = '';
+            var linkEl = (cells[5] || row).querySelector('a[href*="/dp/"]');
+            if (linkEl) {
+                var m = linkEl.href.match(/\/dp\/([A-Z0-9]{10})/);
+                if (m) asin = m[1];
+            }
+            // 备用：从单元格文本里匹配 B0 开头的 ASIN
+            if (!asin) {
+                var allText = row.innerText || '';
+                var ma = allText.match(/B[A-Z0-9]{9}/);
+                if (ma) asin = ma[0];
+            }
+
+            if (!rank || isNaN(rank)) continue;
+            if (!title) continue;
+
+            // 去重：同一 rank + title 只保留一次
+            var key = rank + '|' + title.slice(0, 30);
+            if (seen.has(key)) continue;
+            seen.add(key);
+
+            out.push({
+                rank: rank,
+                title: title,
+                brand: brand,
+                asin: asin,
+                launch_date: launch
+            });
+        }
+        return out;
+    })()
+    """
+    try:
+        raw = browser.eval(js)
+        return raw if isinstance(raw, list) else []
+    except Exception as e:
+        print("  [vxe-extract] " + str(e))
+        return []
+
+
+def match_vxe_to_amazon_organic(vxe_rows, organic_marks):
+    """
+    用标题相似度把卖家精灵 vxe 行匹配到 Amazon organic 列表。
+    返回 {asin: sprite_rank} 字典 + {asin: title_match_score}。
+    """
+    if not vxe_rows or not organic_marks:
+        return {}, {}
+
+    def norm(t):
+        return re.sub(r'\s+', ' ', (t or '').lower().strip())[:60]
+
+    # 构造 Amazon organic 标题索引 (按出现顺序 1-based)
+    amazon_by_title = {}
+    for i, m in enumerate(organic_marks):
+        title = norm(m.get('title', ''))
+        if title and title not in amazon_by_title:
+            amazon_by_title[title] = {'asin': m.get('asin', ''), 'position': i + 1}
+
+    sprite_rank_by_asin = {}
+    sprite_title_by_asin = {}
+    matched_amazon_titles = set()
+
+    for row in vxe_rows:
+        rt = norm(row.get('title', ''))
+        if not rt:
+            continue
+        # 精确匹配
+        if rt in amazon_by_title and amazon_by_title[rt]['asin']:
+            asin = amazon_by_title[rt]['asin']
+            if asin not in sprite_rank_by_asin:  # 取最低 rank
+                sprite_rank_by_asin[asin] = row['rank']
+                sprite_title_by_asin[asin] = row['title']
+            matched_amazon_titles.add(rt)
+            continue
+        # 模糊匹配: 前 30 字符相同
+        prefix = rt[:30]
+        for amz_title, info in amazon_by_title.items():
+            if amz_title in matched_amazon_titles:
+                continue
+            if amz_title.startswith(prefix) or prefix.startswith(amz_title[:30]):
+                asin = info['asin']
+                if asin and asin not in sprite_rank_by_asin:
+                    sprite_rank_by_asin[asin] = row['rank']
+                    sprite_title_by_asin[asin] = row['title']
+                matched_amazon_titles.add(amz_title)
+                break
+
+    return sprite_rank_by_asin, sprite_title_by_asin
+
+
+def extract_sprite_table_rank(browser, keyword, organic_marks=None, max_rows=64, timeout=SPRITE_VXE_LOAD_TIMEOUT):
+    """
+    [P0] 卖家精灵 vxe-table 提取器 (叠加模式)
+
+    流程:
+      1) 在新 tab 里打开 sellersprite /v2/keyword-research
+      2) 搜索 keyword → 切到"产品查询" tab
+      3) 等 vxe-table 加载 (最多 timeout 秒)
+      4) 滚动虚拟列表直到收集到 >= max_rows 个不同 rank
+      5) 返回 [{rank,title,brand,asin,launch_date}]
+      6) 关闭 tab，不影响 Amazon 流程
+
+    失败优雅降级：返回 []，调用方继续走主流程。
+    """
+    print("\n  [P0] 卖家精灵 vxe-table 提取开始...")
+    saved_ws, saved_tab, target_id = open_sprite_tab(browser)
+    if not target_id:
+        print("  [P0] 创建卖家精灵 tab 失败，跳过")
+        return []
+
+    try:
+        # 1) 导航到 keyword research
+        url = SPRITE_KEYWORD_RESEARCH_URL + "?keyword=" + urllib_quote(keyword)
+        browser.navigate(url, wait_min=3, wait_max=6)
+        time.sleep(3)
+
+        # 2) 激活"产品查询" tab (audit: 默认就是，但要确保 vxe-table 出现)
+        activated = browser.eval("""
+            (function() {
+                var tabs = document.querySelectorAll('#main-sellersprite-extension [class*="tab"], .seller-sprite-extension-app [role="tab"], .el-tabs__item');
+                for (var i = 0; i < tabs.length; i++) {
+                    var t = (tabs[i].innerText || '').trim();
+                    if (t.indexOf('产品查询') >= 0 || t.indexOf('Product Search') >= 0) {
+                        tabs[i].click();
+                        return true;
+                    }
+                }
+                return false;
+            })()
+        """)
+        print("  [P0] 激活产品查询 tab: " + str(activated))
+        time.sleep(2)
+
+        # 3) 等 vxe-table 出现 + 服务端查询完成
+        start = time.time()
+        rows_collected = []
+        last_count = 0
+        stall_rounds = 0
+        while time.time() - start < timeout:
+            js_check = """
+                (function() {
+                    var w = document.querySelector(
+                        '#main-sellersprite-extension .vxe-table--body-wrapper, ' +
+                        '.vxe-table--body-wrapper'
+                    );
+                    if (!w) return {ready: false, rows: 0};
+                    var rows = w.querySelectorAll('tr.body--wrapper, tr.vxe-body--row');
+                    return {ready: true, rows: rows.length};
+                })()
+            """
+            try:
+                state = browser.eval(js_check) or {}
+            except:
+                state = {}
+            ready = state.get('ready', False)
+            row_count = state.get('rows', 0)
+
+            # 滚动加载更多
+            if ready and row_count > 0:
+                scroll_vxe_table(browser, scroll_rounds=2)
+                time.sleep(1.5)
+                # 提取当前可见
+                new_rows = extract_vxe_rows(browser)
+                # 合并去重
+                seen_keys = {(r['rank'], r['title'][:30]) for r in rows_collected}
+                added = 0
+                for r in new_rows:
+                    key = (r['rank'], r['title'][:30])
+                    if key not in seen_keys:
+                        rows_collected.append(r)
+                        seen_keys.add(key)
+                        added += 1
+
+                if len(rows_collected) >= max_rows:
+                    print("  [P0] 已收集 " + str(len(rows_collected)) + " 行 (>= " + str(max_rows) + ")，停止")
+                    break
+                if added == 0:
+                    stall_rounds += 1
+                else:
+                    stall_rounds = 0
+                    last_count = len(rows_collected)
+
+                # 连续 3 轮没新数据 → 认为已到底
+                if stall_rounds >= 3:
+                    print("  [P0] 已稳定在 " + str(len(rows_collected)) + " 行")
+                    break
+            else:
+                # 表格还没出现，等更久
+                time.sleep(3)
+
+            time.sleep(2)
+
+        print("  [P0] 卖家精灵 vxe-table 提取完成: " + str(len(rows_collected)) + " 行")
+
+        # 4) 可选: 与 Amazon organic 匹配
+        if organic_marks and rows_collected:
+            ranks, titles = match_vxe_to_amazon_organic(rows_collected, organic_marks)
+            print("  [P0] 与 Amazon organic 匹配: " + str(len(ranks)) + " 个 ASIN 找到卖家精灵 rank")
+            for asin, rank in list(ranks.items())[:5]:
+                t = titles.get(asin, '')[:40]
+                print("       " + asin + " → sprite_rank=" + str(rank) + " | " + t)
+            # 给每行附加 amazon_position 字段 (如有匹配)
+            by_title = {}
+            for i, m in enumerate(organic_marks):
+                t = re.sub(r'\s+', ' ', (m.get('title', '') or '').lower().strip())[:60]
+                if t and t not in by_title:
+                    by_title[t] = i + 1
+            for r in rows_collected:
+                rt = re.sub(r'\s+', ' ', (r.get('title', '') or '').lower().strip())[:60]
+                if rt in by_title:
+                    r['amazon_position'] = by_title[rt]
+
+        return rows_collected
+
+    except Exception as e:
+        print("  [P0] 卖家精灵提取异常: " + str(e))
+        import traceback
+        traceback.print_exc()
+        return []
+    finally:
+        close_sprite_tab(browser, saved_ws, saved_tab, target_id)
+
+
+def urllib_quote(s):
+    """Minimal URL encoder (avoids extra import)"""
+    import urllib.parse
+    return urllib.parse.quote(s)
+
+
 def group_and_pick_top3(marks):
     """
     Pick up to 3 ASINs from all marked results:
@@ -354,6 +722,22 @@ def do_keyword_search(browser, keyword):
     for a in top_asins:
         print("     [" + str(a.get("type", "")).ljust(20) + "] " + a.get("asin", "") + " | " + a.get("price", ""))
 
+    # 5.5 [P0] 卖家精灵 vxe-table 提取（叠加模式，独立 tab）
+    sprite_rows = []
+    sprite_ranks = {}
+    try:
+        sprite_rows = extract_sprite_table_rank(browser, keyword, organic_marks=marks)
+        if sprite_rows:
+            sprite_ranks, _ = match_vxe_to_amazon_organic(sprite_rows, marks)
+            # 把 sprite_rank 合并到 top_asins
+            for a in top_asins:
+                asin = a.get("asin", "")
+                if asin in sprite_ranks:
+                    a["sprite_rank"] = sprite_ranks[asin]
+            print("  [P0] 已为 " + str(len(sprite_ranks)) + " 个 top ASIN 填充 sprite_rank")
+    except Exception as e:
+        print("  [P0] 卖家精灵提取跳过: " + str(e))
+
     # 6. Close new tab, restore main tab
     try:
         browser.cmd("Target.closeTarget", {"targetId": new_tab_id})
@@ -373,7 +757,7 @@ def do_keyword_search(browser, keyword):
             browser.ws = websocket.create_connection(ws_url, timeout=15)
             browser.tab = main_tab
 
-    return marks, top_asins
+    return marks, top_asins, sprite_rows
 
 
 # --- Entry Point ---
@@ -389,12 +773,12 @@ def check_keyword(keyword):
     sep = "=" * 60
 
     try:
-        marks, top_asins = do_keyword_search(browser, keyword)
+        marks, top_asins, sprite_rows = do_keyword_search(browser, keyword)
     except Exception as e:
         print("  Amazon search failed: " + str(e))
         import traceback
         traceback.print_exc()
-        marks, top_asins = [], []
+        marks, top_asins, sprite_rows = [], [], []
 
     # ── 数据有效性检查：无效时不写入快照 ──
     if not marks and not top_asins:
@@ -415,13 +799,16 @@ def check_keyword(keyword):
                 "rating": a.get("rating", ""),
                 "reviews": a.get("reviews", ""),
                 "main_image": a.get("main_image", ""),
+                "sprite_rank": a.get("sprite_rank", ""),  # [P0] 卖家精灵交叉验证
             }
             for a in top_asins
         ],
         "raw_marks": [
             {"asin": a.get("asin", ""), "type": a.get("type", ""), "rank": a.get("rank", "")}
             for a in marks[:50]
-        ]
+        ],
+        # [P0] 卖家精灵 vxe-table 原始数据 (最多 80 行)
+        "sprite_table_rows": sprite_rows[:80] if sprite_rows else []
     }
 
     # Save snapshot
