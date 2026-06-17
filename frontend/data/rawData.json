@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-16T01:02:16",
+  "updated": "2026-06-16T17:01:28",
   "items": [
     {
       "monitor_type": "KW",
@@ -9,11 +9,11 @@
       "source_keyword": "Makeup Remover",
       "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
       "brand": "Garnier",
-      "img": "https://m.media-amazon.com/images/I/31vytHaYDRL._SY300_SX300_QL70_FMwebp_.jpg",
+      "img": "https://m.media-amazon.com/images/I/61qrHCKF0jL._AC_SL1500_.jpg",
       "price": 8.82,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 73259,
+      "reviews": 73276,
       "diff": {
         "price": {
           "current": 8.82,
@@ -29,16 +29,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 73259,
+          "current": 73276,
           "prev": 73259,
-          "change": "+0",
-          "direction": "same"
+          "change": "+17",
+          "direction": "up"
         },
         "bsr": {
-          "current": 54,
+          "current": 52,
           "prev": 54,
-          "change": "+0",
-          "direction": "same"
+          "change": "2",
+          "direction": "up"
         },
         "sub_bsr": {
           "current": 1,
@@ -50,7 +50,7 @@
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
-      "img_changed": false,
+      "img_changed": true,
       "bullets_changed": false,
       "description_changed": false,
       "seller_changed": false,
@@ -67,32 +67,85 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 54,
+      "main_bsr": 52,
       "sub_cat": "Makeup Cleansing Water",
       "expected_sub_cat": "Makeup Cleansing Water",
       "sub_bsr": 1,
       "history_main_bsr": [
-        54
+        54,
+        54,
+        54,
+        54,
+        54,
+        54,
+        54,
+        52
       ],
       "history_sub_bsr": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
         1
       ],
       "history_price": [
+        8.82,
+        8.82,
+        8.82,
+        8.82,
+        8.82,
+        8.82,
+        8.82,
         8.82
       ],
       "history_rating": [
+        4.7,
+        4.7,
+        4.7,
+        4.7,
+        4.7,
+        4.7,
+        4.7,
         4.7
       ],
       "events": [],
       "related_asins": [],
-      "lqs": "",
-      "variant_count": "",
-      "launch_date": "",
-      "total_keywords": "",
-      "natural_keywords": "",
-      "ad_keywords": "",
-      "suggest_keywords": "",
-      "traffic_keywords_top": []
+      "lqs": "10.0",
+      "variant_count": "4",
+      "launch_date": "2015-11-12",
+      "total_keywords": "736",
+      "natural_keywords": "646",
+      "ad_keywords": "2",
+      "suggest_keywords": "127",
+      "traffic_keywords_top": [
+        {
+          "keyword": "face wash",
+          "traffic_pct": "17.68%",
+          "type": "自然搜索词",
+          "organic_rank": "34"
+        },
+        {
+          "keyword": "makeup",
+          "traffic_pct": "13.82%",
+          "type": "自然搜索词",
+          "organic_rank": "54"
+        },
+        {
+          "keyword": "micellar water",
+          "traffic_pct": "10.37%",
+          "type": "自然搜索词AC推荐词",
+          "organic_rank": "4"
+        },
+        {
+          "keyword": "makeup remover",
+          "traffic_pct": "5.77%",
+          "type": "自然搜索词AC推荐词",
+          "organic_rank": "4"
+        }
+      ]
     },
     {
       "monitor_type": "ASIN",
@@ -215,11 +268,11 @@
       "source_keyword": "",
       "title": "Amazon Basics Hypoallergenic Cotton Rounds for Makeup Removal and Skincare, 100 Count, 1 Pack",
       "brand": "Amazon Basics",
-      "img": "https://m.media-amazon.com/images/I/21dluA3iqqL._SY300_SX300_QL70_FMwebp_.jpg",
+      "img": "https://m.media-amazon.com/images/I/41roS4Ps5RL._AC_SL1500_.jpg",
       "price": 3.23,
       "chg": 0.0,
       "rating": 4.7,
-      "reviews": 51239,
+      "reviews": 51261,
       "diff": {
         "price": {
           "current": 3.23,
@@ -235,10 +288,10 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 51239,
-          "prev": 51240,
-          "change": "-1",
-          "direction": "dn"
+          "current": 51261,
+          "prev": 51239,
+          "change": "+22",
+          "direction": "up"
         },
         "bsr": {
           "current": 7,
@@ -254,27 +307,27 @@
         },
         "badges": {
           "current": [
-            "BS",
             "AC",
             "NR",
             "A+"
           ],
           "prev": [
+            "BS",
             "AC",
             "NR",
             "A+"
           ],
-          "lost": [],
-          "gained": [
+          "lost": [
             "BS"
           ],
+          "gained": [],
           "direction": "changed"
         }
       },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
-      "img_changed": false,
+      "img_changed": true,
       "bullets_changed": false,
       "description_changed": false,
       "seller_changed": false,
@@ -282,21 +335,23 @@
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
-        "BS",
         "AC",
         "NR",
         "A+"
       ],
-      "badges_lost": [],
-      "coupon": "15% off",
+      "badges_lost": [
+        "BS"
+      ],
+      "coupon": "$3.07 off",
       "prime_discount": "10%",
       "main_cat": "Our Brands",
       "expected_main_cat": "Our Brands",
       "main_bsr": 7,
-      "sub_cat": "",
-      "expected_sub_cat": "",
+      "sub_cat": "Cotton Pads & Rounds",
+      "expected_sub_cat": "Cotton Pads & Rounds",
       "sub_bsr": 1,
       "history_main_bsr": [
+        7,
         7,
         7,
         7
@@ -304,9 +359,11 @@
       "history_sub_bsr": [
         1,
         1,
+        1,
         1
       ],
       "history_price": [
+        3.23,
         3.23,
         3.23,
         3.23
@@ -314,20 +371,21 @@
       "history_rating": [
         4.7,
         4.7,
+        4.7,
         4.7
       ],
       "events": [],
       "related_asins": [],
-      "jike_sales": null,
+      "jike_sales": 41137.0,
       "jike_orders": null,
-      "jike_units": null,
+      "jike_units": 12736,
       "jike_session": null,
       "jike_page_views": null,
       "jike_conversion_rate": null,
-      "jike_rating": null,
-      "jike_reviews": null,
-      "jike_main_seller_rank": null,
-      "jike_seller_rank": null,
+      "jike_rating": "4.7",
+      "jike_reviews": "51261",
+      "jike_main_seller_rank": "7",
+      "jike_seller_rank": "1",
       "jike_listing_state": null,
       "jike_product_name": null,
       "jike_acos": null,
@@ -335,14 +393,39 @@
       "jike_fba_quantity": null,
       "jike_fba_turnover": null,
       "jike_gross_profit_rate": null,
-      "lqs": "",
-      "variant_count": "",
-      "launch_date": "",
-      "total_keywords": "",
-      "natural_keywords": "",
-      "ad_keywords": "",
-      "suggest_keywords": "",
-      "traffic_keywords_top": []
+      "lqs": "7.9",
+      "variant_count": "2",
+      "launch_date": "2022-03-15",
+      "total_keywords": "989",
+      "natural_keywords": "848",
+      "ad_keywords": "109",
+      "suggest_keywords": "234",
+      "traffic_keywords_top": [
+        {
+          "keyword": "cotton rounds",
+          "traffic_pct": "14.05%",
+          "type": "自然搜索词SP广告词AC推荐词",
+          "organic_rank": "8"
+        },
+        {
+          "keyword": "cotton balls",
+          "traffic_pct": "7.54%",
+          "type": "自然搜索词SP广告词",
+          "organic_rank": "16"
+        },
+        {
+          "keyword": "cotton pads",
+          "traffic_pct": "6.07%",
+          "type": "自然搜索词SP广告词AC推荐词",
+          "organic_rank": "1"
+        },
+        {
+          "keyword": "amazon essentials",
+          "traffic_pct": "5.16%",
+          "type": "自然搜索词",
+          "organic_rank": "22"
+        }
+      ]
     },
     {
       "monitor_type": "ASIN",
@@ -350,13 +433,13 @@
       "is_main": false,
       "logic_type": "主监控",
       "source_keyword": "",
-      "title": "22% Undecylenate Complex Antifungal Cream: Treats Most Athlete’s Foot, Jock Itch & Ringworm, Relieves Itching, Burning, Scaling & Cracking - Fungus Cream for Sensitive Skin, 60g Glass Jar",
+      "title": "Antifungal Cream for Athletes Foot Treatment: Relief from Jock Itch Ringworm & Skin Fungus – Advanced Dual Action Formula for Adults & Kids (40g)",
       "brand": "EVERFERE",
       "img": "https://m.media-amazon.com/images/I/71Ns3+umtgL._AC_SL1500_.jpg",
       "price": 18.99,
       "chg": 0.0,
       "rating": 3.9,
-      "reviews": 28,
+      "reviews": 27,
       "diff": {
         "price": {
           "current": 18.99,
@@ -372,64 +455,85 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 28,
+          "current": 27,
           "prev": 28,
-          "change": "+0",
-          "direction": "same"
+          "change": "-1",
+          "direction": "dn"
         },
         "bsr": {
-          "current": 140283,
+          "current": 136986,
           "prev": 140283,
-          "change": "+0",
-          "direction": "same"
+          "change": "3297",
+          "direction": "up"
         },
         "sub_bsr": {
-          "current": 249,
+          "current": 238,
           "prev": 249,
-          "change": "+0",
-          "direction": "same"
+          "change": "11",
+          "direction": "up"
+        },
+        "badges": {
+          "current": [
+            "NR",
+            "A+"
+          ],
+          "prev": [
+            "BS",
+            "NR",
+            "A+"
+          ],
+          "lost": [
+            "BS"
+          ],
+          "gained": [],
+          "direction": "changed"
         }
       },
       "listing_status": "正常",
       "expected_listing_status": "正常",
-      "title_changed": false,
+      "title_changed": true,
       "img_changed": false,
-      "bullets_changed": false,
+      "bullets_changed": true,
       "description_changed": false,
       "seller_changed": false,
       "variant_status": "正常",
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
-        "BS",
         "NR",
         "A+"
       ],
-      "badges_lost": [],
+      "badges_lost": [
+        "BS"
+      ],
       "coupon": "无",
-      "prime_discount": "22%",
+      "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 140283,
-      "sub_cat": "",
-      "expected_sub_cat": "",
-      "sub_bsr": 249,
+      "main_bsr": 136986,
+      "sub_cat": "Antifungal Remedies",
+      "expected_sub_cat": "Antifungal Remedies",
+      "sub_bsr": 238,
       "history_main_bsr": [
         145146,
         140283,
-        140283
+        140283,
+        136986
       ],
       "history_sub_bsr": [
-        249,
-        249,
-        249
+        238,
+        238,
+        238,
+        238
       ],
       "history_price": [
+        18.99,
         18.99,
         18.99,
         18.99
       ],
       "history_rating": [
+        3.9,
         3.9,
         3.9,
         3.9
@@ -453,14 +557,39 @@
       "jike_fba_quantity": null,
       "jike_fba_turnover": null,
       "jike_gross_profit_rate": null,
-      "lqs": "",
-      "variant_count": "",
-      "launch_date": "",
-      "total_keywords": "",
-      "natural_keywords": "",
-      "ad_keywords": "",
-      "suggest_keywords": "",
-      "traffic_keywords_top": []
+      "lqs": "9.4",
+      "variant_count": "1",
+      "launch_date": "11, 2025",
+      "total_keywords": "120",
+      "natural_keywords": "117",
+      "ad_keywords": "12",
+      "suggest_keywords": "0",
+      "traffic_keywords_top": [
+        {
+          "keyword": "antifungal cream",
+          "traffic_pct": "38.20%",
+          "type": "自然搜索词SP广告词",
+          "organic_rank": "54"
+        },
+        {
+          "keyword": "athletes foot cream",
+          "traffic_pct": "7.81%",
+          "type": "自然搜索词",
+          "organic_rank": "111"
+        },
+        {
+          "keyword": "jock itch cream",
+          "traffic_pct": "7.70%",
+          "type": "自然搜索词",
+          "organic_rank": "96"
+        },
+        {
+          "keyword": "athletes foot treatment",
+          "traffic_pct": "4.61%",
+          "type": "自然搜索词SP广告词",
+          "organic_rank": "115"
+        }
+      ]
     }
   ],
   "keywords": [
@@ -474,7 +603,7 @@
           "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
           "price": "$8.82",
           "rating": "4.7",
-          "reviews": "73259",
+          "reviews": "73276",
           "launch_date": "",
           "listing_status": "",
           "deal_activity": "Deal",
@@ -487,13 +616,13 @@
           "rank": "",
           "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 2 Count",
           "price": "$17.64",
-          "rating": "",
-          "reviews": ",",
+          "rating": "4.7",
+          "reviews": "73276",
           "launch_date": "",
           "listing_status": "",
-          "deal_activity": "",
-          "coupon": "",
-          "prime_discount": ""
+          "deal_activity": "Deal",
+          "coupon": "$16.76 off",
+          "prime_discount": "未开启"
         },
         {
           "asin": "B017PCGAXQ",
@@ -501,27 +630,13 @@
           "rank": "",
           "title": "Garnier Micellar Water For Waterproof Makeup, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
           "price": "$8.82",
-          "rating": "",
-          "reviews": "13",
+          "rating": "4.7",
+          "reviews": "48672",
           "launch_date": "",
           "listing_status": "",
-          "deal_activity": "",
-          "coupon": "",
-          "prime_discount": ""
-        },
-        {
-          "asin": "B078WPCDV1",
-          "type": "unknown",
-          "rank": "",
-          "title": "Garnier Micellar Water for Waterproof Makeup, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 2 Count",
-          "price": "$17.64",
-          "rating": "",
-          "reviews": ",",
-          "launch_date": "",
-          "listing_status": "",
-          "deal_activity": "",
-          "coupon": "",
-          "prime_discount": ""
+          "deal_activity": "Deal",
+          "coupon": "$8.38 off",
+          "prime_discount": "未开启"
         },
         {
           "asin": "B01M9F9JYH",
@@ -529,13 +644,27 @@
           "rank": "",
           "title": "Garnier Micellar Cleansing Water, All-in-1 Makeup Remover and Facial Cleanser, For All Skin Types, 3.4 Fl Oz (100mL), 1 Count (Packaging May Vary)",
           "price": "$3.82",
-          "rating": "",
-          "reviews": "3",
+          "rating": "4.7",
+          "reviews": "73276",
           "launch_date": "",
           "listing_status": "",
-          "deal_activity": "",
-          "coupon": "",
-          "prime_discount": ""
+          "deal_activity": "Deal",
+          "coupon": "$3.63 off",
+          "prime_discount": "未开启"
+        },
+        {
+          "asin": "B00U2VQZDS",
+          "type": "unknown",
+          "rank": "",
+          "title": "Neutrogena Makeup Remover Wipes Micellar Alcohol-Free Face Towelettes Remove Waterproof Mascara & Oil, Compostable 100% Plant-Based Cloth, Dermatologist & Ophthalmologist Tested, Twin Pack 2 x 25 ct",
+          "price": "$9.97",
+          "rating": "4.8",
+          "reviews": "119638",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "Deal",
+          "coupon": "$9.47 off",
+          "prime_discount": "未开启"
         }
       ]
     }
