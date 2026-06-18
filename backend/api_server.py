@@ -174,12 +174,13 @@ def run_full_scrape(main_asins):
     all_asins = []      # 最终要抓的所有ASIN
     related_map = {}    # 主ASIN -> 关联ASIN列表
 
-    # 抓取前清理多余标签页(避免 Edge 卡顿)
+    # 抓取前清理多余标签页(避免 Edge 卡顿) - 只保留最多 3 个
     try:
         from browser.cdp_bridge import cleanup_excess_tabs, get_tab_count
         before = get_tab_count()
-        cleanup_excess_tabs(threshold=15)
-        print(f"[TabCleanup] 抓取前标签页: {before}")
+        cleanup_excess_tabs(threshold=3)
+        after = get_tab_count()
+        print(f"[TabCleanup] 抓取开始前清理: {before} → {after} 个标签页")
     except Exception as e:
         print(f"[TabCleanup] 跳过: {e}")
 
@@ -241,12 +242,13 @@ def run_full_scrape(main_asins):
         print("[同步] 失败: %s" % e)
 
 
-    # 抓取后清理多余标签页(收尾)
+    # 抓取后清理多余标签页(收尾) - 只保留最多 3 个空白标签页，不累积
     try:
         from browser.cdp_bridge import cleanup_excess_tabs, get_tab_count
         before = get_tab_count()
-        cleanup_excess_tabs(threshold=15)
-        print(f"[TabCleanup] 抓取后标签页: {before}")
+        cleanup_excess_tabs(threshold=3)
+        after = get_tab_count()
+        print(f"[TabCleanup] 抓取后清理: {before} → {after} 个标签页")
     except Exception:
         pass
 
@@ -641,6 +643,15 @@ class ScrapeHandler(BaseHTTPRequestHandler):
                 traceback.print_exc()
                 SCRAPE_STATUS["last_result"] = {"status": "error", "error": str(e)}
             finally:
+                # 不管怎样，最后都清理多余标签页
+                try:
+                    from browser.cdp_bridge import cleanup_excess_tabs, get_tab_count
+                    before = get_tab_count()
+                    cleanup_excess_tabs(threshold=3)
+                    after = get_tab_count()
+                    print(f"[TabCleanup] Trigger完成后清理: {before} → {after} 个标签页")
+                except Exception:
+                    pass
                 SCRAPE_STATUS["running"] = False
                 SCRAPE_STATUS["trigger_mode"] = False
                 SCRAPE_STATUS["progress"] = ""

@@ -800,14 +800,13 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
     else:
         print("  首次记录")
 
-    # ── 数据有效性检查：无效时不写入快照 ──
+    # ── 数据有效性检查：只要能提取到ASIN页面就保存，方便调试 ──
     has_title = bool(amazon_data.get('title', '').strip())
     has_price = bool(amazon_data.get('price', '').strip())
     has_image = bool(amazon_data.get('main_image', '').strip())
     if not (has_title or has_price or has_image):
-        print("  ⚠️ 页面数据无效（title/price/image 均空），跳过快照保存")
-        browser.close()
-        return
+        print("  ⚠️ 页面数据大部分为空，仍保存快照供调试")
+    # 不再跳过，总是保存快照 → 即使空也能在processed生成文件夹，方便排查问题
 
     snapshot_data = {
         **amazon_data,
