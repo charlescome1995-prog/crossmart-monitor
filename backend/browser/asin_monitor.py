@@ -791,6 +791,9 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
     print("变化对比")
     print("="*50)
 
+    # ── 提前导入模块，避免作用域错误
+    from browser.snapshot_storage import load_latest_asin, save_asin_snapshot
+
     previous = load_latest_asin(asin)
     changes = {"has_changes": False, "changes": []}
     if previous:
@@ -813,7 +816,7 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
     if not (has_title or has_price or has_image):
         print("  ⚠️ 页面数据大部分为空，仍保存快照供调试")
     # 不再跳过，总是保存快照 → 即使空也能在processed生成文件夹，方便排查问题
-
+    
     snapshot_data = {
         **amazon_data,
         "_sprite_text": sprite_data.get("competitor", {}).get("text", "")[:2000] if sprite_data else "",
@@ -821,7 +824,6 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
     }
     # ── 保留 Phase A3 写入的关键词分类标签（_asin_type / _source_keyword）─
     try:
-        from browser.snapshot_storage import load_latest_asin
         _prev_latest = load_latest_asin(asin)
         if _prev_latest:
             _prev_data = _prev_latest.get("data", _prev_latest) if isinstance(_prev_latest, dict) else {}
