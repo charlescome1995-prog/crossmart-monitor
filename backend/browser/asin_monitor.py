@@ -669,6 +669,10 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
         return
 
     # ── amazon / full 模式 ──
+    # 【强制保障】: 第一步就创建ASIN文件夹，方便调试，即使后面失败也有文件夹
+    from browser.snapshot_storage import _asin_dir
+    _asin_dir(asin)
+    
     browser = CDPBrowser()
     browser.connect_tab(tab_url_filter="about:blank")
     if not browser.tab:

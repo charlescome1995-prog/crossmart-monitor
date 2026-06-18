@@ -773,6 +773,10 @@ def check_keyword(keyword):
     top_asins = []
     sep = "=" * 60
 
+    # 【强制保障】: 第一步就创建关键词文件夹，方便调试，即使后面失败也有文件夹
+    from browser.snapshot_storage import _keyword_dir
+    _keyword_dir(keyword)
+    
     try:
         marks, top_asins, sprite_rows = do_keyword_search(browser, keyword)
     except Exception as e:
@@ -781,10 +785,10 @@ def check_keyword(keyword):
         traceback.print_exc()
         marks, top_asins, sprite_rows = [], [], []
 
-    # ── 数据有效性检查：无效时不写入快照 ──
+    # ── 数据有效性检查：即使大部分为空也保存快照，方便调试
     if not marks and not top_asins:
-        print("  ⚠️ 关键词搜索无结果，跳过快照保存")
-        return
+        print("  ⚠️ 关键词搜索无结果，仍保存空快照供调试")
+        # 不return，仍然保存空快照，保证文件夹存在
 
     snapshot = {
         "keyword": keyword,
