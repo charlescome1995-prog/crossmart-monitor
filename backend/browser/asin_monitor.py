@@ -27,13 +27,45 @@ from browser.human_timer import get_daily_plan
 def extract_sprite_plugin_data(browser: CDPBrowser):
     """从亚马逊页面的卖家精灵插件 DOM 提取数据。
     
-    2026-06-16 优化:卖家精灵扩展已设置为 auto-active,所有数据自动加载,
-    无需点击「产品查询」按钮(点击是多余且会干扰页面行为)。
-    直接读取 DOM 即可。
+    2026-06-17 优化: 轮询等待机制，直到插件加载出关键数据或超时
+    - auto-active 模式：扩展自动注入DOM，无需点击
+    - 最长等待 90 秒，每秒钟检查一次
+    - 找到质量得分/近30天销量即判定就绪，提前退出
+    - 等待中自动滚动页面帮助插件加载
     """
-    # 直接读取 DOM 数据(扩展已自动加载)
-    # 给扩展 1.5s 注入时间(原 click+wait 是 4s,因为点击会触发动画;auto-active 时只需等 DOM 注入)
-    time.sleep(1.5)
+    # 轮询等待直到插件DOM就绪或超时
+    deadline = time.time() + 90
+    plugin_ready = False
+    while time.time() < deadline:
+        elapsed = time.time() - (deadline - 90)
+        
+        # 快速检查是否有插件数据
+        check_js = """(() => {
+            return document.body.textContent.includes('质量得分') || 
+                   document.body.textContent.includes('近30天销量') ||
+                   document.getElementById('seller-sprite-extension-quick-view-listing') != null;
+        })()"""
+        try:
+            has_data = browser.eval(check_js)
+            if has_data:
+                plugin_ready = True
+                print(f"  [插件] 就绪，等待 {elapsed:.1f}s")
+                break
+        except:
+            pass
+        
+        # 每5秒打印进度，顺便滚动页面
+        if int(elapsed) % 5 == 0 and int(elapsed) > 0:
+            print(f"  [插件] 等待中... {elapsed:.0f}s (未找到数据，继续等待+滚动)")
+            try:
+                browser.scroll_down(times=1, min_pause=0.2, max_pause=0.5)
+            except:
+                pass
+        
+        time.sleep(1)
+    
+    if not plugin_ready:
+        print("  [插件] 等待超时(90s)，可能未登录/未激活自动显示，继续执行")
     
     # ── 提取 DOM 数据 ──
     js_get_plugin_text = r"""
