@@ -285,6 +285,12 @@ def run_monitor(config_override=None):
         if not kw:
             continue
         print("\n--- 关键词监控: " + kw + " ---")
+        # 更新全局进度供前端查看
+        try:
+            import sys
+            sys.modules['__main__'].SCRAPE_STATUS['progress'] = f"关键词监控: {kw}"
+        except:
+            pass
         ok = run_command(
             [sys.executable, "-m", "browser.keyword_monitor", kw],
             cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
@@ -299,7 +305,7 @@ def run_monitor(config_override=None):
             with open(kw_latest, "r", encoding="utf-8") as f:
                 kw_data = json.load(f)
             top5 = kw_data.get("top_asins", [])
-            for a in top5:
+            for idx_a, a in enumerate(top5):
                 aasin = a.get("asin", "").strip()
                 if not aasin:
                     continue
@@ -307,7 +313,12 @@ def run_monitor(config_override=None):
                     print(f"  [跳过] ASIN {aasin} 已抓过（来源：关键词{kw}），继续")
                     continue
                 seen_asins.add(aasin)
-                print(f"\n--- 关键词ASIN详情: {aasin} (来源: {kw}) ---")
+                print(f"\n--- 关键词ASIN详情: {aasin} ({idx_a+1}/{len(top5)}, 来源: {kw}) ---")
+                # 更新进度
+                try:
+                    sys.modules['__main__'].SCRAPE_STATUS['progress'] = f"关键词 {kw} → 抓取 {aasin} ({idx_a+1}/{len(top5)})"
+                except:
+                    pass
                 ok = run_command(
                     [sys.executable, "-m", "browser.asin_monitor", aasin, "--amazon"],
                     cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
@@ -353,7 +364,7 @@ def run_monitor(config_override=None):
 
     # ── Phase B: ASIN 监控（主ASIN + 关联ASIN）──
     random.shuffle(asins)
-    for asin_entry in asins:
+    for idx_entry, asin_entry in enumerate(asins):
         main_asin = asin_entry.get("main", "").strip()
         if not main_asin:
             continue
@@ -362,7 +373,12 @@ def run_monitor(config_override=None):
             continue
         seen_asins.add(main_asin)
 
-        print("\n--- 主ASIN监控: " + main_asin + " ---")
+        print("\n--- 主ASIN监控: " + main_asin + " ({}/{}) ---".format(idx_entry+1, len(asins)))
+        # 更新全局进度供前端查看
+        try:
+            sys.modules['__main__'].SCRAPE_STATUS['progress'] = f"主ASIN {main_asin} ({idx_entry+1}/{len(asins)})"
+        except:
+            pass
         ok = run_command(
             [sys.executable, "-m", "browser.asin_monitor", main_asin, "--amazon"],
             cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
@@ -376,6 +392,10 @@ def run_monitor(config_override=None):
             if JIKE_AVAILABLE:
                 try:
                     print("  调用积加 API... ")
+                    try:
+                        sys.modules['__main__'].SCRAPE_STATUS['progress'] = f"主ASIN {main_asin} → 调用积加 API"
+                    except:
+                        pass
                     jike_data = get_jike_data_for_asins([main_asin])
                     with open(jike_path, "w", encoding="utf-8") as f:
                         json.dump(jike_data, f, ensure_ascii=False, indent=2)
@@ -396,7 +416,7 @@ def run_monitor(config_override=None):
 
         # 抓取用户配置的关联 ASIN
         related_list = asin_entry.get("related", [])
-        for rel_asin in related_list:
+        for idx_rel, rel_asin in enumerate(related_list):
             rel_asin = rel_asin.strip()
             if not rel_asin:
                 continue
@@ -404,7 +424,12 @@ def run_monitor(config_override=None):
                 print(f"  [跳过] 关联ASIN {rel_asin} 已抓过，继续")
                 continue
             seen_asins.add(rel_asin)
-            print("\n--- 关联竞品: " + rel_asin + " ---")
+            print("\n--- 关联竞品: {rel_asin} (主ASIN {main_asin}, {idx_rel+1}/{len(related_list)}) ---")
+            # 更新全局进度供前端查看
+            try:
+                sys.modules['__main__'].SCRAPE_STATUS['progress'] = f"关联ASIN {rel_asin} (主ASIN {main_asin})"
+            except:
+                pass
             ok = run_command(
                 [sys.executable, "-m", "browser.asin_monitor", rel_asin, "--amazon"],
                 cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
@@ -446,6 +471,10 @@ def run_monitor(config_override=None):
 
     # ── Phase D: 同步推送 ──
     print("\n--- 同步数据 ---")
+    try:
+        sys.modules['__main__'].SCRAPE_STATUS['progress'] = "同步数据 → 推送到 GitHub"
+    except:
+        pass
     sync_and_push()
 
     trigger["status"] = "done"
