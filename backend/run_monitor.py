@@ -212,10 +212,10 @@ def push_trigger_done(trigger):
 
 
 def browse_unrelated_pages():
-    print("  [Phase 0] 人类行为模拟：先逛几个无关页面...")
-    urls = ["https://www.amazon.com", "https://www.amazon.com/gp/bestsellers/"]
+    print("  [Phase 0] 人类行为模拟：只逛一个首页，节省时间...")
+    urls = ["https://www.amazon.com"]
     random.shuffle(urls)
-    for url in urls[:2]:
+    for url in urls[:1]:
         print(f"  浏览: {url}")
         time.sleep(random.randint(3, 8))
 

@@ -722,21 +722,22 @@ def do_keyword_search(browser, keyword):
     for a in top_asins:
         print("     [" + str(a.get("type", "")).ljust(20) + "] " + a.get("asin", "") + " | " + a.get("price", ""))
 
-    # 5.5 [P0] 卖家精灵 vxe-table 提取（叠加模式，独立 tab）
+    # 5.5 [P0] 卖家精灵 vxe-table 提取（已禁用，不需要跳转卖家精灵官网，插件已在亚马逊页打标）
     sprite_rows = []
     sprite_ranks = {}
-    try:
-        sprite_rows = extract_sprite_table_rank(browser, keyword, organic_marks=marks)
-        if sprite_rows:
-            sprite_ranks, _ = match_vxe_to_amazon_organic(sprite_rows, marks)
-            # 把 sprite_rank 合并到 top_asins
-            for a in top_asins:
-                asin = a.get("asin", "")
-                if asin in sprite_ranks:
-                    a["sprite_rank"] = sprite_ranks[asin]
-            print("  [P0] 已为 " + str(len(sprite_ranks)) + " 个 top ASIN 填充 sprite_rank")
-    except Exception as e:
-        print("  [P0] 卖家精灵提取跳过: " + str(e))
+    # 禁用跳转到卖家精灵官网，减少不必要的标签页打开
+    # try:
+    #     sprite_rows = extract_sprite_table_rank(browser, keyword, organic_marks=marks)
+    #     if sprite_rows:
+    #         sprite_ranks, _ = match_vxe_to_amazon_organic(sprite_rows, marks)
+    #         # 把 sprite_rank 合并到 top_asins
+    #         for a in top_asins:
+    #             asin = a.get("asin", "")
+    #             if asin in sprite_ranks:
+    #                 a["sprite_rank"] = sprite_ranks[asin]
+    #         print("  [P0] 已为 " + str(len(sprite_ranks)) + " 个 top ASIN 填充 sprite_rank")
+    # except Exception as e:
+    #     print("  [P0] 卖家精灵提取跳过: " + str(e))
 
     # 6. Close new tab, restore main tab
     try:
