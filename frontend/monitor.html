@@ -107,15 +107,18 @@
 
   <div class="filter-bar">
     <div class="filter-controls">
-      <input type="text" id="searchInput" placeholder="&#36755;&#20837; ASIN/&#20851;&#38190;&#35789;&#31579;&#36873;...">
+      <input type="text" id="searchInput" placeholder="搜索 ASIN/标题...">
       <select id="sourceFilter">
-        <option value="ALL">&#20840;&#37096;</option>
-        <option value="ASIN">ASIN &#30417;&#25511;</option>
-        <option value="KW">&#20851;&#38190;&#35789;&#30417;&#25511;</option>
+        <option value="ALL">全部</option>
+        <option value="ASIN">ASIN 监控</option>
+        <option value="KW">关键词监控</option>
       </select>
-      <label><input type="checkbox" id="changeFilter"> &#21482;&#26174;&#31034;&#24322;&#24120;</label>
+      <label><input type="checkbox" id="changeFilter"> 仅显示变化</label>
     </div>
-    <button class="btn btn-secondary" id="btnExport">&#25968;&#25454;&#19979;&#36733;</button>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-secondary" id="btnRefresh">刷新数据</button>
+      <button class="btn btn-secondary" id="btnExport">导出 Excel</button>
+    </div>
   </div>
 
   <div class="table-container">
@@ -125,11 +128,11 @@
       </colgroup>
       <thead>
         <tr>
-          <th>围板</th>
+          <th>图片</th>
           <th>商品信息</th>
           <th>核心指标</th>
           <th>积加数据</th>
-          <th colspan="3" class="plugin-header">流量经济视</th>
+          <th colspan="3" class="plugin-header">卖家精灵</th>
           <th>更新时间</th>
         </tr>
         <tr class="plugin-subheader">
@@ -141,7 +144,6 @@
           <th>关键词分布</th>
           <th>流量词 Top</th>
           <th></th>
-
         </tr>
       </thead>
       <tbody id="tableBody"><tr><td colspan="15" style="text-align:center;padding:40px;color:#94a3b8;">&#21152;&#36733;&#20013;...</td></tr></tbody>

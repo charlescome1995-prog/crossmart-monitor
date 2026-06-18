@@ -494,12 +494,20 @@ def build_related_item(asin, rel_data, main_asin=None):
     diff = build_diff(rel_data, prev_data)
 
     # ── 历史轨迹：有快照则用真实历史，否则用当前值做单点占位 ──
+    hist_price = []
+    hist_rating = []
     if history:
         hist_main_bsr = [extract_bsr(h.get('data', h)) or main_bsr for h in history]
         hist_sub_bsr  = [extract_sub_bsr(h.get('data', h)) or sub_bsr for h in history]
+        for h in history:
+            hd = h.get('data', h)
+            hist_price.append(safe_float(hd.get('price', '')) or price)
+            hist_rating.append(safe_float(hd.get('rating', '')) or rating)
     else:
         hist_main_bsr = [main_bsr]
         hist_sub_bsr  = [sub_bsr]
+        hist_price    = [price]
+        hist_rating   = [rating]
 
     return {
         "monitor_type": "ASIN",
@@ -507,26 +515,26 @@ def build_related_item(asin, rel_data, main_asin=None):
         "is_main": False,
         "logic_type": "关联竞品",
         "title": rel_data.get('title', '')[:200],
-        "brand": rel_data.get('brand', '')[:60] if rel_data.get('brand') else '',
-        "img": rel_data.get('img', ''),
+        "brand": (rel_data.get('brand', '') if rel_data.get('brand') else '')[:60],
+        "img": rel_data.get('main_image', '') or rel_data.get('img', ''),
         "price": price,
         "chg": 0.0,
         "rating": rating,
         "reviews": reviews,
         "diff": diff,
-        "listing_status": "正常",
-        "expected_listing_status": "正常",
+        "listing_status": (rel_data.get('listing_status', '') if rel_data.get('listing_status', '') else '') or "正常",
+        "expected_listing_status": (rel_data.get('expected_listing_status', '') if rel_data.get('expected_listing_status', '') else '') or "正常",
         "title_changed": False,
         "img_changed": False,
         "bullets_changed": False,
         "description_changed": False,
-        "variant_status": "正常",
+        "variant_status": (rel_data.get('variant_status', '') if rel_data.get('variant_status', '') else '') or "正常",
         "variant_changed": False,
-        "deal_activity": "无",
-        "badges_current": [],
+        "deal_activity": (rel_data.get('deal_activity', '') if rel_data.get('deal_activity', '') else '') or "无",
+        "badges_current": rel_data.get('badges', []) or [],
         "badges_lost": [],
-        "coupon": "无",
-        "prime_discount": "未开启",
+        "coupon": (rel_data.get('coupon', '') if rel_data.get('coupon', '') else '') or "无",
+        "prime_discount": (rel_data.get('prime_discount', '') if rel_data.get('prime_discount', '') else '') or "未开启",
         "main_cat": main_cat,
         "expected_main_cat": main_cat,
         "main_bsr": main_bsr,
@@ -535,17 +543,21 @@ def build_related_item(asin, rel_data, main_asin=None):
         "sub_bsr": sub_bsr,
         "history_main_bsr": hist_main_bsr,
         "history_sub_bsr": hist_sub_bsr,
+        "history_price": hist_price,
+        "history_rating": hist_rating,
+        "history_price": hist_price if history else [price],
+        "history_rating": hist_rating if history else [rating],
         "events": [],
 
         # ── 卖家精灵插件数据 ──
         "lqs": rel_data.get('sprite_lqs', ''),
         "variant_count": rel_data.get('sprite_variant_count', ''),
-        "launch_date": rel_data.get('launch_date', '') or rel_data.get('sprite_launch_date', ''),
+        "launch_date": (rel_data.get('launch_date', '') if rel_data.get('launch_date', '') else '') or (rel_data.get('sprite_launch_date', '') if rel_data.get('sprite_launch_date', '') else '') or '',
         "total_keywords": rel_data.get('sprite_total_keywords', ''),
         "natural_keywords": rel_data.get('sprite_natural_keywords', ''),
         "ad_keywords": rel_data.get('sprite_ad_keywords', ''),
         "suggest_keywords": rel_data.get('sprite_suggest_keywords', ''),
-        "traffic_keywords_top": rel_data.get('sprite_traffic_keywords_top', []),
+        "traffic_keywords_top": rel_data.get('sprite_traffic_keywords_top', []) or [],
     }
 
 

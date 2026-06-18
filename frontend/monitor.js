@@ -323,7 +323,7 @@
         '</div></td>' +
         '<td class="col-metrics"><div class="metrics-block">' +
           '<div>价格: <strong>' + priceStr + '</strong>' + (diff.price ? ' <span class="diff-arrow ' + diff.price.direction + '">' + (diff.price.direction === 'up' ? '\u2191' : (diff.price.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.price.direction + '">' + diff.price.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_price"></canvas></span></div>' +
-          '<div>评分: <strong>' + ratingStr + '</strong>' + (diff.rating ? ' <span class="diff-arrow ' + diff.rating.direction + '">' + (diff.rating.direction === 'up' ? '\u2191' : (diff.rating.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.rating.direction + '">' + diff.rating.change + '</span>' : '') + ' <span style="color:#64748b;font-size:12px;">评论 ' + reviewsStr + '</span></div>' +
+          '<div>评分: <strong>' + ratingStr + '</strong>' + (diff.rating ? ' <span class="diff-arrow ' + diff.rating.direction + '">' + (diff.rating.direction === 'up' ? '\u2191' : (diff.rating.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.rating.direction + '">' + diff.rating.change + '</span>' : '') + ' <span style="color:#64748b;font-size:12px;">评论 ' + reviewsStr + '</span><span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_rating"></canvas></span></div>' +
           '<div>大类: <span class="cat-item">' + (item.main_cat || '-') + '</span> <strong>' + mainBsrStr + '</strong>' + (diff.bsr ? ' <span class="diff-arrow ' + diff.bsr.direction + '">' + (diff.bsr.direction === 'up' ? '\u2191' : (diff.bsr.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.bsr.direction + '">' + diff.bsr.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_main_bsr"></canvas></span></div>' +
           '<div>小类: <span class="cat-item">' + (item.sub_cat || '-') + '</span> <strong>' + (item.sub_bsr != null ? '#' + item.sub_bsr : '-') + '</strong>' + (diff.sub_bsr ? ' <span class="diff-arrow ' + diff.sub_bsr.direction + '">' + (diff.sub_bsr.direction === 'up' ? '\u2191' : (diff.sub_bsr.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.sub_bsr.direction + '">' + diff.sub_bsr.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_sub_bsr"></canvas></span></div>' +
         '</div></td>' +
@@ -387,6 +387,10 @@
       if (item.history_sub_bsr && item.history_sub_bsr.length >= 1) {
         var c = document.getElementById('sp_' + item.asin + '_sub_bsr');
         if (c) drawSparkline(c, item.history_sub_bsr, '#7c3aed');
+      }
+      if (item.history_rating && item.history_rating.length >= 1) {
+        var c = document.getElementById('sp_' + item.asin + '_rating');
+        if (c) drawSparkline(c, item.history_rating, '#059669');
       }
     });
   }
@@ -459,4 +463,5 @@
   document.getElementById('btnSaveConfig').addEventListener('click', saveConfig);
   document.getElementById('btnSaveToken').addEventListener('click', saveToken);
   document.getElementById('btnExport').addEventListener('click', exportToExcel);
+  document.getElementById('btnRefresh').addEventListener('click', loadRawData);
 })();
