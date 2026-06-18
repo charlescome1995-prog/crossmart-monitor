@@ -463,5 +463,4 @@
   document.getElementById('btnSaveConfig').addEventListener('click', saveConfig);
   document.getElementById('btnSaveToken').addEventListener('click', saveToken);
   document.getElementById('btnExport').addEventListener('click', exportToExcel);
-  document.getElementById('btnRefresh').addEventListener('click', loadRawData);
 })();
