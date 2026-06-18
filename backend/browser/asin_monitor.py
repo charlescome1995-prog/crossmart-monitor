@@ -769,6 +769,7 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
 
     # ─── Phase B: 卖家精灵（可选）───
     related_asins_meta = []
+    sprite_data = None  # 【修复】必须提前定义，否则非full模式下未定义异常
     if use_sprite and mode == "full":
         print("\n" + "="*50)
         print("卖家精灵数据查询")
@@ -779,6 +780,7 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
             print("  卖家精灵查询完成")
         except Exception as e:
             print("  卖家精灵失败: %s" % e)
+            sprite_data = None
 
         # ── 关联 ASIN 发现 → 写入 asin_related_asins.json（统一由 run_monitor.py 处理，这里不再写入 _meta.json）──
         # 注：关联 ASIN 发现逻辑已移至 run_monitor.py + discover_related.py，
