@@ -169,15 +169,21 @@ def sync_and_push():
         shell=False, cwd=repo_dir, encoding="utf-8", errors="replace")
     subprocess.run(["git", "config", "--global", "user.email", "bot@crossmart.ai"],
         shell=False, cwd=repo_dir, encoding="utf-8", errors="replace")
+    # 检查是否有文件变更
     result = subprocess.run(["git", "status", "--porcelain"],
         shell=False, cwd=repo_dir, capture_output=True, text=True, encoding="utf-8", errors="replace")
+    has_changes = bool(result.stdout and result.stdout.strip())
+    if not has_changes:
+        print("  无文件变更，跳过 commit，直接推送")
+        return True
+    # 有变更才 commit
     ts = datetime.now().strftime("%Y-%m-%d %H:%M")
-    run_command(["git", "commit", "-m", "auto: sync " + ts],
+    commit_ok = run_command(["git", "commit", "-m", "auto: sync " + ts],
         cwd=repo_dir, timeout=30)
     push_ok = run_command(["git", "push"], cwd=repo_dir, timeout=60)
     if not push_ok:
         print("  push rejected, force-push...")
-        run_command(["git", "push", "-f"], cwd=repo_dir, timeout=60)
+        push_ok = run_command(["git", "push", "-f"], cwd=repo_dir, timeout=60)
     print("  数据已推送")
     return True
 
