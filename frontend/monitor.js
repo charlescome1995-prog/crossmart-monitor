@@ -267,48 +267,7 @@
     });
   }
 
-  function renderKeywordSummary() {
-    var box = document.getElementById('keywordSummary');
-    if (!box) return;
-    var keywords = (rawData && rawData.keywords) || [];
-    if (!keywords.length) { box.innerHTML = ''; return; }
-    var asinMap = {};
-    (rawData.items || []).forEach(function(it) { asinMap[it.asin] = it; });
-    var html = '<div class="kw-summary-title">关键词 → 关联 ASIN</div>';
-    keywords.forEach(function(kw) {
-      var top = kw.top_asins || [];
-      html += '<div class="kw-block">';
-      html += '<div class="kw-block-head"><span class="kw-name">' + (kw.keyword || '-') + '</span><span class="kw-count">Top ' + top.length + '</span></div>';
-      html += '<div class="kw-asin-row">';
-      top.forEach(function(a, idx) {
-        var live = asinMap[a.asin] || {};
-        var bsr = live.main_bsr != null ? '#' + live.main_bsr : '-';
-        var subBsr = live.sub_bsr != null ? '#' + live.sub_bsr : '-';
-        var rating = live.rating != null ? live.rating : (a.rating || '-');
-        var reviews = live.reviews != null ? live.reviews : (a.reviews || '-');
-        var price = live.price != null ? '$' + live.price : (a.price || '-');
-        var img = live.img || '';
-        var title = live.title || a.title || '';
-        var titleShort = title.length > 50 ? title.slice(0, 50) + '...' : title;
-        var isUserMain = live.is_main && !live.source_keyword;
-        var assocCls = isUserMain ? 'kw-asin-main' : 'kw-asin-new';
-        var tag = isUserMain ? '<span class="kw-tag kw-tag-main">用户主ASIN</span>' : '<span class="kw-tag kw-tag-new">新发现</span>';
-        html += '<div class="kw-asin-card ' + assocCls + '" title="' + (title.replace(/"/g, '&quot;')) + '">';
-        html += '<div class="kw-asin-rank">#' + (idx + 1) + '</div>';
-        if (img) html += '<img class="kw-asin-img" src="' + img + '">';
-        html += '<div class="kw-asin-meta">';
-        html += '<div class="kw-asin-line1"><a href="https://www.amazon.com/dp/' + a.asin + '" target="_blank" class="asin-link">' + a.asin + '</a> ' + tag + '</div>';
-        html += '<div class="kw-asin-title">' + titleShort + '</div>';
-        html += '<div class="kw-asin-line3">' + price + ' · ★' + rating + ' (' + reviews + ') · BSR ' + bsr + ' / ' + subBsr + '</div>';
-        html += '</div></div>';
-      });
-      html += '</div></div>';
-    });
-    box.innerHTML = html;
-  }
-
   function renderTable() {
-    renderKeywordSummary();
     var tb = document.getElementById('tableBody');
     if (!tb || !rawData.items) { tb.innerHTML = '<tr><td colspan="15" style="text-align:center;padding:20px;">暂无数据</td></tr>'; return; }
     var searchTxt = (document.getElementById('searchInput') || {}).value || '';
@@ -317,7 +276,8 @@
     searchTxt = searchTxt.toLowerCase();
     var html = '';
     rawData.items.forEach(function(item) {
-      if (userConfiguredAsins.size > 0 && !userConfiguredAsins.has(item.asin)) return;
+      // 过滤逻辑：只保留用户配置的 ASIN、其 related ASIN、以及关键词带出的 ASIN（source_keyword 不为空）
+      if (userConfiguredAsins.size > 0 && !userConfiguredAsins.has(item.asin) && !item.source_keyword) return;
       var isStatusAnomaly = item.listing_status !== item.expected_listing_status;
       var isCatAnomaly = item.main_cat !== item.expected_main_cat || item.sub_cat !== item.expected_sub_cat;
       var isInfoAnomaly = item.title_changed || item.img_changed || item.bullets_changed || item.description_changed;
