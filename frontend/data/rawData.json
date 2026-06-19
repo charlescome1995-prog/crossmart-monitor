@@ -1,1 +1,940 @@
-﻿{"updated":"","items":[],"keywords":[]}
+{
+  "updated": "2026-06-19T03:41:12",
+  "items": [
+    {
+      "monitor_type": "variable",
+      "asin": "B017PCGABI",
+      "is_main": true,
+      "is_stale": false,
+      "logic_type": "变化ASIN",
+      "source_keyword": "",
+      "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
+      "brand": "Garnier",
+      "img": "https://m.media-amazon.com/images/I/61qrHCKF0jL._AC_SL1500_.jpg",
+      "price": 8.82,
+      "chg": 0.0,
+      "rating": 4.7,
+      "reviews": 73318,
+      "diff": {
+        "price": {
+          "current": 8.82,
+          "prev": 8.82,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.7,
+          "prev": 4.7,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 73318,
+          "prev": 73318,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 49,
+          "prev": 49,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 1,
+          "prev": 1,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "seller_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$8.38 off",
+      "prime_discount": "未开启",
+      "main_cat": "Beauty & Personal Care",
+      "expected_main_cat": "Beauty & Personal Care",
+      "main_bsr": 49,
+      "sub_cat": "Makeup Cleansing Water",
+      "expected_sub_cat": "Makeup Cleansing Water",
+      "sub_bsr": 1,
+      "history_main_bsr": [
+        49
+      ],
+      "history_sub_bsr": [
+        1
+      ],
+      "history_price": [
+        8.82
+      ],
+      "history_rating": [
+        4.7
+      ],
+      "events": [],
+      "related_asins": [],
+      "jike_sales": null,
+      "jike_orders": null,
+      "jike_units": null,
+      "jike_session": null,
+      "jike_page_views": null,
+      "jike_conversion_rate": null,
+      "jike_rating": null,
+      "jike_reviews": null,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
+      "jike_listing_state": null,
+      "jike_product_name": null,
+      "jike_acos": null,
+      "jike_ads_spend": null,
+      "jike_fba_quantity": null,
+      "jike_fba_turnover": null,
+      "jike_gross_profit_rate": null,
+      "lqs": "",
+      "variant_count": "4",
+      "launch_date": "2015-11-12",
+      "total_keywords": "720",
+      "natural_keywords": "631",
+      "ad_keywords": "4",
+      "seller_units_30d": 124041,
+      "seller_revenue_30d": 1094042.0,
+      "seller_avg_price": 9.48,
+      "seller_rating": 4.7,
+      "seller_review_count": 73318,
+      "seller_bsr": 49,
+      "seller_fba_fee": 3.91,
+      "suggest_keywords": "121",
+      "traffic_keywords_top": [
+        {
+          "keyword": "face wash",
+          "traffic_pct": "17.18%",
+          "type": "自然搜索词",
+          "organic_rank": "51"
+        },
+        {
+          "keyword": "makeup",
+          "traffic_pct": "13.76%",
+          "type": "自然搜索词",
+          "organic_rank": "44"
+        },
+        {
+          "keyword": "micellar water",
+          "traffic_pct": "10.19%",
+          "type": "自然搜索词AC推荐词",
+          "organic_rank": "4"
+        },
+        {
+          "keyword": "makeup remover",
+          "traffic_pct": "5.67%",
+          "type": "自然搜索词AC推荐词",
+          "organic_rank": "4"
+        }
+      ]
+    },
+    {
+      "monitor_type": "new",
+      "asin": "B017PCGAXQ",
+      "is_main": false,
+      "is_stale": false,
+      "logic_type": "主监控",
+      "source_keyword": "Makeup Remover",
+      "title": "Garnier Micellar Water For Waterproof Makeup, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
+      "brand": "Garnier",
+      "img": "https://m.media-amazon.com/images/I/71x+7yC3M1L._AC_SL1500_.jpg",
+      "price": 8.82,
+      "chg": 0.0,
+      "rating": 4.7,
+      "reviews": 48678,
+      "diff": {
+        "price": {
+          "current": 8.82,
+          "prev": 8.82,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.7,
+          "prev": 4.7,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 48678,
+          "prev": 48678,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 301,
+          "prev": 301,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 3,
+          "prev": 3,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "seller_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$8.38 off",
+      "prime_discount": "未开启",
+      "main_cat": "Beauty & Personal Care",
+      "expected_main_cat": "Beauty & Personal Care",
+      "main_bsr": 301,
+      "sub_cat": "Makeup Cleansing Water",
+      "expected_sub_cat": "Makeup Cleansing Water",
+      "sub_bsr": 3,
+      "history_main_bsr": [
+        301
+      ],
+      "history_sub_bsr": [
+        3
+      ],
+      "history_price": [
+        8.82
+      ],
+      "history_rating": [
+        4.7
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "",
+      "variant_count": "4",
+      "launch_date": "2015-11-12",
+      "total_keywords": "625",
+      "natural_keywords": "607",
+      "ad_keywords": "4",
+      "seller_units_30d": 51008,
+      "seller_revenue_30d": 449891.0,
+      "seller_avg_price": null,
+      "seller_rating": 4.7,
+      "seller_review_count": 48678,
+      "seller_bsr": 301,
+      "seller_fba_fee": 3.91,
+      "suggest_keywords": "29",
+      "traffic_keywords_top": []
+    },
+    {
+      "monitor_type": "new",
+      "asin": "B078WPCDV1",
+      "is_main": false,
+      "is_stale": false,
+      "logic_type": "主监控",
+      "source_keyword": "Makeup Remover",
+      "title": "Garnier Micellar Water for Waterproof Makeup, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 2 Count",
+      "brand": "Garnier",
+      "img": "https://m.media-amazon.com/images/I/41Os4+u7rfL._SY300_SX300_QL70_FMwebp_.jpg",
+      "price": 17.64,
+      "chg": 0.0,
+      "rating": 4.7,
+      "reviews": 48678,
+      "diff": {
+        "price": {
+          "current": 17.64,
+          "prev": 17.64,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.7,
+          "prev": 4.7,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 48678,
+          "prev": 48678,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 302,
+          "prev": 302,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 63,
+          "prev": 63,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "seller_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$16.76 off",
+      "prime_discount": "未开启",
+      "main_cat": "Beauty & Personal Care",
+      "expected_main_cat": "Beauty & Personal Care",
+      "main_bsr": 302,
+      "sub_cat": "Facial Cleansing Washes",
+      "expected_sub_cat": "Facial Cleansing Washes",
+      "sub_bsr": 63,
+      "history_main_bsr": [
+        302
+      ],
+      "history_sub_bsr": [
+        63
+      ],
+      "history_price": [
+        17.64
+      ],
+      "history_rating": [
+        4.7
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "9.6",
+      "variant_count": "4",
+      "launch_date": "2018-02-16",
+      "total_keywords": "418",
+      "natural_keywords": "227",
+      "ad_keywords": "316",
+      "seller_units_30d": 51008,
+      "seller_revenue_30d": 899781.0,
+      "seller_avg_price": 26.83,
+      "seller_rating": 4.7,
+      "seller_review_count": 48678,
+      "seller_bsr": 302,
+      "seller_fba_fee": 6.02,
+      "suggest_keywords": "1",
+      "traffic_keywords_top": [
+        {
+          "keyword": "makeup remover",
+          "traffic_pct": "32.80%",
+          "type": "自然搜索词SP广告词品牌广告词",
+          "organic_rank": "9"
+        },
+        {
+          "keyword": "micellar water makeup remover",
+          "traffic_pct": "15.54%",
+          "type": "自然搜索词SP广告词HR推荐词",
+          "organic_rank": "12"
+        },
+        {
+          "keyword": "garnier micellar water",
+          "traffic_pct": "11.69%",
+          "type": "自然搜索词SP广告词品牌广告词",
+          "organic_rank": "7"
+        },
+        {
+          "keyword": "micellar water",
+          "traffic_pct": "4.98%",
+          "type": "自然搜索词SP广告词品牌广告词",
+          "organic_rank": "18"
+        }
+      ]
+    },
+    {
+      "monitor_type": "new",
+      "asin": "B07HHCB2XG",
+      "is_main": false,
+      "is_stale": false,
+      "logic_type": "主监控",
+      "source_keyword": "Makeup Remover",
+      "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 2 Count",
+      "brand": "Garnier",
+      "img": "https://m.media-amazon.com/images/I/71AONecs4SL._AC_SL1500_.jpg",
+      "price": 17.64,
+      "chg": 0.0,
+      "rating": 4.7,
+      "reviews": 73318,
+      "diff": {
+        "price": {
+          "current": 17.64,
+          "prev": 17.64,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.7,
+          "prev": 4.7,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 73318,
+          "prev": 73318,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 49,
+          "prev": 49,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 1,
+          "prev": 1,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "seller_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "BS",
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$16.76 off",
+      "prime_discount": "未开启",
+      "main_cat": "Beauty & Personal Care",
+      "expected_main_cat": "Beauty & Personal Care",
+      "main_bsr": 49,
+      "sub_cat": "Makeup Cleansing Water",
+      "expected_sub_cat": "Makeup Cleansing Water",
+      "sub_bsr": 1,
+      "history_main_bsr": [
+        49
+      ],
+      "history_sub_bsr": [
+        1
+      ],
+      "history_price": [
+        17.64
+      ],
+      "history_rating": [
+        4.7
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "9.6",
+      "variant_count": "4",
+      "launch_date": "2018-09-27",
+      "total_keywords": "518",
+      "natural_keywords": "372",
+      "ad_keywords": "314",
+      "seller_units_30d": 124041,
+      "seller_revenue_30d": 2188083.0,
+      "seller_avg_price": 9.48,
+      "seller_rating": 4.7,
+      "seller_review_count": 73318,
+      "seller_bsr": 49,
+      "seller_fba_fee": 6.02,
+      "suggest_keywords": "6",
+      "traffic_keywords_top": [
+        {
+          "keyword": "micellar water",
+          "traffic_pct": "26.76%",
+          "type": "自然搜索词SP广告词AC推荐词品牌广告词",
+          "organic_rank": "1"
+        },
+        {
+          "keyword": "makeup remover",
+          "traffic_pct": "14.59%",
+          "type": "自然搜索词SP广告词品牌广告词",
+          "organic_rank": "5"
+        },
+        {
+          "keyword": "makeup",
+          "traffic_pct": "12.72%",
+          "type": "自然搜索词SP广告词HR推荐词",
+          "organic_rank": "63"
+        },
+        {
+          "keyword": "micellar water makeup remover",
+          "traffic_pct": "6.87%",
+          "type": "自然搜索词SP广告词",
+          "organic_rank": "11"
+        }
+      ]
+    },
+    {
+      "monitor_type": "new",
+      "asin": "B08KQMXZFB",
+      "is_main": false,
+      "is_stale": false,
+      "logic_type": "主监控",
+      "source_keyword": "Makeup Remover",
+      "title": "Garnier Micellar Water with Vitamin C, Facial Cleanser & Makeup Remover, Brightening & Hydrating, For All Skin Types, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
+      "brand": "Garnier",
+      "img": "https://m.media-amazon.com/images/I/71NRm1IppRL._AC_SL1500_.jpg",
+      "price": 8.82,
+      "chg": 0.0,
+      "rating": 4.7,
+      "reviews": 16987,
+      "diff": {
+        "price": {
+          "current": 8.82,
+          "prev": 8.82,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.7,
+          "prev": 4.7,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 16987,
+          "prev": 16987,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 1586,
+          "prev": 1586,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 5,
+          "prev": 5,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "seller_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$8.38 off",
+      "prime_discount": "未开启",
+      "main_cat": "Beauty & Personal Care",
+      "expected_main_cat": "Beauty & Personal Care",
+      "main_bsr": 1586,
+      "sub_cat": "Makeup Cleansing Water",
+      "expected_sub_cat": "Makeup Cleansing Water",
+      "sub_bsr": 5,
+      "history_main_bsr": [
+        1586
+      ],
+      "history_sub_bsr": [
+        5
+      ],
+      "history_price": [
+        8.82
+      ],
+      "history_rating": [
+        4.7
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "10.0",
+      "variant_count": "3",
+      "launch_date": "2020-10-06",
+      "total_keywords": "361",
+      "natural_keywords": "359",
+      "ad_keywords": "0",
+      "seller_units_30d": 16822,
+      "seller_revenue_30d": 148370.0,
+      "seller_avg_price": 9.51,
+      "seller_rating": 4.7,
+      "seller_review_count": 16987,
+      "seller_bsr": 5,
+      "seller_fba_fee": 3.91,
+      "suggest_keywords": "9",
+      "traffic_keywords_top": [
+        {
+          "keyword": "micellar water",
+          "traffic_pct": "27.85%",
+          "type": "自然搜索词",
+          "organic_rank": "44"
+        },
+        {
+          "keyword": "makeup remover",
+          "traffic_pct": "17.12%",
+          "type": "自然搜索词AC推荐词",
+          "organic_rank": "6"
+        },
+        {
+          "keyword": "micellar water makeup remover",
+          "traffic_pct": "7.95%",
+          "type": "自然搜索词",
+          "organic_rank": "14"
+        },
+        {
+          "keyword": "bioderma micellar waterBioderma micellar water",
+          "traffic_pct": "6.75%",
+          "type": "自然搜索词",
+          "organic_rank": "21"
+        }
+      ]
+    },
+    {
+      "monitor_type": "ASIN",
+      "asin": "B09542G9ZN",
+      "is_main": true,
+      "is_stale": false,
+      "logic_type": "主监控",
+      "source_keyword": "",
+      "title": "Amazon Basics Hypoallergenic Cotton Rounds for Makeup Removal and Skincare, 100 Count, 1 Pack",
+      "brand": "Amazon Basics",
+      "img": "https://m.media-amazon.com/images/I/21dluA3iqqL._SY300_SX300_QL70_FMwebp_.jpg",
+      "price": 3.23,
+      "chg": 0.0,
+      "rating": 4.7,
+      "reviews": 51313,
+      "diff": {
+        "price": {
+          "current": 3.23,
+          "prev": 3.23,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.7,
+          "prev": 4.7,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 51313,
+          "prev": 51313,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 9,
+          "prev": 9,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 1,
+          "prev": 1,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "seller_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$3.07 off",
+      "prime_discount": "10%",
+      "main_cat": "Beauty & Personal Care",
+      "expected_main_cat": "Beauty & Personal Care",
+      "main_bsr": 9,
+      "sub_cat": "Cotton Pads & Rounds",
+      "expected_sub_cat": "Cotton Pads & Rounds",
+      "sub_bsr": 1,
+      "history_main_bsr": [
+        9
+      ],
+      "history_sub_bsr": [
+        1
+      ],
+      "history_price": [
+        3.23
+      ],
+      "history_rating": [
+        4.7
+      ],
+      "events": [],
+      "related_asins": [],
+      "jike_sales": null,
+      "jike_orders": null,
+      "jike_units": null,
+      "jike_session": null,
+      "jike_page_views": null,
+      "jike_conversion_rate": null,
+      "jike_rating": null,
+      "jike_reviews": null,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
+      "jike_listing_state": null,
+      "jike_product_name": null,
+      "jike_acos": null,
+      "jike_ads_spend": null,
+      "jike_fba_quantity": null,
+      "jike_fba_turnover": null,
+      "jike_gross_profit_rate": null,
+      "lqs": "7.9",
+      "variant_count": "2",
+      "launch_date": "2022-03-15",
+      "total_keywords": "969",
+      "natural_keywords": "826",
+      "ad_keywords": "87",
+      "seller_units_30d": 12736,
+      "seller_revenue_30d": 41137.0,
+      "seller_avg_price": 7.91,
+      "seller_rating": 4.7,
+      "seller_review_count": 51313,
+      "seller_bsr": 9,
+      "seller_fba_fee": 3.5,
+      "suggest_keywords": "227",
+      "traffic_keywords_top": []
+    },
+    {
+      "monitor_type": "ASIN",
+      "asin": "B0FVSS8SR1",
+      "is_main": true,
+      "is_stale": false,
+      "logic_type": "主监控",
+      "source_keyword": "",
+      "title": "Antifungal Cream for Athletes Foot Treatment 60g | Relief from Jock Itch Ringworm & Skin Fungus, Advanced Dual Action Formula for Adults and Kids",
+      "brand": "EVERFERE",
+      "img": "https://m.media-amazon.com/images/I/71Ns3+umtgL._AC_SL1500_.jpg",
+      "price": 21.99,
+      "chg": 0.0,
+      "rating": 3.9,
+      "reviews": 27,
+      "diff": {
+        "price": {
+          "current": 21.99,
+          "prev": 21.99,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 3.9,
+          "prev": 3.9,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 27,
+          "prev": 27,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 142946,
+          "prev": 142946,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 251,
+          "prev": 251,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "seller_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "无",
+      "prime_discount": "未开启",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
+      "main_bsr": 142946,
+      "sub_cat": "Antifungal Remedies",
+      "expected_sub_cat": "Antifungal Remedies",
+      "sub_bsr": 251,
+      "history_main_bsr": [
+        142946
+      ],
+      "history_sub_bsr": [
+        251
+      ],
+      "history_price": [
+        21.99
+      ],
+      "history_rating": [
+        3.9
+      ],
+      "events": [],
+      "related_asins": [],
+      "jike_sales": 113.94,
+      "jike_orders": 6,
+      "jike_units": 6,
+      "jike_session": 67,
+      "jike_page_views": 86,
+      "jike_conversion_rate": 8.96,
+      "jike_rating": 3.9,
+      "jike_reviews": 7,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
+      "jike_listing_state": "-",
+      "jike_product_name": "60g瓶装止痒膏",
+      "jike_acos": 0.0,
+      "jike_ads_spend": 0.0,
+      "jike_fba_quantity": 237,
+      "jike_fba_turnover": 333.8028,
+      "jike_gross_profit_rate": null,
+      "lqs": "9.4",
+      "variant_count": "1",
+      "launch_date": "11, 2025",
+      "total_keywords": "107",
+      "natural_keywords": "106",
+      "ad_keywords": "9",
+      "seller_units_30d": 173,
+      "seller_revenue_30d": 3804.0,
+      "seller_avg_price": 21.99,
+      "seller_rating": 3.9,
+      "seller_review_count": 27,
+      "seller_bsr": 251,
+      "seller_fba_fee": 4.09,
+      "suggest_keywords": "0",
+      "traffic_keywords_top": []
+    }
+  ],
+  "keywords": [
+    {
+      "keyword": "Makeup Remover",
+      "top_asins": [
+        {
+          "asin": "B017PCGABI",
+          "type": "unknown",
+          "rank": "",
+          "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
+          "price": "$8.82",
+          "rating": "4.7",
+          "reviews": "73318",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "Deal",
+          "coupon": "$8.38 off",
+          "prime_discount": "未开启"
+        },
+        {
+          "asin": "B017PCGAXQ",
+          "type": "unknown",
+          "rank": "",
+          "title": "Garnier Micellar Water For Waterproof Makeup, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
+          "price": "$8.82",
+          "rating": "4.7",
+          "reviews": "48678",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "Deal",
+          "coupon": "$8.38 off",
+          "prime_discount": "未开启"
+        },
+        {
+          "asin": "B08KQMXZFB",
+          "type": "unknown",
+          "rank": "",
+          "title": "Garnier Micellar Water with Vitamin C, Facial Cleanser & Makeup Remover, Brightening & Hydrating, For All Skin Types, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 1 Count",
+          "price": "$8.82",
+          "rating": "4.7",
+          "reviews": "16987",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "Deal",
+          "coupon": "$8.38 off",
+          "prime_discount": "未开启"
+        },
+        {
+          "asin": "B07HHCB2XG",
+          "type": "unknown",
+          "rank": "",
+          "title": "Garnier Micellar Water, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 2 Count",
+          "price": "$17.64",
+          "rating": "4.7",
+          "reviews": "73318",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "Deal",
+          "coupon": "$16.76 off",
+          "prime_discount": "未开启"
+        },
+        {
+          "asin": "B078WPCDV1",
+          "type": "unknown",
+          "rank": "",
+          "title": "Garnier Micellar Water for Waterproof Makeup, Hydrating Facial Cleanser & Makeup Remover, Suitable for Sensitive Skin, Vegan, Cruelty Free, 13.5 Fl Oz (400mL), 2 Count",
+          "price": "$17.64",
+          "rating": "4.7",
+          "reviews": "48678",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "Deal",
+          "coupon": "$16.76 off",
+          "prime_discount": "未开启"
+        }
+      ]
+    }
+  ]
+}
