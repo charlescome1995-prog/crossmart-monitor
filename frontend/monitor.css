@@ -93,3 +93,28 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
 .diff-none{color:#cbd5e1;font-size:11px}
 
 
+
+/* Keyword summary block */
+.keyword-summary{background:#fff;padding:14px;border:1px solid #e2e8f0;border-bottom:none;margin-top:0}
+.kw-summary-title{font-size:13px;font-weight:700;color:#1e293b;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #fce7f3;display:flex;align-items:center;gap:6px}
+.kw-summary-title:before{content:'';display:inline-block;width:4px;height:14px;background:#db2777;border-radius:2px}
+.kw-block{margin-bottom:14px}
+.kw-block:last-child{margin-bottom:0}
+.kw-block-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.kw-name{font-size:12px;font-weight:700;color:#db2777;background:#fce7f3;padding:3px 10px;border-radius:12px;border:1px solid #fbcfe8}
+.kw-count{font-size:11px;color:#64748b}
+.kw-asin-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.kw-asin-card{display:flex;gap:8px;padding:8px;background:#fafbfc;border:1px solid #e2e8f0;border-radius:5px;align-items:flex-start;transition:.15s;position:relative}
+.kw-asin-card:hover{box-shadow:0 2px 6px rgba(0,0,0,.08);border-color:#cbd5e1}
+.kw-asin-card.kw-asin-main{background:#fef3c7;border-color:#fcd34d}
+.kw-asin-card.kw-asin-new{background:#fafbfc}
+.kw-asin-rank{position:absolute;top:4px;right:6px;font-size:10px;font-weight:700;color:#94a3b8}
+.kw-asin-img{width:46px;height:46px;object-fit:contain;background:#fff;border:1px solid #e2e8f0;border-radius:3px;flex-shrink:0}
+.kw-asin-meta{flex:1;min-width:0;font-size:11px;line-height:1.4}
+.kw-asin-line1{display:flex;align-items:center;gap:6px;margin-bottom:2px}
+.kw-asin-line1 .asin-link{font-weight:700;color:#1e40af}
+.kw-asin-title{color:#475569;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px}
+.kw-asin-line3{color:#64748b;font-size:11px}
+.kw-tag{font-size:9px;padding:1px 6px;border-radius:3px;font-weight:700}
+.kw-tag-main{background:#d97706;color:#fff}
+.kw-tag-new{background:#dbeafe;color:#1e40af}

@@ -368,53 +368,54 @@ def run_monitor(config_override=None):
         main_asin = asin_entry.get("main", "").strip()
         if not main_asin:
             continue
-        if main_asin in seen_asins:
-            print(f"  [跳过] 主ASIN {main_asin} 已抓过，继续")
-            continue
-        seen_asins.add(main_asin)
 
-        print("\n--- 主ASIN监控: " + main_asin + " ({}/{}) ---".format(idx_entry+1, len(asins)))
-        # 更新全局进度供前端查看
-        try:
-            sys.modules['__main__'].SCRAPE_STATUS['progress'] = f"主ASIN {main_asin} ({idx_entry+1}/{len(asins)})"
-        except:
-            pass
-        ok = run_command(
-            [sys.executable, "-m", "browser.asin_monitor", main_asin, "--amazon"],
-            cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
-        if not ok:
-            print("  ASIN " + main_asin + " 执行失败，继续")
+        main_already_seen = main_asin in seen_asins
+        if main_already_seen:
+            print(f"\n--- 主ASIN {main_asin} 已抓过（关键词阶段），跳过抓取，继续处理关联ASIN ({idx_entry+1}/{len(asins)}) ---")
         else:
-            # 主ASIN抓取成功后，调用积加API
-            asin_dir = os.path.join(PROJECT_ROOT, "backend", "data", "processed", f"asin_{main_asin}")
-            os.makedirs(asin_dir, exist_ok=True)
-            jike_path = os.path.join(asin_dir, "jike_latest.json")
-            if JIKE_AVAILABLE:
-                try:
-                    print("  调用积加 API... ")
-                    try:
-                        sys.modules['__main__'].SCRAPE_STATUS['progress'] = f"主ASIN {main_asin} → 调用积加 API"
-                    except:
-                        pass
-                    jike_data = get_jike_data_for_asins([main_asin])
-                    with open(jike_path, "w", encoding="utf-8") as f:
-                        json.dump(jike_data, f, ensure_ascii=False, indent=2)
-                    print(f"  积加数据已保存: {jike_path}")
-                except Exception as e:
-                    # 即使调用失败也写一个标记文件，sync 时 fallback 到卖家精灵数据
-                    err_marker = {"_error": str(e), "_failed_at": datetime.now().isoformat()}
-                    with open(jike_path, "w", encoding="utf-8") as f:
-                        json.dump(err_marker, f, ensure_ascii=False, indent=2)
-                    print(f"  积加API调用失败（已写错误标记）: {e}")
+            seen_asins.add(main_asin)
+            print("\n--- 主ASIN监控: " + main_asin + " ({}/{}) ---".format(idx_entry+1, len(asins)))
+            # 更新全局进度供前端查看
+            try:
+                sys.modules['__main__'].SCRAPE_STATUS['progress'] = f"主ASIN {main_asin} ({idx_entry+1}/{len(asins)})"
+            except:
+                pass
+            ok = run_command(
+                [sys.executable, "-m", "browser.asin_monitor", main_asin, "--amazon"],
+                cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
+            if not ok:
+                print("  ASIN " + main_asin + " 执行失败，继续")
             else:
-                # JIKE 不可用也写空文件，避免 sync 走未定义路径
-                with open(jike_path, "w", encoding="utf-8") as f:
-                    json.dump({}, f)
-                print(f"  积加模块未加载（已写空文件）")
-        time.sleep(5)  # 积加 API 限流：每 5 秒最多 1 次请求
-        time.sleep(random.randint(20, 50))
+                # 主ASIN抓取成功后，调用积加API
+                asin_dir = os.path.join(PROJECT_ROOT, "backend", "data", "processed", f"asin_{main_asin}")
+                os.makedirs(asin_dir, exist_ok=True)
+                jike_path = os.path.join(asin_dir, "jike_latest.json")
+                if JIKE_AVAILABLE:
+                    try:
+                        print("  调用积加 API... ")
+                        try:
+                            sys.modules['__main__'].SCRAPE_STATUS['progress'] = f"主ASIN {main_asin} → 调用积加 API"
+                        except:
+                            pass
+                        jike_data = get_jike_data_for_asins([main_asin])
+                        with open(jike_path, "w", encoding="utf-8") as f:
+                            json.dump(jike_data, f, ensure_ascii=False, indent=2)
+                        print(f"  积加数据已保存: {jike_path}")
+                    except Exception as e:
+                        # 即使调用失败也写一个标记文件，sync 时 fallback 到卖家精灵数据
+                        err_marker = {"_error": str(e), "_failed_at": datetime.now().isoformat()}
+                        with open(jike_path, "w", encoding="utf-8") as f:
+                            json.dump(err_marker, f, ensure_ascii=False, indent=2)
+                        print(f"  积加API调用失败（已写错误标记）: {e}")
+                else:
+                    # JIKE 不可用也写空文件，避免 sync 走未定义路径
+                    with open(jike_path, "w", encoding="utf-8") as f:
+                        json.dump({}, f)
+                    print(f"  积加模块未加载（已写空文件）")
+            time.sleep(5)  # 积加 API 限流：每 5 秒最多 1 次请求
+            time.sleep(random.randint(20, 50))
 
-        # 抓取用户配置的关联 ASIN
+        # 抓取用户配置的关联 ASIN（不论主ASIN是否在Phase A2已抓过，都要跑）
         related_list = asin_entry.get("related", [])
         for idx_rel, rel_asin in enumerate(related_list):
             rel_asin = rel_asin.strip()
@@ -424,7 +425,7 @@ def run_monitor(config_override=None):
                 print(f"  [跳过] 关联ASIN {rel_asin} 已抓过，继续")
                 continue
             seen_asins.add(rel_asin)
-            print("\n--- 关联竞品: {rel_asin} (主ASIN {main_asin}, {idx_rel+1}/{len(related_list)}) ---")
+            print(f"\n--- 关联竞品: {rel_asin} (主ASIN {main_asin}, {idx_rel+1}/{len(related_list)}) ---")
             # 更新全局进度供前端查看
             try:
                 sys.modules['__main__'].SCRAPE_STATUS['progress'] = f"关联ASIN {rel_asin} (主ASIN {main_asin})"
