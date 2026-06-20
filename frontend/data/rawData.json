@@ -1,5 +1,780 @@
 {
-  "updated": "",
-  "items": [],
-  "keywords": []
+  "updated": "2026-06-19T21:54:22",
+  "items": [
+    {
+      "monitor_type": "new",
+      "asin": "B0013YYNDM",
+      "is_main": false,
+      "is_stale": false,
+      "logic_type": "主监控",
+      "source_keyword": "castor oil",
+      "title": "HERITAGE STORE Organic Castor Oil - Glass Bottle - Nourishing Treatment for Hair and Skin - Eyelash Serum for Eyelashes, Brows, Castor Oil Packs - Cold Pressed, Hexane Free, Vegan 16oz",
+      "brand": "HERITAGE STORE",
+      "img": "https://m.media-amazon.com/images/I/41m0SK9PMQL._SY300_SX300_QL70_FMwebp_.jpg",
+      "price": 21.34,
+      "chg": 0.0,
+      "rating": 4.8,
+      "reviews": 25553,
+      "diff": {
+        "price": {
+          "current": 21.34,
+          "prev": 21.34,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.8,
+          "prev": 4.8,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 25553,
+          "prev": 25553,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 648,
+          "prev": 648,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 6,
+          "prev": 6,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "seller_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "无",
+      "prime_discount": "未开启",
+      "main_cat": "Beauty & Personal Care",
+      "expected_main_cat": "Beauty & Personal Care",
+      "main_bsr": 648,
+      "sub_cat": "Hair Treatment Oils",
+      "expected_sub_cat": "Hair Treatment Oils",
+      "sub_bsr": 6,
+      "history_main_bsr": [
+        648
+      ],
+      "history_sub_bsr": [
+        6
+      ],
+      "history_price": [
+        21.34
+      ],
+      "history_rating": [
+        4.8
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "",
+      "variant_count": "4",
+      "launch_date": "2011-03-24",
+      "total_keywords": "910",
+      "natural_keywords": "901",
+      "ad_keywords": "118",
+      "seller_units_30d": 31256,
+      "seller_revenue_30d": 667003.0,
+      "seller_avg_price": 26.05,
+      "seller_rating": 4.8,
+      "seller_review_count": 25553,
+      "seller_bsr": 648,
+      "seller_fba_fee": 5.76,
+      "suggest_keywords": "17",
+      "traffic_keywords_top": []
+    },
+    {
+      "monitor_type": "new",
+      "asin": "B01NALN8Q9",
+      "is_main": false,
+      "is_stale": false,
+      "logic_type": "主监控",
+      "source_keyword": "castor oil",
+      "title": "Kate Blanc Cosmetics Castor Oil Organic for Hair, Lashes, Face, Skin (2oz), 100% Pure, Cold Pressed, Hexane Free Hair Oil. Lash Serum for Thicker-Looking Eyelashes & Eyebrows",
+      "brand": "Kate Blanc Cosmetics",
+      "img": "https://m.media-amazon.com/images/I/41DFuMui58L._SY300_SX300_QL70_FMwebp_.jpg",
+      "price": 9.99,
+      "chg": 0.0,
+      "rating": 4.5,
+      "reviews": 118171,
+      "diff": {
+        "price": {
+          "current": 9.99,
+          "prev": 9.99,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.5,
+          "prev": 4.5,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 118171,
+          "prev": 118171,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 580,
+          "prev": 580,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 4,
+          "prev": 4,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "seller_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$8.99 off",
+      "prime_discount": "未开启",
+      "main_cat": "Beauty & Personal Care",
+      "expected_main_cat": "Beauty & Personal Care",
+      "main_bsr": 580,
+      "sub_cat": "Hair Treatment Oils",
+      "expected_sub_cat": "Hair Treatment Oils",
+      "sub_bsr": 4,
+      "history_main_bsr": [
+        580
+      ],
+      "history_sub_bsr": [
+        4
+      ],
+      "history_price": [
+        9.99
+      ],
+      "history_rating": [
+        4.5
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "10.0",
+      "variant_count": "3",
+      "launch_date": "2019-05-04",
+      "total_keywords": "1",
+      "natural_keywords": "1",
+      "ad_keywords": "577",
+      "seller_units_30d": 37566,
+      "seller_revenue_30d": 375284.0,
+      "seller_avg_price": 16.98,
+      "seller_rating": 4.5,
+      "seller_review_count": 118171,
+      "seller_bsr": 580,
+      "seller_fba_fee": 3.24,
+      "suggest_keywords": "132",
+      "traffic_keywords_top": [
+        {
+          "keyword": "castor oil",
+          "traffic_pct": "22.36%",
+          "type": "自然搜索词SP广告词AC推荐词品牌广告词",
+          "organic_rank": "7"
+        },
+        {
+          "keyword": "lash serum",
+          "traffic_pct": "6.18%",
+          "type": "自然搜索词SP广告词",
+          "organic_rank": "27"
+        },
+        {
+          "keyword": "castor oil organic cold pressed",
+          "traffic_pct": "6.10%",
+          "type": "自然搜索词SP广告词品牌广告词",
+          "organic_rank": "19"
+        },
+        {
+          "keyword": "organic castor oil",
+          "traffic_pct": "4.06%",
+          "type": "自然搜索词SP广告词品牌广告词",
+          "organic_rank": "24"
+        }
+      ]
+    },
+    {
+      "monitor_type": "variable",
+      "asin": "B0734849YK",
+      "is_main": false,
+      "is_stale": false,
+      "logic_type": "变化ASIN",
+      "source_keyword": "castor oil",
+      "title": "Handcraft Blends Organic Castor Oil 16 Fl Oz | 100% Pure and Natural | Premium Grade Carrier Oil | Hair, Eyelashes and Eyebrows | Hair and Body | Expeller-Pressed | Hexane-Free",
+      "brand": "Handcraft Blends",
+      "img": "https://m.media-amazon.com/images/I/41fxCCoeLzL._SY300_SX300_QL70_FMwebp_.jpg",
+      "price": 9.99,
+      "chg": 0.0,
+      "rating": 4.6,
+      "reviews": 56661,
+      "diff": {
+        "price": {
+          "current": 9.99,
+          "prev": 9.99,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.6,
+          "prev": 4.6,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 56661,
+          "prev": 56661,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 582,
+          "prev": 582,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 1,
+          "prev": 1,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "seller_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$9.49 off",
+      "prime_discount": "未开启",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
+      "main_bsr": 582,
+      "sub_cat": "Carrier Oils",
+      "expected_sub_cat": "Carrier Oils",
+      "sub_bsr": 1,
+      "history_main_bsr": [
+        582
+      ],
+      "history_sub_bsr": [
+        1
+      ],
+      "history_price": [
+        9.99
+      ],
+      "history_rating": [
+        4.6
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "",
+      "variant_count": "8",
+      "launch_date": "2017-08-26",
+      "total_keywords": "969",
+      "natural_keywords": "944",
+      "ad_keywords": "0",
+      "seller_units_30d": 43126,
+      "seller_revenue_30d": 430829.0,
+      "seller_avg_price": 12.86,
+      "seller_rating": 4.6,
+      "seller_review_count": 56661,
+      "seller_bsr": 582,
+      "seller_fba_fee": 4.37,
+      "suggest_keywords": "126",
+      "traffic_keywords_top": []
+    },
+    {
+      "monitor_type": "new",
+      "asin": "B0C6Y478R5",
+      "is_main": false,
+      "is_stale": false,
+      "logic_type": "主监控",
+      "source_keyword": "castor oil",
+      "title": "Majestic Pure Oil - 100% Pure and Natural- Cold Pressed & Hexane Free Natural Hair Growth Oil for Eyelashes, Eyebrows, Skin, Body, Face, Nails & Scalp - USDA Organic Castor Oil 8 Fl Oz",
+      "brand": "Majestic Pure",
+      "img": "https://m.media-amazon.com/images/I/41itMEG9QrL._SY300_SX300_QL70_FMwebp_.jpg",
+      "price": 7.99,
+      "chg": 0.0,
+      "rating": 4.6,
+      "reviews": 3648,
+      "diff": {
+        "price": {
+          "current": 7.99,
+          "prev": 7.99,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.6,
+          "prev": 4.6,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 3648,
+          "prev": 3648,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 1794,
+          "prev": 1794,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 1,
+          "prev": 1,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "seller_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$7.59 off",
+      "prime_discount": "未开启",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
+      "main_bsr": 1794,
+      "sub_cat": "Ayurvedic Hair Care",
+      "expected_sub_cat": "Ayurvedic Hair Care",
+      "sub_bsr": 1,
+      "history_main_bsr": [
+        1794
+      ],
+      "history_sub_bsr": [
+        1
+      ],
+      "history_price": [
+        7.99
+      ],
+      "history_rating": [
+        4.6
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "",
+      "variant_count": "1",
+      "launch_date": "2023-06-27",
+      "total_keywords": "862",
+      "natural_keywords": "842",
+      "ad_keywords": "65",
+      "seller_units_30d": 24403,
+      "seller_revenue_30d": 194980.0,
+      "seller_avg_price": null,
+      "seller_rating": 4.6,
+      "seller_review_count": 3648,
+      "seller_bsr": 1,
+      "seller_fba_fee": 3.5,
+      "suggest_keywords": "22",
+      "traffic_keywords_top": []
+    },
+    {
+      "monitor_type": "new",
+      "asin": "B0D9PP29TJ",
+      "is_main": false,
+      "is_stale": false,
+      "logic_type": "主监控",
+      "source_keyword": "castor oil",
+      "title": "Florisan USDA Certified Organic Castor Oil 16oz Glass Bottle, Cold Pressed, Hexane-Free, Non-GMO, Vegan, 100% Pure Castor Oil for Hair Growth, Skin, Lashes, Eyebrows, EWG Verified",
+      "brand": "Florisan",
+      "img": "https://m.media-amazon.com/images/I/41c5diMXoUL._SY300_SX300_QL70_FMwebp_.jpg",
+      "price": 27.99,
+      "chg": 0.0,
+      "rating": 4.6,
+      "reviews": 1722,
+      "diff": {
+        "price": {
+          "current": 27.99,
+          "prev": 27.99,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.6,
+          "prev": 4.6,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 1722,
+          "prev": 1722,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 2500,
+          "prev": 2500,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 18,
+          "prev": 18,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "seller_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$26.59 off",
+      "prime_discount": "未开启",
+      "main_cat": "Beauty & Personal Care",
+      "expected_main_cat": "Beauty & Personal Care",
+      "main_bsr": 2500,
+      "sub_cat": "Hair Treatment Oils",
+      "expected_sub_cat": "Hair Treatment Oils",
+      "sub_bsr": 18,
+      "history_main_bsr": [
+        2500
+      ],
+      "history_sub_bsr": [
+        18
+      ],
+      "history_price": [
+        27.99
+      ],
+      "history_rating": [
+        4.6
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "10.0",
+      "variant_count": "1",
+      "launch_date": "2024-07-20",
+      "total_keywords": "1",
+      "natural_keywords": "887",
+      "ad_keywords": "724",
+      "seller_units_30d": 16303,
+      "seller_revenue_30d": 456321.0,
+      "seller_avg_price": 27.99,
+      "seller_rating": 4.6,
+      "seller_review_count": 1722,
+      "seller_bsr": 18,
+      "seller_fba_fee": 5.76,
+      "suggest_keywords": "0",
+      "traffic_keywords_top": [
+        {
+          "keyword": "castor oil",
+          "traffic_pct": "32.67%",
+          "type": "自然搜索词SP广告词HR推荐词视频广告词",
+          "organic_rank": "14"
+        },
+        {
+          "keyword": "castor oil organic cold pressed",
+          "traffic_pct": "9.54%",
+          "type": "自然搜索词SP广告词HR推荐词",
+          "organic_rank": "5"
+        },
+        {
+          "keyword": "organic castor oil",
+          "traffic_pct": "6.26%",
+          "type": "自然搜索词SP广告词HR推荐词视频广告词",
+          "organic_rank": "16"
+        },
+        {
+          "keyword": "hair growth oil",
+          "traffic_pct": "1.88%",
+          "type": "自然搜索词视频广告词",
+          "organic_rank": "50"
+        }
+      ]
+    },
+    {
+      "monitor_type": "ASIN",
+      "asin": "B0DJDPLV53",
+      "is_main": true,
+      "is_stale": false,
+      "logic_type": "主监控",
+      "source_keyword": "",
+      "title": "Clean Nutra Organic Sea Moss Capsules with Ashwagandha, Black Seed Oil, Burdock Root, Bladderwrack, Moringa, Chlorella, Spirulina, Turmeric, Elderberry, Amla � 90 Vegan Capsules � MiracleMin",
+      "brand": "Clean Nutraceuticals",
+      "img": "https://m.media-amazon.com/images/I/81AcfSWlbDL._AC_SL1500_.jpg",
+      "price": 24.95,
+      "chg": 0.0,
+      "rating": 4.5,
+      "reviews": 300,
+      "diff": {
+        "price": {
+          "current": 24.95,
+          "prev": 24.95,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.5,
+          "prev": 4.5,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 300,
+          "prev": 300,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 43200,
+          "prev": 43200,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 1518,
+          "prev": 1518,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "seller_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$22.45 off",
+      "prime_discount": "未开启",
+      "main_cat": "Health & Household",
+      "expected_main_cat": "Health & Household",
+      "main_bsr": 43200,
+      "sub_cat": "",
+      "expected_sub_cat": "",
+      "sub_bsr": 1518,
+      "history_main_bsr": [
+        43200
+      ],
+      "history_sub_bsr": [
+        1518
+      ],
+      "history_price": [
+        24.95
+      ],
+      "history_rating": [
+        4.5
+      ],
+      "events": [],
+      "related_asins": [],
+      "jike_sales": null,
+      "jike_orders": null,
+      "jike_units": null,
+      "jike_session": null,
+      "jike_page_views": null,
+      "jike_conversion_rate": null,
+      "jike_rating": null,
+      "jike_reviews": null,
+      "jike_main_seller_rank": null,
+      "jike_seller_rank": null,
+      "jike_listing_state": null,
+      "jike_product_name": null,
+      "jike_acos": null,
+      "jike_ads_spend": null,
+      "jike_fba_quantity": null,
+      "jike_fba_turnover": null,
+      "jike_gross_profit_rate": null,
+      "lqs": "10.0",
+      "variant_count": "1",
+      "launch_date": "2, 2024",
+      "total_keywords": "237",
+      "natural_keywords": "168",
+      "ad_keywords": "103",
+      "seller_units_30d": 562,
+      "seller_revenue_30d": 14022.0,
+      "seller_avg_price": 24.95,
+      "seller_rating": 4.5,
+      "seller_review_count": 300,
+      "seller_bsr": null,
+      "seller_fba_fee": 3.86,
+      "suggest_keywords": "1",
+      "traffic_keywords_top": [
+        {
+          "keyword": "sea moss",
+          "traffic_pct": "16.52%",
+          "type": "自然搜索词SP广告词",
+          "organic_rank": "133"
+        },
+        {
+          "keyword": "amla capsules",
+          "traffic_pct": "14.53%",
+          "type": "自然搜索词",
+          "organic_rank": "107"
+        },
+        {
+          "keyword": "sea moss electrolytes packets",
+          "traffic_pct": "11.85%",
+          "type": "自然搜索词SP广告词",
+          "organic_rank": "35"
+        },
+        {
+          "keyword": "primal queen supplement for women",
+          "traffic_pct": "11.03%",
+          "type": "自然搜索词",
+          "organic_rank": "75"
+        }
+      ]
+    }
+  ],
+  "keywords": [
+    {
+      "keyword": "castor oil",
+      "top_asins": [
+        {
+          "asin": "B0734849YK",
+          "type": "unknown",
+          "rank": "",
+          "title": "Handcraft Blends Organic Castor Oil 16 Fl Oz | 100% Pure and Natural | Premium Grade Carrier Oil | Hair, Eyelashes and Eyebrows | Hair and Body | Expeller-Pressed | Hexane-Free",
+          "price": "$9.99",
+          "rating": "4.6",
+          "reviews": "56661",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "Deal",
+          "coupon": "$9.49 off",
+          "prime_discount": "未开启"
+        },
+        {
+          "asin": "B01NALN8Q9",
+          "type": "unknown",
+          "rank": "",
+          "title": "Kate Blanc Cosmetics Castor Oil Organic for Hair, Lashes, Face, Skin (2oz), 100% Pure, Cold Pressed, Hexane Free Hair Oil. Lash Serum for Thicker-Looking Eyelashes & Eyebrows",
+          "price": "$9.99",
+          "rating": "4.5",
+          "reviews": "118171",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "Deal",
+          "coupon": "$8.99 off",
+          "prime_discount": "未开启"
+        },
+        {
+          "asin": "B0C6Y478R5",
+          "type": "unknown",
+          "rank": "",
+          "title": "Majestic Pure Oil - 100% Pure and Natural- Cold Pressed & Hexane Free Natural Hair Growth Oil for Eyelashes, Eyebrows, Skin, Body, Face, Nails & Scalp - USDA Organic Castor Oil 8 Fl Oz",
+          "price": "$7.99",
+          "rating": "4.6",
+          "reviews": "3648",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "Deal",
+          "coupon": "$7.59 off",
+          "prime_discount": "未开启"
+        },
+        {
+          "asin": "B0013YYNDM",
+          "type": "unknown",
+          "rank": "",
+          "title": "HERITAGE STORE Organic Castor Oil - Glass Bottle - Nourishing Treatment for Hair and Skin - Eyelash Serum for Eyelashes, Brows, Castor Oil Packs - Cold Pressed, Hexane Free, Vegan 16oz",
+          "price": "$21.34",
+          "rating": "4.8",
+          "reviews": "25553",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "Deal",
+          "coupon": "无",
+          "prime_discount": "未开启"
+        },
+        {
+          "asin": "B0D9PP29TJ",
+          "type": "unknown",
+          "rank": "",
+          "title": "Florisan USDA Certified Organic Castor Oil 16oz Glass Bottle, Cold Pressed, Hexane-Free, Non-GMO, Vegan, 100% Pure Castor Oil for Hair Growth, Skin, Lashes, Eyebrows, EWG Verified",
+          "price": "$27.99",
+          "rating": "4.6",
+          "reviews": "1722",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "Deal",
+          "coupon": "$26.59 off",
+          "prime_discount": "未开启"
+        }
+      ]
+    }
+  ]
 }
