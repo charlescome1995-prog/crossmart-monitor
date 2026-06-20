@@ -77,6 +77,7 @@
       .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function(d) {
         rawData = d;
+        backfillRelatedFromRawData();
         renderTable();
         // highlightTimeCell removed
         se.textContent = '数据加载成功';
@@ -102,6 +103,53 @@
     loadRawData();
   }
 
+
+  function backfillRelatedFromRawData() {
+    // 把系统发现的关联 ASIN 回填到输入框（仅填空格，不覆盖用户手填值）
+    if (!rawData) return;
+    var items = rawData.items || [];
+    var keywords = rawData.keywords || [];
+
+    // 主ASIN → 关联竞品：以 in-asin-i 为错，从 items 里找到对应主ASIN 的 related_asins
+    for (var i = 0; i < 5; i++) {
+      var mainEl = document.getElementById('in-asin-' + i);
+      if (!mainEl || !mainEl.value.trim()) continue;
+      var mainAsin = mainEl.value.trim();
+      var item = null;
+      for (var k = 0; k < items.length; k++) {
+        if (items[k].asin === mainAsin && items[k].is_main) { item = items[k]; break; }
+      }
+      if (!item) continue;
+      var rel = item.related_asins || [];
+      for (var ri = 0; ri < 5 && ri < rel.length; ri++) {
+        var relEl = document.getElementById('rel-asin-' + i + '-' + ri);
+        if (relEl && !relEl.value.trim()) {
+          var relAsin = typeof rel[ri] === 'string' ? rel[ri] : (rel[ri] && rel[ri].asin) || '';
+          if (relAsin) relEl.value = relAsin;
+        }
+      }
+    }
+
+    // 关键词 → Top ASINs：以 in-kw-i 为错，从 keywords 里找到对应关键词的 top_asins
+    for (var j = 0; j < 5; j++) {
+      var kwEl = document.getElementById('in-kw-' + j);
+      if (!kwEl || !kwEl.value.trim()) continue;
+      var kwName = kwEl.value.trim();
+      var kwObj = null;
+      for (var m = 0; m < keywords.length; m++) {
+        if (keywords[m].keyword === kwName) { kwObj = keywords[m]; break; }
+      }
+      if (!kwObj) continue;
+      var top = kwObj.top_asins || [];
+      for (var rj = 0; rj < 5 && rj < top.length; rj++) {
+        var relKwEl = document.getElementById('rel-kw-' + j + '-' + rj);
+        if (relKwEl && !relKwEl.value.trim()) {
+          var topAsin = typeof top[rj] === 'string' ? top[rj] : (top[rj] && top[rj].asin) || '';
+          if (topAsin) relKwEl.value = topAsin;
+        }
+      }
+    }
+  }
 
   function getRelatedVals(type, streamIdx) {
     var vals = [];
