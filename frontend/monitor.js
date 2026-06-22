@@ -80,6 +80,7 @@
       .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function(d) {
         rawData = d;
+        fillMainInputsFromRawData();
         backfillRelatedFromRawData();
         renderTable();
         // highlightTimeCell removed
@@ -106,6 +107,38 @@
     loadRawData();
   }
 
+
+  function fillMainInputsFromRawData() {
+    // 当 user_config.json 为空（被重置）时，从 rawData 回填主 ASIN / 关键词输入框
+    // 仅填空格，不覆盖用户已有值；保证配置被重置后输入框不会空白
+    if (!rawData) return;
+    var items = rawData.items || [];
+    var keywords = rawData.keywords || [];
+
+    // 主 ASIN：取 items 里 is_main 的，按顺序填入空的 in-asin-i
+    var mainItems = items.filter(function(it) { return it && it.is_main && it.asin; });
+    var ai = 0;
+    for (var i = 0; i < 5 && ai < mainItems.length; i++) {
+      var mainEl = document.getElementById('in-asin-' + i);
+      if (!mainEl) continue;
+      if (mainEl.value.trim()) continue; // 已有值不覆盖
+      // 避免重复填入已存在于其他输入框的 ASIN
+      mainEl.value = mainItems[ai].asin;
+      userConfiguredAsins.add(mainItems[ai].asin);
+      ai++;
+    }
+
+    // 关键词：按顺序填入空的 in-kw-i
+    var ki = 0;
+    for (var j = 0; j < 5 && ki < keywords.length; j++) {
+      var kwEl = document.getElementById('in-kw-' + j);
+      if (!kwEl) continue;
+      if (kwEl.value.trim()) continue;
+      var kwName = keywords[ki] && keywords[ki].keyword;
+      if (kwName) kwEl.value = kwName;
+      ki++;
+    }
+  }
 
   function backfillRelatedFromRawData() {
     // 把系统发现的关联 ASIN 回填到输入框（仅填空格，不覆盖用户手填值）
