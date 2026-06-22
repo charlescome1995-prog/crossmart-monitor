@@ -196,6 +196,62 @@
     return vals;
   }
 
+  // 构建配置 + 全量去重
+  //  - ASIN 不区分大小写（统一大写后比较），关键词忽略大小写+首尾空格
+  //  - 同一次配置里：主 ASIN 不重复、主关键词不重复
+  //  - 每个流的关联项内部去重，且不与本流主项、不与其它已收录的项重复
+  // 返回 { cfg, removed:[...提示...] }
+  function buildConfig() {
+    var removed = [];
+    var normAsin = function(s) { return (s || '').trim().toUpperCase(); };
+    var normKw   = function(s) { return (s || '').trim().toLowerCase(); };
+
+    // ---- 主 ASIN 去重 ----
+    var asins = [], seenAsin = {};
+    for (var i = 0; i < 5; i++) {
+      var rawA = ((document.getElementById('in-asin-' + i) || {}).value || '').trim();
+      if (!rawA) continue;
+      var keyA = normAsin(rawA);
+      if (seenAsin[keyA]) { removed.push('重复主ASIN: ' + rawA); continue; }
+      seenAsin[keyA] = true;
+      // ---- 该流关联 ASIN 去重（含与全局已收录项查重）----
+      var rel = [], relSeen = {};
+      getRelatedVals('asin', i).forEach(function(rv) {
+        var k = normAsin(rv);
+        if (!k) return;
+        if (k === keyA) { removed.push('关联ASIN与主ASIN相同: ' + rv); return; }
+        if (relSeen[k]) { removed.push('本流重复关联ASIN: ' + rv); return; }
+        if (seenAsin[k]) { removed.push('关联ASIN已是其它主ASIN: ' + rv); return; }
+        relSeen[k] = true;
+        rel.push(rv.trim());
+      });
+      asins.push({ main: rawA, related: rel });
+    }
+
+    // ---- 主关键词去重 ----
+    var kws = [], seenKw = {};
+    for (var j = 0; j < 5; j++) {
+      var rawK = ((document.getElementById('in-kw-' + j) || {}).value || '').trim();
+      if (!rawK) continue;
+      var keyK = normKw(rawK);
+      if (seenKw[keyK]) { removed.push('重复关键词: ' + rawK); continue; }
+      seenKw[keyK] = true;
+      // ---- 该关键词下的关联关键词去重 ----
+      var relK = [], relKSeen = {};
+      getRelatedVals('kw', j).forEach(function(rv) {
+        var k = normKw(rv);
+        if (!k) return;
+        if (k === keyK) { removed.push('关联关键词与主关键词相同: ' + rv); return; }
+        if (relKSeen[k]) { removed.push('本流重复关联关键词: ' + rv); return; }
+        relKSeen[k] = true;
+        relK.push(rv.trim());
+      });
+      kws.push({ main: rawK, related: relK });
+    }
+
+    return { cfg: { asins: asins, keywords: kws }, removed: removed };
+  }
+
   
   function triggerMonitor() {
     var btn = document.getElementById('btnTrigger');
@@ -210,16 +266,11 @@
     se.style.background = '#fef3c7';
     se.style.color = '#92400e';
 
-    var asins = [], kws = [];
-    for (var i = 0; i < 5; i++) {
-      var mainA = (document.getElementById('in-asin-' + i) || {}).value || '';
-      if (mainA.trim()) asins.push({ main: mainA.trim(), related: getRelatedVals('asin', i) });
+    var built = buildConfig();
+    var cfg = built.cfg;
+    if (built.removed.length) {
+      alert('已自动去重 ' + built.removed.length + ' 项：\n' + built.removed.join('\n'));
     }
-    for (var j = 0; j < 5; j++) {
-      var mainK = (document.getElementById('in-kw-' + j) || {}).value || '';
-      if (mainK.trim()) kws.push({ main: mainK.trim(), related: getRelatedVals('kw', j) });
-    }
-    var cfg = { asins: asins, keywords: kws };
     var trigger = { status: 'pending', triggered_at: new Date().toISOString(), progress: '' };
 
 
@@ -251,19 +302,14 @@
     se.style.background = '#fef3c7';
     se.style.color = '#92400e';
 
-    var asins = [], kws = [];
-    for (var i = 0; i < 5; i++) {
-      var mainA = (document.getElementById('in-asin-' + i) || {}).value || '';
-      if (mainA.trim()) asins.push({ main: mainA.trim(), related: getRelatedVals('asin', i) });
+    var built = buildConfig();
+    var cfg = built.cfg;
+    if (built.removed.length) {
+      alert('已自动去重 ' + built.removed.length + ' 项：\n' + built.removed.join('\n'));
     }
-    for (var j = 0; j < 5; j++) {
-      var mainK = (document.getElementById('in-kw-' + j) || {}).value || '';
-      if (mainK.trim()) kws.push({ main: mainK.trim(), related: getRelatedVals('kw', j) });
-    }
-    var cfg = { asins: asins, keywords: kws };
     putFile('backend/data/user_config.json', cfg, token)
       .then(function() {
-        se.textContent = 'Saved & pushed to cloud';
+        se.textContent = 'Saved & pushed to cloud (去重 ' + built.removed.length + ' 项)';
         se.style.background = '#d1fae5';
         se.style.color = '#065f46';
         btn.disabled = false;

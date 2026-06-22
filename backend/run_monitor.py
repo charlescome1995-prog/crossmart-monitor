@@ -77,12 +77,71 @@ def load_trigger():
     return gh_fetch_json("backend/data/trigger.json")
 
 
+def dedup_config(config):
+    """输入端去重：主ASIN/主关键词去重，关联项去重且不与主项重复。
+    ASIN 不区分大小写；关键词忽略大小写+首尾空格。与前端 buildConfig 逻辑一致。"""
+    if not isinstance(config, dict):
+        return config
+
+    # 主ASIN 去重
+    new_asins, seen_a = [], set()
+    for entry in config.get("asins", []) or []:
+        main = (entry.get("main", "") or "").strip()
+        if not main:
+            continue
+        ka = main.upper()
+        if ka in seen_a:
+            print(f"  [dedup] 跳过重复主ASIN: {main}")
+            continue
+        seen_a.add(ka)
+        rel, rel_seen = [], set()
+        for rv in entry.get("related", []) or []:
+            rv = (rv or "").strip()
+            if not rv:
+                continue
+            kr = rv.upper()
+            if kr == ka or kr in rel_seen or kr in seen_a:
+                print(f"  [dedup] 跳过关联ASIN: {rv}")
+                continue
+            rel_seen.add(kr)
+            rel.append(rv)
+        new_asins.append({"main": main, "related": rel})
+
+    # 主关键词 去重
+    new_kws, seen_k = [], set()
+    for entry in config.get("keywords", []) or []:
+        main = (entry.get("main", "") or "").strip()
+        if not main:
+            continue
+        kk = main.lower()
+        if kk in seen_k:
+            print(f"  [dedup] 跳过重复关键词: {main}")
+            continue
+        seen_k.add(kk)
+        rel, rel_seen = [], set()
+        for rv in entry.get("related", []) or []:
+            rv = (rv or "").strip()
+            if not rv:
+                continue
+            kr = rv.lower()
+            if kr == kk or kr in rel_seen:
+                print(f"  [dedup] 跳过关联关键词: {rv}")
+                continue
+            rel_seen.add(kr)
+            rel.append(rv)
+        new_kws.append({"main": main, "related": rel})
+
+    config["asins"] = new_asins
+    config["keywords"] = new_kws
+    return config
+
+
 def load_config():
     """从 GitHub user_config.json 加载配置（恢复旧逻辑）"""
     data = gh_fetch_json("backend/data/user_config.json")
     if data is None:
         return {"asins": [], "keywords": [], "schedule": DEFAULT_SCHEDULE}
-    return data
+    return dedup_config(data)
 
 
 def load_keyword_list():
@@ -243,7 +302,7 @@ def run_monitor(config_override=None):
 
     # config_override: 直接传入配置（API 触发时用），否则从 GitHub 读
     if config_override is not None:
-        config = config_override
+        config = dedup_config(config_override)
         asins = config.get("asins", [])
         keywords = config.get("keywords", [])
         schedule = config.get("schedule", DEFAULT_SCHEDULE)
