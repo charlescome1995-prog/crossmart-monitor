@@ -8,13 +8,16 @@
     var saved = localStorage.getItem('gh_token') || '';
     var ti = document.getElementById('ghTokenInput');
     if (ti && saved) ti.value = saved;
-    loadGitHubConfig();
-    loadRawData();
+    // 顺序加载：先加载用户配置(填主输入框) → 再加载 rawData(回填关联ASIN)
+    // 避免并行竞态：rawData 先到时主输入框还是空的，backfill 会全部跳过
+    loadGitHubConfig().then(function() {
+      loadRawData();
+    });
   });
 
   function loadGitHubConfig() {
     var se = document.getElementById('configStatus');
-    fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/user_config.json?v=' + Date.now())
+    return fetch('https://raw.githubusercontent.com/' + REPO + '/main/backend/data/user_config.json?v=' + Date.now())
       .then(function(r) { if (!r.ok) throw new Error('Config not found'); return r.json(); })
       .then(function(cfg) {
         applyConfig(cfg);
