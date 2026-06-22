@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-21T18:45:35",
+  "updated": "2026-06-21T18:51:32",
   "items": [
     {
       "monitor_type": "new",
@@ -325,24 +325,28 @@
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 8,
       "history_main_bsr": [
+        2174,
         2174
       ],
       "history_sub_bsr": [
+        8,
         8
       ],
       "history_price": [
+        6.49,
         6.49
       ],
       "history_rating": [
+        4.6,
         4.6
       ],
       "events": [],
       "related_asins": [],
-      "lqs": "9.5",
+      "lqs": "",
       "variant_count": "1",
       "launch_date": "17, 2015",
-      "total_keywords": "595",
-      "natural_keywords": "591",
+      "total_keywords": "594",
+      "natural_keywords": "590",
       "ad_keywords": "12",
       "seller_units_30d": 16449,
       "seller_revenue_30d": 106754.0,
@@ -352,7 +356,32 @@
       "seller_bsr": 8,
       "seller_fba_fee": 3.24,
       "suggest_keywords": "18",
-      "traffic_keywords_top": []
+      "traffic_keywords_top": [
+        {
+          "keyword": "antifungal cream",
+          "traffic_pct": "6.72%",
+          "type": "自然搜索词",
+          "organic_rank": "16"
+        },
+        {
+          "keyword": "athletes foot treatment",
+          "traffic_pct": "6.04%",
+          "type": "自然搜索词",
+          "organic_rank": "32"
+        },
+        {
+          "keyword": "clotrimazole antifungal cream",
+          "traffic_pct": "5.91%",
+          "type": "自然搜索词",
+          "organic_rank": "5"
+        },
+        {
+          "keyword": "clotrimazole",
+          "traffic_pct": "5.15%",
+          "type": "自然搜索词SP广告词",
+          "organic_rank": "2"
+        }
+      ]
     },
     {
       "monitor_type": "new",
@@ -1138,15 +1167,19 @@
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 20,
       "history_main_bsr": [
+        5328,
         5328
       ],
       "history_sub_bsr": [
+        20,
         20
       ],
       "history_price": [
+        9.99,
         9.99
       ],
       "history_rating": [
+        4.6,
         4.6
       ],
       "events": [],
@@ -1159,13 +1192,38 @@
       "ad_keywords": "67",
       "seller_units_30d": 7781,
       "seller_revenue_30d": 77732.0,
-      "seller_avg_price": null,
+      "seller_avg_price": 36.74,
       "seller_rating": 4.6,
       "seller_review_count": 857,
       "seller_bsr": 20,
       "seller_fba_fee": 3.24,
-      "suggest_keywords": "7",
-      "traffic_keywords_top": []
+      "suggest_keywords": "6",
+      "traffic_keywords_top": [
+        {
+          "keyword": "antifungal cream",
+          "traffic_pct": "12.58%",
+          "type": "自然搜索词SP广告词AC推荐词",
+          "organic_rank": "5"
+        },
+        {
+          "keyword": "athletes foot treatment",
+          "traffic_pct": "10.64%",
+          "type": "自然搜索词SP广告词",
+          "organic_rank": "42"
+        },
+        {
+          "keyword": "lotrimin ultra antifungal creamLotrimin",
+          "traffic_pct": "8.68%",
+          "type": "自然搜索词SP广告词",
+          "organic_rank": "37"
+        },
+        {
+          "keyword": "jock itch cream",
+          "traffic_pct": "7.88%",
+          "type": "自然搜索词SP广告词AC推荐词",
+          "organic_rank": "5"
+        }
+      ]
     },
     {
       "monitor_type": "new",
@@ -1671,9 +1729,9 @@
         },
         "bsr": {
           "current": 44268,
-          "prev": 44269,
-          "change": "1",
-          "direction": "up"
+          "prev": 44268,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
           "current": 1593,
@@ -1709,9 +1767,11 @@
       "history_main_bsr": [
         43200,
         44269,
+        44268,
         44268
       ],
       "history_sub_bsr": [
+        1593,
         1593,
         1593,
         1593
@@ -1719,9 +1779,11 @@
       "history_price": [
         24.95,
         24.95,
+        24.95,
         24.95
       ],
       "history_rating": [
+        4.5,
         4.5,
         4.5,
         4.5
@@ -1746,19 +1808,19 @@
       "jike_fba_turnover": null,
       "jike_gross_profit_rate": null,
       "lqs": "",
-      "variant_count": "",
+      "variant_count": "1",
       "launch_date": "2, 2024",
-      "total_keywords": "",
-      "natural_keywords": "",
-      "ad_keywords": "",
-      "seller_units_30d": null,
-      "seller_revenue_30d": null,
+      "total_keywords": "232",
+      "natural_keywords": "164",
+      "ad_keywords": "101",
+      "seller_units_30d": 792,
+      "seller_revenue_30d": 19760.0,
       "seller_avg_price": null,
-      "seller_rating": null,
-      "seller_review_count": null,
+      "seller_rating": 4.5,
+      "seller_review_count": 304,
       "seller_bsr": null,
-      "seller_fba_fee": null,
-      "suggest_keywords": "",
+      "seller_fba_fee": 3.86,
+      "suggest_keywords": "1",
       "traffic_keywords_top": []
     },
     {
@@ -1911,9 +1973,9 @@
         },
         "bsr": {
           "current": 172998,
-          "prev": 173059,
-          "change": "61",
-          "direction": "up"
+          "prev": 172998,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
           "current": 282,
@@ -1947,17 +2009,21 @@
       "sub_bsr": 282,
       "history_main_bsr": [
         173059,
+        172998,
         172998
       ],
       "history_sub_bsr": [
+        282,
         282,
         282
       ],
       "history_price": [
         21.99,
+        21.99,
         21.99
       ],
       "history_rating": [
+        3.9,
         3.9,
         3.9
       ],
