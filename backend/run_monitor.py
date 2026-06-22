@@ -278,33 +278,10 @@ def run_monitor(config_override=None):
     # ── Phase 0: 人类行为模拟 ──
     browse_unrelated_pages()
 
-    # ── 清理旧关键词目录：只保留当前 config 配置的关键词，避免 sync 抳到旧关键词 ──
-    try:
-        import shutil
-        _proc_dir = os.path.join(DATA_DIR, "processed")
-        _cfg_kw_norm = set()
-        for _ke in keywords:
-            _km = (_ke.get("main") or "").strip()
-            if _km:
-                _cfg_kw_norm.add(_km.replace(" ", "_").replace("/", "_").lower())
-        if os.path.isdir(_proc_dir) and _cfg_kw_norm:
-            for _name in os.listdir(_proc_dir):
-                # 同时清理两种历史前缀：kw_ 和 keyword_
-                for _pref in ("kw_", "keyword_"):
-                    if _name.startswith(_pref):
-                        _norm = _name[len(_pref):].lower()
-                        if _norm not in _cfg_kw_norm:
-                            _full = os.path.join(_proc_dir, _name)
-                            try:
-                                shutil.rmtree(_full)
-                                print(f"  [清理] 删除旧关键词目录: {_name}")
-                            except Exception as _e:
-                                print(f"  [清理] 删除 {_name} 失败: {_e}")
-                        break
-    except Exception as _e:
-        print(f"  [清理] 旧关键词目录清理异常: {_e}")
-
     # ── Phase A: 关键词监控 ──
+    # 注：只抓取当前 config 配置的关键词（keywords 来自 config）。
+    # 不在配置里的旧关键词目录会被保留（不删除、不抓取、不显示），
+    # 以便下次重新加回该关键词时，历史快照仍可用于 diff/趋势对比。
     random.shuffle(keywords)
     for kw_entry in keywords:
         kw = kw_entry.get("main", "").strip()
