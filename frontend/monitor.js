@@ -21,7 +21,7 @@
       .then(function(r) { if (!r.ok) throw new Error('Config not found'); return r.json(); })
       .then(function(cfg) {
         applyConfig(cfg);
-        se.textContent = '配置加载成功';
+        se.textContent = 'Config loaded';
         se.style.background = '#d1fae5';
         se.style.color = '#065f46';
       })
@@ -73,7 +73,7 @@
 
   function loadRawData() {
     var se = document.getElementById('configStatus');
-    se.textContent = '加载中...';
+    se.textContent = 'Loading...';
     se.style.background = '#fef3c7';
     se.style.color = '#92400e';
     fetch(RAW_DATA_URL + '?t=' + Date.now())
@@ -84,13 +84,13 @@
         backfillRelatedFromRawData();
         renderTable();
         // highlightTimeCell removed
-        se.textContent = '数据加载成功';
+        se.textContent = 'Data loaded';
         se.style.background = '#d1fae5';
         se.style.color = '#065f46';
       })
       .catch(function(e) {
         console.warn(e);
-        se.textContent = '加载失败';
+        se.textContent = 'Load failed';
         se.style.background = '#fee2e2';
         se.style.color = '#991b1b';
         renderTable();
@@ -101,7 +101,7 @@
   function saveToken() {
     var ti = document.getElementById('ghTokenInput');
     var t = ti ? ti.value.trim() : '';
-    if (!t) { alert('请输入 GitHub Token'); return; }
+    if (!t) { alert('Please enter GitHub Token'); return; }
     localStorage.setItem('gh_token', t);
     alert('Token saved to browser. If api_server.py does not receive trigger, restart it in PowerShell with: $env:GH_TOKEN = your_token');
     loadRawData();
@@ -202,11 +202,11 @@
     var se = document.getElementById('configStatus');
     var token = (document.getElementById('ghTokenInput') || {}).value.trim();
     if (!token) {
-      alert('请先输入 GitHub Token'); return;
+      alert('Please enter GitHub Token first'); return;
     }
     btn.disabled = true;
-    btn.textContent = '\u89e6\u53d1\u4e2d...';
-    se.textContent = '\u6b63\u5728\u5199\u5165\u914d\u7f6e...';
+    btn.textContent = 'Triggering...';
+    se.textContent = 'Writing config...';
     se.style.background = '#fef3c7';
     se.style.color = '#92400e';
 
@@ -226,18 +226,18 @@
     putFile('backend/data/user_config.json', cfg, token)
       .then(function() { return putFile('backend/data/trigger.json', trigger, token); })
       .then(function() {
-        se.textContent = '\u5df2\u5199\u5165 GitHub\uff0c\u7b49\u5f85\u672c\u5730\u811a\u672c\u54cd\u5e94...';
+        se.textContent = 'Written to GitHub, waiting for local script...';
         se.style.background = '#dbeafe';
         se.style.color = '#1e40af';
-        btn.textContent = '\u8f6e\u8be2\u4e2d';
+        btn.textContent = 'Polling';
         pollStatus(token);
       })
       .catch(function(e) {
-        se.textContent = 'GitHub \u5199\u5165\u5931\u8d25: ' + e;
+        se.textContent = 'GitHub write failed: ' + e;
         se.style.background = '#fee2e2';
         se.style.color = '#991b1b';
         btn.disabled = false;
-        btn.textContent = '\u7acb\u5373\u62e8\u53d6';
+        btn.textContent = 'Run Now';
       });
   }
 
@@ -245,9 +245,9 @@
     var btn = document.getElementById('btnSaveConfig');
     var se = document.getElementById('configStatus');
     var token = (document.getElementById('ghTokenInput') || {}).value.trim();
-    if (!token) { alert('请先输入 GitHub Token'); return; }
+    if (!token) { alert('Please enter GitHub Token first'); return; }
     btn.disabled = true;
-    se.textContent = '\u6b63\u5728\u4fdd\u5b58...';
+    se.textContent = 'Saving...';
     se.style.background = '#fef3c7';
     se.style.color = '#92400e';
 
@@ -263,13 +263,13 @@
     var cfg = { asins: asins, keywords: kws };
     putFile('backend/data/user_config.json', cfg, token)
       .then(function() {
-        se.textContent = '\u5df2\u4fdd\u5b58\u5e76\u63a8\u9001\u5230\u4e91\u7aef';
+        se.textContent = 'Saved & pushed to cloud';
         se.style.background = '#d1fae5';
         se.style.color = '#065f46';
         btn.disabled = false;
       })
       .catch(function(e) {
-        se.textContent = '\u4fdd\u5b58\u5931\u8d25: ' + e;
+        se.textContent = 'Save failed: ' + e;
         se.style.background = '#fee2e2';
         se.style.color = '#991b1b';
         btn.disabled = false;
@@ -285,23 +285,23 @@
         var se = document.getElementById('configStatus');
         var btn = document.getElementById('btnTrigger');
         if (data.status === 'pending') {
-          se.textContent = '\u8f6e\u8be2\u4e2d... ' + (data.progress || '');
+          se.textContent = 'Polling... ' + (data.progress || '');
           se.style.background = '#dbeafe';
           se.style.color = '#1e40af';
-          btn.textContent = '\u8f6e\u8be2\u4e2d';
+          btn.textContent = 'Polling';
           pollTimer = setTimeout(function() { pollStatus(token); }, 30000);
         } else {
-          se.textContent = '\u6570\u636e\u5df2\u66f4\u65b0\uff0c\u5237\u65b0\u9875\u9762';
+          se.textContent = 'Data updated, refresh page';
           se.style.background = '#d1fae5';
           se.style.color = '#065f46';
-          btn.textContent = '\u5df2\u5b8c\u6210';
+          btn.textContent = 'Done';
           btn.disabled = false;
           loadRawData();
         }
       })
       .catch(function() {
         var se = document.getElementById('configStatus');
-        se.textContent = '\u7b49\u5f85\u4e91\u7aef\u54cd\u5e94... (30s)';
+        se.textContent = 'Waiting for cloud response... (30s)';
         pollTimer = setTimeout(function() { pollStatus(token); }, 30000);
       });
   }
@@ -353,7 +353,7 @@
 
   function renderTable() {
     var tb = document.getElementById('tableBody');
-    if (!tb || !rawData.items) { tb.innerHTML = '<tr><td colspan="15" style="text-align:center;padding:20px;">暂无数据</td></tr>'; return; }
+    if (!tb || !rawData.items) { tb.innerHTML = '<tr><td colspan="15" style="text-align:center;padding:20px;">No data</td></tr>'; return; }
     var searchTxt = (document.getElementById('searchInput') || {}).value || '';
     var sourceFilter = (document.getElementById('sourceFilter') || {}).value || 'ALL';
     var onlyChg = (document.getElementById('changeFilter') || {}).checked || false;
@@ -373,31 +373,31 @@
       if (onlyChg && !hasActiveAnomaly) return;
       // 显示所有 monitor_type（包括 KW 关键词ASIN）
       var activeEvents = (item.events || []).slice();
-      if (isStatusAnomaly) activeEvents.push({ cls: 'e-alert', txt: '商品状态异常' });
-      if (isInfoAnomaly) activeEvents.push({ cls: 'e-alert', txt: '商品信息变化' });
-      if (isCatAnomaly) activeEvents.push({ cls: 'e-alert', txt: '分类异常' });
-      if (item.badges_lost && item.badges_lost.length) item.badges_lost.forEach(function(b) { activeEvents.push({ cls: 'e-alert', txt: '丢失: ' + b }); });
+      if (isStatusAnomaly) activeEvents.push({ cls: 'e-alert', txt: 'Status Anomaly' });
+      if (isInfoAnomaly) activeEvents.push({ cls: 'e-alert', txt: 'Info Changed' });
+      if (isCatAnomaly) activeEvents.push({ cls: 'e-alert', txt: 'Category Anomaly' });
+      if (item.badges_lost && item.badges_lost.length) item.badges_lost.forEach(function(b) { activeEvents.push({ cls: 'e-alert', txt: 'Lost: ' + b }); });
       var chgClass = item.chg > 0 ? 'up' : (item.chg < 0 ? 'dn' : '');
       var chgText = item.chg !== 0 ? (item.chg > 0 ? '\u25B2 $' + Math.abs(item.chg) : '\u25BC $' + Math.abs(item.chg)) : '';
       var diff = item.diff || {};
       var diffHtml = buildDiffHtml(diff, item);
-      var eventsHtml = activeEvents.length ? activeEvents.map(function(e) { return '<span class="e-tag ' + e.cls + '">' + e.txt + '</span>'; }).join('') : '<span class="e-none">无事件</span>';
+      var eventsHtml = activeEvents.length ? activeEvents.map(function(e) { return '<span class="e-tag ' + e.cls + '">' + e.txt + '</span>'; }).join('') : '<span class="e-none">No events</span>';
       var priceStr = item.price != null ? '$' + item.price : '-';
       var ratingStr = item.rating != null ? item.rating : '-';
       var reviewsStr = item.reviews != null ? item.reviews : '-';
       var mainBsrStr = item.main_bsr != null ? '#' + item.main_bsr : '-';
       var subBsrStr = item.sub_bsr != null ? ' / #' + item.sub_bsr : '';
-      var variantHtml = item.variant_status && item.variant_status !== '正常' ? ' <span style="color:#d97706;font-size:12px;">变体:' + item.variant_status + '</span>' : '';
+      var variantHtml = item.variant_status && item.variant_status !== '正常' ? ' <span style="color:#d97706;font-size:12px;">Variant:' + item.variant_status + '</span>' : '';
       var statusClass = hasActiveAnomaly || isStale || item.is_stale ? 'changed' : 'stable';
-      var statusText = item.is_stale ? '抓取失败·保留上次' : (isStale ? '超期' : (hasActiveAnomaly ? '有变化' : '正常'));
+      var statusText = item.is_stale ? 'Fetch failed·kept last' : (isStale ? 'Stale' : (hasActiveAnomaly ? 'Changed' : 'Normal'));
       var isStale = rawData.updated && (Date.now() - new Date(rawData.updated).getTime()) / 60000 >= 720;
       var badgeHtml = (item.badges_current && item.badges_current.length) ? '<div style="margin-top:3px">' + item.badges_current.map(function(b) { return '<span style="background:#fef3c7;color:#d97706;font-size:10px;padding:1px 5px;border-radius:3px;margin-right:3px;font-weight:700;">' + b + '</span>'; }).join('') + '</div>' : '';
       var dealHtml = item.deal_activity && item.deal_activity !== '\u65e0' ? '<div style="color:#d97706;font-size:12px;">Deal: ' + item.deal_activity + '</div>' : '';
-      var couponHtml = item.coupon && item.coupon !== '\u65e0' ? '<div style="color:#059669;font-size:12px;">代金券: ' + item.coupon + '</div>' : '';
+      var couponHtml = item.coupon && item.coupon !== '\u65e0' ? '<div style="color:#059669;font-size:12px;">Coupon: ' + item.coupon + '</div>' : '';
       var primeHtml = item.prime_discount && item.prime_discount !== '\u672a\u5f00\u542f' ? '<div style="color:#7c3aed;font-size:12px;">Prime: ' + item.prime_discount + '</div>' : '';
       var badge1Text = item.source_keyword ? ('KW-' + item.source_keyword) : (item.monitor_type === 'KW' ? 'KW' : 'ASIN');
       // badge2 仅主ASIN和关联竞品显示；关键词ASIN的monitor_type本身就是KW，无需重复
-      var badge2Text = item.source_keyword ? '\u5173\u952e\u8bcd\u7ade\u54c1' : (item.logic_type || '');
+      var badge2Text = item.source_keyword ? 'KW Competitor' : (item.logic_type || '');
       html += '<tr>' +
         '<td class="col-img"><img src="' + (item.img || '') + '"></td>' +
         '<td class="col-info"><div class="info-block">' +
@@ -407,42 +407,42 @@
           badgeHtml + dealHtml + couponHtml + primeHtml + variantHtml +
         '</div></td>' +
         '<td class="col-metrics"><div class="metrics-block">' +
-          '<div>价格: <strong>' + priceStr + '</strong>' + (diff.price ? ' <span class="diff-arrow ' + diff.price.direction + '">' + (diff.price.direction === 'up' ? '\u2191' : (diff.price.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.price.direction + '">' + diff.price.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_price"></canvas></span></div>' +
-          '<div>评分: <strong>' + ratingStr + '</strong>' + (diff.rating ? ' <span class="diff-arrow ' + diff.rating.direction + '">' + (diff.rating.direction === 'up' ? '\u2191' : (diff.rating.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.rating.direction + '">' + diff.rating.change + '</span>' : '') + ' <span style="color:#64748b;font-size:12px;">评论 ' + reviewsStr + '</span><span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_rating"></canvas></span></div>' +
-          '<div>大类: <span class="cat-item">' + (item.main_cat || '-') + '</span> <strong>' + mainBsrStr + '</strong>' + (diff.bsr ? ' <span class="diff-arrow ' + diff.bsr.direction + '">' + (diff.bsr.direction === 'up' ? '\u2191' : (diff.bsr.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.bsr.direction + '">' + diff.bsr.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_main_bsr"></canvas></span></div>' +
-          '<div>小类: <span class="cat-item">' + (item.sub_cat || '-') + '</span> <strong>' + (item.sub_bsr != null ? '#' + item.sub_bsr : '-') + '</strong>' + (diff.sub_bsr ? ' <span class="diff-arrow ' + diff.sub_bsr.direction + '">' + (diff.sub_bsr.direction === 'up' ? '\u2191' : (diff.sub_bsr.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.sub_bsr.direction + '">' + diff.sub_bsr.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_sub_bsr"></canvas></span></div>' +
+          '<div>Price: <strong>' + priceStr + '</strong>' + (diff.price ? ' <span class="diff-arrow ' + diff.price.direction + '">' + (diff.price.direction === 'up' ? '\u2191' : (diff.price.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.price.direction + '">' + diff.price.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_price"></canvas></span></div>' +
+          '<div>Rating: <strong>' + ratingStr + '</strong>' + (diff.rating ? ' <span class="diff-arrow ' + diff.rating.direction + '">' + (diff.rating.direction === 'up' ? '\u2191' : (diff.rating.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.rating.direction + '">' + diff.rating.change + '</span>' : '') + ' <span style="color:#64748b;font-size:12px;">Reviews ' + reviewsStr + '</span><span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_rating"></canvas></span></div>' +
+          '<div>Main: <span class="cat-item">' + (item.main_cat || '-') + '</span> <strong>' + mainBsrStr + '</strong>' + (diff.bsr ? ' <span class="diff-arrow ' + diff.bsr.direction + '">' + (diff.bsr.direction === 'up' ? '\u2191' : (diff.bsr.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.bsr.direction + '">' + diff.bsr.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_main_bsr"></canvas></span></div>' +
+          '<div>Sub: <span class="cat-item">' + (item.sub_cat || '-') + '</span> <strong>' + (item.sub_bsr != null ? '#' + item.sub_bsr : '-') + '</strong>' + (diff.sub_bsr ? ' <span class="diff-arrow ' + diff.sub_bsr.direction + '">' + (diff.sub_bsr.direction === 'up' ? '\u2191' : (diff.sub_bsr.direction === 'dn' ? '\u2193' : '\u2014')) + '</span> <span class="diff-val ' + diff.sub_bsr.direction + '">' + diff.sub_bsr.change + '</span>' : '') + '<span class="sparkline-wrap"><canvas id="sp_' + item.asin + '_sub_bsr"></canvas></span></div>' +
         '</div></td>' +
         '<td class="col-jike">' +
           (item.is_main ? (
             // 主 ASIN：积加数据为主，卖家精灵估算作为 fallback
             (item.jike_units != null || item.jike_sales != null || item.jike_orders != null ? (
               // 有积加真实数据
-              '<div style="font-size:12px;line-height:1.4;">销量 <strong>' + (item.jike_units != null ? item.jike_units.toLocaleString() : '-') + '</strong> <span style="background:#dbeafe;color:#1e40af;font-size:9px;padding:1px 4px;border-radius:3px;margin-left:3px;">积加</span></div>' +
-              '<div style="font-size:11px;color:#64748b;line-height:1.4;">销售额 $' + (item.jike_sales != null ? item.jike_sales.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
-              '<div style="font-size:11px;color:#64748b;line-height:1.4;">毛利率 ' + (item.jike_gross_profit_rate != null ? item.jike_gross_profit_rate + '%' : '-') + '</div>' +
+              '<div style="font-size:12px;line-height:1.4;">Units <strong>' + (item.jike_units != null ? item.jike_units.toLocaleString() : '-') + '</strong> <span style="background:#dbeafe;color:#1e40af;font-size:9px;padding:1px 4px;border-radius:3px;margin-left:3px;">Jike</span></div>' +
+              '<div style="font-size:11px;color:#64748b;line-height:1.4;">Sales $' + (item.jike_sales != null ? item.jike_sales.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
+              '<div style="font-size:11px;color:#64748b;line-height:1.4;">Margin ' + (item.jike_gross_profit_rate != null ? item.jike_gross_profit_rate + '%' : '-') + '</div>' +
               '<div style="font-size:11px;line-height:1.4;">ACOS ' + (item.jike_acos != null ? item.jike_acos + '%' : '-') + '</div>' +
-              '<div style="font-size:11px;color:#64748b;line-height:1.4;">广告费 $' + (item.jike_ads_spend != null ? item.jike_ads_spend.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
-              '<div style="font-size:11px;line-height:1.4;">FBA库存 ' + (item.jike_fba_quantity != null ? item.jike_fba_quantity.toLocaleString() : '-') + '</div>' +
-              '<div style="font-size:11px;color:#64748b;line-height:1.4;">周转 ' + (item.jike_fba_turnover != null ? item.jike_fba_turnover.toFixed(1) : '-') + '</div>'
+              '<div style="font-size:11px;color:#64748b;line-height:1.4;">Ad Spend $' + (item.jike_ads_spend != null ? item.jike_ads_spend.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
+              '<div style="font-size:11px;line-height:1.4;">FBA Stock ' + (item.jike_fba_quantity != null ? item.jike_fba_quantity.toLocaleString() : '-') + '</div>' +
+              '<div style="font-size:11px;color:#64748b;line-height:1.4;">Turnover ' + (item.jike_fba_turnover != null ? item.jike_fba_turnover.toFixed(1) : '-') + '</div>'
             ) : (
               // 积加无数据，显示卖家精灵估算（明确标注来源）
-              '<div style="font-size:11px;color:#92400e;line-height:1.4;margin-bottom:3px;">⚠️ 积加无数据</div>' +
+              '<div style="font-size:11px;color:#92400e;line-height:1.4;margin-bottom:3px;">⚠️ No Jike data</div>' +
               (item.seller_units_30d != null || item.seller_revenue_30d != null ? (
-                '<div style="font-size:12px;line-height:1.4;">销量 <strong style="color:#92400e;">' + (item.seller_units_30d != null ? item.seller_units_30d.toLocaleString() : '-') + '</strong> <span style="background:#fef3c7;color:#92400e;font-size:9px;padding:1px 4px;border-radius:3px;margin-left:3px;">卖家精灵估算</span></div>' +
-                '<div style="font-size:11px;color:#92400e;line-height:1.4;">销售额 ~$' + (item.seller_revenue_30d != null ? item.seller_revenue_30d.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
-                '<div style="font-size:10px;color:#92400e;line-height:1.4;font-style:italic;">⚠️ 非积加真实数据</div>'
+                '<div style="font-size:12px;line-height:1.4;">Units <strong style="color:#92400e;">' + (item.seller_units_30d != null ? item.seller_units_30d.toLocaleString() : '-') + '</strong> <span style="background:#fef3c7;color:#92400e;font-size:9px;padding:1px 4px;border-radius:3px;margin-left:3px;">Seller Sprite est.</span></div>' +
+                '<div style="font-size:11px;color:#92400e;line-height:1.4;">Sales ~$' + (item.seller_revenue_30d != null ? item.seller_revenue_30d.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
+                '<div style="font-size:10px;color:#92400e;line-height:1.4;font-style:italic;">⚠️ Not Jike real data</div>'
               ) : '<span style="color:#cbd5e1;font-size:11px;">-</span>')
             ))
           ) : '<span style="color:#cbd5e1;font-size:11px;">-</span>') +
         '</td>' +
         '<td class="col-plugin-l">' +
           (item.lqs ? '<div><strong>LQS</strong> ' + item.lqs + '</div>' : '') +
-          (item.variant_count ? '<div><strong>变体</strong> ' + item.variant_count + '</div>' : '') +
+          (item.variant_count ? '<div><strong>Variants</strong> ' + item.variant_count + '</div>' : '') +
         '</td>' +
         '<td class="col-plugin-m">' +
-          (item.natural_keywords ? '<div>自然 <strong>' + item.natural_keywords + '</strong></div>' : '') +
-          (item.ad_keywords ? '<div>广告 <strong>' + item.ad_keywords + '</strong></div>' : '') +
-          (item.suggest_keywords ? '<div>推荐 <strong>' + item.suggest_keywords + '</strong></div>' : '') +
+          (item.natural_keywords ? '<div>Natural <strong>' + item.natural_keywords + '</strong></div>' : '') +
+          (item.ad_keywords ? '<div>Ad <strong>' + item.ad_keywords + '</strong></div>' : '') +
+          (item.suggest_keywords ? '<div>Suggested <strong>' + item.suggest_keywords + '</strong></div>' : '') +
         '</td>' +
         '<td class="col-plugin-r">' +
           (item.traffic_keywords_top && item.traffic_keywords_top.length ?
@@ -454,11 +454,11 @@
         '</td>' +
         '<td class="col-time"><div class="status-indicator ' + statusClass + '">' + statusText + '</div>' +
           '<div style="margin-top:4px;color:#64748b;">' + (rawData.updated || '-') + '</div>' +
-          (item.launch_date ? '<div style="margin-top:4px;color:#64748b;">上架 ' + item.launch_date + '</div>' : '') +
+          (item.launch_date ? '<div style="margin-top:4px;color:#64748b;">Launch ' + item.launch_date + '</div>' : '') +
           (eventsHtml && eventsHtml.indexOf('e-none') === -1 ? '<div style="margin-top:4px;">' + eventsHtml + '</div>' : '') + '</td>' +
       '</tr>';
     });
-    tb.innerHTML = html || '<tr><td colspan="15" style="text-align:center;padding:20px;">没有匹配数据</td></tr>';
+    tb.innerHTML = html || '<tr><td colspan="15" style="text-align:center;padding:20px;">No matching data</td></tr>';
     // Draw sparklines for each item with history data
     rawData.items.forEach(function(item) {
       if (item.history_price && item.history_price.length >= 1) {
@@ -506,33 +506,33 @@
     if (!diff || Object.keys(diff).length === 0) {
       // First-time ASIN: show absolute values
       var abs = [];
-      if (item.price != null) abs.push('<div class="diff-item">价格: <span class="diff-val same">$' + item.price + '</span></div>');
-      if (item.reviews != null) abs.push('<div class="diff-item">评论: <span class="diff-val same">' + item.reviews + '</span></div>');
-      if (item.rating != null) abs.push('<div class="diff-item">评分: <span class="diff-val same">' + item.rating + '</span></div>');
+      if (item.price != null) abs.push('<div class="diff-item">Price: <span class="diff-val same">$' + item.price + '</span></div>');
+      if (item.reviews != null) abs.push('<div class="diff-item">Reviews: <span class="diff-val same">' + item.reviews + '</span></div>');
+      if (item.rating != null) abs.push('<div class="diff-item">Rating: <span class="diff-val same">' + item.rating + '</span></div>');
       if (item.main_bsr != null) abs.push('<div class="diff-item">BSR: <span class="diff-val same">#' + item.main_bsr + '</span></div>');
-      if (item.sub_bsr != null) abs.push('<div class="diff-item">小类: <span class="diff-val same">#' + item.sub_bsr + '</span></div>');
+      if (item.sub_bsr != null) abs.push('<div class="diff-item">Sub: <span class="diff-val same">#' + item.sub_bsr + '</span></div>');
       return abs.length ? abs.join('') : '<span class="diff-none">-</span>';
     }
     var rows = [];
-    if (diff.price) { var dir = diff.price.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '-'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> 价格: <span class="diff-val ' + dir + '">$' + diff.price.current + '</span></div>'); }
-    if (diff.review_count) { var dir = diff.review_count.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '-'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> 评论: <span class="diff-val ' + dir + '">' + diff.review_count.change + '</span></div>'); }
-    if (diff.rating) { var dir = diff.rating.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '-'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> 评分: <span class="diff-val ' + dir + '">' + diff.rating.change + '</span></div>'); }
+    if (diff.price) { var dir = diff.price.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '-'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> Price: <span class="diff-val ' + dir + '">$' + diff.price.current + '</span></div>'); }
+    if (diff.review_count) { var dir = diff.review_count.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '-'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> Reviews: <span class="diff-val ' + dir + '">' + diff.review_count.change + '</span></div>'); }
+    if (diff.rating) { var dir = diff.rating.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '-'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> Rating: <span class="diff-val ' + dir + '">' + diff.rating.change + '</span></div>'); }
     if (diff.bsr) { var dir = diff.bsr.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '-'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> BSR: <span class="diff-val ' + dir + '">' + diff.bsr.change + '</span></div>'); }
-    if (diff.sub_bsr) { var dir = diff.sub_bsr.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '-'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> 小类: <span class="diff-val ' + dir + '">' + diff.sub_bsr.change + '</span></div>'); }
+    if (diff.sub_bsr) { var dir = diff.sub_bsr.direction || 'same'; var arrow = dir === 'up' ? '\u2191' : (dir === 'dn' ? '\u2193' : '-'); rows.push('<div class="diff-item"><span class="diff-arrow ' + dir + '">' + arrow + '</span> Sub: <span class="diff-val ' + dir + '">' + diff.sub_bsr.change + '</span></div>'); }
     return rows.join('') || '<span class="diff-none">-</span>';
   }
 
   function exportToExcel() {
-    var rows = [['ASIN', '类型', '品牌', '监控类型', '逻辑类型', '商品状态', '价格', 'BSR', '评分', '评论数', 'LQS', '变体数', '上架日期', '总词数', '自然词数', '广告词数', '描荐词数', '销量', '销售额', '毛利率', 'ACOS', '广告费', 'FBA库存', '库存周转', '数据来源', '最后更新']];
+    var rows = [['ASIN', 'Type', 'Brand', 'Monitor Type', 'Logic Type', 'Status', 'Price', 'BSR', 'Rating', 'Reviews', 'LQS', 'Variants', 'Launch Date', 'Total KW', 'Natural KW', 'Ad KW', 'Suggested KW', 'Units', 'Sales', 'Margin', 'ACOS', 'Ad Spend', 'FBA Stock', 'Turnover', 'Data Source', 'Last Updated']];
     rawData.items.forEach(function(m) {
-      var jikeUnits = m.jike_units != null ? m.jike_units : (m.seller_units_30d != null ? '(估算)' + m.seller_units_30d : '-');
-      var jikeSales = m.jike_sales != null ? m.jike_sales : (m.seller_revenue_30d != null ? '(估算)' + m.seller_revenue_30d : '-');
+      var jikeUnits = m.jike_units != null ? m.jike_units : (m.seller_units_30d != null ? '(est.)' + m.seller_units_30d : '-');
+      var jikeSales = m.jike_sales != null ? m.jike_sales : (m.seller_revenue_30d != null ? '(est.)' + m.seller_revenue_30d : '-');
       var jikeGrossProfit = m.jike_gross_profit_rate != null ? m.jike_gross_profit_rate + '%' : '-';
       var jikeAcos = m.jike_acos != null ? m.jike_acos + '%' : '-';
       var jikeAdsSpend = m.jike_ads_spend != null ? m.jike_ads_spend : '-';
       var jikeFbaQty = m.jike_fba_quantity != null ? m.jike_fba_quantity : '-';
       var jikeFbaTurnover = m.jike_fba_turnover != null ? m.jike_fba_turnover : '-';
-      var jikeSource = (m.jike_units != null || m.jike_sales != null) ? '积加' : (m.seller_units_30d != null ? '卖家精灵估算' : '无');
+      var jikeSource = (m.jike_units != null || m.jike_sales != null) ? 'Jike' : (m.seller_units_30d != null ? 'Seller Sprite est.' : 'None');
       rows.push([m.asin, m.monitor_type, m.brand || '', m.monitor_type, m.logic_type, m.listing_status, m.price, m.main_bsr, m.rating, m.reviews, m.lqs || '', m.variant_count || '', m.launch_date || '', m.total_keywords || '', m.natural_keywords || '', m.ad_keywords || '', m.suggest_keywords || '', jikeUnits, jikeSales, jikeGrossProfit, jikeAcos, jikeAdsSpend, jikeFbaQty, jikeFbaTurnover, jikeSource, rawData.updated]);
     });
     var ws = XLSX.utils.aoa_to_sheet(rows);

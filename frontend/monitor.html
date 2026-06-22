@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +11,8 @@
 <div class="topbar">
   <div class="brand">CrossMart Monitor Pro</div>
   <nav>
-    <a href="monitor.html" class="active">ASIN监控</a>
-    <a href="https://charlescome1995-prog.github.io/crossmart-selector/">选品推荐 ↗</a>
+    <a href="monitor.html" class="active">ASIN Monitor</a>
+    <a href="https://charlescome1995-prog.github.io/crossmart-selector/">Selector ↗</a>
   </nav>
 </div>
 <div class="container">
@@ -20,33 +20,33 @@
   <div class="config-matrix">
     <div class="action-row">
       <div style="display:flex;align-items:center;gap:12px;">
-        <div class="title-tag">ASIN&#30417;&#25511;&#27969; (Streams 1-5)</div>
-        <div style="font-size:11px;color:#94a3b8;">&#24038;5&#21015;=&#30446;&#26631;ASIN&#30340;&#20851;&#32856;ASIN | &#21491;5&#21015;=&#30446;&#26631;&#20851;&#38190;&#35789;&#30340;&#20851;&#32856;ASIN</div>
+        <div class="title-tag">ASIN Monitor Streams (1-5)</div>
+        <div style="font-size:11px;color:#94a3b8;">Left 5 cols = related ASINs of target ASIN | Right 5 cols = related ASINs of target keyword</div>
       </div>
       <div class="ctrl-group">
         <input type="password" id="ghTokenInput" placeholder="GitHub Token" style="width:180px">
-        <button id="btnSaveToken">&#20445;&#23384; Token</button>
-        <button id="btnSaveConfig">&#20445;&#23384;&#37197;&#32622;</button>
-        <button id="btnTrigger">立即抓取</button>
-        <span id="configStatus">&#35831;&#20808;&#20445;&#23384; Token</span>
+        <button id="btnSaveToken">Save Token</button>
+        <button id="btnSaveConfig">Save Config</button>
+        <button id="btnTrigger">Run Now</button>
+        <span id="configStatus">Please save Token first</span>
       </div>
     </div>
     <div class="matrix-grid">
       <div class="grid-hdr" style="grid-column:1;grid-row:1;"></div>
-      <div class="grid-hdr hdr-asin" style="grid-column:2/span 5;grid-row:1;">&#30446;&#26631;ASIN&#30340;&#20851;&#32856;ASIN</div>
-      <div class="grid-hdr hdr-kw" style="grid-column:7/span 5;grid-row:1;">&#30446;&#26631;&#20851;&#38190;&#35789;&#30340;&#20851;&#32856;ASIN</div>
-      <div class="grid-cell" style="grid-column:1;grid-row:2;"><div class="lbl-cell">&#30424;&#25511;&#27969;</div></div>
+      <div class="grid-hdr hdr-asin" style="grid-column:2/span 5;grid-row:1;">Related ASINs of Target ASIN</div>
+      <div class="grid-hdr hdr-kw" style="grid-column:7/span 5;grid-row:1;">Related ASINs of Target Keyword</div>
+      <div class="grid-cell" style="grid-column:1;grid-row:2;"><div class="lbl-cell">Target</div></div>
       <div class="grid-cell row-target" style="grid-column:2;grid-row:2;"><input type="text" id="in-asin-0" placeholder="ASIN"></div>
       <div class="grid-cell row-target" style="grid-column:3;grid-row:2;"><input type="text" id="in-asin-1" placeholder="ASIN"></div>
       <div class="grid-cell row-target" style="grid-column:4;grid-row:2;"><input type="text" id="in-asin-2" placeholder="ASIN"></div>
       <div class="grid-cell row-target" style="grid-column:5;grid-row:2;"><input type="text" id="in-asin-3" placeholder="ASIN"></div>
       <div class="grid-cell row-target" style="grid-column:6;grid-row:2;"><input type="text" id="in-asin-4" placeholder="ASIN"></div>
-      <div class="grid-cell row-target" style="grid-column:7;grid-row:2;"><input type="text" id="in-kw-0" placeholder="&#20851;&#38190;&#35789;"></div>
-      <div class="grid-cell row-target" style="grid-column:8;grid-row:2;"><input type="text" id="in-kw-1" placeholder="&#20851;&#38190;&#35789;"></div>
-      <div class="grid-cell row-target" style="grid-column:9;grid-row:2;"><input type="text" id="in-kw-2" placeholder="&#20851;&#38190;&#35789;"></div>
-      <div class="grid-cell row-target" style="grid-column:10;grid-row:2;"><input type="text" id="in-kw-3" placeholder="&#20851;&#38190;&#35789;"></div>
-      <div class="grid-cell row-target" style="grid-column:11;grid-row:2;"><input type="text" id="in-kw-4" placeholder="&#20851;&#38190;&#35789;"></div>
-      <div class="grid-cell" style="grid-column:1;grid-row:3;"><div class="lbl-cell">&#20851;&#32856;1</div></div>
+      <div class="grid-cell row-target" style="grid-column:7;grid-row:2;"><input type="text" id="in-kw-0" placeholder="Keyword"></div>
+      <div class="grid-cell row-target" style="grid-column:8;grid-row:2;"><input type="text" id="in-kw-1" placeholder="Keyword"></div>
+      <div class="grid-cell row-target" style="grid-column:9;grid-row:2;"><input type="text" id="in-kw-2" placeholder="Keyword"></div>
+      <div class="grid-cell row-target" style="grid-column:10;grid-row:2;"><input type="text" id="in-kw-3" placeholder="Keyword"></div>
+      <div class="grid-cell row-target" style="grid-column:11;grid-row:2;"><input type="text" id="in-kw-4" placeholder="Keyword"></div>
+      <div class="grid-cell" style="grid-column:1;grid-row:3;"><div class="lbl-cell">Rel 1</div></div>
       <div class="grid-cell row-rel" style="grid-column:2;grid-row:3;"><input type="text" id="rel-asin-0-0" placeholder="Rel ASIN"></div>
       <div class="grid-cell row-rel" style="grid-column:3;grid-row:3;"><input type="text" id="rel-asin-1-0" placeholder="Rel ASIN"></div>
       <div class="grid-cell row-rel" style="grid-column:4;grid-row:3;"><input type="text" id="rel-asin-2-0" placeholder="Rel ASIN"></div>
@@ -57,7 +57,7 @@
       <div class="grid-cell row-rel" style="grid-column:9;grid-row:3;"><input type="text" id="rel-kw-2-0" placeholder="Rel KW"></div>
       <div class="grid-cell row-rel" style="grid-column:10;grid-row:3;"><input type="text" id="rel-kw-3-0" placeholder="Rel KW"></div>
       <div class="grid-cell row-rel" style="grid-column:11;grid-row:3;"><input type="text" id="rel-kw-4-0" placeholder="Rel KW"></div>
-      <div class="grid-cell" style="grid-column:1;grid-row:4;"><div class="lbl-cell">&#20851;&#32856;2</div></div>
+      <div class="grid-cell" style="grid-column:1;grid-row:4;"><div class="lbl-cell">Rel 2</div></div>
       <div class="grid-cell row-rel" style="grid-column:2;grid-row:4;"><input type="text" id="rel-asin-0-1" placeholder="Rel ASIN"></div>
       <div class="grid-cell row-rel" style="grid-column:3;grid-row:4;"><input type="text" id="rel-asin-1-1" placeholder="Rel ASIN"></div>
       <div class="grid-cell row-rel" style="grid-column:4;grid-row:4;"><input type="text" id="rel-asin-2-1" placeholder="Rel ASIN"></div>
@@ -68,7 +68,7 @@
       <div class="grid-cell row-rel" style="grid-column:9;grid-row:4;"><input type="text" id="rel-kw-2-1" placeholder="Rel KW"></div>
       <div class="grid-cell row-rel" style="grid-column:10;grid-row:4;"><input type="text" id="rel-kw-3-1" placeholder="Rel KW"></div>
       <div class="grid-cell row-rel" style="grid-column:11;grid-row:4;"><input type="text" id="rel-kw-4-1" placeholder="Rel KW"></div>
-      <div class="grid-cell" style="grid-column:1;grid-row:5;"><div class="lbl-cell">&#20851;&#32856;3</div></div>
+      <div class="grid-cell" style="grid-column:1;grid-row:5;"><div class="lbl-cell">Rel 3</div></div>
       <div class="grid-cell row-rel" style="grid-column:2;grid-row:5;"><input type="text" id="rel-asin-0-2" placeholder="Rel ASIN"></div>
       <div class="grid-cell row-rel" style="grid-column:3;grid-row:5;"><input type="text" id="rel-asin-1-2" placeholder="Rel ASIN"></div>
       <div class="grid-cell row-rel" style="grid-column:4;grid-row:5;"><input type="text" id="rel-asin-2-2" placeholder="Rel ASIN"></div>
@@ -79,7 +79,7 @@
       <div class="grid-cell row-rel" style="grid-column:9;grid-row:5;"><input type="text" id="rel-kw-2-2" placeholder="Rel KW"></div>
       <div class="grid-cell row-rel" style="grid-column:10;grid-row:5;"><input type="text" id="rel-kw-3-2" placeholder="Rel KW"></div>
       <div class="grid-cell row-rel" style="grid-column:11;grid-row:5;"><input type="text" id="rel-kw-4-2" placeholder="Rel KW"></div>
-      <div class="grid-cell" style="grid-column:1;grid-row:6;"><div class="lbl-cell">&#20851;&#32856;4</div></div>
+      <div class="grid-cell" style="grid-column:1;grid-row:6;"><div class="lbl-cell">Rel 4</div></div>
       <div class="grid-cell row-rel" style="grid-column:2;grid-row:6;"><input type="text" id="rel-asin-0-3" placeholder="Rel ASIN"></div>
       <div class="grid-cell row-rel" style="grid-column:3;grid-row:6;"><input type="text" id="rel-asin-1-3" placeholder="Rel ASIN"></div>
       <div class="grid-cell row-rel" style="grid-column:4;grid-row:6;"><input type="text" id="rel-asin-2-3" placeholder="Rel ASIN"></div>
@@ -90,7 +90,7 @@
       <div class="grid-cell row-rel" style="grid-column:9;grid-row:6;"><input type="text" id="rel-kw-2-3" placeholder="Rel KW"></div>
       <div class="grid-cell row-rel" style="grid-column:10;grid-row:6;"><input type="text" id="rel-kw-3-3" placeholder="Rel KW"></div>
       <div class="grid-cell row-rel" style="grid-column:11;grid-row:6;"><input type="text" id="rel-kw-4-3" placeholder="Rel KW"></div>
-      <div class="grid-cell" style="grid-column:1;grid-row:7;"><div class="lbl-cell">&#20851;&#32856;5</div></div>
+      <div class="grid-cell" style="grid-column:1;grid-row:7;"><div class="lbl-cell">Rel 5</div></div>
       <div class="grid-cell row-rel" style="grid-column:2;grid-row:7;"><input type="text" id="rel-asin-0-4" placeholder="Rel ASIN"></div>
       <div class="grid-cell row-rel" style="grid-column:3;grid-row:7;"><input type="text" id="rel-asin-1-4" placeholder="Rel ASIN"></div>
       <div class="grid-cell row-rel" style="grid-column:4;grid-row:7;"><input type="text" id="rel-asin-2-4" placeholder="Rel ASIN"></div>
@@ -106,15 +106,15 @@
 
   <div class="filter-bar">
     <div class="filter-controls">
-      <input type="text" id="searchInput" placeholder="搜索 ASIN/标题...">
+      <input type="text" id="searchInput" placeholder="Search ASIN/Title...">
       <select id="sourceFilter">
-        <option value="ALL">全部</option>
-        <option value="ASIN">ASIN 监控</option>
-        <option value="KW">关键词监控</option>
+        <option value="ALL">All</option>
+        <option value="ASIN">ASIN Monitor</option>
+        <option value="KW">Keyword Monitor</option>
       </select>
-      <label><input type="checkbox" id="changeFilter"> 仅显示变化</label>
+      <label><input type="checkbox" id="changeFilter"> Changes only</label>
     </div>
-    <button class="btn btn-secondary" id="btnExport">导出 Excel</button>
+    <button class="btn btn-secondary" id="btnExport">Export Excel</button>
   </div>
 
   <div class="table-container">
@@ -124,25 +124,25 @@
       </colgroup>
       <thead>
         <tr>
-          <th>图片</th>
-          <th>商品信息</th>
-          <th>核心指标</th>
-          <th>积加数据</th>
-          <th colspan="3" class="plugin-header">卖家精灵</th>
-          <th>更新时间</th>
+          <th>Image</th>
+          <th>Product Info</th>
+          <th>Core Metrics</th>
+          <th>Jike Data</th>
+          <th colspan="3" class="plugin-header">Seller Sprite</th>
+          <th>Updated</th>
         </tr>
         <tr class="plugin-subheader">
           <th></th>
           <th></th>
           <th></th>
           <th></th>
-          <th>LQS/变体</th>
-          <th>关键词分布</th>
-          <th>流量词 Top</th>
+          <th>LQS/Variants</th>
+          <th>Keyword Distribution</th>
+          <th>Top Traffic Words</th>
           <th></th>
         </tr>
       </thead>
-      <tbody id="tableBody"><tr><td colspan="15" style="text-align:center;padding:40px;color:#94a3b8;">&#21152;&#36733;&#20013;...</td></tr></tbody>
+      <tbody id="tableBody"><tr><td colspan="15" style="text-align:center;padding:40px;color:#94a3b8;">Loading...</td></tr></tbody>
     </table>
   </div>
 </div>
