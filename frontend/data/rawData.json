@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-21T18:51:32",
+  "updated": "2026-06-21T19:03:48",
   "items": [
     {
       "monitor_type": "new",
@@ -107,151 +107,105 @@
       "traffic_keywords_top": []
     },
     {
-      "monitor_type": "new",
+      "monitor_type": "KW",
       "asin": "B013PGADAW",
       "is_main": false,
       "is_stale": false,
-      "logic_type": "主监控",
+      "logic_type": "关键词-antifungal cream",
       "source_keyword": "antifungal cream",
-      "title": "Antifungal Cream for Athletes Foot Treatment 60g | Relief from Jock Itch Ringworm & Skin Fungus, Advanced Dual Action Formula for Adults and Kids",
-      "brand": "EVERFERE",
-      "img": "https://m.media-amazon.com/images/I/71Ns3+umtgL._AC_SL1500_.jpg",
-      "price": 21.99,
+      "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More",
+      "brand": "Globe Pharmacy",
+      "img": "https://m.media-amazon.com/images/I/71WPcC4gG9L._AC_SL1500_.jpg",
+      "price": 4.85,
       "chg": 0.0,
-      "rating": 3.9,
-      "reviews": 27,
+      "rating": 4.6,
+      "reviews": 16266,
       "diff": {
         "price": {
-          "current": 21.99,
+          "current": 4.85,
           "prev": 4.85,
-          "change": "+17.14",
-          "pct": "+353.4%",
-          "direction": "up"
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
         },
         "rating": {
-          "current": 3.9,
+          "current": 4.6,
           "prev": 4.6,
-          "change": "-0.7",
-          "direction": "dn"
+          "change": "+0.0",
+          "direction": "same"
         },
         "review_count": {
-          "current": 27,
+          "current": 16266,
           "prev": 16266,
-          "change": "-16239",
-          "direction": "dn"
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
-          "current": 172998,
+          "current": 375,
           "prev": 375,
-          "change": "+172623",
-          "direction": "dn"
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
-          "current": 282,
+          "current": 1,
           "prev": 1,
-          "change": "+281",
-          "direction": "dn"
-        },
-        "badges": {
-          "current": [
-            "NR",
-            "A+"
-          ],
-          "prev": [
-            "AC",
-            "NR",
-            "A+"
-          ],
-          "lost": [
-            "AC"
-          ],
-          "gained": [],
-          "direction": "changed"
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
       "expected_listing_status": "正常",
-      "title_changed": true,
-      "img_changed": true,
-      "bullets_changed": true,
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
       "description_changed": false,
-      "seller_changed": true,
+      "seller_changed": false,
       "variant_status": "正常",
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
+        "AC",
         "NR",
         "A+"
       ],
-      "badges_lost": [
-        "AC"
-      ],
-      "coupon": "无",
+      "badges_lost": [],
+      "coupon": "$4.61 off",
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 172998,
+      "main_bsr": 375,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
-      "sub_bsr": 282,
+      "sub_bsr": 1,
       "history_main_bsr": [
-        375,
-        172998
+        375
       ],
       "history_sub_bsr": [
-        282,
-        282
+        1
       ],
       "history_price": [
-        4.85,
-        21.99
+        4.85
       ],
       "history_rating": [
-        4.6,
-        3.9
+        4.6
       ],
       "events": [],
       "related_asins": [],
       "lqs": "",
       "variant_count": "1",
-      "launch_date": "11, 2025",
-      "total_keywords": "107",
-      "natural_keywords": "107",
-      "ad_keywords": "4",
-      "seller_units_30d": 144,
-      "seller_revenue_30d": 3167.0,
-      "seller_avg_price": 21.99,
-      "seller_rating": 3.9,
-      "seller_review_count": 27,
-      "seller_bsr": 282,
-      "seller_fba_fee": 4.09,
-      "suggest_keywords": "0",
-      "traffic_keywords_top": [
-        {
-          "keyword": "antifungal cream",
-          "traffic_pct": "33.92%",
-          "type": "自然搜索词SP广告词",
-          "organic_rank": "55"
-        },
-        {
-          "keyword": "athletes foot treatment",
-          "traffic_pct": "11.26%",
-          "type": "自然搜索词",
-          "organic_rank": "89"
-        },
-        {
-          "keyword": "athletes foot cream",
-          "traffic_pct": "7.66%",
-          "type": "自然搜索词",
-          "organic_rank": "79"
-        },
-        {
-          "keyword": "foot fungus treatment",
-          "traffic_pct": "7.46%",
-          "type": "自然搜索词SP广告词",
-          "organic_rank": "40"
-        }
-      ]
+      "launch_date": "19, 2015",
+      "total_keywords": "612",
+      "natural_keywords": "502",
+      "ad_keywords": "19",
+      "seller_units_30d": 56324,
+      "seller_revenue_30d": 273171.0,
+      "seller_avg_price": 4.85,
+      "seller_rating": 4.6,
+      "seller_review_count": 16266,
+      "seller_bsr": 375,
+      "seller_fba_fee": 3.01,
+      "suggest_keywords": "183",
+      "traffic_keywords_top": []
     },
     {
       "monitor_type": "new",
@@ -2186,13 +2140,13 @@
           "type": "unknown",
           "rank": "",
           "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More",
-          "price": "$21.99",
-          "rating": "3.9",
-          "reviews": "27",
-          "launch_date": "11, 2025",
+          "price": "$4.85",
+          "rating": "4.6",
+          "reviews": "16266",
+          "launch_date": "19, 2015",
           "listing_status": "",
           "deal_activity": "Deal",
-          "coupon": "无",
+          "coupon": "$4.61 off",
           "prime_discount": "未开启"
         },
         {
