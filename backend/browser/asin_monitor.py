@@ -696,6 +696,40 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
         amazon.search_for_asin(asin, search_keyword)
         browser.scroll_down(times=1, min_pause=0.3, max_pause=0.8)
 
+        # ── 【关键防呆】校验当前页面真的是目标 ASIN，否则强制纠正 ──
+        # 根因：search_for_asin 点击搜索结果后不验证跳转，若标签页复用了上一个
+        # ASIN 的详情页，会把上一个商品的 title/image/插件数据错配给当前 ASIN。
+        def _verify_and_fix_asin(target_asin, max_retry=2):
+            for attempt in range(max_retry + 1):
+                cur = browser.eval("""(() => {
+                    var m = (location.href.match(/\\/dp\\/([A-Z0-9]{10})/) || [])[1];
+                    if (m) return m;
+                    var c = document.querySelector('link[rel="canonical"]');
+                    if (c) { var cm = (c.href.match(/\\/dp\\/([A-Z0-9]{10})/) || [])[1]; if (cm) return cm; }
+                    var asinInput = document.querySelector('#ASIN, input[name="ASIN"]');
+                    if (asinInput && asinInput.value) return asinInput.value;
+                    return '';
+                })()""") or ''
+                cur = str(cur).strip().upper()
+                if cur == target_asin.upper():
+                    if attempt > 0:
+                        print(f"  ✅ ASIN 已纠正到 {target_asin}")
+                    return True
+                print(f"  ⚠️ 页面 ASIN 不符：当前={cur or '未知'} 目标={target_asin}（第 {attempt+1} 次），强制跳转")
+                browser.navigate(f"https://www.amazon.com/dp/{target_asin}", wait_min=3, wait_max=5)
+                time.sleep(2)
+            # 最终校验
+            final = browser.eval("(() => (location.href.match(/\\/dp\\/([A-Z0-9]{10})/) || [])[1] || '')()") or ''
+            ok = str(final).strip().upper() == target_asin.upper()
+            if not ok:
+                print(f"  ❌ ASIN 校验失败，最终页面={final}，将放弃本次抓取以避免错配")
+            return ok
+
+        _asin_ok = _verify_and_fix_asin(asin)
+        if not _asin_ok:
+            # 校验失败：不提取，直接抛错让上层走 fallback（保留上次快照），避免错配脏数据
+            raise RuntimeError(f"ASIN 校验失败，页面非 {asin}，跳过提取避免数据错配")
+
         # ── 合并等待：页面就绪 + 插件就绪（amazon 模式也等插件，超时 90s） ──
         page_ready = False
         plugin_ready = False
@@ -757,9 +791,15 @@ def check_asin(asin, search_keyword=None, use_sprite=True, mode="full"):
             if plugin_ready:
                 plugin_data = extract_sprite_plugin_data(browser)
                 if plugin_data:
-                    for k, v in plugin_data.items():
-                        amazon_data['sprite_' + k] = v
-                    print("  插件数据提取完成")
+                    # 【防呆】插件数据是异步刷新的，可能还停留在上一个 ASIN。
+                    # 如果插件返回的 asin 与目标不符，丢弃插件数据，避免错配。
+                    _plugin_asin = str(plugin_data.get('asin', '') or '').strip().upper()
+                    if _plugin_asin and _plugin_asin != asin.upper():
+                        print(f"  ⚠️ 插件数据 ASIN={_plugin_asin} 与目标 {asin} 不符，丢弃插件数据避免错配")
+                    else:
+                        for k, v in plugin_data.items():
+                            amazon_data['sprite_' + k] = v
+                        print("  插件数据提取完成")
             else:
                 print("  插件未就绪，跳过插件数据提取")
 
