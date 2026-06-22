@@ -717,6 +717,8 @@ def main():
     user_cfg_file = os.path.join(os.path.dirname(DATA_DIR), 'user_config.json')
     user_related = set()
     user_mains = set()
+    config_keywords = []          # 当前 config 配置的关键词（保持顺序、去重）
+    config_keywords_norm = {}     # {归一化目录名: 原始关键词} 用于匹配磁盘目录
     if os.path.exists(user_cfg_file):
         with open(user_cfg_file, 'r', encoding='utf-8') as f:
             cfg = json.load(f)
@@ -726,6 +728,20 @@ def main():
             for ra in entry.get('related', []):
                 if ra.strip():
                     user_related.add(ra.strip())
+        # 收集当前配置的关键词（按顺序、去重）
+        _seen_kw = set()
+        for kentry in cfg.get('keywords', []):
+            kw_main = (kentry.get('main') or '').strip()
+            if not kw_main:
+                continue
+            _norm = kw_main.lower()
+            if _norm in _seen_kw:
+                continue
+            _seen_kw.add(_norm)
+            config_keywords.append(kw_main)
+            # 归一化为目录名样式：空格/斜杠 → 下划线，小写
+            _dirkey = kw_main.replace(' ', '_').replace('/', '_').lower()
+            config_keywords_norm[_dirkey] = kw_main
     # valid_asins = 主ASIN + 关联ASIN + keyword 竞品（只处理 config 中出现的）
     kw_only_asins = set(kw_asins.keys())
     valid_asins = user_mains | user_related | kw_only_asins
@@ -864,13 +880,39 @@ def main():
         print()
 
     # ── 关键词数据（先收集 kw_asins，再标记到 ASIN items） ────
+    # 只输出当前 user_config 配置的关键词，按 config 顺序，去重，忽略磁盘上残留的旧关键词目录
     keywords_data = []
     kw_asins = {}  # {asin: keyword} for ASINs found via keyword search
-    kw_dirs = sorted(glob.glob(os.path.join(DATA_DIR, 'kw_*')))
-    print(f'[SYNC] Found {len(kw_dirs)} keyword directories')
+    all_kw_dirs = sorted(glob.glob(os.path.join(DATA_DIR, 'kw_*')))
+    # 建立 归一化目录名 → 目录路径 的映射
+    dir_by_norm = {}
+    for d in all_kw_dirs:
+        _norm = os.path.basename(d).replace('kw_', '').lower()
+        dir_by_norm[_norm] = d
 
+    if config_keywords:
+        # 按 config 顺序选取对应目录（无配置则回退到全部目录，保持兼容）
+        ordered_dirs = []
+        for _dirkey in config_keywords_norm:
+            d = dir_by_norm.get(_dirkey)
+            if d:
+                ordered_dirs.append(d)
+            else:
+                print(f'  [SYNC] 关键词 "{config_keywords_norm[_dirkey]}" 暂无抓取目录，跳过')
+        kw_dirs = ordered_dirs
+        skipped = [os.path.basename(d) for d in all_kw_dirs if d not in ordered_dirs]
+        if skipped:
+            print(f'[SYNC] 忽略 {len(skipped)} 个非当前配置的旧关键词目录: {skipped}')
+    else:
+        kw_dirs = all_kw_dirs
+    print(f'[SYNC] Using {len(kw_dirs)} keyword directories (config has {len(config_keywords)} keywords)')
+
+    _emitted_kw = set()  # 防止重复输出同一关键词
     for d in kw_dirs:
         kw = os.path.basename(d).replace('kw_', '').replace('_', ' ')
+        if kw.lower() in _emitted_kw:
+            continue
+        _emitted_kw.add(kw.lower())
         latest_path = os.path.join(d, 'latest.json')
         if not os.path.exists(latest_path):
             continue
