@@ -396,10 +396,11 @@ def get_tab_count(port=None):
 
 def cleanup_excess_tabs(port=None, threshold=15):
     """
-    清理多余的临时标签页，避免 Edge 卡顿。
+    清理多余标签页，避免 Edge 卡顿。
     - threshold: 标签页数量上限，超过此数才清理
-    - 保留包含 amazon.com / sellersprite 的标签页（正在工作的）
-    - 关闭其余所有标签页（临时/废弃的）
+    - 仅保留最新的少量工作页（amazon/sellersprite），其余旧工作页全关
+    - about:blank / 空页 仅保留 1 个，其余全关
+    - devtools 页无法关闭，跳过
     返回关闭的数量。
     """
     if port is None:
@@ -417,34 +418,37 @@ def cleanup_excess_tabs(port=None, threshold=15):
         print(f"  [TabCleanup] 标签页 {total}/{threshold}，无需清理")
         return 0
 
-    to_close = []
-    for t in raw_tabs:
-        url = t.get("url", "")
-        tid = t.get("id", "")
-        if not tid:
-            continue
-        # 跳过 about:blank 和 devtools（devtools 无法关闭）
-        if url in ("", "about:blank") or "devtools" in url:
-            continue
-        # 保留正在工作的重要标签页
-        if "amazon.com" in url or "sellersprite" in url or "sellerprite" in url:
-            continue
-        to_close.append(tid)
+    # 只处理真正的页面标签（type=page），跳过扩展/background/devtools
+    page_tabs = [t for t in raw_tabs if t.get("type") == "page"]
 
-    # 超过阈值时，强制关闭最老的非重要标签页
-    if total - len(to_close) > threshold:
-        # 所有不重要的都关掉
-        to_close = [t["id"] for t in raw_tabs
-                    if t.get("id") and t.get("url", "") not in ("", "about:blank")
-                    and "devtools" not in t.get("url", "")
-                    and "amazon.com" not in t.get("url", "")
-                    and "sellersprite" not in t.get("url", "")
-                    and "sellerprite" not in t.get("url", "")]
+    keep_working = 2   # 保留最新的 N 个 amazon/sellersprite 工作页
+    keep_blank = 1     # 保留 1 个 about:blank
+
+    work_tabs = []     # amazon / sellersprite 工作页
+    blank_tabs = []    # about:blank / 空页
+    other_tabs = []    # 其余可关页
+    for t in page_tabs:
+        url = t.get("url", "")
+        if not t.get("id"):
+            continue
+        if "devtools" in url:
+            continue
+        if url in ("", "about:blank"):
+            blank_tabs.append(t)
+        elif "amazon.com" in url or "sellersprite" in url or "sellerprite" in url:
+            work_tabs.append(t)
+        else:
+            other_tabs.append(t)
+
+    # /json 返回顺序通常是最新在前：保留前 keep_working 个工作页，其余全关
+    to_close = []
+    to_close += [t["id"] for t in work_tabs[keep_working:]]
+    to_close += [t["id"] for t in blank_tabs[keep_blank:]]
+    to_close += [t["id"] for t in other_tabs]  # 非工作页全关
 
     closed = 0
     for tid in to_close:
         try:
-            # 通过 CDP WebSocket 发送关闭命令（复用全局连接方式）
             ws_url = None
             for t in raw_tabs:
                 if t.get("id") == tid:

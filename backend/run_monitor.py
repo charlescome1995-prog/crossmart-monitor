@@ -103,6 +103,19 @@ def _safe_print(s):
         print(s.encode('gbk', errors='replace').decode('gbk'))
 
 
+def cleanup_tabs(threshold=12):
+    """清理 Edge 多余标签页，避免连续抓取打开过多导致卡死。
+    复用 cdp_bridge.cleanup_excess_tabs（保留 amazon/sellersprite 工作页，关闭其余）。"""
+    try:
+        sys.path.insert(0, os.path.join(PROJECT_ROOT, "backend"))
+        from browser.cdp_bridge import cleanup_excess_tabs, get_tab_count
+        cnt = get_tab_count(9225)
+        print(f"  [标签清理] 当前 {cnt} 个标签页（阈值 {threshold}）")
+        cleanup_excess_tabs(port=9225, threshold=threshold)
+    except Exception as e:
+        print(f"  [标签清理] 失败（不中断）: {e}")
+
+
 def now_in_window(window_start, window_end):
     now = datetime.now()
     current_min = now.hour * 60 + now.minute
@@ -327,6 +340,7 @@ def run_monitor(config_override=None):
                     cwd=os.path.join(PROJECT_ROOT, "backend"), timeout=300)
                 if not ok:
                     print(f"  关键词ASIN {aasin} 执行失败，继续")
+                cleanup_tabs()  # 每抓一个 ASIN 后清理多余标签页
                 time.sleep(random.randint(20, 50))
 
         # ── Phase A3: 关键词 ASIN 分类（stable/variable）──
@@ -416,6 +430,7 @@ def run_monitor(config_override=None):
                         json.dump({}, f)
                     print(f"  积加模块未加载（已写空文件）")
             time.sleep(5)  # 积加 API 限流：每 5 秒最多 1 次请求
+            cleanup_tabs()  # 主 ASIN 抓取后清理多余标签页
             time.sleep(random.randint(20, 50))
 
         # 抓取用户配置的关联 ASIN（不论主ASIN是否在Phase A2已抓过，都要跑）
@@ -460,6 +475,7 @@ def run_monitor(config_override=None):
                         print(f"  [fallback] {rel_asin} 没有历史快照，跳过")
                 else:
                     print(f"  [fallback] {rel_asin} 目录不存在，跳过")
+            cleanup_tabs()  # 关联 ASIN 抓取后清理多余标签页
             time.sleep(random.randint(20, 50))
 
         # ── 写入 _meta.json（记录关联ASIN，供 sync_monitor_data.py 判断 logic_type）─────────
