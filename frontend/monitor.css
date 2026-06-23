@@ -1,11 +1,11 @@
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:"Times New Roman",Times,"PingFang SC","Microsoft YaHei",serif}
 body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
-.topbar{background:#131921;color:#fff;display:flex;align-items:center;justify-content:space-between;height:44px;padding:0 16px;position:sticky;top:0;z-index:100}
-.topbar .brand{font-weight:700;font-size:16px;letter-spacing:.5px}
-.topbar nav{display:flex;gap:18px;font-size:13px}
-.topbar nav a{color:rgba(255,255,255,.75);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}
-.topbar nav a:hover,.topbar nav a.active{color:#fff;border-bottom-color:#e94560}
+.topbar{background:linear-gradient(135deg,#131921 0%,#232f3e 100%);color:white;display:flex;align-items:center;gap:14px;padding:10px 20px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.topbar .logo{font-weight:700;font-size:15px;letter-spacing:.5px}
+.topbar a{color:#ccc;text-decoration:none;padding:5px 12px;border-radius:6px;font-size:13px;transition:all .2s}
+.topbar a:hover{background:rgba(255,255,255,.1);color:#fff}
+.topbar a.active{background:#e94560;color:white}
 .container{padding:12px;max-width:100vw;overflow-x:hidden}
 .config-matrix{background:#fff;padding:14px;border-radius:6px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.05);border:1px solid #e2e8f0}
 .action-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed #e2e8f0;flex-wrap:wrap;gap:10px}
