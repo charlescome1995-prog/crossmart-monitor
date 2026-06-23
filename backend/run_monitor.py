@@ -292,11 +292,11 @@ def browse_unrelated_pages():
         time.sleep(random.randint(3, 8))
 
 
-def run_monitor(config_override=None):
-    """主监控逻辑"""
+def run_monitor(config_override=None, scheduled=False):
+    """主监控逻辑。scheduled=True 时由定时任务调用，无视 trigger 状态强制跑。"""
     sep = "=" * 60
     print("\n" + sep)
-    print("CrossMart Monitor - 本地触发执行")
+    print("CrossMart Monitor - 定时执行" if scheduled else "CrossMart Monitor - 本地触发执行")
     print("时间: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     print(sep)
 
@@ -308,6 +308,14 @@ def run_monitor(config_override=None):
         schedule = config.get("schedule", DEFAULT_SCHEDULE)
         trigger = {}  # API 模式：trigger 由 api_server.py 管理本地文件无需写入
         print("[CONFIG] 使用 API 传入配置: " + str(len(asins)) + " 个ASIN, " + str(len(keywords)) + " 个关键词")
+    elif scheduled:
+        # 定时任务：无视 trigger 状态，直接读配置强制跑
+        trigger = load_trigger() or {}
+        print("[SCHEDULED] 定时任务模式：无视 trigger 状态强制执行")
+        config = load_config()
+        asins = config.get("asins", [])
+        keywords = config.get("keywords", [])
+        schedule = config.get("schedule", DEFAULT_SCHEDULE)
     else:
         trigger = load_trigger()
         if trigger is None:
@@ -340,11 +348,12 @@ def run_monitor(config_override=None):
     slot_config = schedule[current_slot]
     print(f"\n当前窗口: {current_slot} ({slot_config['window_start']}-{slot_config['window_end']})")
 
-    if not should_run(slot_config):
+    if not scheduled and not should_run(slot_config):
         print("本次不执行（随机跳过）")
         return
 
-    jitter_max = slot_config.get("jitter_max_minutes", 30)
+    # 定时模式不随机抖动等待（准点跑）
+    jitter_max = 0 if scheduled else slot_config.get("jitter_max_minutes", 30)
     wait_random(jitter_max, label=current_slot)
 
     # ── Phase 0: 人类行为模拟 ──
@@ -568,8 +577,9 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', type=str, help='JSON config string (bypass GitHub read)')
+    parser.add_argument('--scheduled', action='store_true', help='定时任务模式：无视 trigger 状态强制跑')
     args = parser.parse_args()
     _cfg = None
     if args.config and args.config.strip():
         _cfg = json.loads(args.config)
-    run_monitor(config_override=_cfg)
+    run_monitor(config_override=_cfg, scheduled=args.scheduled)
