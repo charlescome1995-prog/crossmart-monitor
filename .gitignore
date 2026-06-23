@@ -20,4 +20,4 @@ backend/data/keyword_related_asins.json
 backend/data/monitor_list.json
 backend/data/keyword_list.json
 notify_config.json
-bos_sync.py
+bos_sync.pybackend/data/_sprite_probe/
