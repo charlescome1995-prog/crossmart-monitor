@@ -105,6 +105,15 @@ def main():
         cwd=BACKEND_DIR, env=env
     ).returncode
     print(f"[scheduled_run] run_monitor.py 退出码={rc}")
+
+    # 监控跑完后检查钉钉预警（ACOS>40% / FBA周转<184天）
+    try:
+        import dingtalk_notifier
+        print("[scheduled_run] 检查钉钉预警条件...")
+        dingtalk_notifier.check_and_notify()
+    except Exception as e:
+        print(f"[scheduled_run] 钉钉预警检查异常: {str(e)[:150]}")
+
     sys.exit(rc)
 
 

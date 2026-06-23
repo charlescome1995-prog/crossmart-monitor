@@ -4,7 +4,7 @@
 dingtalk_notifier.py - 钉钉预警推送
 条件：
   1. ACOS 超过 40%
-  2. FBA 库存少于 14 天
+  2. FBA 周转天数 (Turnover) 少于 184 天
 """
 import json, os, sys, subprocess, re
 
@@ -18,8 +18,8 @@ CONFIG_FILE = os.path.join(BASE, 'data', 'user_config.json')
 WEBHOOK_URL = None
 
 # 预警阈值
-ACOS_THRESHOLD = 40.0       # ACOS > 40% 预警
-INVENTORY_DAYS_THRESHOLD = 14  # FBA 库存 < 14 天预警
+ACOS_THRESHOLD = 40.0            # ACOS > 40% 预警
+TURNOVER_DAYS_THRESHOLD = 184    # FBA 周转天数 (fbaTurnover) < 184 天预警
 
 
 def load_webhook_url():
@@ -126,15 +126,15 @@ def check_and_notify():
             continue
 
         acos = _safe_float(jike.get('acos'))
+        fba_turnover = _safe_float(jike.get('fbaTurnover'))
         fba_qty = _safe_float(jike.get('fbaQuantity'))
-        avg_daily = _safe_float(jike.get('averageDailySales'))
         product_name = jike.get('productName', asin)
         # 从 _raw 中取更准确的数据
         raw = jike.get('_raw', {})
         if raw:
             acos = acos if acos is not None else _safe_float(raw.get('acos'))
+            fba_turnover = fba_turnover if fba_turnover is not None else _safe_float(raw.get('fbaTurnover'))
             fba_qty = fba_qty if fba_qty is not None else _safe_float(raw.get('fbaQuantity'))
-            avg_daily = avg_daily if avg_daily is not None else _safe_float(raw.get('averageDailySales'))
             product_name = raw.get('productName', product_name)
 
         # 清理商品名
@@ -149,17 +149,16 @@ def check_and_notify():
                 f"ACOS: {acos:.1f}%（阈值>{ACOS_THRESHOLD}%）"
             )
 
-        # 条件2：FBA 库存 < 14 天
-        if fba_qty is not None and avg_daily is not None and avg_daily > 0:
-            inventory_days = fba_qty / avg_daily
-            if inventory_days < INVENTORY_DAYS_THRESHOLD:
-                alerts.append(
-                    f"📦 库存预警\n"
-                    f"ASIN: {asin}\n"
-                    f"商品名: {product_name}\n"
-                    f"库存: {int(fba_qty)}件 / {inventory_days:.1f}天（阈值<{INVENTORY_DAYS_THRESHOLD}天）\n"
-                    f"日均销量: {avg_daily:.1f}件"
-                )
+        # 条件2：FBA 周转天数 (Turnover) < 184 天
+        if fba_turnover is not None and fba_turnover < TURNOVER_DAYS_THRESHOLD:
+            qty_txt = f"\nFBA库存: {int(fba_qty)}件" if fba_qty is not None else ""
+            alerts.append(
+                f"📦 库存周转预警\n"
+                f"ASIN: {asin}\n"
+                f"商品名: {product_name}\n"
+                f"周转天数: {fba_turnover:.1f}天（阈值<{TURNOVER_DAYS_THRESHOLD}天）"
+                f"{qty_txt}"
+            )
 
     if not alerts:
         print('[Alert] 无预警')
