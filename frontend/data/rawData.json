@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-21T19:03:48",
+  "updated": "2026-06-22T17:47:49",
   "items": [
     {
       "monitor_type": "new",
@@ -107,11 +107,11 @@
       "traffic_keywords_top": []
     },
     {
-      "monitor_type": "KW",
+      "monitor_type": "new",
       "asin": "B013PGADAW",
       "is_main": false,
       "is_stale": false,
-      "logic_type": "关键词-antifungal cream",
+      "logic_type": "主监控",
       "source_keyword": "antifungal cream",
       "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More",
       "brand": "Globe Pharmacy",
@@ -119,7 +119,7 @@
       "price": 4.85,
       "chg": 0.0,
       "rating": 4.6,
-      "reviews": 16266,
+      "reviews": 16276,
       "diff": {
         "price": {
           "current": 4.85,
@@ -135,16 +135,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 16266,
+          "current": 16276,
           "prev": 16266,
-          "change": "+0",
-          "direction": "same"
+          "change": "+10",
+          "direction": "up"
         },
         "bsr": {
-          "current": 375,
+          "current": 358,
           "prev": 375,
-          "change": "+0",
-          "direction": "same"
+          "change": "17",
+          "direction": "up"
         },
         "sub_bsr": {
           "current": 1,
@@ -173,20 +173,24 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 375,
+      "main_bsr": 358,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 1,
       "history_main_bsr": [
-        375
+        375,
+        358
       ],
       "history_sub_bsr": [
+        1,
         1
       ],
       "history_price": [
+        4.85,
         4.85
       ],
       "history_rating": [
+        4.6,
         4.6
       ],
       "events": [],
@@ -194,17 +198,17 @@
       "lqs": "",
       "variant_count": "1",
       "launch_date": "19, 2015",
-      "total_keywords": "612",
-      "natural_keywords": "502",
+      "total_keywords": "623",
+      "natural_keywords": "510",
       "ad_keywords": "19",
-      "seller_units_30d": 56324,
-      "seller_revenue_30d": 273171.0,
-      "seller_avg_price": 4.85,
+      "seller_units_30d": 56477,
+      "seller_revenue_30d": 273913.0,
+      "seller_avg_price": null,
       "seller_rating": 4.6,
-      "seller_review_count": 16266,
-      "seller_bsr": 375,
+      "seller_review_count": 16276,
+      "seller_bsr": 358,
       "seller_fba_fee": 3.01,
-      "suggest_keywords": "183",
+      "suggest_keywords": "190",
       "traffic_keywords_top": []
     },
     {
@@ -220,7 +224,7 @@
       "price": 6.49,
       "chg": 0.0,
       "rating": 4.6,
-      "reviews": 28586,
+      "reviews": 28590,
       "diff": {
         "price": {
           "current": 6.49,
@@ -236,16 +240,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 28586,
+          "current": 28590,
           "prev": 28586,
-          "change": "+0",
-          "direction": "same"
+          "change": "+4",
+          "direction": "up"
         },
         "bsr": {
-          "current": 2174,
+          "current": 2259,
           "prev": 2174,
-          "change": "+0",
-          "direction": "same"
+          "change": "+85",
+          "direction": "dn"
         },
         "sub_bsr": {
           "current": 8,
@@ -274,68 +278,47 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 2174,
+      "main_bsr": 2259,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 8,
       "history_main_bsr": [
         2174,
-        2174
+        2174,
+        2259
       ],
       "history_sub_bsr": [
+        8,
         8,
         8
       ],
       "history_price": [
         6.49,
+        6.49,
         6.49
       ],
       "history_rating": [
+        4.6,
         4.6,
         4.6
       ],
       "events": [],
       "related_asins": [],
-      "lqs": "",
+      "lqs": "9.5",
       "variant_count": "1",
       "launch_date": "17, 2015",
-      "total_keywords": "594",
-      "natural_keywords": "590",
-      "ad_keywords": "12",
-      "seller_units_30d": 16449,
-      "seller_revenue_30d": 106754.0,
+      "total_keywords": "605",
+      "natural_keywords": "597",
+      "ad_keywords": "16",
+      "seller_units_30d": 16488,
+      "seller_revenue_30d": 107007.0,
       "seller_avg_price": 6.49,
       "seller_rating": 4.6,
-      "seller_review_count": 28586,
+      "seller_review_count": 28590,
       "seller_bsr": 8,
       "seller_fba_fee": 3.24,
       "suggest_keywords": "18",
-      "traffic_keywords_top": [
-        {
-          "keyword": "antifungal cream",
-          "traffic_pct": "6.72%",
-          "type": "自然搜索词",
-          "organic_rank": "16"
-        },
-        {
-          "keyword": "athletes foot treatment",
-          "traffic_pct": "6.04%",
-          "type": "自然搜索词",
-          "organic_rank": "32"
-        },
-        {
-          "keyword": "clotrimazole antifungal cream",
-          "traffic_pct": "5.91%",
-          "type": "自然搜索词",
-          "organic_rank": "5"
-        },
-        {
-          "keyword": "clotrimazole",
-          "traffic_pct": "5.15%",
-          "type": "自然搜索词SP广告词",
-          "organic_rank": "2"
-        }
-      ]
+      "traffic_keywords_top": []
     },
     {
       "monitor_type": "new",
@@ -689,8 +672,8 @@
       "img": "https://m.media-amazon.com/images/I/71jDR1oKqUL._AC_SL1500_.jpg",
       "price": 27.97,
       "chg": 0.0,
-      "rating": 4.3,
-      "reviews": 1052,
+      "rating": 4.4,
+      "reviews": 1056,
       "diff": {
         "price": {
           "current": 27.97,
@@ -700,22 +683,22 @@
           "direction": "same"
         },
         "rating": {
-          "current": 4.3,
+          "current": 4.4,
           "prev": 4.3,
-          "change": "+0.0",
-          "direction": "same"
+          "change": "+0.1",
+          "direction": "up"
         },
         "review_count": {
-          "current": 1052,
+          "current": 1056,
           "prev": 1052,
-          "change": "+0",
-          "direction": "same"
+          "change": "+4",
+          "direction": "up"
         },
         "bsr": {
-          "current": 3592,
+          "current": 3504,
           "prev": 3592,
-          "change": "+0",
-          "direction": "same"
+          "change": "88",
+          "direction": "up"
         },
         "sub_bsr": {
           "current": 1,
@@ -744,39 +727,43 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 3592,
+      "main_bsr": 3504,
       "sub_cat": "Ayurvedic Balms & Ointments",
       "expected_sub_cat": "Ayurvedic Balms & Ointments",
       "sub_bsr": 1,
       "history_main_bsr": [
         3592,
-        3592
+        3592,
+        3504
       ],
       "history_sub_bsr": [
+        1,
         1,
         1
       ],
       "history_price": [
         27.97,
+        27.97,
         27.97
       ],
       "history_rating": [
         4.3,
-        4.3
+        4.3,
+        4.4
       ],
       "events": [],
       "related_asins": [],
       "lqs": "10.0",
       "variant_count": "2",
       "launch_date": "13, 2023",
-      "total_keywords": "760",
-      "natural_keywords": "611",
-      "ad_keywords": "373",
-      "seller_units_30d": 9913,
-      "seller_revenue_30d": 277267.0,
+      "total_keywords": "770",
+      "natural_keywords": "619",
+      "ad_keywords": "385",
+      "seller_units_30d": 11530,
+      "seller_revenue_30d": 322494.0,
       "seller_avg_price": 34.11,
-      "seller_rating": 4.3,
-      "seller_review_count": 1052,
+      "seller_rating": 4.4,
+      "seller_review_count": 1056,
       "seller_bsr": 1,
       "seller_fba_fee": 3.86,
       "suggest_keywords": "12",
@@ -933,7 +920,7 @@
       "price": 22.95,
       "chg": 0.0,
       "rating": 4.6,
-      "reviews": 729,
+      "reviews": 730,
       "diff": {
         "price": {
           "current": 22.95,
@@ -949,22 +936,22 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 729,
+          "current": 730,
           "prev": 729,
-          "change": "+0",
-          "direction": "same"
+          "change": "+1",
+          "direction": "up"
         },
         "bsr": {
-          "current": 22140,
-          "prev": 22141,
-          "change": "1",
+          "current": 21252,
+          "prev": 22140,
+          "change": "888",
           "direction": "up"
         },
         "sub_bsr": {
-          "current": 63,
+          "current": 62,
           "prev": 63,
-          "change": "+0",
-          "direction": "same"
+          "change": "1",
+          "direction": "up"
         }
       },
       "listing_status": "正常",
@@ -987,23 +974,27 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 22140,
+      "main_bsr": 21252,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
-      "sub_bsr": 63,
+      "sub_bsr": 62,
       "history_main_bsr": [
         22141,
-        22140
+        22140,
+        21252
       ],
       "history_sub_bsr": [
-        63,
-        63
+        62,
+        62,
+        62
       ],
       "history_price": [
+        22.95,
         22.95,
         22.95
       ],
       "history_rating": [
+        4.6,
         4.6,
         4.6
       ],
@@ -1012,43 +1003,18 @@
       "lqs": "",
       "variant_count": "2",
       "launch_date": "1, 2024",
-      "total_keywords": "290",
-      "natural_keywords": "259",
-      "ad_keywords": "95",
-      "seller_units_30d": 1423,
-      "seller_revenue_30d": 32658.0,
-      "seller_avg_price": 31.47,
+      "total_keywords": "0",
+      "natural_keywords": "0",
+      "ad_keywords": "0",
+      "seller_units_30d": null,
+      "seller_revenue_30d": null,
+      "seller_avg_price": null,
       "seller_rating": 4.6,
-      "seller_review_count": 729,
-      "seller_bsr": 63,
-      "seller_fba_fee": 4.09,
-      "suggest_keywords": "3",
-      "traffic_keywords_top": [
-        {
-          "keyword": "antifungal cream",
-          "traffic_pct": "15.02%",
-          "type": "自然搜索词SP广告词AC推荐词HR推荐词品牌广告词视频广告词",
-          "organic_rank": "42"
-        },
-        {
-          "keyword": "lotrimin ultra antifungal creamLotrimin",
-          "traffic_pct": "10.71%",
-          "type": "自然搜索词品牌广告词",
-          "organic_rank": "41"
-        },
-        {
-          "keyword": "jock itch cream",
-          "traffic_pct": "9.02%",
-          "type": "自然搜索词SP广告词视频广告词",
-          "organic_rank": "38"
-        },
-        {
-          "keyword": "miconazole cream",
-          "traffic_pct": "5.19%",
-          "type": "自然搜索词",
-          "organic_rank": "11"
-        }
-      ]
+      "seller_review_count": 730,
+      "seller_bsr": 62,
+      "seller_fba_fee": null,
+      "suggest_keywords": "0",
+      "traffic_keywords_top": []
     },
     {
       "monitor_type": "new",
@@ -1063,7 +1029,7 @@
       "price": 9.99,
       "chg": 0.0,
       "rating": 4.6,
-      "reviews": 857,
+      "reviews": 859,
       "diff": {
         "price": {
           "current": 9.99,
@@ -1079,22 +1045,22 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 857,
+          "current": 859,
           "prev": 857,
-          "change": "+0",
-          "direction": "same"
+          "change": "+2",
+          "direction": "up"
         },
         "bsr": {
-          "current": 5328,
+          "current": 5344,
           "prev": 5328,
-          "change": "+0",
-          "direction": "same"
+          "change": "+16",
+          "direction": "dn"
         },
         "sub_bsr": {
-          "current": 20,
+          "current": 21,
           "prev": 20,
-          "change": "+0",
-          "direction": "same"
+          "change": "+1",
+          "direction": "dn"
         }
       },
       "listing_status": "正常",
@@ -1116,23 +1082,27 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 5328,
+      "main_bsr": 5344,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
-      "sub_bsr": 20,
+      "sub_bsr": 21,
       "history_main_bsr": [
         5328,
-        5328
+        5328,
+        5344
       ],
       "history_sub_bsr": [
-        20,
-        20
+        21,
+        21,
+        21
       ],
       "history_price": [
+        9.99,
         9.99,
         9.99
       ],
       "history_rating": [
+        4.6,
         4.6,
         4.6
       ],
@@ -1146,38 +1116,13 @@
       "ad_keywords": "67",
       "seller_units_30d": 7781,
       "seller_revenue_30d": 77732.0,
-      "seller_avg_price": 36.74,
+      "seller_avg_price": null,
       "seller_rating": 4.6,
-      "seller_review_count": 857,
-      "seller_bsr": 20,
+      "seller_review_count": 859,
+      "seller_bsr": 21,
       "seller_fba_fee": 3.24,
       "suggest_keywords": "6",
-      "traffic_keywords_top": [
-        {
-          "keyword": "antifungal cream",
-          "traffic_pct": "12.58%",
-          "type": "自然搜索词SP广告词AC推荐词",
-          "organic_rank": "5"
-        },
-        {
-          "keyword": "athletes foot treatment",
-          "traffic_pct": "10.64%",
-          "type": "自然搜索词SP广告词",
-          "organic_rank": "42"
-        },
-        {
-          "keyword": "lotrimin ultra antifungal creamLotrimin",
-          "traffic_pct": "8.68%",
-          "type": "自然搜索词SP广告词",
-          "organic_rank": "37"
-        },
-        {
-          "keyword": "jock itch cream",
-          "traffic_pct": "7.88%",
-          "type": "自然搜索词SP广告词AC推荐词",
-          "organic_rank": "5"
-        }
-      ]
+      "traffic_keywords_top": []
     },
     {
       "monitor_type": "new",
@@ -1293,11 +1238,11 @@
       "source_keyword": "batana oil",
       "title": "Botanic Hearth Batana Oil for Hair Growth & Hair Treatment Oils 4 Fl Oz | Dr Sebi Inspired, 100% Raw & Pure Batana Oil | Scalp & Hair Treatment for Thickness & Strength | All Hair Types",
       "brand": "Botanic Hearth",
-      "img": "https://m.media-amazon.com/images/I/418LghQTEdL._SY300_SX300_QL70_FMwebp_.jpg",
+      "img": "https://m.media-amazon.com/images/I/71joEYuDE8L._AC_SL1500_.jpg",
       "price": 12.99,
       "chg": 0.0,
       "rating": 4.4,
-      "reviews": 11703,
+      "reviews": 11759,
       "diff": {
         "price": {
           "current": 12.99,
@@ -1313,16 +1258,16 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 11703,
+          "current": 11759,
           "prev": 11703,
-          "change": "+0",
-          "direction": "same"
+          "change": "+56",
+          "direction": "up"
         },
         "bsr": {
-          "current": 1866,
+          "current": 1863,
           "prev": 1866,
-          "change": "+0",
-          "direction": "same"
+          "change": "3",
+          "direction": "up"
         },
         "sub_bsr": {
           "current": 12,
@@ -1351,7 +1296,7 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 1866,
+      "main_bsr": 1863,
       "sub_cat": "Hair Treatment Oils",
       "expected_sub_cat": "Hair Treatment Oils",
       "sub_bsr": 12,
@@ -1359,9 +1304,11 @@
         1866,
         1866,
         1866,
-        1866
+        1866,
+        1863
       ],
       "history_sub_bsr": [
+        12,
         12,
         12,
         12,
@@ -1371,130 +1318,15 @@
         12.99,
         12.99,
         12.99,
+        12.99,
         12.99
       ],
       "history_rating": [
         4.4,
         4.4,
         4.4,
+        4.4,
         4.4
-      ],
-      "events": [],
-      "related_asins": [],
-      "lqs": "",
-      "variant_count": "311688",
-      "launch_date": "",
-      "total_keywords": "1688",
-      "natural_keywords": "1688",
-      "ad_keywords": "1688",
-      "seller_units_30d": null,
-      "seller_revenue_30d": null,
-      "seller_avg_price": null,
-      "seller_rating": 4.4,
-      "seller_review_count": 11703,
-      "seller_bsr": 12,
-      "seller_fba_fee": null,
-      "suggest_keywords": "1688",
-      "traffic_keywords_top": []
-    },
-    {
-      "monitor_type": "new",
-      "asin": "B0DCX7628T",
-      "is_main": false,
-      "is_stale": false,
-      "logic_type": "主监控",
-      "source_keyword": "batana oil",
-      "title": "Lebanta Raw Batana Oil for Hair - 100% Pure, Organic 4oz Batana from Honduras for Fuller, Thicker-Looking Hair - Unrefined Cold Pressed Cosmetic Scalp Oil & Hair Mask, Gift for Women (1 Pack)",
-      "brand": "Lebanta",
-      "img": "https://m.media-amazon.com/images/I/51-C1YdYG7L._SY300_SX300_QL70_FMwebp_.jpg",
-      "price": 21.22,
-      "chg": 0.0,
-      "rating": 4.3,
-      "reviews": 2553,
-      "diff": {
-        "price": {
-          "current": 21.22,
-          "prev": 21.22,
-          "change": "+0.0",
-          "pct": "+0.0%",
-          "direction": "same"
-        },
-        "rating": {
-          "current": 4.3,
-          "prev": 4.3,
-          "change": "+0.0",
-          "direction": "same"
-        },
-        "review_count": {
-          "current": 2553,
-          "prev": 2553,
-          "change": "+0",
-          "direction": "same"
-        },
-        "bsr": {
-          "current": 3357,
-          "prev": 3357,
-          "change": "+0",
-          "direction": "same"
-        },
-        "sub_bsr": {
-          "current": 10,
-          "prev": 10,
-          "change": "+0",
-          "direction": "same"
-        },
-        "deal_activity": {
-          "current": "Ends in 49 minutes\nEnds in 49:40",
-          "prev": "Ends in 51 minutes\nEnds in 51:40",
-          "direction": "changed"
-        }
-      },
-      "listing_status": "正常",
-      "expected_listing_status": "正常",
-      "title_changed": false,
-      "img_changed": false,
-      "bullets_changed": false,
-      "description_changed": false,
-      "seller_changed": false,
-      "variant_status": "正常",
-      "variant_changed": false,
-      "deal_activity": "Ends in 49 minutes\nEnds in 49:40",
-      "badges_current": [
-        "NR",
-        "A+"
-      ],
-      "badges_lost": [],
-      "coupon": "无",
-      "prime_discount": "未开启",
-      "main_cat": "Beauty & Personal Care",
-      "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 3357,
-      "sub_cat": "Scalp Treatments",
-      "expected_sub_cat": "Scalp Treatments",
-      "sub_bsr": 10,
-      "history_main_bsr": [
-        3357,
-        3357,
-        3357,
-        3357
-      ],
-      "history_sub_bsr": [
-        10,
-        10,
-        10,
-        10
-      ],
-      "history_price": [
-        21.22,
-        21.22,
-        21.22,
-        21.22
-      ],
-      "history_rating": [
-        4.3,
-        4.3,
-        4.3,
-        4.3
       ],
       "events": [],
       "related_asins": [],
@@ -1516,6 +1348,144 @@
     },
     {
       "monitor_type": "new",
+      "asin": "B0DCX7628T",
+      "is_main": false,
+      "is_stale": false,
+      "logic_type": "主监控",
+      "source_keyword": "batana oil",
+      "title": "Lebanta Raw Batana Oil for Hair - 100% Pure, Organic 4oz Batana from Honduras for Fuller, Thicker-Looking Hair - Unrefined Cold Pressed Cosmetic Scalp Oil & Hair Mask, Gift for Women (1 Pack)",
+      "brand": "Lebanta",
+      "img": "https://m.media-amazon.com/images/I/71Du+Zvwv+L._AC_SL1500_.jpg",
+      "price": 24.97,
+      "chg": 0.0,
+      "rating": 4.3,
+      "reviews": 2553,
+      "diff": {
+        "price": {
+          "current": 24.97,
+          "prev": 21.22,
+          "change": "+3.75",
+          "pct": "+17.7%",
+          "direction": "up"
+        },
+        "rating": {
+          "current": 4.3,
+          "prev": 4.3,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 2553,
+          "prev": 2553,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 3078,
+          "prev": 3357,
+          "change": "279",
+          "direction": "up"
+        },
+        "sub_bsr": {
+          "current": 10,
+          "prev": 10,
+          "change": "+0",
+          "direction": "same"
+        },
+        "deal_activity": {
+          "current": "Deal",
+          "prev": "Ends in 49 minutes\nEnds in 49:40",
+          "direction": "changed"
+        },
+        "badges": {
+          "current": [
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "prev": [
+            "NR",
+            "A+"
+          ],
+          "lost": [],
+          "gained": [
+            "AC"
+          ],
+          "direction": "changed"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": true,
+      "bullets_changed": false,
+      "description_changed": false,
+      "seller_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$22.47 off",
+      "prime_discount": "未开启",
+      "main_cat": "Beauty & Personal Care",
+      "expected_main_cat": "Beauty & Personal Care",
+      "main_bsr": 3078,
+      "sub_cat": "Scalp Treatments",
+      "expected_sub_cat": "Scalp Treatments",
+      "sub_bsr": 10,
+      "history_main_bsr": [
+        3357,
+        3357,
+        3357,
+        3357,
+        3078
+      ],
+      "history_sub_bsr": [
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "history_price": [
+        21.22,
+        21.22,
+        21.22,
+        21.22,
+        24.97
+      ],
+      "history_rating": [
+        4.3,
+        4.3,
+        4.3,
+        4.3,
+        4.3
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "10.0",
+      "variant_count": "2",
+      "launch_date": "2024-10-25",
+      "total_keywords": "1",
+      "natural_keywords": "1",
+      "ad_keywords": "678",
+      "seller_units_30d": 11615,
+      "seller_revenue_30d": 290027.0,
+      "seller_avg_price": 24.97,
+      "seller_rating": 4.3,
+      "seller_review_count": 2553,
+      "seller_bsr": 10,
+      "seller_fba_fee": 4.09,
+      "suggest_keywords": "22",
+      "traffic_keywords_top": []
+    },
+    {
+      "monitor_type": "new",
       "asin": "B0DJ1THRXM",
       "is_main": false,
       "is_stale": false,
@@ -1523,18 +1493,18 @@
       "source_keyword": "batana oil",
       "title": "Natural Riches Unrefined Organic Batana Oil, 8 fl oz, 100% Pure & Natural, Cold pressed Honduras Miracle Oil for Hair Growth.",
       "brand": "Natural Riches",
-      "img": "https://m.media-amazon.com/images/I/41sxHxM3ojL._SY300_SX300_QL70_FMwebp_.jpg",
-      "price": 15.5,
+      "img": "https://m.media-amazon.com/images/I/71RCv8c7lXL._AC_SL1500_.jpg",
+      "price": 16.31,
       "chg": 0.0,
       "rating": 4.4,
       "reviews": 708,
       "diff": {
         "price": {
-          "current": 15.5,
+          "current": 16.31,
           "prev": 15.5,
-          "change": "+0.0",
-          "pct": "+0.0%",
-          "direction": "same"
+          "change": "+0.81",
+          "pct": "+5.2%",
+          "direction": "up"
         },
         "rating": {
           "current": 4.4,
@@ -1549,22 +1519,38 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 20566,
+          "current": 22297,
           "prev": 20566,
-          "change": "+0",
-          "direction": "same"
+          "change": "+1731",
+          "direction": "dn"
         },
         "sub_bsr": {
-          "current": 157,
+          "current": 175,
           "prev": 157,
-          "change": "+0",
-          "direction": "same"
+          "change": "+18",
+          "direction": "dn"
+        },
+        "badges": {
+          "current": [
+            "AC",
+            "NR",
+            "A+"
+          ],
+          "prev": [
+            "NR",
+            "A+"
+          ],
+          "lost": [],
+          "gained": [
+            "AC"
+          ],
+          "direction": "changed"
         }
       },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
-      "img_changed": false,
+      "img_changed": true,
       "bullets_changed": false,
       "description_changed": false,
       "seller_changed": false,
@@ -1572,34 +1558,39 @@
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
+        "AC",
         "NR",
         "A+"
       ],
       "badges_lost": [],
-      "coupon": "$15.50 off",
+      "coupon": "$16.31 off",
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 20566,
+      "main_bsr": 22297,
       "sub_cat": "Hair Treatment Oils",
       "expected_sub_cat": "Hair Treatment Oils",
-      "sub_bsr": 157,
+      "sub_bsr": 175,
       "history_main_bsr": [
         20566,
         20566,
-        20566
+        20566,
+        22297
       ],
       "history_sub_bsr": [
-        157,
-        157,
-        157
+        175,
+        175,
+        175,
+        175
       ],
       "history_price": [
         15.5,
         15.5,
-        15.5
+        15.5,
+        16.31
       ],
       "history_rating": [
+        4.4,
         4.4,
         4.4,
         4.4
@@ -1609,43 +1600,18 @@
       "lqs": "",
       "variant_count": "3",
       "launch_date": "2024-11-18",
-      "total_keywords": "267",
-      "natural_keywords": "266",
-      "ad_keywords": "25",
+      "total_keywords": "271",
+      "natural_keywords": "270",
+      "ad_keywords": "24",
       "seller_units_30d": 901,
       "seller_revenue_30d": 13966.0,
-      "seller_avg_price": 15.65,
+      "seller_avg_price": null,
       "seller_rating": 4.4,
       "seller_review_count": 708,
-      "seller_bsr": 157,
+      "seller_bsr": 175,
       "seller_fba_fee": 4.35,
       "suggest_keywords": "0",
-      "traffic_keywords_top": [
-        {
-          "keyword": "batana oil",
-          "traffic_pct": "36.54%",
-          "type": "自然搜索词SP广告词",
-          "organic_rank": "51"
-        },
-        {
-          "keyword": "batana oil for hair growthbatana",
-          "traffic_pct": "23.52%",
-          "type": "自然搜索词SP广告词",
-          "organic_rank": "35"
-        },
-        {
-          "keyword": "botana oil hair growth",
-          "traffic_pct": "5.62%",
-          "type": "自然搜索词",
-          "organic_rank": "38"
-        },
-        {
-          "keyword": "botana oil",
-          "traffic_pct": "3.18%",
-          "type": "自然搜索词",
-          "organic_rank": "16"
-        }
-      ]
+      "traffic_keywords_top": []
     },
     {
       "monitor_type": "ASIN",
@@ -1660,7 +1626,7 @@
       "price": 24.95,
       "chg": 0.0,
       "rating": 4.5,
-      "reviews": 304,
+      "reviews": 309,
       "diff": {
         "price": {
           "current": 24.95,
@@ -1676,22 +1642,22 @@
           "direction": "same"
         },
         "review_count": {
-          "current": 304,
+          "current": 309,
           "prev": 304,
-          "change": "+0",
-          "direction": "same"
+          "change": "+5",
+          "direction": "up"
         },
         "bsr": {
-          "current": 44268,
+          "current": 40317,
           "prev": 44268,
-          "change": "+0",
-          "direction": "same"
+          "change": "3951",
+          "direction": "up"
         },
         "sub_bsr": {
-          "current": 1593,
+          "current": 1451,
           "prev": 1593,
-          "change": "+0",
-          "direction": "same"
+          "change": "142",
+          "direction": "up"
         }
       },
       "listing_status": "正常",
@@ -1714,21 +1680,21 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 44268,
+      "main_bsr": 40317,
       "sub_cat": "",
       "expected_sub_cat": "",
-      "sub_bsr": 1593,
+      "sub_bsr": 1451,
       "history_main_bsr": [
-        43200,
         44269,
         44268,
-        44268
+        44268,
+        40317
       ],
       "history_sub_bsr": [
-        1593,
-        1593,
-        1593,
-        1593
+        1451,
+        1451,
+        1451,
+        1451
       ],
       "history_price": [
         24.95,
@@ -1764,17 +1730,118 @@
       "lqs": "",
       "variant_count": "1",
       "launch_date": "2, 2024",
-      "total_keywords": "232",
-      "natural_keywords": "164",
-      "ad_keywords": "101",
-      "seller_units_30d": 792,
-      "seller_revenue_30d": 19760.0,
+      "total_keywords": "229",
+      "natural_keywords": "162",
+      "ad_keywords": "99",
+      "seller_units_30d": 780,
+      "seller_revenue_30d": 19461.0,
       "seller_avg_price": null,
       "seller_rating": 4.5,
-      "seller_review_count": 304,
+      "seller_review_count": 309,
       "seller_bsr": null,
       "seller_fba_fee": 3.86,
       "suggest_keywords": "1",
+      "traffic_keywords_top": []
+    },
+    {
+      "monitor_type": "new",
+      "asin": "B0DSHY2T4Q",
+      "is_main": false,
+      "is_stale": false,
+      "logic_type": "主监控",
+      "source_keyword": "batana oil",
+      "title": "WEEMOTD 100% Raw Batana Oil for Hair, Unrefined Conditioning Hair & Scalp Oil from Honduras, Moisturizing Hair Mask for Dry Hair, Adds Shine & Softness for Men & Women, 2 fl oz",
+      "brand": "WEEMOTD",
+      "img": "https://m.media-amazon.com/images/I/71E8uGYRxHL._AC_SL1500_.jpg",
+      "price": 14.99,
+      "chg": 0.0,
+      "rating": 4.2,
+      "reviews": 1047,
+      "diff": {
+        "price": {
+          "current": 14.99,
+          "prev": 14.99,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
+        },
+        "rating": {
+          "current": 4.2,
+          "prev": 4.2,
+          "change": "+0.0",
+          "direction": "same"
+        },
+        "review_count": {
+          "current": 1047,
+          "prev": 1047,
+          "change": "+0",
+          "direction": "same"
+        },
+        "bsr": {
+          "current": 4853,
+          "prev": 4853,
+          "change": "+0",
+          "direction": "same"
+        },
+        "sub_bsr": {
+          "current": 13,
+          "prev": 13,
+          "change": "+0",
+          "direction": "same"
+        }
+      },
+      "listing_status": "正常",
+      "expected_listing_status": "正常",
+      "title_changed": false,
+      "img_changed": false,
+      "bullets_changed": false,
+      "description_changed": false,
+      "seller_changed": false,
+      "variant_status": "正常",
+      "variant_changed": false,
+      "deal_activity": "Deal",
+      "badges_current": [
+        "AC",
+        "NR",
+        "A+"
+      ],
+      "badges_lost": [],
+      "coupon": "$14.99 off",
+      "prime_discount": "未开启",
+      "main_cat": "Beauty & Personal Care",
+      "expected_main_cat": "Beauty & Personal Care",
+      "main_bsr": 4853,
+      "sub_cat": "Scalp Treatments",
+      "expected_sub_cat": "Scalp Treatments",
+      "sub_bsr": 13,
+      "history_main_bsr": [
+        4853
+      ],
+      "history_sub_bsr": [
+        13
+      ],
+      "history_price": [
+        14.99
+      ],
+      "history_rating": [
+        4.2
+      ],
+      "events": [],
+      "related_asins": [],
+      "lqs": "",
+      "variant_count": "2",
+      "launch_date": "2025-02-21",
+      "total_keywords": "946",
+      "natural_keywords": "908",
+      "ad_keywords": "162",
+      "seller_units_30d": 16790,
+      "seller_revenue_30d": 251682.0,
+      "seller_avg_price": null,
+      "seller_rating": 4.2,
+      "seller_review_count": 1047,
+      "seller_bsr": 13,
+      "seller_fba_fee": 4.09,
+      "suggest_keywords": "67",
       "traffic_keywords_top": []
     },
     {
@@ -1786,7 +1853,7 @@
       "source_keyword": "batana oil",
       "title": "Batana Oil for Hair Growth, 100% Natural Pure Batana Oil Paste from Dr. Sebi Honduras, Prevents Hair Loss, Enhances Thickness, Organic Raw Scalp Mask for Women & Men (4.05 Oz)",
       "brand": "Qytin",
-      "img": "https://m.media-amazon.com/images/I/51OeFukN7pL._SY300_SX300_QL70_FMwebp_.jpg",
+      "img": "https://m.media-amazon.com/images/I/71O4jVNtF3L._AC_SL1500_.jpg",
       "price": 9.99,
       "chg": 0.0,
       "rating": 4.7,
@@ -1811,17 +1878,31 @@
           "change": "+0",
           "direction": "same"
         },
+        "bsr": {
+          "current": 4852,
+          "prev": 4916,
+          "change": "64",
+          "direction": "up"
+        },
+        "sub_bsr": {
+          "current": 12,
+          "prev": 13,
+          "change": "1",
+          "direction": "up"
+        },
         "badges": {
           "current": [
+            "AC",
             "NR",
             "A+"
           ],
           "prev": [
-            "NR"
+            "NR",
+            "A+"
           ],
           "lost": [],
           "gained": [
-            "A+"
+            "AC"
           ],
           "direction": "changed"
         }
@@ -1829,7 +1910,7 @@
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
-      "img_changed": false,
+      "img_changed": true,
       "bullets_changed": false,
       "description_changed": false,
       "seller_changed": false,
@@ -1837,6 +1918,7 @@
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
+        "AC",
         "NR",
         "A+"
       ],
@@ -1845,29 +1927,33 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 4916,
+      "main_bsr": 4852,
       "sub_cat": "Scalp Treatments",
       "expected_sub_cat": "Scalp Treatments",
-      "sub_bsr": 13,
+      "sub_bsr": 12,
       "history_main_bsr": [
         4916,
         4916,
+        4852,
         4916,
-        4916
+        4852
       ],
       "history_sub_bsr": [
-        13,
-        13,
-        13,
-        13
+        12,
+        12,
+        12,
+        12,
+        12
       ],
       "history_price": [
+        9.99,
         9.99,
         9.99,
         9.99,
         9.99
       ],
       "history_rating": [
+        4.7,
         4.7,
         4.7,
         4.7,
@@ -1926,16 +2012,16 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 172998,
+          "current": 203433,
           "prev": 172998,
-          "change": "+0",
-          "direction": "same"
+          "change": "+30435",
+          "direction": "dn"
         },
         "sub_bsr": {
-          "current": 282,
+          "current": 304,
           "prev": 282,
-          "change": "+0",
-          "direction": "same"
+          "change": "+22",
+          "direction": "dn"
         }
       },
       "listing_status": "正常",
@@ -1957,26 +2043,30 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 172998,
+      "main_bsr": 203433,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
-      "sub_bsr": 282,
+      "sub_bsr": 304,
       "history_main_bsr": [
         173059,
         172998,
-        172998
+        172998,
+        203433
       ],
       "history_sub_bsr": [
-        282,
-        282,
-        282
+        304,
+        304,
+        304,
+        304
       ],
       "history_price": [
+        21.99,
         21.99,
         21.99,
         21.99
       ],
       "history_rating": [
+        3.9,
         3.9,
         3.9,
         3.9
@@ -1986,9 +2076,9 @@
       "jike_sales": 179.91,
       "jike_orders": 9,
       "jike_units": 9,
-      "jike_session": 61,
-      "jike_page_views": 78,
-      "jike_conversion_rate": 14.75,
+      "jike_session": 59,
+      "jike_page_views": 73,
+      "jike_conversion_rate": 15.25,
       "jike_rating": 3.9,
       "jike_reviews": 7,
       "jike_main_seller_rank": null,
@@ -2000,7 +2090,7 @@
       "jike_fba_quantity": 238,
       "jike_fba_turnover": 184.4961,
       "jike_gross_profit_rate": null,
-      "lqs": "",
+      "lqs": "9.4",
       "variant_count": "1",
       "launch_date": "11, 2025",
       "total_keywords": "107",
@@ -2011,7 +2101,7 @@
       "seller_avg_price": 21.99,
       "seller_rating": 3.9,
       "seller_review_count": 27,
-      "seller_bsr": 282,
+      "seller_bsr": 304,
       "seller_fba_fee": 4.09,
       "suggest_keywords": "0",
       "traffic_keywords_top": [
@@ -2053,7 +2143,7 @@
           "title": "Botanic Hearth Batana Oil for Hair Growth & Hair Treatment Oils 4 Fl Oz | Dr Sebi Inspired, 100% Raw & Pure Batana Oil | Scalp & Hair Treatment for Thickness & Strength | All Hair Types",
           "price": "$12.99",
           "rating": "4.4",
-          "reviews": "11703",
+          "reviews": "11759",
           "launch_date": "",
           "listing_status": "",
           "deal_activity": "Deal",
@@ -2075,45 +2165,45 @@
           "prime_discount": "未开启"
         },
         {
+          "asin": "B0DCX7628T",
+          "type": "unknown",
+          "rank": "",
+          "title": "Lebanta Raw Batana Oil for Hair - 100% Pure, Organic 4oz Batana from Honduras for Fuller, Thicker-Looking Hair - Unrefined Cold Pressed Cosmetic Scalp Oil & Hair Mask, Gift for Women (1 Pack)",
+          "price": "$24.97",
+          "rating": "4.3",
+          "reviews": "2553",
+          "launch_date": "",
+          "listing_status": "",
+          "deal_activity": "Deal",
+          "coupon": "$22.47 off",
+          "prime_discount": "未开启"
+        },
+        {
           "asin": "B0DJ1THRXM",
           "type": "unknown",
           "rank": "",
           "title": "Natural Riches Unrefined Organic Batana Oil, 8 fl oz, 100% Pure & Natural, Cold pressed Honduras Miracle Oil for Hair Growth.",
-          "price": "$15.50",
+          "price": "$16.31",
           "rating": "4.4",
           "reviews": "708",
           "launch_date": "",
           "listing_status": "",
           "deal_activity": "Deal",
-          "coupon": "$15.50 off",
+          "coupon": "$16.31 off",
           "prime_discount": "未开启"
         },
         {
-          "asin": "B0DCX7628T",
+          "asin": "B0DSHY2T4Q",
           "type": "unknown",
           "rank": "",
-          "title": "Lebanta Raw Batana Oil for Hair - 100% Pure, Organic 4oz Batana from Honduras for Fuller, Thicker-Looking Hair - Unrefined Cold Pressed Cosmetic Scalp Oil & Hair Mask, Gift for Women (1 Pack)",
-          "price": "$21.22",
-          "rating": "4.3",
-          "reviews": "2553",
-          "launch_date": "",
-          "listing_status": "",
-          "deal_activity": "Ends in 49 minutes\nEnds in 49:40",
-          "coupon": "无",
-          "prime_discount": "未开启"
-        },
-        {
-          "asin": "B0CMXF1NK3",
-          "type": "unknown",
-          "rank": "",
-          "title": "Batana Oil - 100% Pure & Natural from Honduras for Hair Growth, Eliminates Split Ends, Enhances Radiance & Nourishment for All Hair Types, 2.02 fl oz",
-          "price": "$8.99",
-          "rating": "4.4",
-          "reviews": "3457",
+          "title": "WEEMOTD 100% Raw Batana Oil for Hair, Unrefined Conditioning Hair & Scalp Oil from Honduras, Moisturizing Hair Mask for Dry Hair, Adds Shine & Softness for Men & Women, 2 fl oz",
+          "price": "$14.99",
+          "rating": "4.2",
+          "reviews": "1047",
           "launch_date": "",
           "listing_status": "",
           "deal_activity": "Deal",
-          "coupon": "$8.99 off",
+          "coupon": "$14.99 off",
           "prime_discount": "未开启"
         }
       ]
@@ -2128,7 +2218,7 @@
           "title": "CHARMPOO Antifungal Cream, 2% Miconazole for Jock Itch, Athlete’s Foot & Ringworm, Fast-Absorbing Anti Fungal Skin Cream for Feet, Groin & Body Folds, 3.4 oz / 100g",
           "price": "$22.95",
           "rating": "4.6",
-          "reviews": "729",
+          "reviews": "730",
           "launch_date": "1, 2024",
           "listing_status": "",
           "deal_activity": "Deal",
@@ -2142,25 +2232,11 @@
           "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More",
           "price": "$4.85",
           "rating": "4.6",
-          "reviews": "16266",
+          "reviews": "16276",
           "launch_date": "19, 2015",
           "listing_status": "",
           "deal_activity": "Deal",
           "coupon": "$4.61 off",
-          "prime_discount": "未开启"
-        },
-        {
-          "asin": "B0C7VP8SFV",
-          "type": "unknown",
-          "rank": "",
-          "title": "SimplyVital 1% Clotrimazole Antifungal Cream - Treats Most Athlete's Foot, Jock Itch, Ringworm - Athletes Foot Treatment Anti Fungal Cream for Skin, Ring Worm Medication for Humans, 2oz",
-          "price": "$27.97",
-          "rating": "4.3",
-          "reviews": "1052",
-          "launch_date": "13, 2023",
-          "listing_status": "",
-          "deal_activity": "Deal",
-          "coupon": "$25.17 off",
           "prime_discount": "未开启"
         },
         {
@@ -2170,7 +2246,7 @@
           "title": "Miconazole Antifungal Cream for Skin - 4 oz of Miconazole Nitrate for Jock Itch, Athlete's Foot, Itching, and Ringworm",
           "price": "$9.99",
           "rating": "4.6",
-          "reviews": "857",
+          "reviews": "859",
           "launch_date": "11, 2024",
           "listing_status": "",
           "deal_activity": "Deal",
@@ -2184,11 +2260,25 @@
           "title": "Globe Clotrimazole Antifungal Cream 1% USP (1 oz), Anti Fungal Treatment, Relieves Itching, Burning, Cracking and Scaling Associated Athletes Foot, Jock Itch, Ringworm and More (Pack of 5)",
           "price": "$6.49",
           "rating": "4.6",
-          "reviews": "28586",
+          "reviews": "28590",
           "launch_date": "17, 2015",
           "listing_status": "",
           "deal_activity": "Deal",
           "coupon": "$6.17 off",
+          "prime_discount": "未开启"
+        },
+        {
+          "asin": "B0C7VP8SFV",
+          "type": "unknown",
+          "rank": "",
+          "title": "SimplyVital 1% Clotrimazole Antifungal Cream - Treats Most Athlete's Foot, Jock Itch, Ringworm - Athletes Foot Treatment Anti Fungal Cream for Skin, Ring Worm Medication for Humans, 2oz",
+          "price": "$27.97",
+          "rating": "4.4",
+          "reviews": "1056",
+          "launch_date": "13, 2023",
+          "listing_status": "",
+          "deal_activity": "Deal",
+          "coupon": "$25.17 off",
           "prime_discount": "未开启"
         }
       ]
