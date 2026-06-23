@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-22T17:47:49",
+  "updated": "2026-06-22T20:21:16",
   "items": [
     {
       "monitor_type": "new",
@@ -136,15 +136,15 @@
         },
         "review_count": {
           "current": 16276,
-          "prev": 16266,
-          "change": "+10",
-          "direction": "up"
+          "prev": 16276,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
           "current": 358,
-          "prev": 375,
-          "change": "17",
-          "direction": "up"
+          "prev": 358,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
           "current": 1,
@@ -179,36 +179,40 @@
       "sub_bsr": 1,
       "history_main_bsr": [
         375,
+        358,
         358
       ],
       "history_sub_bsr": [
+        1,
         1,
         1
       ],
       "history_price": [
         4.85,
+        4.85,
         4.85
       ],
       "history_rating": [
+        4.6,
         4.6,
         4.6
       ],
       "events": [],
       "related_asins": [],
-      "lqs": "",
+      "lqs": "10.0",
       "variant_count": "1",
       "launch_date": "19, 2015",
-      "total_keywords": "623",
-      "natural_keywords": "510",
-      "ad_keywords": "19",
-      "seller_units_30d": 56477,
-      "seller_revenue_30d": 273913.0,
+      "total_keywords": "1688",
+      "natural_keywords": "1688",
+      "ad_keywords": "1688",
+      "seller_units_30d": null,
+      "seller_revenue_30d": null,
       "seller_avg_price": null,
       "seller_rating": 4.6,
       "seller_review_count": 16276,
       "seller_bsr": 358,
-      "seller_fba_fee": 3.01,
-      "suggest_keywords": "190",
+      "seller_fba_fee": null,
+      "suggest_keywords": "1688",
       "traffic_keywords_top": []
     },
     {
@@ -241,15 +245,15 @@
         },
         "review_count": {
           "current": 28590,
-          "prev": 28586,
-          "change": "+4",
-          "direction": "up"
+          "prev": 28590,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
           "current": 2259,
-          "prev": 2174,
-          "change": "+85",
-          "direction": "dn"
+          "prev": 2259,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
           "current": 8,
@@ -285,9 +289,11 @@
       "history_main_bsr": [
         2174,
         2174,
+        2259,
         2259
       ],
       "history_sub_bsr": [
+        8,
         8,
         8,
         8
@@ -295,9 +301,11 @@
       "history_price": [
         6.49,
         6.49,
+        6.49,
         6.49
       ],
       "history_rating": [
+        4.6,
         4.6,
         4.6,
         4.6
@@ -307,17 +315,17 @@
       "lqs": "9.5",
       "variant_count": "1",
       "launch_date": "17, 2015",
-      "total_keywords": "605",
-      "natural_keywords": "597",
-      "ad_keywords": "16",
-      "seller_units_30d": 16488,
-      "seller_revenue_30d": 107007.0,
-      "seller_avg_price": 6.49,
+      "total_keywords": "1688",
+      "natural_keywords": "1688",
+      "ad_keywords": "1688",
+      "seller_units_30d": null,
+      "seller_revenue_30d": null,
+      "seller_avg_price": null,
       "seller_rating": 4.6,
       "seller_review_count": 28590,
       "seller_bsr": 8,
-      "seller_fba_fee": 3.24,
-      "suggest_keywords": "18",
+      "seller_fba_fee": null,
+      "suggest_keywords": "1688",
       "traffic_keywords_top": []
     },
     {
@@ -684,21 +692,21 @@
         },
         "rating": {
           "current": 4.4,
-          "prev": 4.3,
-          "change": "+0.1",
-          "direction": "up"
+          "prev": 4.4,
+          "change": "+0.0",
+          "direction": "same"
         },
         "review_count": {
           "current": 1056,
-          "prev": 1052,
-          "change": "+4",
-          "direction": "up"
+          "prev": 1056,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
-          "current": 3504,
-          "prev": 3592,
-          "change": "88",
-          "direction": "up"
+          "current": 3506,
+          "prev": 3504,
+          "change": "+2",
+          "direction": "dn"
         },
         "sub_bsr": {
           "current": 1,
@@ -727,16 +735,18 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 3504,
+      "main_bsr": 3506,
       "sub_cat": "Ayurvedic Balms & Ointments",
       "expected_sub_cat": "Ayurvedic Balms & Ointments",
       "sub_bsr": 1,
       "history_main_bsr": [
         3592,
         3592,
-        3504
+        3504,
+        3506
       ],
       "history_sub_bsr": [
+        1,
         1,
         1,
         1
@@ -744,55 +754,32 @@
       "history_price": [
         27.97,
         27.97,
+        27.97,
         27.97
       ],
       "history_rating": [
         4.3,
         4.3,
+        4.4,
         4.4
       ],
       "events": [],
       "related_asins": [],
-      "lqs": "10.0",
+      "lqs": "",
       "variant_count": "2",
       "launch_date": "13, 2023",
-      "total_keywords": "770",
-      "natural_keywords": "619",
-      "ad_keywords": "385",
-      "seller_units_30d": 11530,
-      "seller_revenue_30d": 322494.0,
-      "seller_avg_price": 34.11,
+      "total_keywords": "1688",
+      "natural_keywords": "1688",
+      "ad_keywords": "1688",
+      "seller_units_30d": null,
+      "seller_revenue_30d": null,
+      "seller_avg_price": null,
       "seller_rating": 4.4,
       "seller_review_count": 1056,
       "seller_bsr": 1,
-      "seller_fba_fee": 3.86,
-      "suggest_keywords": "12",
-      "traffic_keywords_top": [
-        {
-          "keyword": "foot cream",
-          "traffic_pct": "6.14%",
-          "type": "自然搜索词SP广告词",
-          "organic_rank": "36"
-        },
-        {
-          "keyword": "antifungal cream",
-          "traffic_pct": "6.03%",
-          "type": "自然搜索词SP广告词AC推荐词HR推荐词",
-          "organic_rank": "15"
-        },
-        {
-          "keyword": "athletes foot treatment",
-          "traffic_pct": "5.55%",
-          "type": "自然搜索词SP广告词",
-          "organic_rank": "7"
-        },
-        {
-          "keyword": "clotrimazole antifungal cream",
-          "traffic_pct": "5.07%",
-          "type": "自然搜索词SP广告词HR推荐词",
-          "organic_rank": "13"
-        }
-      ]
+      "seller_fba_fee": null,
+      "suggest_keywords": "1688",
+      "traffic_keywords_top": []
     },
     {
       "monitor_type": "new",
@@ -937,21 +924,21 @@
         },
         "review_count": {
           "current": 730,
-          "prev": 729,
-          "change": "+1",
-          "direction": "up"
+          "prev": 730,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
-          "current": 21252,
-          "prev": 22140,
-          "change": "888",
+          "current": 21244,
+          "prev": 21252,
+          "change": "8",
           "direction": "up"
         },
         "sub_bsr": {
           "current": 62,
-          "prev": 63,
-          "change": "1",
-          "direction": "up"
+          "prev": 62,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -974,16 +961,18 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 21252,
+      "main_bsr": 21244,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 62,
       "history_main_bsr": [
         22141,
         22140,
-        21252
+        21252,
+        21244
       ],
       "history_sub_bsr": [
+        62,
         62,
         62,
         62
@@ -991,21 +980,23 @@
       "history_price": [
         22.95,
         22.95,
+        22.95,
         22.95
       ],
       "history_rating": [
+        4.6,
         4.6,
         4.6,
         4.6
       ],
       "events": [],
       "related_asins": [],
-      "lqs": "",
+      "lqs": "9.9",
       "variant_count": "2",
       "launch_date": "1, 2024",
-      "total_keywords": "0",
-      "natural_keywords": "0",
-      "ad_keywords": "0",
+      "total_keywords": "1688",
+      "natural_keywords": "1688",
+      "ad_keywords": "1688",
       "seller_units_30d": null,
       "seller_revenue_30d": null,
       "seller_avg_price": null,
@@ -1013,7 +1004,7 @@
       "seller_review_count": 730,
       "seller_bsr": 62,
       "seller_fba_fee": null,
-      "suggest_keywords": "0",
+      "suggest_keywords": "1688",
       "traffic_keywords_top": []
     },
     {
@@ -1046,21 +1037,21 @@
         },
         "review_count": {
           "current": 859,
-          "prev": 857,
-          "change": "+2",
-          "direction": "up"
+          "prev": 859,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
           "current": 5344,
-          "prev": 5328,
-          "change": "+16",
-          "direction": "dn"
+          "prev": 5344,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
           "current": 21,
-          "prev": 20,
-          "change": "+1",
-          "direction": "dn"
+          "prev": 21,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -1089,9 +1080,11 @@
       "history_main_bsr": [
         5328,
         5328,
+        5344,
         5344
       ],
       "history_sub_bsr": [
+        21,
         21,
         21,
         21
@@ -1099,29 +1092,31 @@
       "history_price": [
         9.99,
         9.99,
+        9.99,
         9.99
       ],
       "history_rating": [
+        4.6,
         4.6,
         4.6,
         4.6
       ],
       "events": [],
       "related_asins": [],
-      "lqs": "",
+      "lqs": "9.6",
       "variant_count": "4",
       "launch_date": "11, 2024",
-      "total_keywords": "324",
-      "natural_keywords": "313",
-      "ad_keywords": "67",
-      "seller_units_30d": 7781,
-      "seller_revenue_30d": 77732.0,
+      "total_keywords": "1688",
+      "natural_keywords": "1688",
+      "ad_keywords": "1688",
+      "seller_units_30d": null,
+      "seller_revenue_30d": null,
       "seller_avg_price": null,
       "seller_rating": 4.6,
       "seller_review_count": 859,
       "seller_bsr": 21,
-      "seller_fba_fee": 3.24,
-      "suggest_keywords": "6",
+      "seller_fba_fee": null,
+      "suggest_keywords": "1688",
       "traffic_keywords_top": []
     },
     {
@@ -1230,15 +1225,15 @@
       "traffic_keywords_top": []
     },
     {
-      "monitor_type": "variable",
+      "monitor_type": "stable",
       "asin": "B0DBLCYTZ6",
       "is_main": false,
       "is_stale": false,
-      "logic_type": "变化ASIN",
+      "logic_type": "稳定ASIN",
       "source_keyword": "batana oil",
       "title": "Botanic Hearth Batana Oil for Hair Growth & Hair Treatment Oils 4 Fl Oz | Dr Sebi Inspired, 100% Raw & Pure Batana Oil | Scalp & Hair Treatment for Thickness & Strength | All Hair Types",
       "brand": "Botanic Hearth",
-      "img": "https://m.media-amazon.com/images/I/71joEYuDE8L._AC_SL1500_.jpg",
+      "img": "https://m.media-amazon.com/images/I/418LghQTEdL._SY300_SX300_QL70_FMwebp_.jpg",
       "price": 12.99,
       "chg": 0.0,
       "rating": 4.4,
@@ -1259,15 +1254,15 @@
         },
         "review_count": {
           "current": 11759,
-          "prev": 11703,
-          "change": "+56",
-          "direction": "up"
+          "prev": 11759,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
           "current": 1863,
-          "prev": 1866,
-          "change": "3",
-          "direction": "up"
+          "prev": 1863,
+          "change": "+0",
+          "direction": "same"
         },
         "sub_bsr": {
           "current": 12,
@@ -1305,9 +1300,11 @@
         1866,
         1866,
         1866,
+        1863,
         1863
       ],
       "history_sub_bsr": [
+        12,
         12,
         12,
         12,
@@ -1319,9 +1316,11 @@
         12.99,
         12.99,
         12.99,
+        12.99,
         12.99
       ],
       "history_rating": [
+        4.4,
         4.4,
         4.4,
         4.4,
@@ -1330,32 +1329,32 @@
       ],
       "events": [],
       "related_asins": [],
-      "lqs": "",
-      "variant_count": "",
+      "lqs": "9.9",
+      "variant_count": "311688",
       "launch_date": "",
-      "total_keywords": "",
-      "natural_keywords": "",
-      "ad_keywords": "",
+      "total_keywords": "1688",
+      "natural_keywords": "1688",
+      "ad_keywords": "1688",
       "seller_units_30d": null,
       "seller_revenue_30d": null,
       "seller_avg_price": null,
-      "seller_rating": null,
-      "seller_review_count": null,
-      "seller_bsr": null,
+      "seller_rating": 4.4,
+      "seller_review_count": 11759,
+      "seller_bsr": 12,
       "seller_fba_fee": null,
-      "suggest_keywords": "",
+      "suggest_keywords": "1688",
       "traffic_keywords_top": []
     },
     {
-      "monitor_type": "new",
+      "monitor_type": "stable",
       "asin": "B0DCX7628T",
       "is_main": false,
       "is_stale": false,
-      "logic_type": "主监控",
+      "logic_type": "稳定ASIN",
       "source_keyword": "batana oil",
       "title": "Lebanta Raw Batana Oil for Hair - 100% Pure, Organic 4oz Batana from Honduras for Fuller, Thicker-Looking Hair - Unrefined Cold Pressed Cosmetic Scalp Oil & Hair Mask, Gift for Women (1 Pack)",
       "brand": "Lebanta",
-      "img": "https://m.media-amazon.com/images/I/71Du+Zvwv+L._AC_SL1500_.jpg",
+      "img": "https://m.media-amazon.com/images/I/51-C1YdYG7L._SY300_SX300_QL70_FMwebp_.jpg",
       "price": 24.97,
       "chg": 0.0,
       "rating": 4.3,
@@ -1363,10 +1362,10 @@
       "diff": {
         "price": {
           "current": 24.97,
-          "prev": 21.22,
-          "change": "+3.75",
-          "pct": "+17.7%",
-          "direction": "up"
+          "prev": 24.97,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
         },
         "rating": {
           "current": 4.3,
@@ -1381,9 +1380,9 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 3078,
-          "prev": 3357,
-          "change": "279",
+          "current": 3077,
+          "prev": 3078,
+          "change": "1",
           "direction": "up"
         },
         "sub_bsr": {
@@ -1392,25 +1391,20 @@
           "change": "+0",
           "direction": "same"
         },
-        "deal_activity": {
-          "current": "Deal",
-          "prev": "Ends in 49 minutes\nEnds in 49:40",
-          "direction": "changed"
-        },
         "badges": {
           "current": [
-            "AC",
             "NR",
             "A+"
           ],
           "prev": [
+            "AC",
             "NR",
             "A+"
           ],
-          "lost": [],
-          "gained": [
+          "lost": [
             "AC"
           ],
+          "gained": [],
           "direction": "changed"
         }
       },
@@ -1425,16 +1419,17 @@
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
-        "AC",
         "NR",
         "A+"
       ],
-      "badges_lost": [],
+      "badges_lost": [
+        "AC"
+      ],
       "coupon": "$22.47 off",
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 3078,
+      "main_bsr": 3077,
       "sub_cat": "Scalp Treatments",
       "expected_sub_cat": "Scalp Treatments",
       "sub_bsr": 10,
@@ -1443,9 +1438,11 @@
         3357,
         3357,
         3357,
-        3078
+        3078,
+        3077
       ],
       "history_sub_bsr": [
+        10,
         10,
         10,
         10,
@@ -1457,9 +1454,11 @@
         21.22,
         21.22,
         21.22,
+        24.97,
         24.97
       ],
       "history_rating": [
+        4.3,
         4.3,
         4.3,
         4.3,
@@ -1468,28 +1467,28 @@
       ],
       "events": [],
       "related_asins": [],
-      "lqs": "10.0",
-      "variant_count": "2",
-      "launch_date": "2024-10-25",
-      "total_keywords": "1",
-      "natural_keywords": "1",
-      "ad_keywords": "678",
-      "seller_units_30d": 11615,
-      "seller_revenue_30d": 290027.0,
-      "seller_avg_price": 24.97,
+      "lqs": "",
+      "variant_count": "31688",
+      "launch_date": "",
+      "total_keywords": "1688",
+      "natural_keywords": "1688",
+      "ad_keywords": "1688",
+      "seller_units_30d": null,
+      "seller_revenue_30d": null,
+      "seller_avg_price": null,
       "seller_rating": 4.3,
       "seller_review_count": 2553,
       "seller_bsr": 10,
-      "seller_fba_fee": 4.09,
-      "suggest_keywords": "22",
+      "seller_fba_fee": null,
+      "suggest_keywords": "1688",
       "traffic_keywords_top": []
     },
     {
-      "monitor_type": "new",
+      "monitor_type": "stable",
       "asin": "B0DJ1THRXM",
       "is_main": false,
       "is_stale": false,
-      "logic_type": "主监控",
+      "logic_type": "稳定ASIN",
       "source_keyword": "batana oil",
       "title": "Natural Riches Unrefined Organic Batana Oil, 8 fl oz, 100% Pure & Natural, Cold pressed Honduras Miracle Oil for Hair Growth.",
       "brand": "Natural Riches",
@@ -1501,10 +1500,10 @@
       "diff": {
         "price": {
           "current": 16.31,
-          "prev": 15.5,
-          "change": "+0.81",
-          "pct": "+5.2%",
-          "direction": "up"
+          "prev": 16.31,
+          "change": "+0.0",
+          "pct": "+0.0%",
+          "direction": "same"
         },
         "rating": {
           "current": 4.4,
@@ -1519,38 +1518,22 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 22297,
-          "prev": 20566,
-          "change": "+1731",
+          "current": 22299,
+          "prev": 22297,
+          "change": "+2",
           "direction": "dn"
         },
         "sub_bsr": {
           "current": 175,
-          "prev": 157,
-          "change": "+18",
-          "direction": "dn"
-        },
-        "badges": {
-          "current": [
-            "AC",
-            "NR",
-            "A+"
-          ],
-          "prev": [
-            "NR",
-            "A+"
-          ],
-          "lost": [],
-          "gained": [
-            "AC"
-          ],
-          "direction": "changed"
+          "prev": 175,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
-      "img_changed": true,
+      "img_changed": false,
       "bullets_changed": false,
       "description_changed": false,
       "seller_changed": false,
@@ -1567,7 +1550,7 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 22297,
+      "main_bsr": 22299,
       "sub_cat": "Hair Treatment Oils",
       "expected_sub_cat": "Hair Treatment Oils",
       "sub_bsr": 175,
@@ -1575,9 +1558,11 @@
         20566,
         20566,
         20566,
-        22297
+        22297,
+        22299
       ],
       "history_sub_bsr": [
+        175,
         175,
         175,
         175,
@@ -1587,9 +1572,11 @@
         15.5,
         15.5,
         15.5,
+        16.31,
         16.31
       ],
       "history_rating": [
+        4.4,
         4.4,
         4.4,
         4.4,
@@ -1597,20 +1584,20 @@
       ],
       "events": [],
       "related_asins": [],
-      "lqs": "",
-      "variant_count": "3",
-      "launch_date": "2024-11-18",
-      "total_keywords": "271",
-      "natural_keywords": "270",
-      "ad_keywords": "24",
-      "seller_units_30d": 901,
-      "seller_revenue_30d": 13966.0,
+      "lqs": "9.9",
+      "variant_count": "31688",
+      "launch_date": "",
+      "total_keywords": "1688",
+      "natural_keywords": "1688",
+      "ad_keywords": "1688",
+      "seller_units_30d": null,
+      "seller_revenue_30d": null,
       "seller_avg_price": null,
       "seller_rating": 4.4,
       "seller_review_count": 708,
       "seller_bsr": 175,
-      "seller_fba_fee": 4.35,
-      "suggest_keywords": "0",
+      "seller_fba_fee": null,
+      "suggest_keywords": "1688",
       "traffic_keywords_top": []
     },
     {
@@ -1643,21 +1630,21 @@
         },
         "review_count": {
           "current": 309,
-          "prev": 304,
-          "change": "+5",
-          "direction": "up"
+          "prev": 309,
+          "change": "+0",
+          "direction": "same"
         },
         "bsr": {
-          "current": 40317,
-          "prev": 44268,
-          "change": "3951",
+          "current": 40309,
+          "prev": 40317,
+          "change": "8",
           "direction": "up"
         },
         "sub_bsr": {
           "current": 1451,
-          "prev": 1593,
-          "change": "142",
-          "direction": "up"
+          "prev": 1451,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -1666,7 +1653,7 @@
       "img_changed": false,
       "bullets_changed": false,
       "description_changed": false,
-      "seller_changed": false,
+      "seller_changed": true,
       "variant_status": "正常",
       "variant_changed": false,
       "deal_activity": "Deal",
@@ -1680,7 +1667,7 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 40317,
+      "main_bsr": 40309,
       "sub_cat": "",
       "expected_sub_cat": "",
       "sub_bsr": 1451,
@@ -1688,9 +1675,11 @@
         44269,
         44268,
         44268,
-        40317
+        40317,
+        40309
       ],
       "history_sub_bsr": [
+        1451,
         1451,
         1451,
         1451,
@@ -1700,9 +1689,11 @@
         24.95,
         24.95,
         24.95,
+        24.95,
         24.95
       ],
       "history_rating": [
+        4.5,
         4.5,
         4.5,
         4.5,
@@ -1727,32 +1718,32 @@
       "jike_fba_quantity": null,
       "jike_fba_turnover": null,
       "jike_gross_profit_rate": null,
-      "lqs": "",
+      "lqs": "10.0",
       "variant_count": "1",
       "launch_date": "2, 2024",
-      "total_keywords": "229",
-      "natural_keywords": "162",
-      "ad_keywords": "99",
-      "seller_units_30d": 780,
-      "seller_revenue_30d": 19461.0,
+      "total_keywords": "1688",
+      "natural_keywords": "1688",
+      "ad_keywords": "1688",
+      "seller_units_30d": null,
+      "seller_revenue_30d": null,
       "seller_avg_price": null,
       "seller_rating": 4.5,
       "seller_review_count": 309,
       "seller_bsr": null,
-      "seller_fba_fee": 3.86,
-      "suggest_keywords": "1",
+      "seller_fba_fee": null,
+      "suggest_keywords": "1688",
       "traffic_keywords_top": []
     },
     {
-      "monitor_type": "new",
+      "monitor_type": "variable",
       "asin": "B0DSHY2T4Q",
       "is_main": false,
       "is_stale": false,
-      "logic_type": "主监控",
+      "logic_type": "变化ASIN",
       "source_keyword": "batana oil",
       "title": "WEEMOTD 100% Raw Batana Oil for Hair, Unrefined Conditioning Hair & Scalp Oil from Honduras, Moisturizing Hair Mask for Dry Hair, Adds Shine & Softness for Men & Women, 2 fl oz",
       "brand": "WEEMOTD",
-      "img": "https://m.media-amazon.com/images/I/71E8uGYRxHL._AC_SL1500_.jpg",
+      "img": "https://m.media-amazon.com/images/I/41DiD5MC0ZL._SY300_SX300_QL70_FMwebp_.jpg",
       "price": 14.99,
       "chg": 0.0,
       "rating": 4.2,
@@ -1778,10 +1769,10 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 4853,
+          "current": 4852,
           "prev": 4853,
-          "change": "+0",
-          "direction": "same"
+          "change": "1",
+          "direction": "up"
         },
         "sub_bsr": {
           "current": 13,
@@ -1793,7 +1784,7 @@
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
-      "img_changed": false,
+      "img_changed": true,
       "bullets_changed": false,
       "description_changed": false,
       "seller_changed": false,
@@ -1810,46 +1801,50 @@
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 4853,
+      "main_bsr": 4852,
       "sub_cat": "Scalp Treatments",
       "expected_sub_cat": "Scalp Treatments",
       "sub_bsr": 13,
       "history_main_bsr": [
-        4853
+        4853,
+        4852
       ],
       "history_sub_bsr": [
+        13,
         13
       ],
       "history_price": [
+        14.99,
         14.99
       ],
       "history_rating": [
+        4.2,
         4.2
       ],
       "events": [],
       "related_asins": [],
-      "lqs": "",
-      "variant_count": "2",
-      "launch_date": "2025-02-21",
-      "total_keywords": "946",
-      "natural_keywords": "908",
-      "ad_keywords": "162",
-      "seller_units_30d": 16790,
-      "seller_revenue_30d": 251682.0,
+      "lqs": "8.0",
+      "variant_count": "21688",
+      "launch_date": "",
+      "total_keywords": "1688",
+      "natural_keywords": "1688",
+      "ad_keywords": "1688",
+      "seller_units_30d": null,
+      "seller_revenue_30d": null,
       "seller_avg_price": null,
       "seller_rating": 4.2,
       "seller_review_count": 1047,
       "seller_bsr": 13,
-      "seller_fba_fee": 4.09,
-      "suggest_keywords": "67",
+      "seller_fba_fee": null,
+      "suggest_keywords": "1688",
       "traffic_keywords_top": []
     },
     {
-      "monitor_type": "new",
+      "monitor_type": "stable",
       "asin": "B0DW3YH4WH",
       "is_main": false,
       "is_stale": false,
-      "logic_type": "主监控",
+      "logic_type": "稳定ASIN",
       "source_keyword": "batana oil",
       "title": "Batana Oil for Hair Growth, 100% Natural Pure Batana Oil Paste from Dr. Sebi Honduras, Prevents Hair Loss, Enhances Thickness, Organic Raw Scalp Mask for Women & Men (4.05 Oz)",
       "brand": "Qytin",
@@ -1879,38 +1874,38 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 4852,
-          "prev": 4916,
-          "change": "64",
+          "current": 4851,
+          "prev": 4852,
+          "change": "1",
           "direction": "up"
         },
         "sub_bsr": {
           "current": 12,
-          "prev": 13,
-          "change": "1",
-          "direction": "up"
+          "prev": 12,
+          "change": "+0",
+          "direction": "same"
         },
         "badges": {
           "current": [
-            "AC",
             "NR",
             "A+"
           ],
           "prev": [
+            "AC",
             "NR",
             "A+"
           ],
-          "lost": [],
-          "gained": [
+          "lost": [
             "AC"
           ],
+          "gained": [],
           "direction": "changed"
         }
       },
       "listing_status": "正常",
       "expected_listing_status": "正常",
       "title_changed": false,
-      "img_changed": true,
+      "img_changed": false,
       "bullets_changed": false,
       "description_changed": false,
       "seller_changed": false,
@@ -1918,27 +1913,30 @@
       "variant_changed": false,
       "deal_activity": "Deal",
       "badges_current": [
-        "AC",
         "NR",
         "A+"
       ],
-      "badges_lost": [],
+      "badges_lost": [
+        "AC"
+      ],
       "coupon": "$9.99 off",
       "prime_discount": "未开启",
       "main_cat": "Beauty & Personal Care",
       "expected_main_cat": "Beauty & Personal Care",
-      "main_bsr": 4852,
+      "main_bsr": 4851,
       "sub_cat": "Scalp Treatments",
       "expected_sub_cat": "Scalp Treatments",
       "sub_bsr": 12,
       "history_main_bsr": [
         4916,
         4916,
-        4852,
+        4851,
         4916,
-        4852
+        4852,
+        4851
       ],
       "history_sub_bsr": [
+        12,
         12,
         12,
         12,
@@ -1950,9 +1948,11 @@
         9.99,
         9.99,
         9.99,
+        9.99,
         9.99
       ],
       "history_rating": [
+        4.7,
         4.7,
         4.7,
         4.7,
@@ -1961,20 +1961,20 @@
       ],
       "events": [],
       "related_asins": [],
-      "lqs": "",
-      "variant_count": "",
+      "lqs": "9.9",
+      "variant_count": "11688",
       "launch_date": "",
-      "total_keywords": "",
-      "natural_keywords": "",
-      "ad_keywords": "",
+      "total_keywords": "1688",
+      "natural_keywords": "1688",
+      "ad_keywords": "1688",
       "seller_units_30d": null,
       "seller_revenue_30d": null,
       "seller_avg_price": null,
-      "seller_rating": null,
-      "seller_review_count": null,
-      "seller_bsr": null,
+      "seller_rating": 4.7,
+      "seller_review_count": 1599,
+      "seller_bsr": 12,
       "seller_fba_fee": null,
-      "suggest_keywords": "",
+      "suggest_keywords": "1688",
       "traffic_keywords_top": []
     },
     {
@@ -2012,16 +2012,16 @@
           "direction": "same"
         },
         "bsr": {
-          "current": 203433,
-          "prev": 172998,
-          "change": "+30435",
-          "direction": "dn"
+          "current": 203403,
+          "prev": 203433,
+          "change": "30",
+          "direction": "up"
         },
         "sub_bsr": {
           "current": 304,
-          "prev": 282,
-          "change": "+22",
-          "direction": "dn"
+          "prev": 304,
+          "change": "+0",
+          "direction": "same"
         }
       },
       "listing_status": "正常",
@@ -2043,7 +2043,7 @@
       "prime_discount": "未开启",
       "main_cat": "Health & Household",
       "expected_main_cat": "Health & Household",
-      "main_bsr": 203433,
+      "main_bsr": 203403,
       "sub_cat": "Antifungal Remedies",
       "expected_sub_cat": "Antifungal Remedies",
       "sub_bsr": 304,
@@ -2051,9 +2051,11 @@
         173059,
         172998,
         172998,
-        203433
+        203433,
+        203403
       ],
       "history_sub_bsr": [
+        304,
         304,
         304,
         304,
@@ -2063,9 +2065,11 @@
         21.99,
         21.99,
         21.99,
+        21.99,
         21.99
       ],
       "history_rating": [
+        3.9,
         3.9,
         3.9,
         3.9,
@@ -2093,43 +2097,18 @@
       "lqs": "9.4",
       "variant_count": "1",
       "launch_date": "11, 2025",
-      "total_keywords": "107",
-      "natural_keywords": "107",
-      "ad_keywords": "4",
-      "seller_units_30d": 144,
-      "seller_revenue_30d": 3167.0,
-      "seller_avg_price": 21.99,
+      "total_keywords": "1688",
+      "natural_keywords": "1688",
+      "ad_keywords": "1688",
+      "seller_units_30d": null,
+      "seller_revenue_30d": null,
+      "seller_avg_price": null,
       "seller_rating": 3.9,
       "seller_review_count": 27,
       "seller_bsr": 304,
-      "seller_fba_fee": 4.09,
-      "suggest_keywords": "0",
-      "traffic_keywords_top": [
-        {
-          "keyword": "antifungal cream",
-          "traffic_pct": "33.92%",
-          "type": "自然搜索词SP广告词",
-          "organic_rank": "55"
-        },
-        {
-          "keyword": "athletes foot treatment",
-          "traffic_pct": "11.26%",
-          "type": "自然搜索词",
-          "organic_rank": "89"
-        },
-        {
-          "keyword": "athletes foot cream",
-          "traffic_pct": "7.66%",
-          "type": "自然搜索词",
-          "organic_rank": "79"
-        },
-        {
-          "keyword": "foot fungus treatment",
-          "traffic_pct": "7.46%",
-          "type": "自然搜索词SP广告词",
-          "organic_rank": "40"
-        }
-      ]
+      "seller_fba_fee": null,
+      "suggest_keywords": "1688",
+      "traffic_keywords_top": []
     }
   ],
   "keywords": [
