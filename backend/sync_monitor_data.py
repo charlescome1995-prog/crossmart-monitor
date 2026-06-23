@@ -985,7 +985,7 @@ def main():
         if diff.stdout.strip():
             subprocess.run(['git', 'commit', '-m', 'auto: sync rawData.json with keywords + diff'], capture_output=True, cwd=BASE)
             # 先 pull --rebase 同步远程变更，避免 push 被拒
-            pull = subprocess.run(['git', 'pull', '--rebase', 'origin', 'main'], capture_output=True, text=True, cwd=BASE)
+            pull = subprocess.run(['git', 'pull', '--rebase', '--autostash', 'origin', 'main'], capture_output=True, text=True, cwd=BASE)
             if pull.returncode != 0:
                 print('⚠️ pull --rebase 失败:', pull.stderr[:200])
             push = subprocess.run(['git', 'push', 'origin', 'main'], capture_output=True, text=True, cwd=BASE)
