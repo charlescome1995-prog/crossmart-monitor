@@ -232,7 +232,7 @@ def sync_and_push():
     if not os.path.exists(sync_script):
         print("  sync_monitor_data.py not found, skip sync")
         return True
-    ok = run_command([sys.executable, sync_script], timeout=120)
+    ok = run_command([sys.executable, sync_script], timeout=300)
     if not ok:
         print("  sync failed")
         return False
@@ -252,10 +252,10 @@ def sync_and_push():
     ts = datetime.now().strftime("%Y-%m-%d %H:%M")
     commit_ok = run_command(["git", "commit", "-m", "auto: sync " + ts],
         cwd=repo_dir, timeout=30)
-    push_ok = run_command(["git", "push"], cwd=repo_dir, timeout=60)
+    push_ok = run_command(["git", "push"], cwd=repo_dir, timeout=300)
     if not push_ok:
         print("  push rejected, force-push...")
-        push_ok = run_command(["git", "push", "-f"], cwd=repo_dir, timeout=60)
+        push_ok = run_command(["git", "push", "-f"], cwd=repo_dir, timeout=300)
     print("  数据已推送")
     return True
 
@@ -275,11 +275,11 @@ def push_trigger_done(trigger):
     subprocess.run(["git", "commit", "-m", "auto: trigger done"],
         shell=False, cwd=repo_dir, encoding="utf-8", errors="replace")
     pr = subprocess.run(["git", "push"],
-        shell=False, cwd=repo_dir, timeout=60, encoding="utf-8", errors="replace")
+        shell=False, cwd=repo_dir, timeout=300, encoding="utf-8", errors="replace")
     if pr.returncode != 0:
         print("  force-pushing trigger...")
         subprocess.run(["git", "push", "-f"],
-            shell=False, cwd=repo_dir, timeout=60, encoding="utf-8", errors="replace")
+            shell=False, cwd=repo_dir, timeout=300, encoding="utf-8", errors="replace")
     print("  trigger.json 已推送")
 
 
