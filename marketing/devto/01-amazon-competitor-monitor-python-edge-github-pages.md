@@ -357,8 +357,8 @@ Want an operations dashboard later? Reuse the same idea: collect, snapshot, comp
 This is why CrossMart is now growing into a small toolkit instead of a single page:
 
 - [CrossMart Monitor](https://charlescome1995-prog.github.io/crossmart-monitor/monitor.html) — ASIN and keyword monitoring
-- [CrossMart Selector](https://charlescome1995-prog.github.io/crossmart-selector/frontend/selection.html) — product opportunity selection
-- [CrossMart Listing Builder](https://charlescome1995-prog.github.io/crossmart-listing/frontend/listing.html) — benchmark-based listing generation
+- [CrossMart Selector](https://charlescome1995-prog.github.io/crossmart-selector/selection.html) — product opportunity selection
+- [CrossMart Listing Builder](https://charlescome1995-prog.github.io/crossmart-listing/listing.html) — benchmark-based listing generation
 - [CrossMart Ops](https://charlescome1995-prog.github.io/crossmart-ops/ops.html) — traffic and operations diagnosis
 
 They all follow the same principle:
