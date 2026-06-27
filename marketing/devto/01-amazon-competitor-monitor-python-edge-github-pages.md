@@ -1,8 +1,9 @@
----
+﻿---
 title: "I Built an Amazon Competitor Monitor with Python, Edge CDP, and GitHub Pages"
 published: false
 description: "A practical field note on turning repetitive Amazon competitor checks into a lightweight monitoring dashboard."
 tags: python, automation, ecommerce, githubpages
+series: CrossMart Build Notes
 cover_image: ""
 canonical_url: ""
 ---
@@ -46,7 +47,7 @@ It is not a huge SaaS product. It is a lightweight Amazon competitor monitoring 
 
 The live dashboard is here:
 
-👉 [CrossMart Monitor](https://charlescome1995-prog.github.io/crossmart-monitor/monitor.html)
+馃憠 [CrossMart Monitor](https://charlescome1995-prog.github.io/crossmart-monitor/monitor.html)
 
 This post is a practical breakdown of the build: what problem it solves, why I chose this architecture, what went wrong, and what I would do differently next.
 
@@ -356,10 +357,10 @@ Want an operations dashboard later? Reuse the same idea: collect, snapshot, comp
 
 This is why CrossMart is now growing into a small toolkit instead of a single page:
 
-- [CrossMart Monitor](https://charlescome1995-prog.github.io/crossmart-monitor/monitor.html) — ASIN and keyword monitoring
-- [CrossMart Selector](https://charlescome1995-prog.github.io/crossmart-selector/selection.html) — product opportunity selection
-- [CrossMart Listing Builder](https://charlescome1995-prog.github.io/crossmart-listing/listing.html) — benchmark-based listing generation
-- [CrossMart Ops](https://charlescome1995-prog.github.io/crossmart-ops/ops.html) — traffic and operations diagnosis
+- [CrossMart Monitor](https://charlescome1995-prog.github.io/crossmart-monitor/monitor.html) 鈥?ASIN and keyword monitoring
+- [CrossMart Selector](https://charlescome1995-prog.github.io/crossmart-selector/selection.html) 鈥?product opportunity selection
+- [CrossMart Listing Builder](https://charlescome1995-prog.github.io/crossmart-listing/listing.html) 鈥?benchmark-based listing generation
+- [CrossMart Ops](https://charlescome1995-prog.github.io/crossmart-ops/ops.html) 鈥?traffic and operations diagnosis
 
 They all follow the same principle:
 
@@ -441,6 +442,7 @@ If you are building tools for e-commerce operators, indie sellers, or internal t
 
 You can try the current dashboard here:
 
-👉 [CrossMart Monitor](https://charlescome1995-prog.github.io/crossmart-monitor/monitor.html)
+馃憠 [CrossMart Monitor](https://charlescome1995-prog.github.io/crossmart-monitor/monitor.html)
 
 I am still improving the system, so the next write-up will probably be about the product selection engine: how I turned exported keyword spreadsheets into a ranked opportunity list.
+

@@ -1,53 +1,55 @@
 # Dev.to Content Matrix for CrossMart
 
-Goal: turn the CrossMart build process into a Dev.to content series that attracts developers, indie hackers, and Amazon/e-commerce operators without sounding like hard advertising.
+Goal: turn the CrossMart build process into a compact Dev.to launch series that attracts developers, indie hackers, and Amazon/e-commerce operators without sounding like hard advertising.
 
-Working principle: each article should teach one practical thing, then softly point readers to the relevant CrossMart page.
+Working principle: each article teaches one practical thing, then softly points readers to the relevant CrossMart page.
 
-## Current inventory
+## Final decision
 
-- Full draft found: `01-amazon-competitor-monitor-python-edge-github-pages.md`
-- Existing plan found: 6-article sequence in `README.md`
-- Cleaned plan below: expanded to 9 publishable angles, with overlap removed by assigning each article a unique job.
+The original content pool had 9 angles, but several were overlapping architecture/product-thinking variants. For the first launch batch, the matrix is consolidated into **4 publishable articles**.
+
+The remaining 5 angles are archived as source material and not scheduled as standalone Dev.to posts.
 
 ## Duplicate cleanup logic
 
 | Overlap risk | Cleanup decision |
 |---|---|
-| Monitor build story vs Edge CDP technical story | Article 01 stays as the product/build story; Article 06 becomes a narrower technical deep dive on real-browser automation. |
-| Snapshot-first data vs backendless GitHub Pages architecture | Article 05 focuses on data modeling and debugging; Article 07 focuses on deployment architecture and cost. |
-| Selector, Listing, Ops all use competitor data | Each gets a different user question: what to sell, how to write the listing, what competitors are doing operationally. |
-| Full CrossMart suite recap vs individual tool posts | Article 09 becomes the end-of-series narrative and internal-tool productization lesson, not another feature list. |
+| Monitor build story vs snapshot-first data architecture | Keep Article 01 as the Monitor protagonist and include snapshot-first lessons inside it. |
+| Real-browser automation vs Ops implementation | Merge real-browser automation lessons into Article 04, where they support the operations-diagnosis workflow. |
+| Backendless architecture vs individual tool posts | Keep GitHub Pages / JSON / no-backend architecture as supporting context, not a standalone launch post. |
+| Selector vs decision-tool product thinking | Merge decision-tool framing into Article 02: keyword export becomes ranked opportunity decisions. |
+| Suite recap vs feature list | Drop the recap from the first batch to avoid repetitive CrossMart promotion. |
 
-## Final 9-article sequence
+## Final four-article sequence
 
 | # | Working title | Primary audience | Core angle | Primary CTA | Status |
 |---|---|---|---|---|---|
-| 01 | I Built an Amazon Competitor Monitor with Python, Edge CDP, and GitHub Pages | Developers + e-commerce operators | Build-in-public case study for CrossMart Monitor | CrossMart Monitor | Full draft ready for review |
-| 02 | Turning Seller Tool Keyword Exports into a Product Opportunity Engine | Amazon operators + indie hackers | How keyword spreadsheets become ranked product opportunities | CrossMart Selector | Outline needed |
-| 03 | Building an AI Amazon Listing Builder from Competitor ASINs | Operators + AI builders | Extract competitor patterns, then generate structured listing drafts | CrossMart Listing Builder | Outline needed |
-| 04 | From Traffic Keywords to Competitor Operations Diagnosis | Amazon operators | Traffic source, ad-insight, and review analysis as an operations dashboard | CrossMart Ops | Outline needed |
-| 05 | Why Snapshot-First Data Beats One-Off Scraping for Market Monitoring | Developers | Data architecture: snapshots, diffs, debugging, change detection | CrossMart Monitor + suite links | Outline needed |
-| 06 | Lessons from Automating Amazon with a Real Browser Profile | Automation developers | Edge CDP, login state, extension DOMs, fixed debugging port, cleanup | CrossMart Monitor | Outline needed |
-| 07 | Building a Lightweight E-commerce Intelligence System Without a Backend Server | Indie hackers | GitHub Pages + JSON + scheduled local automation as cheap early architecture | CrossMart suite | Outline needed |
-| 08 | What I Learned Turning Amazon Research Workflows into Small Decision Tools | Builders + operators | Product thinking: moving from dashboards to decisions | CrossMart suite | Outline needed |
-| 09 | From Spreadsheet Pain to a CrossMart Toolkit: A Build-in-Public Recap | General Dev.to audience | Series recap, roadmap, and invitation to follow/try the tools | CrossMart suite | Outline needed |
+| 01 | I Built an Amazon Competitor Monitor with Python, Edge CDP, and GitHub Pages | Developers + e-commerce operators | Build-in-public case study for CrossMart Monitor; includes snapshot-first monitoring and lightweight static-dashboard architecture. | CrossMart Monitor | Full draft ready for final review |
+| 02 | Turning Seller Tool Keyword Exports into a Product Opportunity Engine | Amazon operators + indie hackers | How keyword spreadsheets become ranked, explainable product opportunities. | CrossMart Selector | Full draft ready for final review |
+| 03 | Building an AI Amazon Listing Builder from Competitor ASINs | Operators + AI builders | Extract competitor patterns first, then generate structured Amazon listing drafts. | CrossMart Listing Builder | Full draft ready for final review |
+| 04 | From Traffic Keywords to Competitor Operations Diagnosis | Amazon operators + automation developers | Traffic source, ad-insight, review analysis, and browser automation as an operations diagnosis dashboard. | CrossMart Ops | Full draft ready for final review |
+
+## Archived source material
+
+These files are kept under `archive/` for future reuse, but should not be published as part of this launch batch:
+
+- `archive/05-snapshot-first-data-market-monitoring.md`
+- `archive/06-automating-amazon-real-browser-profile.md`
+- `archive/07-backendless-ecommerce-intelligence-system.md`
+- `archive/08-amazon-research-workflows-decision-tools.md`
+- `archive/09-crossmart-toolkit-build-in-public-recap.md`
+- `archive/05-backendless-ecommerce-intelligence-system.md`
 
 ## Publishing schedule
 
-Use a 2-3 day cadence at the start, then slow slightly after the core tool posts.
+Use a 2-3 day cadence at the start. If approval happens after 2026-06-27, shift the dates while preserving the spacing.
 
-| Slot | Timing | Article | Purpose |
-|---|---|---|---|
-| 1 | T+0 after final approval | 01 Monitor | Launch with the strongest completed story. |
-| 2 | T+2 | 02 Selector | Move from monitoring to product selection. |
-| 3 | T+4 | 03 Listing | Introduce AI generation after readers understand the data source. |
-| 4 | T+7 | 04 Ops | Show the higher-value diagnosis layer. |
-| 5 | T+10 | 05 Snapshot-first | Technical depth; useful for dev audience. |
-| 6 | T+13 | 06 Real browser automation | Technical depth; CDP/extension lessons. |
-| 7 | T+17 | 07 Backendless system | Architecture/cost angle for indie hackers. |
-| 8 | T+21 | 08 Decision tools | Product-thinking article. |
-| 9 | T+25 | 09 Build-in-public recap | Tie the series together and collect traffic. |
+| Slot | Planned date | Relative timing | Article | Purpose |
+|---|---|---|---|---|
+| 1 | 2026-06-27 | T+0 | 01 Monitor | Launch with the strongest completed story. |
+| 2 | 2026-06-29 | T+2 | 02 Selector | Move from monitoring to product selection. |
+| 3 | 2026-07-01 | T+4 | 03 Listing | Introduce AI generation after readers understand competitor data. |
+| 4 | 2026-07-04 | T+7 | 04 Ops | Show the higher-value diagnosis layer. |
 
 ## CTA links
 
@@ -72,10 +74,11 @@ Each article should follow this structure:
 
 ## Pre-publish checklist
 
-- [ ] Keep `published: false` until explicit final approval.
-- [ ] Verify all live links.
-- [ ] Remove private credentials, local-only paths, tokens, and internal account details.
-- [ ] Keep examples sanitized; no private customer/order/seller data.
+- [x] Keep `published: false` until explicit final approval.
+- [x] Verify all live links return HTTP 200.
+- [x] Remove private credentials, local-only paths, tokens, and internal account details from the four publishable drafts.
+- [x] Keep examples sanitized; no private customer/order/seller data.
+- [x] Give each article one primary CTA.
 - [ ] Add cover image if available.
 - [ ] Decide whether to expose GitHub repo links or only live demos.
-- [ ] Add a short comment at the end asking readers what they would monitor or automate.
+- [ ] Get explicit approval before posting/scheduling externally.
