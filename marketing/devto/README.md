@@ -10,74 +10,63 @@ Primary CTA: link to the relevant CrossMart GitHub Pages tool near the end of ea
 
 Canonical planning file: `CONTENT_MATRIX.md`.
 
-## Final four-article sequence
-
-The original 9 draft angles had several overlaps. They have now been consolidated into 4 publishable articles, each with one protagonist, one angle, and one CTA.
+## Nine-article sequence
 
 1. **Amazon Competitor Monitor**
    - Draft file: `01-amazon-competitor-monitor-python-edge-github-pages.md`
    - Angle: Python + Edge CDP + GitHub Pages monitoring dashboard.
    - CTA: CrossMart Monitor.
-   - Status: full Dev.to draft ready for final review.
+   - Status: full draft ready for review.
 
 2. **Keyword Spreadsheet to Product Opportunity Engine**
-   - Draft file: `02-keyword-exports-product-opportunity-engine.md`
-   - Angle: turning seller-tool keyword Excel exports into a ranked product selection list.
+   - Angle: turning SellerSprite keyword Excel exports into a ranked product selection list.
    - CTA: CrossMart Selector.
-   - Status: full Dev.to draft ready for final review.
 
 3. **Building an AI Listing Builder from Competitor ASINs**
-   - Draft file: `03-ai-amazon-listing-builder-competitor-asins.md`
-   - Angle: benchmark ASIN extraction + evidence-based LLM listing generation.
+   - Angle: benchmark ASIN extraction + LLM-generated Amazon listing structure.
    - CTA: CrossMart Listing Builder.
-   - Status: full Dev.to draft ready for final review.
 
 4. **From Traffic Keywords to Operations Diagnosis**
-   - Draft file: `04-traffic-keywords-operations-diagnosis.md`
-   - Angle: traffic keywords, ad visibility, review signals, and real-browser automation as an operations diagnosis layer.
+   - Angle: competitor traffic source analysis, ad insights, and AI operations recommendations.
    - CTA: CrossMart Ops.
-   - Status: full Dev.to draft ready for final review.
 
-## Consolidated / archived angles
+5. **Why Snapshot-First Data Beats One-Off Scraping**
+   - Angle: data architecture lesson across all CrossMart modules.
+   - CTA: CrossMart suite links.
 
-The previous 05-09 article ideas are not scheduled as standalone posts for this launch batch because they overlapped with the main four. Their useful material has been merged into the four articles above.
+6. **Lessons from Automating Amazon with a Real Browser Profile**
+   - Angle: Edge CDP, login state, browser extensions, fixed debugging ports, and cleanup.
+   - CTA: CrossMart Monitor.
 
-Archived source skeletons live in `archive/`:
+7. **Building a Lightweight E-commerce Intelligence System Without a Backend Server**
+   - Angle: GitHub Pages + JSON + scheduled local automation as a cheap early-stage architecture.
+   - CTA: all CrossMart tools.
 
-- `05-snapshot-first-data-market-monitoring.md` → merged mainly into Article 01.
-- `06-automating-amazon-real-browser-profile.md` → merged mainly into Article 04.
-- `07-backendless-ecommerce-intelligence-system.md` → merged into Article 01 and archived architecture notes.
-- `08-amazon-research-workflows-decision-tools.md` → merged mainly into Article 02.
-- `09-crossmart-toolkit-build-in-public-recap.md` → not used as a standalone launch article.
+8. **What I Learned Turning Amazon Research Workflows into Small Decision Tools**
+   - Angle: product-thinking article: dashboards are less useful than decisions.
+   - CTA: CrossMart suite links.
+
+9. **From Spreadsheet Pain to a CrossMart Toolkit: A Build-in-Public Recap**
+   - Angle: wrap-up article that ties the series together and previews the roadmap.
+   - CTA: all CrossMart tools.
 
 ## Suggested publishing rhythm
 
-Use a 2-3 day cadence. This keeps momentum without flooding Dev.to with similar CrossMart posts.
-
-| Slot | Date | Article | Purpose |
-|---|---|---|---|
-| 1 | 2026-06-27 | 01 Monitor | Launch with the strongest completed story and CrossMart Monitor CTA. |
-| 2 | 2026-06-29 | 02 Selector | Move from monitoring to product selection. |
-| 3 | 2026-07-01 | 03 Listing | Introduce AI generation after readers understand the data source. |
-| 4 | 2026-07-04 | 04 Ops | Finish with the higher-value diagnosis layer. |
-
-If final approval happens later, keep the same relative cadence: T+0, T+2, T+4, T+7.
-
-## Live CTA links verified
-
-- CrossMart Monitor: https://charlescome1995-prog.github.io/crossmart-monitor/monitor.html
-- CrossMart Selector: https://charlescome1995-prog.github.io/crossmart-selector/selection.html
-- CrossMart Listing Builder: https://charlescome1995-prog.github.io/crossmart-listing/listing.html
-- CrossMart Ops: https://charlescome1995-prog.github.io/crossmart-ops/ops.html
-- CrossMart Simulator: https://charlescome1995-prog.github.io/crossmart-simulator/simulator.html
+- Day 1: Article 1 — Monitor
+- Day 3: Article 2 — Selector
+- Day 5: Article 3 — Listing Builder
+- Day 8: Article 4 — Ops
+- Day 11: Article 5 — Snapshot architecture
+- Day 14: Article 6 — Real browser automation
+- Day 18: Article 7 — Backendless system architecture
+- Day 22: Article 8 — Decision tools
+- Day 26: Article 9 — Build-in-public recap
 
 ## Draft checklist before publishing
 
-- [x] Reduce 9 overlapping angles to 4 publishable posts.
-- [x] Convert articles 02-04 from skeletons into full Dev.to drafts.
-- [x] Keep `published: false` in all article front matter.
-- [x] Verify live links return HTTP 200.
-- [x] Scan final four drafts for private credentials, local paths, tokens, and internal account details.
-- [ ] Add cover images if available.
-- [ ] Get explicit final approval before publishing or scheduling externally.
-- [ ] If using Dev.to API, set `published: false` for drafts or use scheduled publishing only after approval.
+- [ ] Verify all live links open correctly.
+- [ ] Add cover image if available.
+- [ ] Decide whether to mention GitHub repo or only live demo.
+- [ ] Keep `published: false` until final review.
+- [ ] Add canonical URL only if reposting from another blog.
+- [ ] Make sure article does not expose private credentials, internal tokens, or local-only paths.
