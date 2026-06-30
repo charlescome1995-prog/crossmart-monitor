@@ -15,6 +15,8 @@ JIKE_FIELDS = [
     'jike_main_seller_rank', 'jike_seller_rank', 'jike_listing_state',
     'jike_product_name', 'jike_acos', 'jike_ads_spend',
     'jike_fba_quantity', 'jike_fba_turnover', 'jike_gross_profit_rate',
+    'jike_net_profit_rate', 'jike_avg_daily_sales', 'jike_window',
+    'jike_fba_turnover_unit',
 ]
 
 
@@ -458,16 +460,21 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "jike_ads_spend": jk.get('adsSpend'),
         "jike_fba_quantity": jk.get('fbaQuantity'),
         "jike_fba_turnover": jk.get('fbaTurnover'),
-        "jike_gross_profit_rate": jk.get('grossProfitRate') or jk.get('salesGrossProfitRate'),
+        "jike_fba_turnover_unit": "天",  # 2026-06-30 标注单位
+        "jike_gross_profit_rate": jk.get('grossProfitRate') or jk.get('salesGrossProfitRate'),  # A:毛利率
+        "jike_net_profit_rate": jk.get('salesNetProfitRate'),  # B:净利率
+        "jike_avg_daily_sales": jk.get('averageDailySales'),  # 日均销量
+        "jike_window": "昨日T+1",  # 2026-06-30 改为 1 天窗口（昨日，积加有 T+1 延迟）
         "jike_error": jike_error,  # 积加调用失败时的错误信息（None表示成功或未调用）
 
         # ── 卖家精灵插件数据 ──
         "lqs": data.get('sprite_lqs', ''),
         "variant_count": data.get('sprite_variant_count', ''),
         "launch_date": data.get('launch_date', '') or data.get('sprite_launch_date', ''),
-        "total_keywords": data.get('sprite_total_keywords', ''),
-        "natural_keywords": data.get('sprite_natural_keywords', ''),
-        "ad_keywords": data.get('sprite_ad_keywords', ''),
+        # 2026-06-30 防呆：1688 是 Alibaba 子站名，不可能是关键词数
+        "total_keywords": '' if str(data.get('sprite_total_keywords', '')) == '1688' else data.get('sprite_total_keywords', ''),
+        "natural_keywords": '' if str(data.get('sprite_natural_keywords', '')) == '1688' else data.get('sprite_natural_keywords', ''),
+        "ad_keywords": '' if str(data.get('sprite_ad_keywords', '')) == '1688' else data.get('sprite_ad_keywords', ''),
         # 卖家精灵估算（与 jike_* 严格区分，不冒充积加真实数据；None 表示插件未抓到）
         "seller_units_30d": safe_int(data.get('sprite_sales_30d_parent', '')),
         "seller_revenue_30d": safe_float(data.get('sprite_revenue_30d', '')),
@@ -476,7 +483,7 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "seller_review_count": safe_int(data.get('sprite_review_count', '')),
         "seller_bsr": safe_int(data.get('sprite_bsr_rank', '')),
         "seller_fba_fee": safe_float(data.get('sprite_fba_fee', '')),
-        "suggest_keywords": data.get('sprite_suggest_keywords', ''),
+        "suggest_keywords": '' if str(data.get('sprite_suggest_keywords', '')) == '1688' else data.get('sprite_suggest_keywords', ''),
         "traffic_keywords_top": data.get('sprite_traffic_keywords_top', []),
     }
 
@@ -558,10 +565,10 @@ def build_related_item(asin, rel_data, main_asin=None):
         "lqs": rel_data.get('sprite_lqs', ''),
         "variant_count": rel_data.get('sprite_variant_count', ''),
         "launch_date": (rel_data.get('launch_date', '') if rel_data.get('launch_date', '') else '') or (rel_data.get('sprite_launch_date', '') if rel_data.get('sprite_launch_date', '') else '') or '',
-        "total_keywords": rel_data.get('sprite_total_keywords', ''),
-        "natural_keywords": rel_data.get('sprite_natural_keywords', ''),
-        "ad_keywords": rel_data.get('sprite_ad_keywords', ''),
-        "suggest_keywords": rel_data.get('sprite_suggest_keywords', ''),
+        "total_keywords": '' if str(rel_data.get('sprite_total_keywords', '')) == '1688' else rel_data.get('sprite_total_keywords', ''),
+        "natural_keywords": '' if str(rel_data.get('sprite_natural_keywords', '')) == '1688' else rel_data.get('sprite_natural_keywords', ''),
+        "ad_keywords": '' if str(rel_data.get('sprite_ad_keywords', '')) == '1688' else rel_data.get('sprite_ad_keywords', ''),
+        "suggest_keywords": '' if str(rel_data.get('sprite_suggest_keywords', '')) == '1688' else rel_data.get('sprite_suggest_keywords', ''),
         "traffic_keywords_top": rel_data.get('sprite_traffic_keywords_top', []) or [],
     }
 
@@ -683,10 +690,10 @@ def build_keyword_item(kw, a):
         "lqs": (sd.get('sprite_lqs', '') if sd else '') or '',
         "variant_count": (sd.get('sprite_variant_count', '') if sd else '') or '',
         "launch_date": (sd.get('launch_date', '') if sd else '') or (sd.get('sprite_launch_date', '') if sd else '') or '',
-        "total_keywords": (sd.get('sprite_total_keywords', '') if sd else '') or '',
-        "natural_keywords": (sd.get('sprite_natural_keywords', '') if sd else '') or '',
-        "ad_keywords": (sd.get('sprite_ad_keywords', '') if sd else '') or '',
-        "suggest_keywords": (sd.get('sprite_suggest_keywords', '') if sd else '') or '',
+        "total_keywords": '' if (sd and str(sd.get('sprite_total_keywords', '')) == '1688') else ((sd.get('sprite_total_keywords', '') if sd else '') or ''),
+        "natural_keywords": '' if (sd and str(sd.get('sprite_natural_keywords', '')) == '1688') else ((sd.get('sprite_natural_keywords', '') if sd else '') or ''),
+        "ad_keywords": '' if (sd and str(sd.get('sprite_ad_keywords', '')) == '1688') else ((sd.get('sprite_ad_keywords', '') if sd else '') or ''),
+        "suggest_keywords": '' if (sd and str(sd.get('sprite_suggest_keywords', '')) == '1688') else ((sd.get('sprite_suggest_keywords', '') if sd else '') or ''),
         "traffic_keywords_top": (sd.get('traffic_keywords_top', []) if sd else []) or [],
     }
 

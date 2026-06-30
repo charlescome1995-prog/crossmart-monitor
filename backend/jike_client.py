@@ -113,10 +113,12 @@ def fetch_sales_by_asin(token: str, asin: str,
     import datetime
 
     today = datetime.date.today()
+    # 2026-06-30 调整：默认查询“昨日 1 天”窗口
+    # 原因：积加有 T+1 延迟，今日返回 rows=0；前台“今日”实际是昨日数据
     if not end_date:
-        end_date = today.strftime("%Y-%m-%d")
+        end_date = (today - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     if not begin_date:
-        begin_date = (today - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
+        begin_date = end_date  # 1 天窗口
 
     url = f"{BASE_URL}/operation/sts/salesAnalysis/page"
     headers = {
@@ -271,6 +273,11 @@ def get_jike_data_for_asins(asin_list: list,
                 "fbaQuantity": row.get("fbaQuantity"),
                 "fbaTurnover": row.get("fbaTurnover"),
                 "salesGrossProfitRate": row.get("salesGrossProfitRate"),
+                "grossProfitRate": row.get("grossProfitRate"),
+                "salesNetProfitRate": row.get("salesNetProfitRate"),
+                "averageDailySales": row.get("averageDailySales"),
+                "salesTurnoverRate": row.get("salesTurnoverRate"),
+                "libraryTurnover": row.get("libraryTurnover"),
                 "_raw": row
             }
 

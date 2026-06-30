@@ -462,14 +462,15 @@
           (item.is_main ? (
             // 主 ASIN：积加数据为主，卖家精灵估算作为 fallback
             (item.jike_units != null || item.jike_sales != null || item.jike_orders != null ? (
-              // 有积加真实数据
+              // 有积加真实数据（查询窗口：近1天）
+              '<div style="font-size:10px;color:#94a3b8;line-height:1.4;">昨日·1天窗口</div>' +
               '<div style="font-size:12px;line-height:1.4;">Units <strong>' + (item.jike_units != null ? item.jike_units.toLocaleString() : '-') + '</strong> <span style="background:#dbeafe;color:#1e40af;font-size:9px;padding:1px 4px;border-radius:3px;margin-left:3px;">Jike</span></div>' +
               '<div style="font-size:11px;color:#64748b;line-height:1.4;">Sales $' + (item.jike_sales != null ? item.jike_sales.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
-              '<div style="font-size:11px;color:#64748b;line-height:1.4;">Margin ' + (item.jike_gross_profit_rate != null ? item.jike_gross_profit_rate + '%' : '-') + '</div>' +
+              '<div style="font-size:11px;color:#64748b;line-height:1.4;">毛利率 ' + (item.jike_gross_profit_rate != null ? item.jike_gross_profit_rate + '%' : '-') + ' · 净利率 ' + (item.jike_net_profit_rate != null ? item.jike_net_profit_rate + '%' : '-') + '</div>' +
               '<div style="font-size:11px;line-height:1.4;">ACOS ' + (item.jike_acos != null ? item.jike_acos + '%' : '-') + '</div>' +
               '<div style="font-size:11px;color:#64748b;line-height:1.4;">Ad Spend $' + (item.jike_ads_spend != null ? item.jike_ads_spend.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-') + '</div>' +
               '<div style="font-size:11px;line-height:1.4;">FBA Stock ' + (item.jike_fba_quantity != null ? item.jike_fba_quantity.toLocaleString() : '-') + '</div>' +
-              '<div style="font-size:11px;color:#64748b;line-height:1.4;">Turnover ' + (item.jike_fba_turnover != null ? item.jike_fba_turnover.toFixed(1) : '-') + '</div>'
+              '<div style="font-size:11px;color:#64748b;line-height:1.4;">Turnover ' + (item.jike_fba_turnover != null ? item.jike_fba_turnover.toFixed(1) + ' 天' : '-') + '</div>'
             ) : (
               // 积加无数据，显示卖家精灵估算（明确标注来源）
               '<div style="font-size:11px;color:#92400e;line-height:1.4;margin-bottom:3px;">⚠️ No Jike data</div>' +
