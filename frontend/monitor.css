@@ -34,8 +34,8 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
 .filter-controls label{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;font-weight:600}
 .btn{padding:6px 16px;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:.1s}
 .btn-secondary{background:#e2e8f0;color:#334155}
-.table-container{background:#fff;border-radius:0 0 6px 6px;border:1px solid #e2e8f0;overflow-x:auto;box-shadow:0 1px 3px rgba(0,0,0,.05);max-width:100%}
-.monitor-table{width:100%;min-width:1510px;table-layout:fixed;border-collapse:collapse;text-align:left;overflow:hidden}
+.table-container{background:#fff;border-radius:0 0 6px 6px;border:1px solid #e2e8f0;overflow-x:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);max-width:100%}
+.monitor-table{width:100%;max-width:100%;table-layout:fixed;border-collapse:collapse;text-align:left;overflow:hidden}
 .monitor-table th{background:#f8fafc;padding:10px 8px;font-size:11px;font-weight:700;color:#334155;border-bottom:2px solid #e2e8f0;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 /* header padding match: 给需要视觉缓冲的表头 th 加大 padding-left/right */
 .monitor-table thead tr:nth-child(1) th:nth-child(1){padding-left:4px;padding-right:22px}   /* 图片 ↔ 商品信息 */
@@ -45,17 +45,17 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
 .monitor-table thead tr:nth-child(2) th:nth-child(8){padding-left:18px;padding-right:6px}   /* 更新时间 subheader */
 /* subheader 第三列 (流量词 Top) 右边 padding 也大 */
 .monitor-table thead tr:nth-child(2) th:nth-child(7){padding-left:4px;padding-right:18px}  /* 流量词 Top 右 18 (col 宽后这个留白仍在 col-time 左边) */
-.col-img{width:70px;min-width:70px;text-align:center;vertical-align:middle;overflow:hidden;padding:8px 12px 8px 4px}
-.col-img img{width:72px;height:72px;object-fit:cover;border-radius:4px;border:1px solid #e2e8f0;background:#fff}
-.col-info{width:230px;min-width:230px;vertical-align:top;padding:8px 6px 8px 10px}
-.col-metrics{width:390px;min-width:390px;vertical-align:top;padding:8px 6px}
+.col-img{width:5%;min-width:0;text-align:center;vertical-align:middle;overflow:hidden;padding:8px 6px 8px 3px}
+.col-img img{width:64px;height:64px;object-fit:cover;border-radius:4px;border:1px solid #e2e8f0;background:#fff}
+.col-info{width:13%;min-width:0;vertical-align:top;padding:8px 4px 8px 6px}
+.col-metrics{width:25%;min-width:0;vertical-align:top;padding:8px 4px}
 .col-events{width:140px;min-width:140px;vertical-align:top;padding:8px 6px}
 .col-diff{width:110px;min-width:110px;vertical-align:top;padding:8px 6px}
-.col-jike{width:170px;min-width:170px;vertical-align:top;padding:8px 8px}
-.col-plugin-l{width:105px;min-width:105px;vertical-align:top;padding:8px 6px;font-size:12px;line-height:1.45;word-wrap:break-word;overflow-wrap:break-word}
-.col-plugin-m{width:165px;min-width:165px;vertical-align:top;padding:8px 6px;font-size:12px;line-height:1.45;word-wrap:break-word;overflow-wrap:break-word}
-.col-plugin-r{width:280px;min-width:280px;vertical-align:top;padding:8px 12px 8px 6px;font-size:12px;line-height:1.45;word-wrap:break-word;overflow-wrap:break-word}
-.col-time{width:110px;min-width:110px;vertical-align:middle;padding:8px 6px 8px 10px}
+.col-jike{width:13%;min-width:0;vertical-align:top;padding:8px 5px}
+.col-plugin-l{width:7%;min-width:0;vertical-align:top;padding:8px 4px;font-size:11px;line-height:1.45;word-wrap:break-word;overflow-wrap:break-word}
+.col-plugin-m{width:11%;min-width:0;vertical-align:top;padding:8px 4px;font-size:11px;line-height:1.45;word-wrap:break-word;overflow-wrap:break-word}
+.col-plugin-r{width:18%;min-width:0;vertical-align:top;padding:8px 5px 8px 4px;font-size:11px;line-height:1.45;word-wrap:break-word;overflow-wrap:break-word}
+.col-time{width:8%;min-width:0;vertical-align:middle;padding:8px 4px 8px 5px}
 /* Sparklines */
 .metrics-block{position:relative}
 .sparkline-wrap{display:inline-block;vertical-align:middle;margin-left:4px}
@@ -77,7 +77,7 @@ body{background:#f4f7f6;color:#333;padding:0;font-size:13px}
 .e-tag{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600;border:1px solid transparent;display:inline-block;width:fit-content}
 .e-alert{background:#fef2f2;color:#dc2626;border-color:#fca5a5}
 .e-none{color:#94a3b8;font-size:11px}
-.status-indicator{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:5px 10px;border-radius:4px;width:85px;justify-content:center}
+.status-indicator{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:4px 5px;border-radius:4px;width:100%;max-width:78px;justify-content:center}
 .status-indicator.changed{background:#dc2626;color:#fff}
 .status-indicator.stable{background:#059669;color:#fff}
 .diff-cell{font-size:12px;line-height:1.6}
