@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-30T16:08:07",
+  "updated": "2026-06-30T16:10:41",
   "items": [
     {
       "monitor_type": "new",
@@ -2053,15 +2053,19 @@
       "expected_sub_cat": "",
       "sub_bsr": 0,
       "history_main_bsr": [
+        null,
         null
       ],
       "history_sub_bsr": [
+        null,
         null
       ],
       "history_price": [
+        18.99,
         18.99
       ],
       "history_rating": [
+        4.0,
         4.0
       ],
       "events": [],
@@ -2084,21 +2088,46 @@
       "jike_fba_turnover": 81.1828,
       "jike_gross_profit_rate": null,
       "jike_error": null,
-      "lqs": "9.9",
+      "lqs": "",
       "variant_count": "1",
       "launch_date": "11, 2025",
-      "total_keywords": "",
-      "natural_keywords": "",
-      "ad_keywords": "",
-      "seller_units_30d": null,
-      "seller_revenue_30d": null,
+      "total_keywords": "76",
+      "natural_keywords": "76",
+      "ad_keywords": "0",
+      "seller_units_30d": 101,
+      "seller_revenue_30d": 1534.0,
       "seller_avg_price": null,
       "seller_rating": 4.0,
       "seller_review_count": 29,
-      "seller_bsr": null,
-      "seller_fba_fee": null,
-      "suggest_keywords": "",
-      "traffic_keywords_top": []
+      "seller_bsr": 322,
+      "seller_fba_fee": 4.09,
+      "suggest_keywords": "0",
+      "traffic_keywords_top": [
+        {
+          "keyword": "antifungal cream",
+          "traffic_pct": "42.65%",
+          "type": "自然搜索词",
+          "organic_rank": "41"
+        },
+        {
+          "keyword": "athletes foot cream",
+          "traffic_pct": "10.05%",
+          "type": "自然搜索词",
+          "organic_rank": "110"
+        },
+        {
+          "keyword": "athletes foot treatment",
+          "traffic_pct": "5.28%",
+          "type": "自然搜索词",
+          "organic_rank": "128"
+        },
+        {
+          "keyword": "anti fungal cream for skin",
+          "traffic_pct": "3.96%",
+          "type": "自然搜索词",
+          "organic_rank": "99"
+        }
+      ]
     }
   ],
   "keywords": [
