@@ -70,35 +70,39 @@ def extract_sprite_plugin_data(browser: CDPBrowser):
     # ── 提取 DOM 数据 ──
     js_get_plugin_text = r"""
 (function(){
-    var ids = [
-        'seller-sprite-extension-quick-view-listing-page',
-        'seller-sprite-extension-quick-view-listing',
-        'seller-sprite-extension-main-relation',
-        'sellersprite-extension-inventory'
-    ];
     var data = {};
-    for (var i = 0; i < ids.length; i++) {
-        var el = document.getElementById(ids[i]);
-        if (el) {
-            if (ids[i] === 'seller-sprite-extension-main-relation') {
-                data[ids[i]] = el.innerHTML;
-            } else {
-                data[ids[i]] = (el.textContent||'').trim();
-            }
-        }
+    // 2026-06-30 重写：插件 v5.0+ 取消了部分 ID，改用 class 选择器
+
+    // 1) 指标面板（保留 ID）
+    var metricsEl = document.getElementById('seller-sprite-extension-quick-view-listing-page');
+    if (metricsEl) {
+        data['seller-sprite-extension-quick-view-listing-page'] = (metricsEl.textContent||'').trim();
     }
-    // 备用：直接从页面 DOM 树中提取插件数据（overlay 模式下）
-    // 找所有包含关键数据的 div
-    var dataEls = [];
-    document.querySelectorAll('div').forEach(function(el){
-        var txt = el.textContent || '';
-        if (txt.includes('质量得分') || txt.includes('近30天销量') || txt.includes('Listing销售额')) {
-            dataEls.push(el.textContent.trim());
-        }
-    });
-    if (dataEls.length > 0) {
-        data['fallback_text'] = dataEls.join(' | ');
+
+    // 2) 主面板：用 .quick-view 类（含 ASIN/品牌/卖家/BSR/销量/销售额/毛利率/价格 等核心字段）
+    var mainEl = document.querySelector('.quick-view');
+    if (mainEl) {
+        data['seller-sprite-extension-quick-view-listing'] = (mainEl.textContent||'').trim();
     }
+
+    // 3) 关键词分布区：.rank-number-box（v5.0+ 新增）
+    var rankBox = document.querySelector('.rank-number-box');
+    if (rankBox) {
+        data['rank-number-box'] = (rankBox.textContent||'').trim();
+    }
+
+    // 4) 流量词 Top 表格：.pop-table-relation
+    var trafficTable = document.querySelector('.pop-table-relation');
+    if (trafficTable) {
+        data['seller-sprite-extension-main-relation'] = trafficTable.outerHTML;
+    }
+
+    // 5) 库存
+    var invEl = document.getElementById('sellersprite-extension-inventory');
+    if (invEl) {
+        data['sellersprite-extension-inventory'] = (invEl.textContent||'').trim();
+    }
+
     return JSON.stringify(data);
 })()
 """
@@ -111,6 +115,7 @@ def extract_sprite_plugin_data(browser: CDPBrowser):
         main_text   = plugin_texts.get('seller-sprite-extension-quick-view-listing', '')
         traffic_text = plugin_texts.get('seller-sprite-extension-main-relation', '')
         inv_text    = plugin_texts.get('sellersprite-extension-inventory', '')
+        rank_box_text = plugin_texts.get('rank-number-box', '')  # 2026-06-30 新增：关键词分布专属区域
     except Exception as e:
         print("  [插件] DOM 提取失败: " + str(e))
         return {}
@@ -223,11 +228,21 @@ def extract_sprite_plugin_data(browser: CDPBrowser):
         data['dim_l'], data['dim_w'], data['dim_h'] = dims.group(1), dims.group(2), dims.group(3)
 
 
-    # 关键词统计
+    # 关键词统计（2026-06-30 重写：从 .rank-number-box 专属区域提取）
+    # rank_box_text 形如 "全部流量词:85自然搜索词:85广告流量词:0搜索推荐词:0"
+    # 兜底用 combined（旧版插件）
     for label, key in [('全部流量词', 'total_keywords'), ('自然搜索词', 'natural_keywords'),
                        ('广告流量词', 'ad_keywords'), ('搜索推荐词', 'suggest_keywords')]:
-        m = re.search(rf'{re.escape(label)}[^\d]*(\d+)', combined)
-        if m: data[key] = m.group(1)
+        # 优先从 rank-number-box 区域提取（紧邻冒号+数字）
+        m = re.search(rf'{re.escape(label)}\s*[:：]\s*(\d{{1,6}})(?!\d)', rank_box_text)
+        if not m:
+            # 兜底：在 combined 中找，但限制极小跨度（避免匹配到无关 1688）
+            m = re.search(rf'{re.escape(label)}\s*[:：]\s*(\d{{1,6}})(?!\d)', combined)
+        if m:
+            val = m.group(1)
+            if val == '1688':  # Alibaba 子站名防呆
+                continue
+            data[key] = val
 
 
     # 库存
