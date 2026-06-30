@@ -483,20 +483,43 @@ def run_monitor(config_override=None, scheduled=False):
                         except:
                             pass
                         jike_data = get_jike_data_for_asins([main_asin])
-                        with open(jike_path, "w", encoding="utf-8") as f:
-                            json.dump(jike_data, f, ensure_ascii=False, indent=2)
-                        print(f"  积加数据已保存: {jike_path}")
+                        # 检查返回是否有有效数据
+                        asin_data = jike_data.get(main_asin) if isinstance(jike_data, dict) else None
+                        has_valid = bool(asin_data and isinstance(asin_data, dict) and any(
+                            v not in (None, '', 0, []) for v in asin_data.values()
+                        ))
+                        if has_valid:
+                            with open(jike_path, "w", encoding="utf-8") as f:
+                                json.dump(jike_data, f, ensure_ascii=False, indent=2)
+                            print(f"  ✅ 积加数据已保存（{len(asin_data)} 个字段）: {jike_path}")
+                        else:
+                            # API 调用成功但无数据：清空旧值，避免前端误显示历史数据
+                            empty_marker = {
+                                "_error": "积加API返回空数据（ASIN可能未在积加系统）",
+                                "_failed_at": datetime.now().isoformat(),
+                            }
+                            with open(jike_path, "w", encoding="utf-8") as f:
+                                json.dump(empty_marker, f, ensure_ascii=False, indent=2)
+                            print(f"  ⚠️ 积加 API 返回空数据，已清空旧值并写入错误标记")
                     except Exception as e:
-                        # 即使调用失败也写一个标记文件，sync 时 fallback 到卖家精灵数据
-                        err_marker = {"_error": str(e), "_failed_at": datetime.now().isoformat()}
+                        # 调用失败：清空旧数据 + 写入明确错误标记
+                        err_msg = str(e)
+                        err_marker = {
+                            "_error": f"积加API调用失败: {err_msg}",
+                            "_failed_at": datetime.now().isoformat(),
+                        }
                         with open(jike_path, "w", encoding="utf-8") as f:
                             json.dump(err_marker, f, ensure_ascii=False, indent=2)
-                        print(f"  积加API调用失败（已写错误标记）: {e}")
+                        print(f"  ❌ 积加API调用失败（已清空旧数据并写入错误标记）: {err_msg}")
                 else:
-                    # JIKE 不可用也写空文件，避免 sync 走未定义路径
+                    # JIKE 模块未加载：写入错误标记，清空旧数据
+                    err_marker = {
+                        "_error": "积加模块未加载 (jike_client import失败)",
+                        "_failed_at": datetime.now().isoformat(),
+                    }
                     with open(jike_path, "w", encoding="utf-8") as f:
-                        json.dump({}, f)
-                    print(f"  积加模块未加载（已写空文件）")
+                        json.dump(err_marker, f, ensure_ascii=False, indent=2)
+                    print(f"  ❌ 积加模块未加载，已清空旧数据并写入错误标记")
             time.sleep(5)  # 积加 API 限流：每 5 秒最多 1 次请求
             cleanup_tabs()  # 主 ASIN 抓取后清理多余标签页
             time.sleep(random.randint(20, 50))

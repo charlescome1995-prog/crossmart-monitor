@@ -25,6 +25,7 @@ def load_jike_data(asin):
     **严格语义**：仅在积加 API 成功调用且返回有效字段时才返回数据。
     - 文件不存在 → 返回 {}
     - 文件存在但是 {}（API 调用失败 / 无数据） → 返回 {}
+    - 文件含 _error 标记 → 返回含 _error 的 dict，sync 会把错误传递到前端
     - 卖家精灵 (sprite_*) 不再充作积加后备 — 积加数据只能从积加调用
 
     返回格式：始终是扁平的 {orderProductSales:..., unitsOrdered:..., ...}
@@ -39,9 +40,9 @@ def load_jike_data(asin):
     except Exception:
         return {}
 
-    # 错误标记：API 调用失败的 jike_latest.json → 返回 {}
+    # 错误标记：API 调用失败的 jike_latest.json → 保留 _error，sync 接过去处理
     if isinstance(content, dict) and content.get('_error'):
-        return {}
+        return {'_error': content['_error'], '_failed_at': content.get('_failed_at', '')}
 
     # 嵌套格式：{asin: data} → unwrap 到 {data}
     if isinstance(content, dict) and asin in content and isinstance(content[asin], dict):
@@ -392,7 +393,10 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
     diff = build_diff(data, prev_data)
 
     # 积加数据（主ASIN有，关联ASIN无）
-    jk = jike_data if jike_data else {}
+    jk_raw = jike_data if jike_data else {}
+    # 检查是否为错误标记：是则所有积加字段返 None，同时用 jike_error 字段传递错误信息
+    jike_error = jk_raw.get('_error') if isinstance(jk_raw, dict) else None
+    jk = {} if jike_error else jk_raw
 
     return {
         "monitor_type": data.get("_asin_type") or "ASIN",
@@ -455,6 +459,7 @@ def build_rawdata_item(asin, data, history, related_asins=None, jike_data=None):
         "jike_fba_quantity": jk.get('fbaQuantity'),
         "jike_fba_turnover": jk.get('fbaTurnover'),
         "jike_gross_profit_rate": jk.get('grossProfitRate') or jk.get('salesGrossProfitRate'),
+        "jike_error": jike_error,  # 积加调用失败时的错误信息（None表示成功或未调用）
 
         # ── 卖家精灵插件数据 ──
         "lqs": data.get('sprite_lqs', ''),
