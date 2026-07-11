@@ -4,7 +4,7 @@
 dingtalk_notifier.py - 钉钉预警推送
 条件：
   1. ACOS 超过 40%
-  2. FBA 周转天数 (Turnover) 少于 184 天
+  2. FBA 周转天数 (Turnover) 少于 60 天
 """
 import json, os, sys, subprocess, re
 
@@ -19,7 +19,7 @@ WEBHOOK_URL = None
 
 # 预警阈值
 ACOS_THRESHOLD = 40.0            # ACOS > 40% 预警
-TURNOVER_DAYS_THRESHOLD = 184    # FBA 周转天数 (fbaTurnover) < 184 天预警
+TURNOVER_DAYS_THRESHOLD = 60    # FBA 周转天数 (fbaTurnover) < 60 天预警
 
 
 def load_webhook_url():
@@ -149,7 +149,7 @@ def check_and_notify():
                 f"ACOS: {acos:.1f}%（阈值>{ACOS_THRESHOLD}%）"
             )
 
-        # 条件2：FBA 周转天数 (Turnover) < 184 天
+        # 条件2：FBA 周转天数 (Turnover) < 60 天
         if fba_turnover is not None and fba_turnover < TURNOVER_DAYS_THRESHOLD:
             qty_txt = f"\nFBA库存: {int(fba_qty)}件" if fba_qty is not None else ""
             alerts.append(

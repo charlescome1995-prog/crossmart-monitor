@@ -1010,6 +1010,26 @@ def main():
     except Exception as e:
         print(f'⚠️ Git 推送异常: {e}')
 
+    # ── 推送到 CrossMart Hub ─────────────────────────────────────
+    try:
+        import datetime, json as _json
+        from push_to_hub import push_to_hub
+        with open(OUTPUT_RAW, 'r', encoding='utf-8') as _f:
+            _raw = _json.load(_f)
+        _payload = {
+            'schema_version': 'v1',
+            'generated_at': datetime.datetime.now(
+                datetime.timezone(datetime.timedelta(hours=8))
+            ).isoformat(timespec='seconds'),
+            'source': 'crossmart-monitor',
+            'keywords': _raw.get('keywords', []) or [],
+            'asins':    _raw.get('asins', {}) or {},
+        }
+        push_to_hub('monitor.json', _payload)
+        print('🌐 已同步到 crossmart-hub/data/monitor.json')
+    except Exception as e:
+        print(f'⚠️ Hub 同步失败（不阻塞主流程）: {e}')
+
     # ── 钉钉预警检查 ─────────────────────────────────────────────
     try:
         from dingtalk_notifier import check_and_notify
